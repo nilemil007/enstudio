@@ -8,9 +8,9 @@
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h4 class="card-title">All Route</h4>
                 <span>
-                    <a href="{{ route('route.create') }}" class="btn btn-sm btn-primary">Add new</a>
+                    <a href="{{ route('route.create') }}" class="btn btn-sm btn-primary">Add New</a>
                     @if(count($routes) > 1)
-                        <a id="deleteAllRoute" href="{{ route('route.delete.all') }}" class="btn btn-sm btn-danger">Delete all</a>
+                        <a id="deleteAllRoute" href="{{ route('route.delete.all') }}" class="btn btn-sm btn-danger">Delete All</a>
                     @endif
                 </span>
             </div>
@@ -20,8 +20,8 @@
                     <tr>
                         <th class="w-1">No.</th>
                         <th>DD House</th>
-                        <th>Code</th>
-                        <th>Name</th>
+                        <th>Route Code</th>
+                        <th>Route Name</th>
                         <th>Weekday</th>
                         <th>Length</th>
                         <th>status</th>
@@ -109,7 +109,7 @@
 
                     Swal.fire({
                         title: 'Are you sure?',
-                        text: "Delete This Route?",
+                        text: "Delete All Route?",
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonText: 'Yes, delete it!'

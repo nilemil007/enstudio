@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static truncate()
  * @method static latest()
  * @method static create(mixed $house)
+ * @method static firstWhere(string $string, $ddCode)
  */
 class DdHouse extends Model
 {
@@ -37,4 +38,8 @@ class DdHouse extends Model
         'status',
     ];
 
+    public function route(): HasMany
+    {
+        return $this->hasMany(Route::class);
+    }
 }
