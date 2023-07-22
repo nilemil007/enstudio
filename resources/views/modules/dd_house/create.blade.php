@@ -193,7 +193,7 @@
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-sm btn-primary me-2">Create new house</button>
+                        <button type="submit" class="btn btn-sm btn-primary me-2">Create New House</button>
                         <a href="{{ route('dd-house.index') }}" class="btn btn-sm btn-info me-2 text-white">Back</a>
                     </form>
                 </div>

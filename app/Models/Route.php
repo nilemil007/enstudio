@@ -33,6 +33,11 @@ class Route extends Model
         return $this->belongsTo(DdHouse::class);
     }
 
+    /**
+     * Transform dd code to id.
+     *
+     * @return
+     */
     protected function ddHouseId(): Attribute
     {
         return Attribute::make(

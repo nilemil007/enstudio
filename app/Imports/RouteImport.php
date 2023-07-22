@@ -36,18 +36,18 @@ class RouteImport implements ToModel, WithHeadingRow, WithValidation
     public function rules(): array
     {
         return [
-            'dd_house_id'   => ['required'],
-            '*.dd_house_id' => ['required'],
-            'code'          => ['required', 'unique:routes,code', 'max:20',],
-            '*.code'        => ['required', 'unique:routes,code', 'max:20',],
-            'name'          => ['required', 'string', 'min:3', 'max:30'],
-            '*.name'        => ['required', 'string', 'min:3', 'max:30'],
-            'description'   => ['required', 'string', 'min:3', 'max:200',],
-            '*.description' => ['required', 'string', 'min:3', 'max:200',],
-            'weekdays'      => ['required', 'string', 'min:3', 'max:100',],
-            '*.weekdays'    => ['required', 'string', 'min:3', 'max:100',],
-            'length'        => ['nullable'],
-            '*.length'      => ['nullable'],
+            'dd_code'           => ['required'],
+            '*.dd_code'         => ['required'],
+            'route_code'        => ['required', 'unique:routes,code', 'max:20',],
+            '*.route_code'      => ['required', 'unique:routes,code', 'max:20',],
+            'route_name'        => ['required', 'string', 'min:3', 'max:30'],
+            '*.route_name'      => ['required', 'string', 'min:3', 'max:30'],
+            'description'       => ['required', 'string', 'min:3', 'max:200',],
+            '*.description'     => ['required', 'string', 'min:3', 'max:200',],
+            'weekday'           => ['required', 'string', 'min:3', 'max:100',],
+            '*.weekday'         => ['required', 'string', 'min:3', 'max:100',],
+            'route_length'      => ['nullable'],
+            '*.route_length'    => ['nullable'],
         ];
     }
 }

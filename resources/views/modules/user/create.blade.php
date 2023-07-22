@@ -96,7 +96,7 @@
                         </div>
 
 
-                        <button type="submit" class="btn btn-sm btn-primary me-2">Create new user</button>
+                        <button type="submit" class="btn btn-sm btn-primary me-2">Create New User</button>
                         <a href="{{ route('user.index') }}" class="btn btn-sm btn-info me-2 text-white">Back</a>
                     </form>
                 </div>
@@ -127,7 +127,7 @@
                             <input name="import_users" type="file" class="form-control" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" required>
                         </div>
                         <div class="col-12">
-                            <button type="submit" class="btn btn-sm btn-primary w-100 mt-2">Import users</button>
+                            <button type="submit" class="btn btn-sm btn-primary w-100 mt-2">Import Users</button>
                         </div>
                     </form>
                 </div>

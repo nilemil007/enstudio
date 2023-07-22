@@ -8,7 +8,7 @@
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h4 class="card-title">All House</h4>
                 <span>
-                    <a href="{{ route('dd-house.create') }}" class="btn btn-sm btn-primary">Add new</a>
+                    <a href="{{ route('dd-house.create') }}" class="btn btn-sm btn-primary">Add New</a>
                     @if(count($ddHouse) > 1)
                         <a id="deleteAllHouse" href="{{ route('dd-house.delete.all') }}" class="btn btn-sm btn-danger">Delete all</a>
                     @endif

@@ -137,6 +137,6 @@ class RouteController extends Controller
      */
     public function sampleFileDownload(): BinaryFileResponse
     {
-        return Response::download(public_path('download/sample/DD House Sample.xlsx'));
+        return Response::download(public_path('download/sample/Routes.xlsx'));
     }
 }

@@ -8,7 +8,7 @@
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h4 class="card-title">All Users</h4>
                 <span>
-                    <a href="{{ route('user.create') }}" class="btn btn-sm btn-primary">Add new</a>
+                    <a href="{{ route('user.create') }}" class="btn btn-sm btn-primary">Add New</a>
                     @if(count($users) > 1)
                         <a id="deleteAllUsers" href="{{ route('user.delete.all') }}" class="btn btn-sm btn-danger">Delete all</a>
                     @endif

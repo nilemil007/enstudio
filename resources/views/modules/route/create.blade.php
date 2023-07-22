@@ -19,7 +19,7 @@
                                     <option value="">-- Select Distribution House --</option>
                                     @if(count($houses) > 0)
                                         @foreach($houses as $house)
-                                            <option value="{{ $house->id }}">{{ $house->code .' - '. $house->name }}</option>
+                                            <option value="{{ $house->code }}">{{ $house->code .' - '. $house->name }}</option>
                                         @endforeach
                                     @endif
                                 </select>
@@ -92,7 +92,7 @@
                     @foreach(session()->get('import_errors') as $failure)
                         <div class="card-header">
                             <div class="alert alert-danger">
-                                <p>Route name: <strong>{{ $failure->values()['name'] .'-'. $failure->values()['code'] }}</strong></p>
+                                <p>Route name: <strong>{{ $failure->values()['route_name'] .'-'. $failure->values()['route_code'] }}</strong></p>
                                 <p>Error type: <strong>{{ \Illuminate\Support\Str::title($failure->attribute()) }}</strong></p>
                                 <p>Error msg: {{ $failure->errors()[0] }} </p>
                                 <p>Row number : {{ $failure->row() }}</p>
