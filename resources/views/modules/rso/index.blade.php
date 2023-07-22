@@ -8,9 +8,9 @@
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h4 class="card-title">All Rso</h4>
                 <span>
-                    <a href="{{ route('rso.create') }}" class="btn btn-sm btn-primary">Add new</a>
+                    <a href="{{ route('rso.create') }}" class="btn btn-sm btn-primary">Add New</a>
                     @if(count($rsos) > 1)
-                        <a id="deleteAllRso" href="{{ route('rso.delete.all') }}" class="btn btn-sm btn-danger">Delete all</a>
+                        <a id="deleteAllRso" href="{{ route('rso.delete.all') }}" class="btn btn-sm btn-danger">Delete All</a>
                     @endif
                 </span>
             </div>

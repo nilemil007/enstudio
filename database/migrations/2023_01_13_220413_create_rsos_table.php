@@ -61,7 +61,7 @@ return new class extends Migration
             $table->string('document')->nullable();
             $table->enum('residential_rso', ['Yes','No']);
             $table->date('joining_date');
-            $table->date('resigning_date');
+            $table->date('resigning_date')->nullable();
             $table->timestamps();
         });
     }

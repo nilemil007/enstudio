@@ -67,17 +67,17 @@
 
                         <!-- Route -->
                         <div class="row mb-3">
-                            <label for="route" class="col-sm-3 col-form-label">Route</label>
+                            <label for="routes" class="col-sm-3 col-form-label">Route</label>
                             <div class="col-sm-9">
-                                <select name="route" class="form-select @error('route') is-invalid @enderror" id="route">
+                                <select name="routes[]" class="select-2 form-select @error('routes') is-invalid @enderror" id="routes" multiple>
                                     <option value="">-- Select Route --</option>
-                                    @if(count($users) > 0)
-                                        @foreach($users as $user)
-                                            <option value="{{ $user->id }}">{{ $user->phone .' - '. $user->name }}</option>
+                                    @if(count($routes) > 0)
+                                        @foreach($routes as $route)
+                                            <option value="{{ $route->code }}">{{ $route->code .' - '. $route->name }}</option>
                                         @endforeach
                                     @endif
                                 </select>
-                                @error('route') <span class="text-danger">{{ $message }}</span> @enderror
+                                @error('routes') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         </div>
 

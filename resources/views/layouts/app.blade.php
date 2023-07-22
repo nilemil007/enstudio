@@ -98,12 +98,17 @@
 <!-- Custom js for this page -->
 <script>
     $(document).ready(function (){
+        // Select 2
+        $('.select-2').select2();
+
+        // Date Pickr
         $(".flatpickr").flatpickr({
             altInput: true,
             altFormat: "F j, Y",
             dateFormat: "Y-m-d",
         });
 
+        // DataTable
         $('table').removeClass('dataTable');
     });
 </script>

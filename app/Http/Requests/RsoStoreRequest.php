@@ -122,10 +122,10 @@ class RsoStoreRequest extends FormRequest
      *
      * @return string[]
      */
-    public function messages(): array
-    {
-        return [
-            'user_id.required' => 'The rso field is required.',
-        ];
-    }
+    // public function messages(): array
+    // {
+    //     return [
+    //         'user_id.required' => 'The rso field is required.',
+    //     ];
+    // }
 }

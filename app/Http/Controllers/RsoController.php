@@ -2,15 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\RsoStoreRequest;
-use App\Models\DdHouse;
 use App\Models\Rso;
-use App\Models\Supervisor;
 use App\Models\User;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
-use Illuminate\Foundation\Application;
+use App\Models\Route;
+use App\Models\DdHouse;
+use App\Models\Supervisor;
 use Illuminate\Http\Request;
+use Illuminate\Contracts\View\View;
+use App\Http\Requests\RsoStoreRequest;
+use App\Http\Requests\RsoUpdateRequest;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Foundation\Application;
+use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Validation\ValidationException;
 
 class RsoController extends Controller
 {
@@ -31,8 +35,8 @@ class RsoController extends Controller
         $houses = DdHouse::all();
         $users = User::where('role','rso')->get();
         $supervisors = Supervisor::all();
-        $routes = Supervisor::all();
-        return view('modules.rso.create', compact('houses','users','supervisors'));
+        $routes = Route::all();
+        return view('modules.rso.create', compact('houses','users','supervisors','routes'));
     }
 
     /**
@@ -40,7 +44,15 @@ class RsoController extends Controller
      */
     public function store(RsoStoreRequest $request)
     {
-        dd($request->validated());
+        try {
+            Rso::create($request->validated());
+
+            Alert::success('Success', 'Rso created successfully.');
+
+            return to_route('rso.index');
+        }catch(ValidationException $exception) {
+            dd($exception);
+        }
     }
 
     /**
@@ -56,15 +68,27 @@ class RsoController extends Controller
      */
     public function edit(Rso $rso)
     {
-        //
+        $houses = DdHouse::all();
+        $users = User::where('role','rso')->orderBy('phone','asc')->get();
+        $supervisors = Supervisor::all();
+        $routes = Route::all();
+        return view('modules.rso.edit', compact('rso','houses','users','supervisors','routes'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Rso $rso)
+    public function update(RsoUpdateRequest $request, Rso $rso)
     {
-        //
+        try {
+            $rso->update($request->validated());
+
+            Alert::success('Success', 'Rso updated successfully.');
+
+            return to_route('rso.index');
+        }catch(ValidationException $exception) {
+            dd($exception);
+        }
     }
 
     /**
