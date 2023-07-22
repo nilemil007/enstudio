@@ -225,7 +225,7 @@
                             <input name="import_house" type="file" class="form-control" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" required>
                         </div>
                         <div class="col-12">
-                            <button type="submit" class="btn btn-sm btn-primary w-100 mt-2">Import house</button>
+                            <button type="submit" class="btn btn-sm btn-primary w-100 mt-2">Import House</button>
                         </div>
                     </form>
                 </div>
