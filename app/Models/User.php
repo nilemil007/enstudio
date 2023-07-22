@@ -3,12 +3,13 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
  * @method static where(string $string, mixed $login)
@@ -68,6 +69,18 @@ class User extends Authenticatable
     {
         return Attribute::make(
             get: fn ( $image ) => empty( $image ) ? asset('assets/images/avatar.png') : $this->uploads . $image,
+        );
+    }
+
+    /**
+     * Set username without any space.
+     *
+     * @return Attribute
+     */
+    protected function username(): Attribute
+    {
+        return Attribute::make(
+            set: fn ( $username ) => preg_replace('/[^a-zA-Z0-9_ -]/s','', str_replace(['\'', '"', ',', ';', '<', '>', '.', ' '], '', Str::lower($username))),
         );
     }
 
