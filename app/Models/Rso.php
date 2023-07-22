@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @method static latest()
+ * @method static create(mixed $validated)
  */
 class Rso extends Model
 {
@@ -16,6 +17,7 @@ class Rso extends Model
 
     protected $fillable = [
         'user_id',
+        'nominee_id',
         'supervisor',
         'dd_house',
         'routes',
@@ -85,11 +87,16 @@ class Rso extends Model
         return $this->belongsTo( User::class );
     }
 
+    /**
+     * Set/Get json data into route.
+     *
+     * @return Attribute
+     */
     protected function routes(): Attribute
     {
         return Attribute::make(
-            set: fn($value) => json_encode($value),
             get: fn($route) => json_decode($route),
+            set: fn($value) => json_encode($value),
         );
     }
 }

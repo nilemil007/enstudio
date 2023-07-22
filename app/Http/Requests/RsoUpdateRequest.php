@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Rules\Nid;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class RsoUpdateRequest extends FormRequest
@@ -18,7 +19,7 @@ class RsoUpdateRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
+     * @return array<string, ValidationRule|array|string>
      */
     public function rules(): array
     {
@@ -76,11 +77,11 @@ class RsoUpdateRequest extends FormRequest
             'blood_group' => ['required'],
             'sr_no' => [
                 'required',
+                'max:8',
                 'unique:rsos,sr_no,'.request()->segment(2)
             ],
             'account_number' => [
                 'required',
-                'numeric',
                 'unique:rsos,account_number,'.request()->segment(2)
             ],
             'bank_name' => ['required'],

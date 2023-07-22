@@ -78,11 +78,11 @@ class RsoStoreRequest extends FormRequest
             'blood_group' => ['required'],
             'sr_no' => [
                 'required',
+                'max:8',
                 'unique:rsos,sr_no'
             ],
             'account_number' => [
                 'required',
-                'numeric',
                 'unique:rsos,account_number'
             ],
             'bank_name' => ['required'],

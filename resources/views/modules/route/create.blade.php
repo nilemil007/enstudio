@@ -102,7 +102,7 @@
                 @endif
 
                 <div class="card-body">
-                    <h6 class="card-title">Import dd house</h6>
+                    <h6 class="card-title">Import route</h6>
                     <form class="row gy-2 gx-3 align-items-center" action="{{ route('route.import') }}" method="post" enctype="multipart/form-data">
                         @csrf
 

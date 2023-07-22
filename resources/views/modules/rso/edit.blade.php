@@ -3,12 +3,6 @@
     <!-- Title -->
     <x-slot:title>Update Rso</x-slot:title>
 
-    @if($errors->any())
-    @foreach($errors->all() as $error)
-        <li class="text-danger">{{ $error }}</li>
-    @endforeach
-@endif
-
     <div class="card">
         <div class="card-body">
             <h6 class="card-title">Update Rso</h6>
@@ -64,24 +58,24 @@
                     </div>
                 </div>
 
-                {{-- {{ dd($rso->routes) }} --}}
-
                 <!-- Route -->
                 <div class="row mb-3">
-                    <label for="route" class="col-sm-3 col-form-label">Route</label>
+                    <label for="routes" class="col-sm-3 col-form-label">Route</label>
                     <div class="col-sm-9">
-                        <select name="route[]" class="select-2 form-select @error('route') is-invalid @enderror" id="route" multiple>
+                        <select name="routes[]" class="select-2 form-select @error('routes') is-invalid @enderror" id="routes" multiple>
                             <option value="">-- Select Route --</option>
                             @if(count($routes) > 0)
                                 @foreach($routes as $route)
-                                    @foreach ($rso->routes as $rsoRoute)
-                                        <option {{ $rsoRoute == $route->code ? 'selected' : '' }} value="{{ $route->code }}">{{ $route->code .' - '. $route->name }}</option>
-                                    @endforeach
-
+                                    <option
+                                        @foreach ($rso->routes as $rsoRoute)
+                                            {{ $rsoRoute == $route->code ? 'selected' : '' }}
+                                        @endforeach
+                                        value="{{ $route->code }}">{{ $route->code .' - '. $route->name }}
+                                    </option>
                                 @endforeach
                             @endif
                         </select>
-                        @error('route') <span class="text-danger">{{ $message }}</span> @enderror
+                        @error('routes') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                 </div>
 

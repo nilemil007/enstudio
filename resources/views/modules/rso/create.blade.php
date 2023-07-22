@@ -3,12 +3,6 @@
     <!-- Title -->
     <x-slot:title>Create New Rso</x-slot:title>
 
-    @if($errors->any())
-        @foreach($errors->all() as $error)
-            <li class="text-danger">{{ $error }}</li>
-        @endforeach
-    @endif
-
     <div class="row">
         <div class="col-md-8">
             <div class="card">
@@ -383,7 +377,7 @@
                     @foreach(session()->get('import_errors') as $failure)
                         <div class="card-header">
                             <div class="alert alert-danger">
-                                <p>Rso name: <strong>{{ $failure->values()['itop_number'] .'-'. $failure->values()['rso_code'] }}</strong></p>
+                                <p>Rso: <strong>{{ $failure->values()['itop_number'] }}</strong></p>
                                 <p>Error type: <strong>{{ \Illuminate\Support\Str::title($failure->attribute()) }}</strong></p>
                                 <p>Error msg: {{ $failure->errors()[0] }} </p>
                                 <p>Row number : {{ $failure->row() }}</p>

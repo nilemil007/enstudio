@@ -17,8 +17,9 @@ return new class extends Migration
             function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->string('supervisor');
+            $table->foreignId('nominee_id')->nullable()->constrained()->cascadeOnDelete();
             $table->string('dd_house');
+            $table->string('supervisor');
             $table->json('routes')->nullable();
             $table->string('rso_code', 10)->unique();
             $table->string('itop_number', 11)->unique();

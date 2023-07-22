@@ -2,17 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\RsoImport;
 use App\Models\Rso;
 use App\Models\User;
 use App\Models\Route;
 use App\Models\DdHouse;
 use App\Models\Supervisor;
+use Exception;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\View\View;
 use App\Http\Requests\RsoStoreRequest;
 use App\Http\Requests\RsoUpdateRequest;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Application;
+use Maatwebsite\Excel\Facades\Excel;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Validation\ValidationException;
 
@@ -33,7 +38,7 @@ class RsoController extends Controller
     public function create(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
         $houses = DdHouse::all();
-        $users = User::where('role','rso')->get();
+        $users = User::where('role','rso')->orderBy('phone','asc')->get();
         $supervisors = Supervisor::all();
         $routes = Route::all();
         return view('modules.rso.create', compact('houses','users','supervisors','routes'));
@@ -66,7 +71,7 @@ class RsoController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Rso $rso)
+    public function edit(Rso $rso): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
         $houses = DdHouse::all();
         $users = User::where('role','rso')->orderBy('phone','asc')->get();
@@ -96,6 +101,41 @@ class RsoController extends Controller
      */
     public function destroy(Rso $rso)
     {
-        //
+        try {
+            $rso->delete();
+            return response()->json(['success' => 'The rso has been deleted successfully.']);
+        }catch (Exception $exception){
+            dd($exception);
+        }
+    }
+
+    /**
+     * Delete all rso.
+     */
+    public function deleteAll()
+    {
+        try {
+            Rso::query()->delete();
+            return response()->json(['success' => 'All rso has been deleted successfully.']);
+        }catch (Exception $exception){
+            dd($exception);
+        }
+    }
+
+    /**
+     * Import rso.
+     */
+    public function import(Request $request): RedirectResponse
+    {
+        try {
+            Excel::import(new RsoImport, $request->file('import_rso'));
+
+            Alert::success('Success', 'Rso imported successfully.');
+
+            return to_route('rso.index');
+
+        } catch (ValidationException $e) {
+            return to_route('rso.create')->with('import_errors', $e->failures());
+        }
     }
 }
