@@ -7,6 +7,7 @@ use App\Http\Controllers\RouteController;
 use App\Http\Controllers\RsoController;
 use App\Http\Controllers\SupervisorController;
 use App\Http\Controllers\UserController;
+use App\Models\Retailer;
 use Illuminate\Support\Facades\Route;
 
 
@@ -76,6 +77,16 @@ Route::middleware(['auth'])->group(function (){
         Route::get('/sample-file-download','sampleFileDownload')->name('sample.file.download');
     });
 
+    // Retailer Additional Routes
+    Route::prefix('/retailer')->controller( RsoController::class )->name('retailer.')->group(function (){
+        // Delete all
+        Route::post('/delete/all','deleteAll')->name('delete.all');
+        // Import
+        Route::post('/import','import')->name('import');
+        // Download sample file
+        Route::get('/sample-file-download','sampleFileDownload')->name('sample.file.download');
+    });
+
     // Resource Routes
     Route::resources([
         'itop-replace'  => ItopReplaceController::class,
@@ -84,6 +95,7 @@ Route::middleware(['auth'])->group(function (){
         'supervisor'    => SupervisorController::class,
         'rso'           => RsoController::class,
         'route'         => RouteController::class,
+        'retailer'      => Retailer::class
     ]);
 
 });

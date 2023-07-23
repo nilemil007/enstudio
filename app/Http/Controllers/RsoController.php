@@ -17,6 +17,7 @@ use App\Http\Requests\RsoStoreRequest;
 use App\Http\Requests\RsoUpdateRequest;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 use Maatwebsite\Excel\Facades\Excel;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -49,15 +50,15 @@ class RsoController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(RsoStoreRequest $request)
+    public function store(RsoStoreRequest $request): RedirectResponse
     {
         try {
+
             Rso::create($request->validated());
-
             Alert::success('Success', 'Rso created successfully.');
-
             return to_route('rso.index');
-        }catch(ValidationException $exception) {
+
+        }catch(\Exception $exception) {
             dd($exception);
         }
     }
@@ -88,12 +89,12 @@ class RsoController extends Controller
     public function update(RsoUpdateRequest $request, Rso $rso)
     {
         try {
+
             $rso->update($request->validated());
-
             Alert::success('Success', 'Rso updated successfully.');
-
             return to_route('rso.index');
-        }catch(ValidationException $exception) {
+
+        }catch(\Exception $exception) {
             dd($exception);
         }
     }
