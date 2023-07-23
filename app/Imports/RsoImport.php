@@ -26,7 +26,6 @@ class RsoImport implements ToModel, WithHeadingRow, WithValidation
     public function model(array $row): Model|Rso|null
     {
         return new Rso([
-            'user_id'           => User::where('username', $row['username'])->first()->id,
             'dd_house'          => $row['dd_code'],
             'supervisor'        => $row['supervisor'],
             'routes'            => $row['routes'],
@@ -64,8 +63,6 @@ class RsoImport implements ToModel, WithHeadingRow, WithValidation
     public function rules(): array
     {
         return [
-            'username'          => ['required'],
-            '*.username'        => ['required'],
             'dd_code'           => ['required'],
             '*.dd_code'         => ['required'],
             'supervisor'        => ['required'],

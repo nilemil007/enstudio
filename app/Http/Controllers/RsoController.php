@@ -17,9 +17,11 @@ use App\Http\Requests\RsoStoreRequest;
 use App\Http\Requests\RsoUpdateRequest;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Response;
 use Maatwebsite\Excel\Facades\Excel;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class RsoController extends Controller
 {
@@ -137,5 +139,13 @@ class RsoController extends Controller
         } catch (ValidationException $e) {
             return to_route('rso.create')->with('import_errors', $e->failures());
         }
+    }
+
+    /**
+     * Sample file download.
+     */
+    public function sampleFileDownload(): BinaryFileResponse
+    {
+        return Response::download(public_path('download/sample/Rso List.xlsx'));
     }
 }

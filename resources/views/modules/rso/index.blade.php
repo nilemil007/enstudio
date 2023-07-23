@@ -38,7 +38,7 @@
                             <td>{{ $rso->supervisor }}</td>
                             <td>{{ $rso->rso_code }}</td>
                             <td>{{ $rso->itop_number }}</td>
-                            <td>{{ $rso->user->name }}</td>
+                            <td>{{ optional($rso->user)->name }}</td>
                             <td>{{ $rso->pool_number }}</td>
                             <td>{{ $rso->joining_date->toFormattedDateString() }}</td>
                             <td>

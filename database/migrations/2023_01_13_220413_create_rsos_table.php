@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('rsos',
             function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')->nullable()->constrained()->cascadeOnDelete();
             $table->foreignId('nominee_id')->nullable()->constrained()->cascadeOnDelete();
             $table->string('dd_house');
             $table->string('supervisor');

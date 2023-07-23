@@ -87,16 +87,8 @@ class Rso extends Model
         return $this->belongsTo( User::class );
     }
 
-    /**
-     * Set/Get json data into route.
-     *
-     * @return Attribute
-     */
-    protected function routes(): Attribute
+    public function route(): BelongsTo
     {
-        return Attribute::make(
-            get: fn($route) => json_decode($route),
-            set: fn($value) => json_encode($value),
-        );
+        return $this->belongsTo( Route::class );
     }
 }
