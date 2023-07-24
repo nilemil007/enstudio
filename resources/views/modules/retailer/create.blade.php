@@ -290,21 +290,21 @@
                                 <div class="row">
                                     <div class="col">
                                         <label class="form-check form-switch">
-                                            <input name="others_operator[]" class="form-check-input" type="checkbox" value="Gp" {{ in_array('Gp', $retailer->others_operator ?? []) ? 'checked' : '' }}>
+                                            <input name="others_operator[]" class="form-check-input" type="checkbox" value="Gp">
                                             <span class="form-check-label">Gp</span>
                                         </label>
                                     </div>
 
                                     <div class="col">
                                         <label class="form-check form-switch">
-                                            <input name="others_operator[]" value="Robi" class="form-check-input" type="checkbox" {{ in_array('Robi', $retailer->others_operator ?? []) ? 'checked' : '' }}>
+                                            <input name="others_operator[]" value="Robi" class="form-check-input" type="checkbox">
                                             <span class="form-check-label">Robi</span>
                                         </label>
                                     </div>
 
                                     <div class="col">
                                         <label class="form-check form-switch">
-                                            <input name="others_operator[]" value="Aritel" class="form-check-input" type="checkbox" {{ in_array('Aritel', $retailer->others_operator ?? []) ? 'checked' : '' }}>
+                                            <input name="others_operator[]" value="Aritel" class="form-check-input" type="checkbox">
                                             <span class="form-check-label">Aritel</span>
                                         </label>
                                     </div>
@@ -386,7 +386,7 @@
                                     <option value="">-- Trade Camping Code --</option>
                                     <option value="rso">RS0</option>
                                     <option value="bp">BP</option>
-                                    <option value="tmo">BP</option>
+                                    <option value="tmo">TMO</option>
                                 </select>
                             </div>
                         </div>

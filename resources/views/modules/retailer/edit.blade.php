@@ -1,56 +1,24 @@
 <x-app-layout>
 
     <!-- Title -->
-    <x-slot:title>Update Rso</x-slot:title>
+    <x-slot:title>Update Retailer</x-slot:title>
 
     <div class="card">
         <div class="card-body">
-            <h6 class="card-title">Update Rso</h6>
-            <form id="rsoUpdateForm" action="{{ route('rso.update', $rso->id) }}" method="POST">
+            <h6 class="card-title">Update Retailer</h6>
+            <form id="retailerUpdateForm" action="{{ route('retailer.update', $retailer->id) }}" method="POST">
                 @csrf
                 @method('PATCH')
 
-                <!-- Distribution House -->
+                <!-- User -->
                 <div class="row mb-3">
-                    <label for="dd_house" class="col-sm-3 col-form-label">Distribution House</label>
-                    <div class="col-sm-9">
-                        <select name="dd_house" class="form-select @error('dd_house') is-invalid @enderror" id="dd_house">
-                            <option value="">-- Select Distribution House --</option>
-                            @if(count($houses) > 0)
-                                @foreach($houses as $house)
-                                    <option {{ $rso->dd_house == $house->code ? 'selected' : '' }} value="{{ $house->code }}">{{ $house->code .' - '. $house->name }}</option>
-                                @endforeach
-                            @endif
-                        </select>
-                        @error('dd_house') <span class="text-danger">{{ $message }}</span> @enderror
-                    </div>
-                </div>
-
-                <!-- Supervisor -->
-                <div class="row mb-3">
-                    <label for="supervisor" class="col-sm-3 col-form-label">Supervisor</label>
-                    <div class="col-sm-9">
-                        <select name="supervisor" class="form-select @error('supervisor') is-invalid @enderror" id="supervisor">
-                            <option value="">-- Select Supervisor --</option>
-                            @if(count($supervisors) > 0)
-                                @foreach($supervisors as $supervisor)
-                                    <option {{ $rso->supervisor == $supervisor->pool_number ? 'selected' : '' }} value="{{ $supervisor->pool_number }}">{{ $supervisor->pool_number .' - '. \App\Models\User::firstWhere('id', $supervisor->user_id)->name }}</option>
-                                @endforeach
-                            @endif
-                        </select>
-                        @error('supervisor') <span class="text-danger">{{ $message }}</span> @enderror
-                    </div>
-                </div>
-
-                <!-- Rso -->
-                <div class="row mb-3">
-                    <label for="user_id" class="col-sm-3 col-form-label">Rso</label>
+                    <label for="user_id" class="col-sm-3 col-form-label">User</label>
                     <div class="col-sm-9">
                         <select name="user_id" class="form-select @error('user_id') is-invalid @enderror" id="user_id">
-                            <option value="">-- Select Rso --</option>
+                            <option value="">-- Select User --</option>
                             @if(count($users) > 0)
                                 @foreach($users as $user)
-                                    <option {{ $rso->user_id == $user->id ? 'selected' : '' }} value="{{ $user->id }}">{{ $user->phone .' - '. $user->name }}</option>
+                                    <option value="{{ $user->id }}">{{ $user->name .' - '. $user->phone }}</option>
                                 @endforeach
                             @endif
                         </select>
@@ -58,315 +26,396 @@
                     </div>
                 </div>
 
-                <!-- Route -->
+                <!-- Distribution House -->
                 <div class="row mb-3">
-                    <label for="routes" class="col-sm-3 col-form-label">Route</label>
+                    <label for="dd_house" class="col-sm-3 col-form-label">Distribution House <span class="text-danger">*</span></label>
                     <div class="col-sm-9">
-                        <select name="routes[]" class="select-2 form-select @error('routes') is-invalid @enderror" id="routes" multiple>
-                            <option value="">-- Select Route --</option>
-                            @if(count($routes) > 0)
-                                @foreach($routes as $route)
-                                    <option
-                                        @if(!empty($rso->routes))
-                                            @foreach ($rso->routes as $rsoRoute)
-                                                @selected(old('routes',$rsoRoute) == $route->id)
-                                            @endforeach
-                                        @endif
-                                        value="{{ $route->id }}">{{ $route->code .' - '. $route->name }}
-                                    </option>
+                        <select name="dd_house" class="form-select @error('dd_house') is-invalid @enderror" id="dd_house">
+                            <option value="">-- Select Distribution House --</option>
+                            @if(count($houses) > 0)
+                                @foreach($houses as $house)
+                                    <option @selected($retailer->dd_house == $house->code) value="{{ $house->code }}">{{ $house->code .' - '. $house->name }}</option>
                                 @endforeach
                             @endif
                         </select>
-                        @error('routes') <span class="text-danger">{{ $message }}</span> @enderror
+                        @error('dd_house') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                 </div>
 
-                <!-- Rso Code -->
+                <!-- Rso -->
                 <div class="row mb-3">
-                    <label for="rso_code" class="col-sm-3 col-form-label">Rso Code</label>
+                    <label for="rso_id" class="col-sm-3 col-form-label">Rso <span class="text-danger">*</span></label>
                     <div class="col-sm-9">
-                        <input name="rso_code" id="rso_code" type="text"
-                               class="form-control @error('rso_code') is-invalid @enderror" value="{{ old('rso_code', $rso->rso_code) }}"
-                               placeholder="Enter Rso Code">
-                        @error('rso_code') <span class="text-danger">{{ $message }}</span> @enderror
+                        <select name="rso_id" class="form-select @error('rso_id') is-invalid @enderror" id="rso_id">
+                            <option value="">-- Select Rso --</option>
+                            @if(count($rsos) > 0)
+                                @foreach($rsos as $rso)
+                                    <option @selected($retailer->rso_id == $rso->id) value="{{ $rso->id }}">{{ $rso->rso_code .' - '. $rso->itop_number }}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                        @error('rso_id') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                </div>
+
+                <!-- Supervisor -->
+                <div class="row mb-3">
+                    <label for="supervisor" class="col-sm-3 col-form-label">Supervisor <span class="text-danger">*</span></label>
+                    <div class="col-sm-9">
+                        <select name="supervisor" class="form-select @error('supervisor') is-invalid @enderror" id="supervisor">
+                            <option value="">-- Select Supervisor --</option>
+                            @if(count($supervisors) > 0)
+                                @foreach($supervisors as $supervisor)
+                                    <option @selected($retailer->supervisor == $supervisor->pool_number) value="{{ $supervisor->pool_number }}">{{ $supervisor->pool_number .' - '. \App\Models\User::firstWhere('id', $supervisor->user_id)->name }}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                        @error('supervisor') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                </div>
+
+                <!-- BTS Code -->
+                <div class="row mb-3">
+                    <label for="bts_code" class="col-sm-3 col-form-label">BTS Code</label>
+                    <div class="col-sm-9">
+                        <select name="bts_code" class="form-select @error('bts_code') is-invalid @enderror" id="bts_code">
+                            <option value="">-- Select BTS Code --</option>
+{{--                                    @if(count($btsCode) > 0)--}}
+{{--                                        @foreach($btsCode as $bts)--}}
+{{--                                            <option value="{{ $bts->code }}">{{ $bts->code .' - '. $bts->name }}</option>--}}
+{{--                                        @endforeach--}}
+{{--                                    @endif--}}
+                        </select>
+                        @error('bts_code') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                </div>
+
+                <!-- Route -->
+                <div class="row mb-3">
+                    <label for="route" class="col-sm-3 col-form-label">Route <span class="text-danger">*</span></label>
+                    <div class="col-sm-9">
+                        <select name="route" class="select-2 form-select @error('route') is-invalid @enderror" id="route" multiple>
+                            <option value="">-- Select Route --</option>
+                            @if(count($routes) > 0)
+                                @foreach($routes as $route)
+                                    <option @selected($retailer->route == $route->code) value="{{ $route->code }}">{{ $route->code .' - '. $route->name }}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                        @error('route') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                </div>
+
+                <!-- Retailer Code -->
+                <div class="row mb-3">
+                    <label for="code" class="col-sm-3 col-form-label">Retailer Code <span class="text-danger">*</span></label>
+                    <div class="col-sm-9">
+                        <input name="code" id="code" type="text"
+                               class="form-control @error('code') is-invalid @enderror" value="{{ old('code', $retailer->code) }}"
+                               placeholder="Enter Retailer Code">
+                        @error('code') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                </div>
+
+                <!-- Retailer Name -->
+                <div class="row mb-3">
+                    <label for="name" class="col-sm-3 col-form-label">Retailer Name <span class="text-danger">*</span></label>
+                    <div class="col-sm-9">
+                        <input name="name" id="name" type="text"
+                               class="form-control @error('name') is-invalid @enderror" value="{{ old('name', $retailer->name) }}"
+                               placeholder="Enter Retailer Name">
+                        @error('name') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                </div>
+
+                <!-- Retailer Type -->
+                <div class="row mb-3">
+                    <label for="type" class="col-sm-3 col-form-label">Retailer Type <span class="text-danger">*</span></label>
+                    <div class="col-sm-9">
+                        <input name="type" id="type" type="text"
+                               class="form-control @error('type') is-invalid @enderror" value="{{ old('type', $retailer->type) }}"
+                               placeholder="Enter Retailer Type">
+                        @error('type') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                </div>
+
+                <!-- Enabled -->
+                <div class="row mb-3">
+                    <label for="enabled" class="col-sm-3 col-form-label">Enabled <span class="text-danger">*</span></label>
+                    <div class="col-sm-9">
+                        <select name="enabled" class="form-select @error('enabled') is-invalid @enderror" id="enabled">
+                            <option value="">-- Select Enabled --</option>
+                            <option @selected($retailer->enabled == 'Y') value="Y">Yes</option>
+                            <option @selected($retailer->enabled == 'N') value="N">No</option>
+                        </select>
+                        @error('enabled') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                </div>
+
+                <!-- Sim Seller -->
+                <div class="row mb-3">
+                    <label for="sim_seller" class="col-sm-3 col-form-label">Sim Seller <span class="text-danger">*</span></label>
+                    <div class="col-sm-9">
+                        <select name="sim_seller" class="form-select @error('sim_seller') is-invalid @enderror" id="sim_seller">
+                            <option value="">-- Select Sim Seller --</option>
+                            <option @selected($retailer->sim_seller == 'Y') value="Y">Yes</option>
+                            <option @selected($retailer->sim_seller == 'N') value="N">No</option>
+                        </select>
+                        @error('sim_seller') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                 </div>
 
                 <!-- Itop Number -->
                 <div class="row mb-3">
-                    <label for="itop_number" class="col-sm-3 col-form-label">Itop Number</label>
+                    <label for="itop_number" class="col-sm-3 col-form-label">Itop Number <span class="text-danger">*</span></label>
                     <div class="col-sm-9">
                         <input name="itop_number" id="itop_number" type="number"
-                               class="form-control @error('itop_number') is-invalid @enderror" value="{{ old('itop_number', $rso->itop_number) }}"
+                               class="form-control @error('itop_number') is-invalid @enderror" value="{{ old('itop_number', $retailer->itop_number) }}"
                                placeholder="Enter Itop Number">
                         @error('itop_number') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                 </div>
 
-                <!-- Pool Number -->
+                <!-- Service Point -->
                 <div class="row mb-3">
-                    <label for="pool_number" class="col-sm-3 col-form-label">Pool Number</label>
+                    <label for="service_point" class="col-sm-3 col-form-label">Service Point <span class="text-danger">*</span></label>
                     <div class="col-sm-9">
-                        <input name="pool_number" id="pool_number" type="number"
-                               class="form-control @error('pool_number') is-invalid @enderror" value="{{ old('pool_number', $rso->pool_number) }}"
-                               placeholder="Enter Pool Number">
-                        @error('pool_number') <span class="text-danger">{{ $message }}</span> @enderror
+                        <input name="service_point" id="service_point" type="text"
+                               class="form-control @error('service_point') is-invalid @enderror" value="{{ old('service_point', $retailer->service_point) }}"
+                               placeholder="Enter Service Point">
+                        @error('service_point') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                 </div>
 
-                <!-- Personal Number -->
+                <!-- Owner Name -->
                 <div class="row mb-3">
-                    <label for="personal_number" class="col-sm-3 col-form-label">Personal Number</label>
+                    <label for="owner_name" class="col-sm-3 col-form-label">Owner Name <span class="text-danger">*</span></label>
                     <div class="col-sm-9">
-                        <input name="personal_number" id="personal_number" type="number"
-                               class="form-control @error('personal_number') is-invalid @enderror" value="{{ old('personal_number', $rso->personal_number) }}"
-                               placeholder="Enter Personal Number">
-                        @error('personal_number') <span class="text-danger">{{ $message }}</span> @enderror
+                        <input name="owner_name" id="owner_name" type="text"
+                               class="form-control @error('owner_name') is-invalid @enderror" value="{{ old('owner_name', $retailer->owner_name) }}"
+                               placeholder="Enter Owner Name">
+                        @error('owner_name') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                 </div>
 
-                <!-- RID -->
+                <!-- Contact Number -->
                 <div class="row mb-3">
-                    <label for="rid" class="col-sm-3 col-form-label">RID</label>
+                    <label for="contact_no" class="col-sm-3 col-form-label">Contact Number <span class="text-danger">*</span></label>
                     <div class="col-sm-9">
-                        <input name="rid" id="rid" type="text" class="form-control @error('rid') is-invalid @enderror"
-                               value="{{ old('rid', $rso->rid) }}" placeholder="Enter RID">
-                        @error('rid') <span class="text-danger">{{ $message }}</span> @enderror
+                        <input name="contact_no" id="contact_no" type="number"
+                               class="form-control @error('contact_no') is-invalid @enderror" value="{{ old('contact_no', $retailer->contact_no) }}"
+                               placeholder="Enter Contact Number">
+                        @error('contact_no') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                 </div>
 
-                <!-- Father Name -->
+                <!-- Own Shop -->
                 <div class="row mb-3">
-                    <label for="father_name" class="col-sm-3 col-form-label">Father Name</label>
+                    <label for="own_shop" class="col-sm-3 col-form-label">Own Shop <span class="text-danger">*</span></label>
                     <div class="col-sm-9">
-                        <input name="father_name" id="father_name" type="text" class="form-control @error('father_name') is-invalid @enderror"
-                               value="{{ old('father_name', $rso->father_name) }}" placeholder="Enter Father Name">
-                        @error('father_name') <span class="text-danger">{{ $message }}</span> @enderror
-                    </div>
-                </div>
-
-                <!-- Mother Name -->
-                <div class="row mb-3">
-                    <label for="mother_name" class="col-sm-3 col-form-label">Mother Name</label>
-                    <div class="col-sm-9">
-                        <input name="mother_name" id="mother_name" type="text" class="form-control @error('mother_name') is-invalid @enderror"
-                               value="{{ old('mother_name', $rso->mother_name) }}" placeholder="Enter Mother Name">
-                        @error('mother_name') <span class="text-danger">{{ $message }}</span> @enderror
-                    </div>
-                </div>
-
-                <!-- Division -->
-                <div class="row mb-3">
-                    <label for="division" class="col-sm-3 col-form-label">Division</label>
-                    <div class="col-sm-9">
-                        <input name="division" id="division" type="text" class="form-control @error('division') is-invalid @enderror"
-                               value="{{ old('division', $rso->division) }}" placeholder="Enter Division">
-                        @error('division') <span class="text-danger">{{ $message }}</span> @enderror
+                        <select name="own_shop" class="form-select @error('own_shop') is-invalid @enderror" id="own_shop">
+                            <option value="">-- Select Own Shop --</option>
+                            <option @selected($retailer->own_shop == 'Y') value="Y">Yes</option>
+                            <option @selected($retailer->own_shop == 'N') value="N">No</option>
+                        </select>
+                        @error('own_shop') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                 </div>
 
                 <!-- District -->
                 <div class="row mb-3">
-                    <label for="district" class="col-sm-3 col-form-label">District</label>
+                    <label for="district" class="col-sm-3 col-form-label">District <span class="text-danger">*</span></label>
                     <div class="col-sm-9">
                         <input name="district" id="district" type="text" class="form-control @error('district') is-invalid @enderror"
-                               value="{{ old('district', $rso->district) }}" placeholder="Enter District">
+                               value="{{ old('district', $retailer->district) }}" placeholder="Enter District">
                         @error('district') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                 </div>
 
                 <!-- Thana -->
                 <div class="row mb-3">
-                    <label for="thana" class="col-sm-3 col-form-label">Thana</label>
+                    <label for="thana" class="col-sm-3 col-form-label">Thana <span class="text-danger">*</span></label>
                     <div class="col-sm-9">
                         <input name="thana" id="thana" type="text" class="form-control @error('thana') is-invalid @enderror"
-                               value="{{ old('thana', $rso->thana) }}" placeholder="Enter Thana">
+                               value="{{ old('thana', $retailer->thana) }}" placeholder="Enter Thana">
                         @error('thana') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                 </div>
 
                 <!-- Address -->
                 <div class="row mb-3">
-                    <label for="address" class="col-sm-3 col-form-label">Address</label>
+                    <label for="address" class="col-sm-3 col-form-label">Address <span class="text-danger">*</span></label>
                     <div class="col-sm-9">
                         <input name="address" id="address" type="text" class="form-control @error('address') is-invalid @enderror"
-                               value="{{ old('address', $rso->address) }}" placeholder="Enter Address">
+                               value="{{ old('address', $retailer->address) }}" placeholder="Enter Address">
                         @error('address') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                 </div>
 
                 <!-- Blood Group -->
                 <div class="row mb-3">
-                    <label for="blood_group" class="col-sm-3 col-form-label">Blood Group</label>
+                    <label for="blood_group" class="col-sm-3 col-form-label">Blood Group <span class="text-danger">*</span></label>
                     <div class="col-sm-9">
                         <select name="blood_group" class="form-select @error('blood_group') is-invalid @enderror" id="blood_group">
                             <option value="">-- Select Blood Group --</option>
-                            <option {{ $rso->blood_group == 'a+' ? 'selected' : '' }} value="a+">A+</option>
-                            <option {{ $rso->blood_group == 'a-' ? 'selected' : '' }} value="a-">A-</option>
-                            <option {{ $rso->blood_group == 'b+' ? 'selected' : '' }} value="b+">B+</option>
-                            <option {{ $rso->blood_group == 'b-' ? 'selected' : '' }} value="b-">B-</option>
-                            <option {{ $rso->blood_group == 'ab+' ? 'selected' : '' }} value="ab+">AB+</option>
-                            <option {{ $rso->blood_group == 'ab-' ? 'selected' : '' }} value="ab-">AB-</option>
-                            <option {{ $rso->blood_group == 'o+' ? 'selected' : '' }} value="o+">O+</option>
-                            <option {{ $rso->blood_group == 'o-' ? 'selected' : '' }} value="o-">O-</option>
+                            <option @selected($retailer->blood_group == 'a+') value="a+">A+</option>
+                            <option @selected($retailer->blood_group == 'a-') value="a-">A-</option>
+                            <option @selected($retailer->blood_group == 'b+') value="b+">B+</option>
+                            <option @selected($retailer->blood_group == 'b-') value="b-">B-</option>
+                            <option @selected($retailer->blood_group == 'ab+') value="ab+">AB+</option>
+                            <option @selected($retailer->blood_group == 'ab-') value="ab-">AB-</option>
+                            <option @selected($retailer->blood_group == 'o+') value="o+">O+</option>
+                            <option @selected($retailer->blood_group == 'o-') value="o-">O-</option>
                         </select>
                         @error('blood_group') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                 </div>
 
-                <!-- SR-No -->
+                <!-- Trade License No -->
                 <div class="row mb-3">
-                    <label for="sr_no" class="col-sm-3 col-form-label">SR-No</label>
+                    <label for="trade_license_no" class="col-sm-3 col-form-label">Trade License No</label>
                     <div class="col-sm-9">
-                        <input name="sr_no" id="sr_no" type="text"
-                               class="form-control @error('sr_no', $rso->sr_no) is-invalid @enderror" value="{{ old('sr_no', $rso->sr_no) }}"
-                               placeholder="Enter SR-No">
-                        @error('sr_no') <span class="text-danger">{{ $message }}</span> @enderror
+                        <input name="trade_license_no" id="trade_license_no" type="text"
+                               class="form-control @error('trade_license_no') is-invalid @enderror" value="{{ old('trade_license_no', $retailer->trade_license_no) }}"
+                               placeholder="Enter Trade License No">
+                        @error('trade_license_no') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                 </div>
 
-                <!-- Account Number -->
+                <!-- Others Operator -->
                 <div class="row mb-3">
-                    <label for="account_number" class="col-sm-3 col-form-label">Account Number</label>
+                    <label for="" class="col-sm-3 col-form-label">Others Operator</label>
                     <div class="col-sm-9">
-                        <input name="account_number" id="account_number" type="number"
-                               class="form-control @error('account_number') is-invalid @enderror" value="{{ old('account_number', $rso->account_number) }}"
-                               placeholder="Enter Account Number">
-                        @error('account_number') <span class="text-danger">{{ $message }}</span> @enderror
-                    </div>
-                </div>
+                        <div class="row">
+                            <div class="col">
+                                <label class="form-check form-switch">
+                                    <input name="others_operator[]" class="form-check-input" type="checkbox" value="Gp" @checked(in_array('Gp', $retailer->others_operator ?? []))>
+                                    <span class="form-check-label">Gp</span>
+                                </label>
+                            </div>
 
-                <!-- Bank Name -->
-                <div class="row mb-3">
-                    <label for="bank_name" class="col-sm-3 col-form-label">Bank Name</label>
-                    <div class="col-sm-9">
-                        <input name="bank_name" id="bank_name" type="text"
-                               class="form-control @error('bank_name') is-invalid @enderror" value="{{ old('bank_name', $rso->bank_name) }}"
-                               placeholder="Enter Bank Name">
-                        @error('bank_name') <span class="text-danger">{{ $message }}</span> @enderror
-                    </div>
-                </div>
+                            <div class="col">
+                                <label class="form-check form-switch">
+                                    <input name="others_operator[]" value="Robi" class="form-check-input" type="checkbox" @checked(in_array('Robi', $retailer->others_operator ?? []))>
+                                    <span class="form-check-label">Robi</span>
+                                </label>
+                            </div>
 
-                <!-- Brunch Name -->
-                <div class="row mb-3">
-                    <label for="brunch_name" class="col-sm-3 col-form-label">Brunch Name</label>
-                    <div class="col-sm-9">
-                        <input name="brunch_name" id="brunch_name" type="text"
-                               class="form-control @error('brunch_name') is-invalid @enderror" value="{{ old('brunch_name', $rso->brunch_name) }}"
-                               placeholder="Enter Brunch Name">
-                        @error('brunch_name') <span class="text-danger">{{ $message }}</span> @enderror
-                    </div>
-                </div>
-
-                <!-- Routing Number -->
-                <div class="row mb-3">
-                    <label for="routing_number" class="col-sm-3 col-form-label">Routing Number</label>
-                    <div class="col-sm-9">
-                        <input name="routing_number" id="routing_number" type="number"
-                               class="form-control @error('routing_number') is-invalid @enderror" value="{{ old('routing_number', $rso->routing_number) }}"
-                               placeholder="Enter Routing Number">
-                        @error('routing_number') <span class="text-danger">{{ $message }}</span> @enderror
-                    </div>
-                </div>
-
-                <!-- Salary -->
-                <div class="row mb-3">
-                    <label for="salary" class="col-sm-3 col-form-label">Salary</label>
-                    <div class="col-sm-9">
-                        <input name="salary" id="salary" type="number"
-                               class="form-control @error('salary') is-invalid @enderror" value="{{ old('salary', $rso->salary) }}"
-                               placeholder="Enter Salary">
-                        @error('salary') <span class="text-danger">{{ $message }}</span> @enderror
-                    </div>
-                </div>
-
-                <!-- Education -->
-                <div class="row mb-3">
-                    <label for="education" class="col-sm-3 col-form-label">Education</label>
-                    <div class="col-sm-9">
-                        <input name="education" id="education" type="text"
-                               class="form-control @error('education') is-invalid @enderror" value="{{ old('education', $rso->education) }}"
-                               placeholder="e.g SSC/HSC/Dakhil">
-                        @error('education') <span class="text-danger">{{ $message }}</span> @enderror
-                    </div>
-                </div>
-
-                <!-- Marital Status -->
-                <div class="row mb-3">
-                    <label for="marital_status" class="col-sm-3 col-form-label">Marital Status</label>
-                    <div class="col-sm-9">
-                        <select name="marital_status" class="form-select @error('marital_status') is-invalid @enderror" id="marital_status">
-                            <option value="">-- Select Marital Status --</option>
-                            <option {{ $rso->marital_status == 'married' ? 'selected' : '' }} value="married">Married</option>
-                            <option {{ $rso->marital_status == 'unmarried' ? 'selected' : '' }} value="unmarried">Unmarried</option>
-                        </select>
-                        @error('marital_status') <span class="text-danger">{{ $message }}</span> @enderror
-                    </div>
-                </div>
-
-                <!-- Gender -->
-                <div class="row mb-3">
-                    <label for="gender" class="col-sm-3 col-form-label">Gender</label>
-                    <div class="col-sm-9">
-                        <select name="gender" class="form-select @error('gender') is-invalid @enderror" id="gender">
-                            <option value="">-- Select Gender --</option>
-                            <option {{ $rso->gender == 'male' ? 'selected' : '' }} value="male">Male</option>
-                            <option {{ $rso->gender == 'female' ? 'selected' : '' }} value="female">Female</option>
-                            <option {{ $rso->gender == 'others' ? 'selected' : '' }} value="others">Others</option>
-                        </select>
-                        @error('gender') <span class="text-danger">{{ $message }}</span> @enderror
-                    </div>
-                </div>
-
-                <!-- D.O.B -->
-                <div class="row mb-3">
-                    <label for="dob" class="col-sm-3 col-form-label">D.O.B</label>
-                    <div class="col-sm-9">
-                        <div class="input-group">
-                            <input name="dob" id="dob" type="text" class="flatpickr form-control @error('dob') is-invalid @enderror" value="{{ $rso->dob }}" placeholder="Select date">
-                            <span class="input-group-text input-group-addon" data-toggle>
-                                <i data-feather="calendar"></i>
-                            </span>
+                            <div class="col">
+                                <label class="form-check form-switch">
+                                    <input name="others_operator[]" value="Aritel" class="form-check-input" type="checkbox" @checked(in_array('Aritel', $retailer->others_operator ?? []))>
+                                    <span class="form-check-label">Aritel</span>
+                                </label>
+                            </div>
                         </div>
-                        @error('dob') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                </div>
+
+                <!-- Longitude -->
+                <div class="row mb-3">
+                    <label for="longitude" class="col-sm-3 col-form-label">Longitude</label>
+                    <div class="col-sm-9">
+                        <input name="longitude" id="longitude" type="text"
+                               class="form-control @error('longitude') is-invalid @enderror" value="{{ old('longitude', $retailer->longitude) }}"
+                               placeholder="Enter Longitude">
+                        @error('longitude') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                </div>
+
+                <!-- Latitude -->
+                <div class="row mb-3">
+                    <label for="latitude" class="col-sm-3 col-form-label">Latitude</label>
+                    <div class="col-sm-9">
+                        <input name="latitude" id="latitude" type="text"
+                               class="form-control @error('latitude') is-invalid @enderror" value="{{ old('latitude', $retailer->latitude) }}"
+                               placeholder="Enter Latitude">
+                        @error('latitude') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                </div>
+
+                <!-- Device Name -->
+                <div class="row mb-3">
+                    <label for="device_name" class="col-sm-3 col-form-label">Device Name</label>
+                    <div class="col-sm-9">
+                        <input name="device_name" id="device_name" type="text"
+                               class="form-control @error('device_name') is-invalid @enderror" value="{{ old('device_name', $retailer->device_name) }}"
+                               placeholder="Enter Device Name">
+                        @error('device_name') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                </div>
+
+                <!-- Device Serial No -->
+                <div class="row mb-3">
+                    <label for="device_sn" class="col-sm-3 col-form-label">Device Serial No</label>
+                    <div class="col-sm-9">
+                        <input name="device_sn" id="device_sn" type="text"
+                               class="form-control @error('device_sn') is-invalid @enderror" value="{{ old('device_sn', $retailer->device_sn) }}"
+                               placeholder="Enter Device Serial No">
+                        @error('device_sn') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                </div>
+
+                <!-- Scanner Serial No -->
+                <div class="row mb-3">
+                    <label for="scanner_sn" class="col-sm-3 col-form-label">Scanner Serial No</label>
+                    <div class="col-sm-9">
+                        <input name="scanner_sn" id="scanner_sn" type="text"
+                               class="form-control @error('scanner_sn') is-invalid @enderror" value="{{ old('scanner_sn', $retailer->scanner_sn) }}"
+                               placeholder="Enter Scanner Serial No">
+                        @error('scanner_sn') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                </div>
+
+                <!-- Device Password -->
+                <div class="row mb-3">
+                    <label for="password" class="col-sm-3 col-form-label">Device Password</label>
+                    <div class="col-sm-9">
+                        <input name="password" id="password" type="number"
+                               class="form-control @error('password') is-invalid @enderror" value="{{ old('password', $retailer->password) }}"
+                               placeholder="Enter Device Password">
+                        @error('password') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                </div>
+
+                <!-- Trade Camping Code -->
+                <div class="row mb-3">
+                    <label for="house_code" class="col-sm-3 col-form-label">Trade Camping Code</label>
+                    <div class="col-sm-9">
+                        <select name="house_code" class="form-select @error('house_code') is-invalid @enderror" id="house_code">
+                            <option value="">-- Trade Camping Code --</option>
+                            <option @selected($retailer->house_code == 'rso') value="rso">RS0</option>
+                            <option @selected($retailer->house_code == 'bp') value="bp">BP</option>
+                            <option @selected($retailer->house_code == 'tmo') value="tmo">TMO</option>
+                        </select>
                     </div>
                 </div>
 
                 <!-- NID -->
                 <div class="row mb-3">
-                    <label for="nid" class="col-sm-3 col-form-label">NID</label>
+                    <label for="nid" class="col-sm-3 col-form-label">NID <span class="text-danger">*</span></label>
                     <div class="col-sm-9">
                         <input name="nid" id="nid" type="number"
-                               class="form-control @error('nid') is-invalid @enderror" value="{{ old('nid', $rso->nid) }}"
+                               class="form-control @error('nid') is-invalid @enderror" value="{{ old('nid', $retailer->nid) }}"
                                placeholder="Enter NID Number">
                         @error('nid') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                 </div>
 
-                <!-- Residential Rso -->
+                <!-- Image -->
                 <div class="row mb-3">
-                    <label for="residential_rso" class="col-sm-3 col-form-label">Residential Rso</label>
+                    <label for="image" class="col-sm-3 col-form-label">Retailer Image</label>
                     <div class="col-sm-9">
-                        <select name="residential_rso" class="form-select @error('residential_rso') is-invalid @enderror" id="residential_rso">
-                            <option value="">-- Select Residential Rso --</option>
-                            <option {{ $rso->residential_rso == 'Yes' ? 'selected' : '' }} value="Yes">Yes</option>
-                            <option {{ $rso->residential_rso == 'No' ? 'selected' : '' }} value="No">No</option>
-                        </select>
-                        @error('residential_rso') <span class="text-danger">{{ $message }}</span> @enderror
+                        <input name="image" id="image" type="file" class="form-control @error('image') is-invalid @enderror" accept="image/*">
+                        @error('image') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                 </div>
 
-                <!-- Joining Date -->
+                <!-- NID Upload -->
                 <div class="row mb-3">
-                    <label for="joining_date" class="col-sm-3 col-form-label">Joining Date</label>
+                    <label for="nid_upload" class="col-sm-3 col-form-label">NID Upload</label>
                     <div class="col-sm-9">
-                        <div class="input-group">
-                            <input name="joining_date" id="joining_date" type="text" value="{{ $rso->joining_date }}" class="flatpickr form-control @error('joining_date') is-invalid @enderror" placeholder="Select date">
-                            <span class="input-group-text input-group-addon" data-toggle>
-                                <i data-feather="calendar"></i>
-                            </span>
-                        </div>
-                        @error('joining_date') <span class="text-danger">{{ $message }}</span> @enderror
+                        <input name="nid_upload" id="nid_upload" type="file" class="form-control @error('nid_upload') is-invalid @enderror" accept="image/*">
+                        @error('nid_upload') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                 </div>
 
@@ -376,15 +425,15 @@
                     <div class="col-sm-9">
                         <select name="status" class="form-select @error('status') is-invalid @enderror" id="status">
                             <option value="">-- Select Status --</option>
-                            <option {{ $supervisor->status == 1 ? 'selected' : '' }} value="1">Active</option>
-                            <option {{ $supervisor->status == 0 ? 'selected' : '' }} value="0">Inactive</option>
+                            <option @selected($retailer->status == 1) value="1">Active</option>
+                            <option @selected($retailer->status == 0) value="0">Inactive</option>
                         </select>
                         @error('status') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                 </div>
 
                 <button type="submit" class="btn btn-sm btn-primary me-2">Save Changes</button>
-                <a href="{{ route('rso.index') }}" class="btn btn-sm btn-info me-2 text-white">Back</a>
+                <a href="{{ route('retailer.index') }}" class="btn btn-sm btn-info me-2 text-white">Back</a>
             </form>
         </div>
     </div>
@@ -395,7 +444,7 @@
             $(document).ready(function() {
 
                 // Validation
-                // $("#rsoUpdateForm").validate({
+                // $("#retailerUpdateForm").validate({
                 //
                 //     rules: {
                 //         cluster_name: {

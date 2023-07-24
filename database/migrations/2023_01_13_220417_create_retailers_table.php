@@ -62,7 +62,7 @@ return new class extends Migration
             $table->string('nid_upload')->nullable();
             $table->string('password')->nullable();
             $table->string('house_code')->nullable();
-            $table->string('status')->nullable();
+            $table->string('status')->default(1);
             $table->string('remarks')->nullable();
             $table->timestamps();
         });
