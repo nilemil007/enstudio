@@ -7,22 +7,28 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
+/**
+ * @method static create()
+ */
 class Retailer extends Model
 {
     use HasFactory;
 
+    protected string $uploads = 'storage/retailers/';
+    protected string $nidUploads = 'storage/retailers-nid/';
+
     protected $fillable = [
-        'dd_house',
         'user_id',
+        'dd_house',
         'rso_id',
         'supervisor',
         'bts_code',
         'route',
-        'retailer_code',
-        'retailer_name',
-        'tmp_retailer_name',
-        'retailer_type',
-        'tmp_retailer_type',
+        'code',
+        'name',
+        'tmp_name',
+        'type',
+        'tmp_type',
         'enabled',
         'sim_seller',
         'tmp_sim_seller',
@@ -39,8 +45,7 @@ class Retailer extends Model
         'tmp_thana',
         'address',
         'tmp_address',
-        'nid',
-        'tmp_nid',
+        'blood_group',
         'trade_license_no',
         'tmp_trade_license_no',
         'others_operator',
@@ -55,13 +60,40 @@ class Retailer extends Model
         'tmp_device_sn',
         'scanner_sn',
         'tmp_scanner_sn',
-        'document',
         'password',
+        'house_code',
+        'nid',
+        'tmp_nid',
+        'image',
+        'nid_upload',
         'status',
         'remarks',
     ];
 
     //_______________________________________Accessor________________________________________________
+    /**
+     * Show retailer image or default image.
+     *
+     * @return Attribute
+     */
+    protected function image(): Attribute
+    {
+        return Attribute::make(
+            get: fn ( $image ) => empty( $image ) ? asset('assets/images/avatar.png') : $this->uploads . $image,
+        );
+    }
+
+    /**
+     * Show retailer nid or default image.
+     *
+     * @return Attribute
+     */
+    protected function nidUpload(): Attribute
+    {
+        return Attribute::make(
+            get: fn ( $nid ) => empty( $nid ) ? asset('assets/images/default-nid.jpg') : $this->nidUploads . $nid,
+        );
+    }
 
     /**
      * Set retailer name as formatted.

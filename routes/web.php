@@ -2,12 +2,11 @@
 
 use App\Http\Controllers\DdHouseController;
 use App\Http\Controllers\ItopReplaceController;
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RetailerController;
 use App\Http\Controllers\RouteController;
 use App\Http\Controllers\RsoController;
 use App\Http\Controllers\SupervisorController;
 use App\Http\Controllers\UserController;
-use App\Models\Retailer;
 use Illuminate\Support\Facades\Route;
 
 
@@ -95,7 +94,7 @@ Route::middleware(['auth'])->group(function (){
         'supervisor'    => SupervisorController::class,
         'rso'           => RsoController::class,
         'route'         => RouteController::class,
-        'retailer'      => Retailer::class
+        'retailer'      => RetailerController::class,
     ]);
 
 });

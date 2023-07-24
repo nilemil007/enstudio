@@ -164,19 +164,19 @@
             </li>
 
             <!-- Retailer -->
-            <li class="nav-item ">
+            <li class="nav-item {{ request()->routeIs('retailer.*') ? 'active' : '' }}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#retailer" role="button" aria-expanded="false" aria-controls="retailer">
                     <i class="link-icon" data-feather="info"></i>
                     <span class="link-title">Retailer</span>
                     <i class="link-arrow" data-feather="chevron-down"></i>
                 </a>
-                <div class="collapse " id="retailer">
+                <div class="collapse {{ request()->routeIs('retailer.*') ? 'show' : '' }}" id="retailer">
                     <ul class="nav sub-menu">
                         <li class="nav-item">
-                            <a href="#" class="nav-link ">Add New</a>
+                            <a href="{{ route('retailer.create') }}" class="nav-link {{ request()->routeIs('retailer.create') ? 'active' : '' }}">Add New</a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link ">All Retailers</a>
+                            <a href="{{ route('retailer.index') }}" class="nav-link {{ request()->routeIs('retailer.index') ? 'active' : '' }}">All Retailers</a>
                         </li>
                     </ul>
                 </div>
