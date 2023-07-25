@@ -53,10 +53,7 @@ class RetailerUpdateRequest extends FormRequest
             'password'          => ['nullable'],
             'house_code'        => ['nullable'],
             'nid'               => ['required', new Nid,'unique:retailers,nid,'.request()->segment(2)],
-            'image'             => ['nullable','image'],
             'nid_upload'        => ['nullable','image'],
-            'remarks'           => ['nullable'],
-            'status'            => ['nullable'],
         ];
     }
 }

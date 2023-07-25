@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
 
 /**
@@ -64,25 +65,12 @@ class Retailer extends Model
         'house_code',
         'nid',
         'tmp_nid',
-        'image',
         'nid_upload',
         'status',
         'remarks',
     ];
 
     //_______________________________________Accessor________________________________________________
-    /**
-     * Show retailer image or default image.
-     *
-     * @return Attribute
-     */
-    protected function image(): Attribute
-    {
-        return Attribute::make(
-            get: fn ( $image ) => empty( $image ) ? asset('assets/images/avatar.png') : $this->uploads . $image,
-        );
-    }
-
     /**
      * Show retailer nid or default image.
      *
@@ -100,10 +88,10 @@ class Retailer extends Model
      *
      * @return Attribute
      */
-    protected function retailerName(): Attribute
+    protected function name(): Attribute
     {
         return Attribute::make(
-            set: fn( $retailerName ) => Str::title( $retailerName ),
+            set: fn( $name ) => Str::title( $name ),
         );
     }
 
@@ -112,10 +100,10 @@ class Retailer extends Model
      *
      * @return Attribute
      */
-    protected function retailerType(): Attribute
+    protected function type(): Attribute
     {
         return Attribute::make(
-            set: fn( $retailerType ) => Str::upper( $retailerType ),
+            set: fn( $type ) => Str::upper( $type ),
         );
     }
 
@@ -148,10 +136,10 @@ class Retailer extends Model
      *
      * @return Attribute
      */
-    protected function device_name(): Attribute
+    protected function deviceName(): Attribute
     {
         return Attribute::make(
-            set: fn( $device_name ) => Str::title( $device_name ),
+            set: fn( $deviceName ) => Str::title( $deviceName ),
         );
     }
 
@@ -207,10 +195,15 @@ class Retailer extends Model
 
 
     //_______________________________________Relationship___________________________________________
-//    public function user(): BelongsTo
-//    {
-//        return $this->belongsTo( User::class );
-//    }
+    /**
+     * Retailer belongs to a user.
+     *
+     * @return BelongsTo
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo( User::class );
+    }
 //
 //    public function rso(): BelongsTo
 //    {

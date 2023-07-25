@@ -105,5 +105,15 @@ class User extends Authenticatable
         return $this->hasOne( Rso::class );
     }
 
+    /**
+     * User has one retailer.
+     *
+     * @return HasOne
+     */
+    public function retailer(): HasOne
+    {
+        return $this->hasOne( Retailer::class );
+    }
+
 
 }

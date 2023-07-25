@@ -18,7 +18,7 @@
                             <option value="">-- Select User --</option>
                             @if(count($users) > 0)
                                 @foreach($users as $user)
-                                    <option value="{{ $user->id }}">{{ $user->name .' - '. $user->phone }}</option>
+                                    <option @selected($retailer->user_id == $user->id) value="{{ $user->id }}">{{ $user->name .' - '. $user->phone }}</option>
                                 @endforeach
                             @endif
                         </select>
@@ -94,7 +94,7 @@
                 <div class="row mb-3">
                     <label for="route" class="col-sm-3 col-form-label">Route <span class="text-danger">*</span></label>
                     <div class="col-sm-9">
-                        <select name="route" class="select-2 form-select @error('route') is-invalid @enderror" id="route" multiple>
+                        <select name="route" class="select-2 form-select @error('route') is-invalid @enderror" id="route">
                             <option value="">-- Select Route --</option>
                             @if(count($routes) > 0)
                                 @foreach($routes as $route)
@@ -401,34 +401,12 @@
                     </div>
                 </div>
 
-                <!-- Image -->
-                <div class="row mb-3">
-                    <label for="image" class="col-sm-3 col-form-label">Retailer Image</label>
-                    <div class="col-sm-9">
-                        <input name="image" id="image" type="file" class="form-control @error('image') is-invalid @enderror" accept="image/*">
-                        @error('image') <span class="text-danger">{{ $message }}</span> @enderror
-                    </div>
-                </div>
-
                 <!-- NID Upload -->
                 <div class="row mb-3">
                     <label for="nid_upload" class="col-sm-3 col-form-label">NID Upload</label>
                     <div class="col-sm-9">
                         <input name="nid_upload" id="nid_upload" type="file" class="form-control @error('nid_upload') is-invalid @enderror" accept="image/*">
                         @error('nid_upload') <span class="text-danger">{{ $message }}</span> @enderror
-                    </div>
-                </div>
-
-                <!-- Status -->
-                <div class="row mb-3">
-                    <label for="status" class="col-sm-3 col-form-label">Status</label>
-                    <div class="col-sm-9">
-                        <select name="status" class="form-select @error('status') is-invalid @enderror" id="status">
-                            <option value="">-- Select Status --</option>
-                            <option @selected($retailer->status == 1) value="1">Active</option>
-                            <option @selected($retailer->status == 0) value="0">Inactive</option>
-                        </select>
-                        @error('status') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                 </div>
 

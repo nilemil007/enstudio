@@ -34,7 +34,9 @@
                         <tr>
                             <td><span class="text-muted">{{ ++$sl }}</span></td>
                             <td class="py-1">
-                                <img src="{{ asset($retailer->image) }}" alt="retailer image">
+                                @if(!empty($retailer->user->image))
+                                    <img src="{{ asset($retailer->user->image) }}" alt="retailer image">
+                                @endif
                             </td>
                             <td>{{ $retailer->dd_house }}</td>
                             <td>{{ $retailer->code }}</td>

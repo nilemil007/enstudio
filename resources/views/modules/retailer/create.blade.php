@@ -15,7 +15,7 @@
                         <div class="row mb-3">
                             <label for="user_id" class="col-sm-3 col-form-label">User</label>
                             <div class="col-sm-9">
-                                <select name="user_id" class="form-select @error('user_id') is-invalid @enderror" id="user_id">
+                                <select name="user_id" class="select-2 form-select @error('user_id') is-invalid @enderror" id="user_id">
                                     <option value="">-- Select User --</option>
                                     @if(count($users) > 0)
                                         @foreach($users as $user)
@@ -95,7 +95,7 @@
                         <div class="row mb-3">
                             <label for="route" class="col-sm-3 col-form-label">Route <span class="text-danger">*</span></label>
                             <div class="col-sm-9">
-                                <select name="route" class="select-2 form-select @error('route') is-invalid @enderror" id="route" multiple>
+                                <select name="route" class="select-2 form-select @error('route') is-invalid @enderror" id="route">
                                     <option value="">-- Select Route --</option>
                                     @if(count($routes) > 0)
                                         @foreach($routes as $route)
@@ -276,7 +276,7 @@
                         <div class="row mb-3">
                             <label for="trade_license_no" class="col-sm-3 col-form-label">Trade License No</label>
                             <div class="col-sm-9">
-                                <input name="trade_license_no" id="trade_license_no" type="text"
+                                <input name="trade_license_no" id="trade_license_no" type="number"
                                        class="form-control @error('trade_license_no') is-invalid @enderror" value="{{ old('trade_license_no') }}"
                                        placeholder="Enter Trade License No">
                                 @error('trade_license_no') <span class="text-danger">{{ $message }}</span> @enderror
@@ -316,7 +316,7 @@
                         <div class="row mb-3">
                             <label for="longitude" class="col-sm-3 col-form-label">Longitude</label>
                             <div class="col-sm-9">
-                                <input name="longitude" id="longitude" type="text"
+                                <input name="longitude" id="longitude" type="number"
                                        class="form-control @error('longitude') is-invalid @enderror" value="{{ old('longitude') }}"
                                        placeholder="Enter Longitude">
                                 @error('longitude') <span class="text-danger">{{ $message }}</span> @enderror
@@ -327,7 +327,7 @@
                         <div class="row mb-3">
                             <label for="latitude" class="col-sm-3 col-form-label">Latitude</label>
                             <div class="col-sm-9">
-                                <input name="latitude" id="latitude" type="text"
+                                <input name="latitude" id="latitude" type="number"
                                        class="form-control @error('latitude') is-invalid @enderror" value="{{ old('latitude') }}"
                                        placeholder="Enter Latitude">
                                 @error('latitude') <span class="text-danger">{{ $message }}</span> @enderror
@@ -399,15 +399,6 @@
                                        class="form-control @error('nid') is-invalid @enderror" value="{{ old('nid') }}"
                                        placeholder="Enter NID Number">
                                 @error('nid') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                        </div>
-
-                        <!-- Image -->
-                        <div class="row mb-3">
-                            <label for="image" class="col-sm-3 col-form-label">Retailer Image</label>
-                            <div class="col-sm-9">
-                                <input name="image" id="image" type="file" class="form-control @error('image') is-invalid @enderror" accept="image/*">
-                                @error('image') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         </div>
 

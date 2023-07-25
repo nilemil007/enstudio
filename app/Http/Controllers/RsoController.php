@@ -107,7 +107,7 @@ class RsoController extends Controller
         try {
             $rso->delete();
             return response()->json(['success' => 'The rso has been deleted successfully.']);
-        }catch (Exception $exception){
+        }catch (\Exception $exception){
             dd($exception);
         }
     }
@@ -120,7 +120,7 @@ class RsoController extends Controller
         try {
             Rso::query()->delete();
             return response()->json(['success' => 'All rso has been deleted successfully.']);
-        }catch (Exception $exception){
+        }catch (\Exception $exception){
             dd($exception);
         }
     }
