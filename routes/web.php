@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BtsController;
 use App\Http\Controllers\DdHouseController;
 use App\Http\Controllers\ItopReplaceController;
 use App\Http\Controllers\RetailerController;
@@ -77,7 +78,17 @@ Route::middleware(['auth'])->group(function (){
     });
 
     // Retailer Additional Routes
-    Route::prefix('/retailer')->controller( RsoController::class )->name('retailer.')->group(function (){
+    Route::prefix('/retailer')->controller( RetailerController::class )->name('retailer.')->group(function (){
+        // Delete all
+        Route::post('/delete/all','deleteAll')->name('delete.all');
+        // Import
+        Route::post('/import','import')->name('import');
+        // Download sample file
+        Route::get('/sample-file-download','sampleFileDownload')->name('sample.file.download');
+    });
+
+    // BTS Additional Routes
+    Route::prefix('/bts')->controller( BtsController::class )->name('bts.')->group(function (){
         // Delete all
         Route::post('/delete/all','deleteAll')->name('delete.all');
         // Import
@@ -95,6 +106,7 @@ Route::middleware(['auth'])->group(function (){
         'rso'           => RsoController::class,
         'route'         => RouteController::class,
         'retailer'      => RetailerController::class,
+        'bts'           => BtsController::class
     ]);
 
 });

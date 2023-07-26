@@ -81,7 +81,7 @@ class User extends Authenticatable
     protected function username(): Attribute
     {
         return Attribute::make(
-            set: fn ( $username ) => preg_replace('/[^a-zA-Z0-9_ -]/s','', str_replace(['\'', '"', ',', ';', '<', '>', '.', ' '], '', Str::lower($username))),
+            set: fn ( $username ) => preg_replace('/[^a-zA-Z0-9_ -]/s','', str_replace(['\'', '"', ',', ';', '<', '>', '/', ' '], '', Str::lower($username))),
         );
     }
 

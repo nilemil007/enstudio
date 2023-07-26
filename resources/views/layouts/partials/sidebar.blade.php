@@ -183,19 +183,19 @@
             </li>
 
             <!-- BTS -->
-            <li class="nav-item ">
+            <li class="nav-item {{ request()->routeIs('bts.*') ? 'active' : '' }}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#bts" role="button" aria-expanded="false" aria-controls="bts">
                     <i class="link-icon" data-feather="info"></i>
                     <span class="link-title">BTS</span>
                     <i class="link-arrow" data-feather="chevron-down"></i>
                 </a>
-                <div class="collapse " id="bts">
+                <div class="collapse {{ request()->routeIs('bts.*') ? 'show' : '' }}" id="bts">
                     <ul class="nav sub-menu">
                         <li class="nav-item">
-                            <a href="#" class="nav-link ">Add New</a>
+                            <a href="{{ route('bts.create') }}" class="nav-link {{ request()->routeIs('bts.create') ? 'active' : '' }}">Add New</a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link ">All BTS</a>
+                            <a href="{{ route('bts.index') }}" class="nav-link {{ request()->routeIs('bts.index') ? 'active' : '' }}">All BTS</a>
                         </li>
                     </ul>
                 </div>

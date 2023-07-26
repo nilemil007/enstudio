@@ -120,7 +120,7 @@ class RetailerController extends Controller
     public function deleteAll()
     {
         try {
-            Retailer::query()->delete();
+            Retailer::truncate();
             return response()->json(['success' => 'All retailer has been deleted successfully.']);
         }catch (\Exception $exception){
             dd($exception);
@@ -140,7 +140,7 @@ class RetailerController extends Controller
             return to_route('retailer.index');
 
         } catch (ValidationException $e) {
-            return to_route('rso.create')->with('import_errors', $e->failures());
+            return to_route('retailer.create')->with('import_errors', $e->failures());
         }
     }
 
@@ -149,6 +149,6 @@ class RetailerController extends Controller
      */
     public function sampleFileDownload(): BinaryFileResponse
     {
-        return Response::download(public_path('download/sample/Rso List.xlsx'));
+        return Response::download(public_path('download/sample/Retailer List.xlsx'));
     }
 }

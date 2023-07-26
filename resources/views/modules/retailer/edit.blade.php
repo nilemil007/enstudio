@@ -14,7 +14,7 @@
                 <div class="row mb-3">
                     <label for="user_id" class="col-sm-3 col-form-label">User</label>
                     <div class="col-sm-9">
-                        <select name="user_id" class="form-select @error('user_id') is-invalid @enderror" id="user_id">
+                        <select name="user_id" class="select-2 form-select @error('user_id') is-invalid @enderror" id="user_id">
                             <option value="">-- Select User --</option>
                             @if(count($users) > 0)
                                 @foreach($users as $user)
