@@ -16,7 +16,7 @@
     <!-- End fonts -->
 
     <!-- core:css -->
-    <link rel="stylesheet" href="{{ asset('assets/vendors/core/core.css') }}">
+    <link rel="stylesheet" href="{{ url('public/assets/vendors/core/core.css') }}">
     <!-- endinject -->
 
     <!-- Plugin css for this page -->
@@ -27,15 +27,15 @@
     <!-- End plugin css for this page -->
 
     <!-- inject:css -->
-    <link rel="stylesheet" href="{{ asset('assets/fonts/feather-font/css/iconfont.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendors/flag-icon-css/css/flag-icon.min.css') }}">
+    <link rel="stylesheet" href="{{ url('public/assets/fonts/feather-font/css/iconfont.css') }}">
+    <link rel="stylesheet" href="{{ url('public/assets/vendors/flag-icon-css/css/flag-icon.min.css') }}">
     <!-- endinject -->
 
     <!-- Layout styles -->
-    <link rel="stylesheet" href="{{ asset('assets/css/style.min.css') }}">
+    <link rel="stylesheet" href="{{ url('public/assets/css/style.min.css') }}">
     <!-- End layout styles -->
 
-    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" />
+    <link rel="shortcut icon" href="{{ url('public/assets/images/favicon.png') }}" />
 
     <style>
         .swal2-popup {
@@ -66,13 +66,13 @@
 </div>
 
 <!-- core:js -->
-<script src="{{ asset('assets/vendors/core/core.js') }}"></script>
+<script src="{{ url('public/assets/vendors/core/core.js') }}"></script>
 <!-- endinject -->
 
 <!-- inject:js -->
-<script src="{{ asset('assets/vendors/feather-icons/feather.min.js') }}"></script>
-<script src="{{ asset('assets/js/template.js') }}"></script>
-<script src="{{ asset('assets/js/dashboard-light.js') }}"></script>
+<script src="{{ url('public/assets/vendors/feather-icons/feather.min.js') }}"></script>
+<script src="{{ url('public/assets/js/template.js') }}"></script>
+<script src="{{ url('public/assets/js/dashboard-light.js') }}"></script>
 <!-- endinject -->
 
 <!-- datatable:js -->

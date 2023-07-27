@@ -6,36 +6,19 @@
     <form class="mb-3 d-flex justify-content-center">
         <div class="row">
             <div class="col-md-5">
-                <div class="input-group flatpickr me-2 mb-2 mb-md-0" id="dashboardDate">
-                    <span class="input-group-text input-group-addon bg-transparent border-primary" data-toggle="">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                             class="feather feather-calendar text-primary"><rect x="3" y="4" width="18" height="18"
-                                                                                 rx="2" ry="2"></rect><line x1="16"
-                                                                                                            y1="2"
-                                                                                                            x2="16"
-                                                                                                            y2="6"></line><line
-                                x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21"
-                                                                         y2="10"></line></svg></span>
-                    <input name="start_date" value="{{ request()->get('start_date') }}" type="text"
-                           class="form-control bg-transparent border-primary flatpickr-input" placeholder="Select date">
+                <div class="input-group">
+                    <input name="start_date" id="start_date" value="{{ request()->get('start_date') }}" type="text" class="flatpickr form-control" placeholder="Select date">
+                    <span class="input-group-text input-group-addon" data-toggle>
+                        <i data-feather="calendar"></i>
+                    </span>
                 </div>
             </div>
             <div class="col-md-5">
-                <div class="input-group flatpickr me-2 mb-2 mb-md-0" id="dashboardDate">
-                    <span class="input-group-text input-group-addon bg-transparent border-primary" data-toggle="">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                             class="feather feather-calendar text-primary"><rect x="3" y="4" width="18" height="18"
-                                                                                 rx="2" ry="2"></rect><line x1="16"
-                                                                                                            y1="2"
-                                                                                                            x2="16"
-                                                                                                            y2="6"></line><line
-                                x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21"
-                                                                         y2="10"></line></svg></span>
-                    <input name="end_date" value="{{ request()->get('end_date') }}" type="text"
-                           class="form-control bg-transparent border-primary flatpickr-input" placeholder="Select date"
-                           data-input="" readonly="readonly">
+                <div class="input-group">
+                    <input name="end_date" id="end_date" value="{{ request()->get('end_date') }}" type="text" class="flatpickr form-control" placeholder="Select date">
+                    <span class="input-group-text input-group-addon" data-toggle>
+                        <i data-feather="calendar"></i>
+                    </span>
                 </div>
             </div>
 
@@ -66,7 +49,7 @@
                         <th>Serial Number</th>
                         <th>Remarks</th>
                         <th>Requested</th>
-{{--                        <th>Payment Date</th>--}}
+                        <th>Payment Date</th>
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
@@ -81,9 +64,9 @@
                             <td>
                                 @if( $replace->remarks )
                                     <button
-                                        class="btn btn-sm btn-pill {{ auth()->user()->role != 'super-admin' ? 'disabled' : '' }}"
+                                        class="btn btn-sm btn-pill {{ auth()->user()->role != 'superadmin' ? 'disabled' : '' }}"
                                         data-bs-toggle="modal"
-                                        data-bs-target="@if(auth()->user()->role == 'super-admin') #approve-reject-{{ $replace->id }} @endif">
+                                        data-bs-target="@if(auth()->user()->role == 'superadmin') #approve-reject-{{ $replace->id }} @endif">
                                         <span class="badge bg-danger me-1"></span> {{ $replace->remarks }}
                                     </button>
                                 @endif
@@ -92,11 +75,11 @@
                                 {{ $replace->created_at->diffForHumans() }}
                                 <div class="text-muted">{{ $replace->created_at->toDayDateTimeString() }}</div>
                             </td>
-{{--                            <td>--}}
-{{--                                <div>{{ isset($replace->payment_at)?$replace->payment_at->diffForHumans():'' }}</div>--}}
-{{--                                <div--}}
-{{--                                    class="text-muted">{{ isset($replace->payment_at)?$replace->payment_at->toDayDateTimeString():'' }}</div>--}}
-{{--                            </td>--}}
+                            <td>
+                                <div>{{ isset($replace->payment_at)?$replace->payment_at->diffForHumans():'' }}</div>
+                                <div
+                                    class="text-muted">{{ isset($replace->payment_at)?$replace->payment_at->toDayDateTimeString():'' }}</div>
+                            </td>
                             <td>
                                 @switch( $replace->status )
                                     @case( 'pending' )

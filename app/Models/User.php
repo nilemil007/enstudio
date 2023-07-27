@@ -69,7 +69,7 @@ class User extends Authenticatable
     protected function image(): Attribute
     {
         return Attribute::make(
-            get: fn ( $image ) => empty( $image ) ? asset('assets/images/avatar.png') : $this->uploads . $image,
+            get: fn ( $image ) => empty( $image ) ?  url('public/assets/images/avatar.png') : url('public/' . $this->uploads . $image),
         );
     }
 

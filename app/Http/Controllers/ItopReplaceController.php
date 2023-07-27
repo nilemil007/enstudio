@@ -6,9 +6,7 @@ use App\Http\Requests\ItopReplaceStoreRequest;
 use App\Http\Requests\ItopReplaceUpdateRequest;
 use App\Models\ItopReplace;
 use App\Models\User;
-use App\Services\ItopReplaceService;
 use Carbon\Carbon;
-use Exception;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
@@ -16,7 +14,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Event;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class ItopReplaceController extends Controller
@@ -39,7 +36,7 @@ class ItopReplaceController extends Controller
                     ->paginate(5),
             ]);
         }else{
-            if ( Auth::user()->role == 'super-admin' )
+            if ( Auth::user()->role == 'superadmin' )
             {
                 $replaces = ItopReplace::with('user')
                     ->search( $request->search )
@@ -74,7 +71,7 @@ class ItopReplaceController extends Controller
     {
         $replace = $request->validated();
 
-        if ( Auth::user()->role != 'super-admin' )
+        if ( Auth::user()->role != 'superadmin' )
         {
             unset( $replace['serial_number'] );
         }

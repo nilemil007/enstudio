@@ -34,7 +34,7 @@
                         <tr>
                             <td><span class="text-muted">{{ ++$sl }}</span></td>
                             <td class="py-1">
-                                <img src="{{ asset($user->image) }}" alt="user image">
+                                <img src="{{ $user->image }}" alt="user image">
                             </td>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->username }}</td>

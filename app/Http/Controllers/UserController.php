@@ -88,9 +88,9 @@ class UserController extends Controller
 
         if ($request->hasFile('image')) {
 
-            if ( File::exists( public_path( $user->image ) ) )
+            if ( File::exists( public_path('storage/users/'.basename( $user->image ) ) ) )
             {
-                File::delete( $user->image );
+                File::delete( public_path('storage/users/'.basename( $user->image ) ) );
             }
 
             $name = 'user'.$request->image->hashname();
@@ -114,9 +114,10 @@ class UserController extends Controller
     public function destroy(User $user): JsonResponse
     {
         if ($user->delete()) {
-            if ( File::exists( public_path( $user->image ) ) )
+
+            if ( File::exists( public_path('storage/users/'.basename( $user->image ) ) ) )
             {
-                File::delete( $user->image );
+                File::delete( public_path('storage/users/'.basename( $user->image ) ) );
             }
         }
 

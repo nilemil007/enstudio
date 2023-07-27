@@ -20,22 +20,19 @@
             </li>
 
             <li class="nav-item nav-category">reports</li>
-            <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="collapse" href="#emails" role="button" aria-expanded="false" aria-controls="emails">
+
+            <!-- Daily Activation -->
+            <li class="nav-item ">
+                <a class="nav-link" data-bs-toggle="collapse" href="#dailyActivation" role="button" aria-expanded="false" aria-controls="dailyActivation">
                     <i class="link-icon" data-feather="mail"></i>
-                    <span class="link-title">Email</span>
+                    <span class="link-title">Daily Activation</span>
                     <i class="link-arrow" data-feather="chevron-down"></i>
                 </a>
-                <div class="collapse" id="emails">
+                <div class="collapse " id="dailyActivation">
                     <ul class="nav sub-menu">
+                        <!-- House Code Activation -->
                         <li class="nav-item">
-                            <a href="#" class="nav-link">Inbox</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">Read</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">Compose</a>
+                            <a href="#" class="nav-link">House Code Activation</a>
                         </li>
                     </ul>
                 </div>
@@ -49,6 +46,8 @@
 
 
             <li class="nav-item nav-category">Services</li>
+
+            <!-- Itop Replace -->
             <li class="nav-item {{ request()->routeIs('itop-replace.*') ? 'active' : '' }}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#itopReplace" role="button" aria-expanded="false" aria-controls="itopReplace">
                     <i class="link-icon" data-feather="info"></i>
@@ -221,6 +220,8 @@
             </li>
 
             <li class="nav-item nav-category">New Registration</li>
+
+            <!-- New Registration -->
             <li class="nav-item {{ request()->routeIs('user.*') ? 'active' : '' }}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#users" role="button" aria-expanded="false" aria-controls="users">
                     <i class="link-icon" data-feather="users"></i>
