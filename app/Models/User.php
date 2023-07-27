@@ -17,6 +17,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @method static create(mixed $user)
  * @method static truncate()
  * @method static firstWhere()
+ * @method static whereHas(string $string, \Closure $param)
  * @property mixed $image
  */
 class User extends Authenticatable

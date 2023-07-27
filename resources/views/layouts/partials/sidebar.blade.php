@@ -22,17 +22,17 @@
             <li class="nav-item nav-category">reports</li>
 
             <!-- Daily Activation -->
-            <li class="nav-item ">
+            <li class="nav-item {{ request()->routeIs('hca.*') ? 'active' : '' }}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#dailyActivation" role="button" aria-expanded="false" aria-controls="dailyActivation">
                     <i class="link-icon" data-feather="mail"></i>
                     <span class="link-title">Daily Activation</span>
                     <i class="link-arrow" data-feather="chevron-down"></i>
                 </a>
-                <div class="collapse " id="dailyActivation">
+                <div class="collapse {{ request()->routeIs('hca.*') ? 'show' : '' }}" id="dailyActivation">
                     <ul class="nav sub-menu">
                         <!-- House Code Activation -->
                         <li class="nav-item">
-                            <a href="#" class="nav-link">House Code Activation</a>
+                            <a href="{{ route('hca.index') }}" class="nav-link {{ request()->routeIs('hca.index') ? 'active' : '' }}" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="House Code Activation">HCA</a>
                         </li>
                     </ul>
                 </div>

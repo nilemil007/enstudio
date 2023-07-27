@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BtsController;
 use App\Http\Controllers\DdHouseController;
+use App\Http\Controllers\HouseCodeActivationController;
 use App\Http\Controllers\ItopReplaceController;
 use App\Http\Controllers\RetailerController;
 use App\Http\Controllers\RouteController;
@@ -104,6 +105,11 @@ Route::middleware(['auth'])->group(function (){
         Route::get('/sample-file-download','sampleFileDownload')->name('sample.file.download');
     });
 
+    // House Code Activation Additional Routes
+    Route::controller( HouseCodeActivationController::class )->prefix('/hca')->name('hca.')->group(function (){
+        Route::post('/delete/all','deleteAll')->name('delete.all');
+    });
+
     // Resource Routes
     Route::resources([
         'itop-replace'  => ItopReplaceController::class,
@@ -113,7 +119,8 @@ Route::middleware(['auth'])->group(function (){
         'rso'           => RsoController::class,
         'route'         => RouteController::class,
         'retailer'      => RetailerController::class,
-        'bts'           => BtsController::class
+        'bts'           => BtsController::class,
+        'hca'           => HouseCodeActivationController::class,
     ]);
 
 });
