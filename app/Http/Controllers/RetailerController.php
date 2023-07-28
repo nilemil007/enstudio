@@ -15,6 +15,7 @@ use App\Services\RetailerUpdateService;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
@@ -104,7 +105,7 @@ class RetailerController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Retailer $retailer)
+    public function destroy(Retailer $retailer): JsonResponse
     {
         try {
             $retailer->delete();
@@ -117,7 +118,7 @@ class RetailerController extends Controller
     /**
      * Delete all retailer.
      */
-    public function deleteAll()
+    public function deleteAll(): JsonResponse
     {
         try {
             Retailer::truncate();
@@ -133,6 +134,12 @@ class RetailerController extends Controller
     public function import(Request $request): RedirectResponse
     {
         try {
+            if (Rso::all()->count() < 1)
+            {
+                Alert::warning('Warning', 'No RS0 found. Create rso before import retailers.');
+                return to_route('retailer.create');
+            }
+
             Excel::import(new RetailerImport, $request->file('import_retailer'));
 
             Alert::success('Success', 'Retailer imported successfully.');

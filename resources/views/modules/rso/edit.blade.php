@@ -376,8 +376,8 @@
                     <div class="col-sm-9">
                         <select name="status" class="form-select @error('status') is-invalid @enderror" id="status">
                             <option value="">-- Select Status --</option>
-                            <option {{ $supervisor->status == 1 ? 'selected' : '' }} value="1">Active</option>
-                            <option {{ $supervisor->status == 0 ? 'selected' : '' }} value="0">Inactive</option>
+                            <option {{ $rso->status == 1 ? 'selected' : '' }} value="1">Active</option>
+                            <option {{ $rso->status == 0 ? 'selected' : '' }} value="0">Inactive</option>
                         </select>
                         @error('status') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
