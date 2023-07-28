@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\HCAStoreRequest;
 use App\Models\Activation\HouseCodeActivation;
 use App\Models\Retailer;
 use App\Models\User;
@@ -9,6 +10,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class HouseCodeActivationController extends Controller
 {
@@ -26,7 +28,7 @@ class HouseCodeActivationController extends Controller
      */
     public function create(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $users = User::where('role', 'rso')->get();
+        $users = User::all();
         $retailers = Retailer::all();
         return view('modules.house_code_activation.create', compact('users','retailers'));
     }
@@ -34,9 +36,17 @@ class HouseCodeActivationController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(HCAStoreRequest $request)
     {
-        //
+        try {
+
+            HouseCodeActivation::create($request->validated());
+            Alert::success('Success', 'New record created successfully.');
+            return to_route('hca.index');
+
+        }catch(\Exception $exception) {
+            dd($exception);
+        }
     }
 
     /**
@@ -50,9 +60,11 @@ class HouseCodeActivationController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(HouseCodeActivation $houseCodeActivation)
+    public function edit(HouseCodeActivation $hca): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        //
+        $users = User::all();
+        $retailers = Retailer::all();
+        return view('modules.house_code_activation.edit', compact('hca','users','retailers'));
     }
 
     /**

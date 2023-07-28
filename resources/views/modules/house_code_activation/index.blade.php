@@ -35,7 +35,7 @@
                             <td>{{ $hca->retailer_code }}</td>
                             <td>{{ $hca->activation }}</td>
                             <td>{{ $hca->price }}</td>
-                            <td>{{ $supervisor->activation_date->toFormattedDateString() }}</td>
+                            <td>{{ $hca->activation_date->toFormattedDateString() }}</td>
                             <td>
                                 <!-- Edit -->
                                 <a href="{{ route('hca.edit', $hca->id) }}" class="btn btn-sm btn-primary">Edit</a>

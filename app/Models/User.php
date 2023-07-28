@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Activation\HouseCodeActivation;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
@@ -114,6 +116,16 @@ class User extends Authenticatable
     public function retailer(): HasOne
     {
         return $this->hasOne( Retailer::class );
+    }
+
+    /**
+     * User has one retailer.
+     *
+     * @return HasMany
+     */
+    public function houseCodeActivation(): HasMany
+    {
+        return $this->hasMany( HouseCodeActivation::class );
     }
 
 
