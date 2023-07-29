@@ -4,6 +4,9 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * @property mixed $retailer_code
+ */
 class HCAStoreRequest extends FormRequest
 {
     /**
@@ -22,11 +25,12 @@ class HCAStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => ['nullable'],
-            'retailer_code' => ['required'],
-            'activation' => ['required'],
-            'price' => ['required'],
-            'activation_date' => ['required'],
+            'user_id'           => ['required'],
+            'dd_house'          => ['nullable'],
+            'retailer_code'     => ['required'],
+            'activation'        => ['required'],
+            'price'             => ['required'],
+            'activation_date'   => ['required'],
         ];
     }
 }

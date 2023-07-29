@@ -33,7 +33,8 @@ class SupervisorController extends Controller
     public function create(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
         $houses = DdHouse::all();
-        $users = User::where('role', 'supervisor')->get();
+        $userId = Supervisor::whereNotNull('user_id')->pluck('user_id');
+        $users = User::where('role', 'supervisor')->whereNotIn('id', $userId)->get();
         return view('modules.supervisor.create', compact('houses','users'));
     }
 

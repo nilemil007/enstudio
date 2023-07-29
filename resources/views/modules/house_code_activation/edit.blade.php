@@ -18,7 +18,7 @@
                                 <option value="">-- Select User --</option>
                                 @if(count($users) > 0)
                                     @foreach($users as $user)
-                                        <option @selected( $hca->user_id == $user->id ) value="{{ $user->id }}">{{ $user->phone .' - '. $user->name }}</option>
+                                        <option @selected( $hca->user_id == $user->id ) value="{{ $user->id }}">{{ $user->phone .' - '. \Illuminate\Support\Str::upper($user->role) .' - '. $user->name }}</option>
                                     @endforeach
                                 @endif
                             </select>

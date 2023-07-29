@@ -41,9 +41,12 @@ class RsoController extends Controller
     public function create(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
         $houses = DdHouse::all();
-        $users = User::where('role','rso')->orderBy('phone','asc')->get();
+        $userId = Rso::whereNotNull('user_id')->pluck('user_id');
+        $users = User::where('role','rso')->whereNotIn('id', $userId)->orderBy('name','asc')->get();
         $supervisors = Supervisor::all();
-        $routes = Route::all();
+        $getRoutes = Rso::whereNotNull('routes')->pluck('routes');
+        $routeCode = explode(',', implode(',', $getRoutes->toArray()));
+        $routes = Route::whereNotIn('code', $routeCode)->get();
         return view('modules.rso.create', compact('houses','users','supervisors','routes'));
     }
 
@@ -53,7 +56,6 @@ class RsoController extends Controller
     public function store(RsoStoreRequest $request): RedirectResponse
     {
         try {
-
             Rso::create($request->validated());
             Alert::success('Success', 'Rso created successfully.');
             return to_route('rso.index');
@@ -77,7 +79,8 @@ class RsoController extends Controller
     public function edit(Rso $rso): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
         $houses = DdHouse::all();
-        $users = User::where('role','rso')->orderBy('phone','asc')->get();
+        $userId = Rso::whereNotNull('user_id')->pluck('user_id');
+        $users = User::where('role','rso')->whereNotIn('id', $userId)->orderBy('name','asc')->get();
         $supervisors = Supervisor::all();
         $routes = Route::all();
         return view('modules.rso.edit', compact('rso','houses','users','supervisors','routes'));

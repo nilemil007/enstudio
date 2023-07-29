@@ -13,7 +13,7 @@
 
                         <!-- Distribution House -->
                         <div class="row mb-3">
-                            <label for="dd_house" class="col-sm-3 col-form-label">Distribution House</label>
+                            <label for="dd_house" class="col-sm-3 col-form-label">Distribution House ({{ count($houses) }})</label>
                             <div class="col-sm-9">
                                 <select name="dd_house" class="form-select @error('dd_house') is-invalid @enderror" id="dd_house">
                                     <option value="">-- Select Distribution House --</option>
@@ -29,7 +29,7 @@
 
                         <!-- Supervisor -->
                         <div class="row mb-3">
-                            <label for="supervisor" class="col-sm-3 col-form-label">Supervisor</label>
+                            <label for="supervisor" class="col-sm-3 col-form-label">Supervisor ({{ count($supervisors) }})</label>
                             <div class="col-sm-9">
                                 <select name="supervisor" class="form-select @error('supervisor') is-invalid @enderror" id="supervisor">
                                     <option value="">-- Select Supervisor --</option>
@@ -43,12 +43,12 @@
                             </div>
                         </div>
 
-                        <!-- Rso -->
+                        <!-- User -->
                         <div class="row mb-3">
-                            <label for="user_id" class="col-sm-3 col-form-label">Rso</label>
+                            <label for="user_id" class="col-sm-3 col-form-label">User</label>
                             <div class="col-sm-9">
                                 <select name="user_id" class="form-select @error('user_id') is-invalid @enderror" id="user_id">
-                                    <option value="">-- Select Rso --</option>
+                                    <option value="">-- Select User --</option>
                                     @if(count($users) > 0)
                                         @foreach($users as $user)
                                             <option value="{{ $user->id }}">{{ $user->phone .' - '. $user->name }}</option>
@@ -56,6 +56,7 @@
                                     @endif
                                 </select>
                                 @error('user_id') <span class="text-danger">{{ $message }}</span> @enderror
+                                <small class="text-muted">User Left: <strong class="{{ count($users) < 1 ? 'text-danger' : 'text-success'}}">{{ count($users) }}</strong></small>
                             </div>
                         </div>
 
@@ -67,11 +68,12 @@
                                     <option value="">-- Select Route --</option>
                                     @if(count($routes) > 0)
                                         @foreach($routes as $route)
-                                            <option value="{{ $route->id }}">{{ $route->code .' - '. $route->name }}</option>
+                                            <option value="{{ $route->code }}">{{ $route->code .' - '. $route->name }}</option>
                                         @endforeach
                                     @endif
                                 </select>
                                 @error('routes') <span class="text-danger">{{ $message }}</span> @enderror
+                                <small class="text-muted">Route Left: <strong class="{{ count($routes) < 1 ? 'text-danger' : 'text-success'}}">{{ count($routes) }}</strong></small>
                             </div>
                         </div>
 

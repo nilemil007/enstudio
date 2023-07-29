@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 
 /**
  * @method static create()
+ * @method static firstWhere()
  */
 class Retailer extends Model
 {

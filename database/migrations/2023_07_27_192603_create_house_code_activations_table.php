@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('house_code_activations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
+            $table->string('dd_house');
             $table->string('retailer_code');
             $table->integer('activation');
             $table->integer('price');

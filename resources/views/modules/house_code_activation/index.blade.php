@@ -19,6 +19,7 @@
                     <thead>
                     <tr>
                         <th class="w-1">No.</th>
+                        <th>DD House</th>
                         <th>Name</th>
                         <th>Retailer Code</th>
                         <th>Activation</th>
@@ -31,7 +32,8 @@
                     @foreach( $houseCodeAct as $sl => $hca )
                         <tr>
                             <td><span class="text-muted">{{ ++$sl }}</span></td>
-                            <td>{{ $hca->user->name }}</td>
+                            <td>{{ $hca->dd_house }}</td>
+                            <td>{{ $hca->user->name.' - '.\Illuminate\Support\Str::upper($hca->user->role) }}</td>
                             <td>{{ $hca->retailer_code }}</td>
                             <td>{{ $hca->activation }}</td>
                             <td>{{ $hca->price }}</td>
@@ -68,7 +70,7 @@
 
                     Swal.fire({
                         title: 'Are you sure?',
-                        text: "Delete This Entry?",
+                        text: "Delete This Record?",
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonText: 'Yes, delete it!'
@@ -97,7 +99,7 @@
 
                     Swal.fire({
                         title: 'Are you sure?',
-                        text: "Delete All Entry?",
+                        text: "Delete All Record?",
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonText: 'Yes, delete it !'

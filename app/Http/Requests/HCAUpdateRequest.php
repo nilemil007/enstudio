@@ -2,8 +2,12 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * @property mixed $retailer_code
+ */
 class HCAUpdateRequest extends FormRequest
 {
     /**
@@ -11,18 +15,23 @@ class HCAUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
+     * @return array<string, ValidationRule|array|string>
      */
     public function rules(): array
     {
         return [
-            //
+            'user_id'           => ['required'],
+            'dd_house'          => ['nullable'],
+            'retailer_code'     => ['required'],
+            'activation'        => ['required'],
+            'price'             => ['required'],
+            'activation_date'   => ['required'],
         ];
     }
 }

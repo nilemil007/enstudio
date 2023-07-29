@@ -10,12 +10,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * @method static latest()
  * @method static create(mixed $validated)
+ * @method static truncate()
  */
 class HouseCodeActivation extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id','retailer_code','activation','price','activation_date'];
+    protected $fillable = ['dd_house','user_id','retailer_code','activation','price','activation_date'];
 
     /**
      * The attributes that should be cast.

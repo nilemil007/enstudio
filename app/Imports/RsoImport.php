@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Models\Route;
 use App\Models\Rso;
 use App\Models\User;
 use App\Rules\Nid;
@@ -28,7 +29,7 @@ class RsoImport implements ToModel, WithHeadingRow, WithValidation
         return new Rso([
             'dd_house'          => $row['dd_code'],
             'supervisor'        => $row['supervisor'],
-            'routes'            => $row['routes'],
+            'routes'            => explode(',', $row['routes']),
             'rso_code'          => $row['rso_code'],
             'itop_number'       => $row['itop_number'],
             'pool_number'       => $row['pool_number'],

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\HCAStoreRequest;
+use App\Http\Requests\HCAUpdateRequest;
 use App\Models\Activation\HouseCodeActivation;
 use App\Models\Retailer;
 use App\Models\User;
@@ -28,7 +29,7 @@ class HouseCodeActivationController extends Controller
      */
     public function create(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $users = User::all();
+        $users = User::where('role', '!=', 'superadmin')->get();
         $retailers = Retailer::all();
         return view('modules.house_code_activation.create', compact('users','retailers'));
     }
@@ -38,9 +39,12 @@ class HouseCodeActivationController extends Controller
      */
     public function store(HCAStoreRequest $request)
     {
+        $data = $request->validated();
+
         try {
 
-            HouseCodeActivation::create($request->validated());
+            $data['dd_house'] = Retailer::firstWhere('code', $request->retailer_code)->dd_house;
+            HouseCodeActivation::create($data);
             Alert::success('Success', 'New record created successfully.');
             return to_route('hca.index');
 
@@ -70,16 +74,45 @@ class HouseCodeActivationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, HouseCodeActivation $houseCodeActivation)
+    public function update(HCAUpdateRequest $request, HouseCodeActivation $hca)
     {
-        //
+        $data = $request->validated();
+
+        try {
+
+            $data['dd_house'] = Retailer::firstWhere('code', $request->retailer_code)->dd_house;
+            $hca->update($data);
+            Alert::success('Success', 'Record updated successfully.');
+            return to_route('hca.index');
+
+        }catch(\Exception $exception) {
+            dd($exception);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(HouseCodeActivation $houseCodeActivation)
+    public function destroy(HouseCodeActivation $hca)
     {
-        //
+        try {
+            $hca->delete();
+            return response()->json(['success' => 'The record has been deleted successfully.']);
+        }catch (\Exception $exception){
+            dd($exception);
+        }
+    }
+
+    /**
+     * Delete all house code activation.
+     */
+    public function deleteAll()
+    {
+        try {
+            HouseCodeActivation::truncate();
+            return response()->json(['success' => 'All record has been deleted successfully.']);
+        }catch (\Exception $exception){
+            dd($exception);
+        }
     }
 }

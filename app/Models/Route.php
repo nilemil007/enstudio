@@ -10,6 +10,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * @method static latest()
  * @method static create(mixed $validated)
+ * @method static whereNotIn(string $string, string[] $routeId)
+ * @method static firstWhere(string $string, mixed $routes)
+ * @method static where(string $string, string $routeCode)
+ * @method static whereIn()
  */
 class Route extends Model
 {

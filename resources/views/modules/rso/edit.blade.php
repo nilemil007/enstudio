@@ -42,12 +42,12 @@
                     </div>
                 </div>
 
-                <!-- Rso -->
+                <!-- User -->
                 <div class="row mb-3">
-                    <label for="user_id" class="col-sm-3 col-form-label">Rso</label>
+                    <label for="user_id" class="col-sm-3 col-form-label">User</label>
                     <div class="col-sm-9">
                         <select name="user_id" class="form-select @error('user_id') is-invalid @enderror" id="user_id">
-                            <option value="">-- Select Rso --</option>
+                            <option value="">-- Select User --</option>
                             @if(count($users) > 0)
                                 @foreach($users as $user)
                                     <option {{ $rso->user_id == $user->id ? 'selected' : '' }} value="{{ $user->id }}">{{ $user->phone .' - '. $user->name }}</option>
@@ -55,6 +55,7 @@
                             @endif
                         </select>
                         @error('user_id') <span class="text-danger">{{ $message }}</span> @enderror
+                        <small class="text-muted">User Left: <strong class="{{ count($users) < 1 ? 'text-danger' : 'text-success'}}">{{ count($users) }}</strong></small>
                     </div>
                 </div>
 
@@ -69,10 +70,10 @@
                                     <option
                                         @if(!empty($rso->routes))
                                             @foreach ($rso->routes as $rsoRoute)
-                                                @selected(old('routes',$rsoRoute) == $route->id)
+                                                @selected($rsoRoute == $route->code)
                                             @endforeach
                                         @endif
-                                        value="{{ $route->id }}">{{ $route->code .' - '. $route->name }}
+                                        value="{{ $route->code }}">{{ $route->code .' - '. $route->name }}
                                     </option>
                                 @endforeach
                             @endif
@@ -229,7 +230,7 @@
                 <div class="row mb-3">
                     <label for="account_number" class="col-sm-3 col-form-label">Account Number</label>
                     <div class="col-sm-9">
-                        <input name="account_number" id="account_number" type="number"
+                        <input name="account_number" id="account_number" type="text"
                                class="form-control @error('account_number') is-invalid @enderror" value="{{ old('account_number', $rso->account_number) }}"
                                placeholder="Enter Account Number">
                         @error('account_number') <span class="text-danger">{{ $message }}</span> @enderror
