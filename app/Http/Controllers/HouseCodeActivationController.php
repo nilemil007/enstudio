@@ -7,6 +7,7 @@ use App\Http\Requests\HCAUpdateRequest;
 use App\Models\Activation\HouseCodeActivation;
 use App\Models\Retailer;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
@@ -114,5 +115,25 @@ class HouseCodeActivationController extends Controller
         }catch (\Exception $exception){
             dd($exception);
         }
+    }
+
+    /**
+     * house code activation summary.
+     */
+    public function summary(Request $request): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
+    {
+        $validate = $request->validate([
+            'start_date' => 'required',
+            'end_date' => 'required',
+        ]);
+//        dd($validate);
+        $sdate =  $request->input('start_date');
+        $edate =  $request->input('end_date');
+
+        return view('modules.house_code_activation.summary',[
+            'hca' => HouseCodeActivation::search( $request->search )
+                ->whereBetween('activation_date', [$sdate, Carbon::parse($edate)->endOfDay()])
+                ->get()
+        ]);
     }
 }

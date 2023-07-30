@@ -6,7 +6,13 @@
     <div class="card">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <h4 class="card-title">House Code Activation</h4>
+                <div class="d-inline-flex align-items-center">
+                    <h4 class="card-title m-0">House Code Activation</h4>
+                    &nbsp;
+                    &nbsp;
+                    <span><a href="{{ route('hca.summary') }}">Summary</a></span>
+                </div>
+
                 <span>
                     <a href="{{ route('hca.create') }}" class="btn btn-sm btn-primary">Add New</a>
                     @if(count($houseCodeAct) > 1)

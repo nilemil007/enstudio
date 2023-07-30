@@ -3,6 +3,7 @@
 namespace App\Models\Activation;
 
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -24,6 +25,21 @@ class HouseCodeActivation extends Model
      * @var array<string, string>
      */
     protected $casts = ['activation_date' => 'datetime'];
+
+    /**
+     * House Code Activation Summary Search Report.
+     *
+     * @param Builder $query
+     * @param $term
+     * @return void
+     */
+    public function scopeSearch(Builder $query, $term ): void
+    {
+        $term = "%$term%";
+        $query->where( function ( $query ) use ( $term ){
+            $query->where( 'activation_date', 'like', $term );
+        });
+    }
 
     /**
      * User has one retailer.

@@ -108,6 +108,7 @@ Route::middleware(['auth'])->group(function (){
     // House Code Activation Additional Routes
     Route::controller( HouseCodeActivationController::class )->prefix('/hca')->name('hca.')->group(function (){
         Route::post('/delete/all','deleteAll')->name('delete.all');
+        Route::get('/summary','summary')->name('summary');
     });
 
     // Resource Routes
