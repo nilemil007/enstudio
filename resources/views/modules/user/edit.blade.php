@@ -17,9 +17,8 @@
                         <!-- Update user -->
                         <div class="tab-pane fade show active" id="v-general" role="tabpanel" aria-labelledby="v-general-tab">
                             <h6 class="card-title">Update user</h6>
-                            <form id="userUpdateForm" action="{{ route('user.update', $user->id) }}" method="POST" enctype="multipart/form-data">
+                            <form class="userUpdateForm" action="{{ route('user.update', $user->id) }}" method="POST" enctype="multipart/form-data">
                                 @csrf
-                                @method('PATCH')
 
                                 <!-- Name -->
                                 <div class="row mb-3">
@@ -110,8 +109,8 @@
                                     </div>
                                 </div>
 
-                                <button type="submit" class="btn btn-sm btn-primary me-2">Update</button>
-                                <a href="{{ route('user.index') }}" class="btn btn-sm btn-info me-2">Back</a>
+                                <button type="submit" class="btn btn-sm btn-primary me-2 btn-submit">Update</button>
+                                <a href="{{ route('user.index') }}" class="btn btn-sm btn-info me-2 text-white">Back</a>
                             </form>
                         </div>
 
@@ -201,7 +200,7 @@
                     }
                 });
 
-                // Show/Hide new password
+                // Show/Hide confirm password
                 $('#confirmPasswordShowHide').on('click', function(){
                     const type = $('#password_confirmation').attr("type");
 
@@ -214,7 +213,7 @@
                 });
 
                 // Validation
-                $('#userUpdateForm').validate({
+                $('.userUpdateForm').validate({
                     rules: {
                         name: {
                             required: true,

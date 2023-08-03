@@ -8,7 +8,7 @@
             <div class="card">
                 <div class="card-body">
                     <h6 class="card-title">Create new user</h6>
-                    <form id="userForm" action="{{ route('user.store') }}" method="POST" enctype="multipart/form-data">
+                    <form class="userForm" action="{{ route('user.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
 
                         <!-- Name -->
@@ -96,7 +96,7 @@
                         </div>
 
 
-                        <button type="submit" class="btn btn-sm btn-primary me-2">Create New User</button>
+                        <button type="submit" class="btn btn-sm btn-primary me-2 btn-submit">Create New User</button>
                         <a href="{{ route('user.index') }}" class="btn btn-sm btn-info me-2 text-white">Back</a>
                     </form>
                 </div>
@@ -137,12 +137,43 @@
     </div>
 
 
-
-
-
     @push('scripts')
         <script>
             $(document).ready(function() {
+                $(document).on('submit','.userForm',function (e){
+                    e.preventDefault();
+
+                    const form = $(this)[0];
+                    const data = new FormData(form);
+                    const url = $(this).attr('action');
+                    const redirect = "{{ route('user.index') }}";
+
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: data,
+                        processData: false,
+                        contentType: false,
+                        beforeSend: function (){
+                            $('.btn-submit').prop('disabled', true).text('Creating...');
+                        },
+                        success: function (response){
+                            $('.btn-submit').prop('disabled', false).text('Create New User');
+                            Swal.fire(
+                                'Success!',
+                                response.success,
+                                'success',
+                            ).then((result) => {
+                                window.location.href = redirect;
+                            });
+                        },
+                        error: function (e){
+                            console.log(e.responseText);
+                            $('.btn-submit').prop('disabled', false).text('Create New User');
+                        },
+                    });
+                });
+
                 // Show/Hide password
                 $('#passwordShowHide').on('click', function(){
                     const type = $('#password').attr("type");
@@ -156,7 +187,7 @@
                 });
 
                 // Validation
-                $('#userForm').validate({
+                $('.userForm').validate({
                     rules: {
                         name: {
                             required: true,

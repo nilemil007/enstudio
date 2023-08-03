@@ -43,7 +43,7 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(UserStoreRequest $request): RedirectResponse
+    public function store(UserStoreRequest $request): JsonResponse
     {
         $user = $request->validated();
 
@@ -53,14 +53,9 @@ class UserController extends Controller
             $user['image'] = $name;
         }
 
-        if ( User::create($user) )
-        {
-            Alert::success('Success', 'New user created successfully.');
-        }else{
-            Alert::error('Error', 'User creation failed.');
-        }
+        User::create($user);
 
-        return to_route('user.index');
+        return response()->json(['success' => 'New user created successfully.']);
     }
 
     /**
@@ -82,7 +77,7 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UserUpdateRequest $request, User $user): RedirectResponse
+    public function update(UserUpdateRequest $request, User $user): JsonResponse
     {
         $information = $request->validated();
 
@@ -98,14 +93,9 @@ class UserController extends Controller
             $information['image'] = $name;
         }
 
-        if ( $user->update($information) )
-        {
-            Alert::success('Success', 'User updated successfully.');
-        }else{
-            Alert::error('Error', 'User not updated.');
-        }
+        $user->update($information);
 
-        return to_route('user.index');
+        return response()->json(['success' => 'User updated successfully.']);
     }
 
     /**

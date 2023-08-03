@@ -6,7 +6,7 @@
     <div class="card">
         <div class="card-body">
             <h6 class="card-title">Create new entry</h6>
-            <form id="itopReplaceForm" action="{{ route('itop-replace.store') }}" method="POST">
+            <form class="itopReplaceForm" action="{{ route('itop-replace.store') }}" method="POST">
                 @csrf
                 <!-- User -->
                 <div class="row mb-3">
@@ -72,7 +72,7 @@
                 </div>
 
 
-                <button type="submit" class="btn btn-primary me-2">Create new replace</button>
+                <button type="submit" class="btn btn-primary me-2 btn-submit">Create New Replace</button>
             </form>
         </div>
     </div>
@@ -81,7 +81,41 @@
     @push('scripts')
         <script>
             $(document).ready(function() {
-                $('#itopReplaceForm').validate({
+                $(document).on('submit','.itopReplaceForm', function (e){
+                    e.preventDefault();
+
+                    const form = $(this)[0];
+                    const data = new FormData(form);
+                    const url = $(this).attr('action');
+                    const redirect = "{{ route('itop-replace.index') }}";
+
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: data,
+                        processData: false,
+                        contentType: false,
+                        beforeSend: function (){
+                            $('.btn-submit').prop('disabled', true).text('Creating...');
+                        },
+                        success: function (response){
+                            $('.btn-submit').prop('disabled', false).text('Create New Replace');
+                            Swal.fire(
+                                'Success!',
+                                response.success,
+                                'success',
+                            ).then((result) => {
+                                window.location.href = redirect;
+                            });
+                        },
+                        error: function (e){
+                            console.log(e.responseText);
+                            $('.btn-submit').prop('disabled', false).text('Create New Replace');
+                        },
+                    });
+                })
+
+                $('.itopReplaceForm').validate({
                     rules: {
                         user_id: {
                             required: true,
@@ -143,12 +177,12 @@
                         }
                     },
                     highlight: function(element, errorClass){
-                        if ($(element).prop('type') != 'checkbox' && $(element).prop('type') != 'radio') {
+                        if ($(element).prop('type') !== 'checkbox' && $(element).prop('type') !== 'radio') {
                             $( element ).addClass( "is-invalid" );
                         }
                     },
                     unhighlight: function(element, errorClass){
-                        if ($(element).prop('type') != 'checkbox' && $(element).prop('type') != 'radio') {
+                        if ($(element).prop('type') !== 'checkbox' && $(element).prop('type') !== 'radio') {
                             $( element ).removeClass( "is-invalid" );
                         }
                     },

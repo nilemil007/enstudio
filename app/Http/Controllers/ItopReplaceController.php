@@ -67,7 +67,7 @@ class ItopReplaceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(ItopReplaceStoreRequest $request): RedirectResponse
+    public function store(ItopReplaceStoreRequest $request): JsonResponse
     {
         $replace = $request->validated();
 
@@ -83,14 +83,9 @@ class ItopReplaceController extends Controller
             $replace['user_id'] = Auth::id();
         }
 
-        if ( ItopReplace::create( $replace ) )
-        {
-            Alert::success('Success', 'New entry created successfully.');
-        }else{
-            Alert::error('Error', 'Entry creation failed.');
-        }
+        ItopReplace::create( $replace );
 
-        return to_route('itop-replace.index');
+        return response()->json(['success' => 'New entry created successfully.']);
     }
 
     /**

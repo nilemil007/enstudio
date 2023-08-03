@@ -5,13 +5,16 @@ namespace App\Http\Controllers;
 use App\Http\Requests\HCAStoreRequest;
 use App\Http\Requests\HCAUpdateRequest;
 use App\Models\Activation\HouseCodeActivation;
+use App\Models\DdHouse;
 use App\Models\Retailer;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class HouseCodeActivationController extends Controller
@@ -122,18 +125,31 @@ class HouseCodeActivationController extends Controller
      */
     public function summary(Request $request): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $validate = $request->validate([
-            'start_date' => 'required',
-            'end_date' => 'required',
-        ]);
-//        dd($validate);
-        $sdate =  $request->input('start_date');
-        $edate =  $request->input('end_date');
+        $ddHouse = DdHouse::all();
+        $results = HouseCodeActivation::when($request->start_date != null, function (Builder $query) use ($request){
+            return $query->whereBetween('activation_date', [$request->start_date, Carbon::parse($request->end_date)->endOfDay()]);
+        })->get();
+//        dd($result);
+        return view('modules.house_code_activation.summary', compact('results','ddHouse'));
 
-        return view('modules.house_code_activation.summary',[
-            'hca' => HouseCodeActivation::search( $request->search )
-                ->whereBetween('activation_date', [$sdate, Carbon::parse($edate)->endOfDay()])
-                ->get()
-        ]);
+
+
+//        $ddHouse = DdHouse::all();
+//
+//        if ( !empty($request->input('start_date')) && !empty($request->input('end_date')) )
+//        {
+//            $sdate =  $request->input('start_date');
+//            $edate =  $request->input('end_date');
+//            $hca = HouseCodeActivation::search( $request->search )
+//                ->whereBetween('activation_date', [$sdate, Carbon::parse($edate)->endOfDay()])
+//                ->get();
+//            return view('modules.house_code_activation.summary', compact('hca','ddHouse'));
+//        }elseif ($request->dd_house)
+//        {
+//            $hca = HouseCodeActivation::search( $request->search )->get();
+//            return view('modules.house_code_activation.summary', compact('hca','ddHouse'));
+//        }else{
+//            return view('modules.house_code_activation.summary', compact('ddHouse'));
+//        }
     }
 }

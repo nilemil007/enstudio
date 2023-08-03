@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static latest()
  * @method static create(mixed $validated)
  * @method static truncate()
+ * @method static when(bool $param, \Closure $param1)
  */
 class HouseCodeActivation extends Model
 {
@@ -25,21 +26,6 @@ class HouseCodeActivation extends Model
      * @var array<string, string>
      */
     protected $casts = ['activation_date' => 'datetime'];
-
-    /**
-     * House Code Activation Summary Search Report.
-     *
-     * @param Builder $query
-     * @param $term
-     * @return void
-     */
-    public function scopeSearch(Builder $query, $term ): void
-    {
-        $term = "%$term%";
-        $query->where( function ( $query ) use ( $term ){
-            $query->where( 'activation_date', 'like', $term );
-        });
-    }
 
     /**
      * User has one retailer.
