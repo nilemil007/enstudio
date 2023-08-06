@@ -170,6 +170,6 @@ class UserController extends Controller
      */
     public function sampleFileDownload(): BinaryFileResponse
     {
-        return Response::download(public_path('download/sample/users_sample_file.xlsx'), 'User Sample File.xlsx');
+        return Response::download(public_path('download/sample/Users.xlsx'));
     }
 }

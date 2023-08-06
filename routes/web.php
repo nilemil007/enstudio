@@ -22,7 +22,7 @@ Route::middleware(['auth'])->group(function (){
     Route::get('/dashboard', function (){
 
         // Link storage folder if dose not linked.
-        if (!\Illuminate\Support\Facades\File::isDirectory('public/esi'))
+        if (!\Illuminate\Support\Facades\File::isDirectory('public/storage'))
         {
             \Illuminate\Support\Facades\Artisan::call('storage:link');
         }

@@ -2,12 +2,14 @@
 
 namespace App\Imports;
 
+use App\Models\DdHouse;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
+use Termwind\Components\Dd;
 
 class UsersImport implements ToModel, WithHeadingRow, WithValidation
 {
@@ -21,6 +23,7 @@ class UsersImport implements ToModel, WithHeadingRow, WithValidation
     public function model(array $row): Model|User|null
     {
         return new User([
+            'dd_house'  => DdHouse::firstWhere('code', $row['dd_code'])->id,
             'name'      => $row['name'],
             'username'  => $row['username'],
             'phone'     => $row['phone'],
@@ -36,6 +39,10 @@ class UsersImport implements ToModel, WithHeadingRow, WithValidation
     public function rules(): array
     {
         return [
+            'dd_code' => ['required'],
+            // Above is alias for as it always validates in batches
+            '*.dd_code' => ['required'],
+
             'name' => ['required', 'min:3', 'max:100',],
             // Above is alias for as it always validates in batches
             '*.name' => ['required', 'min:3', 'max:100',],
