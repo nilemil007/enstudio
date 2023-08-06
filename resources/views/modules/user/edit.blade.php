@@ -19,6 +19,7 @@
                             <h6 class="card-title">Update user</h6>
                             <form class="userUpdateForm" action="{{ route('user.update', $user->id) }}" method="POST" enctype="multipart/form-data">
                                 @csrf
+                                @method('PATCH')
 
                                 <!-- Name -->
                                 <div class="row mb-3">
@@ -229,6 +230,7 @@
                 // Validation
                 $('.userUpdateForm').validate({
                     rules: {
+                        dd_house: {required: true}
                         name: {
                             required: true,
                             maxlength: 100,

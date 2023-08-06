@@ -80,7 +80,7 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UserUpdateRequest $request, User $user): JsonResponse
+    public function update(UserUpdateRequest $request, User $user): RedirectResponse
     {
         $information = $request->validated();
 
@@ -97,8 +97,9 @@ class UserController extends Controller
         }
 
         $user->update($information);
+        Alert::success('Success', 'User updated successfully.');
 
-        return response()->json(['success' => 'User updated successfully.']);
+        return to_route('user.index');
     }
 
     /**
