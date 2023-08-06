@@ -24,6 +24,7 @@
                         <th>Username</th>
                         <th>Phone</th>
                         <th>Email</th>
+                        <th>DD House</th>
                         <th>Role</th>
                         <th>Status</th>
                         <th>Action</th>
@@ -40,6 +41,13 @@
                             <td>{{ $user->username }}</td>
                             <td>{{ $user->phone }}</td>
                             <td>{{ $user->email }}</td>
+                            <td>
+                                @if($user->dd_house == 0)
+                                    <span>ALL</span>
+                                @else
+                                    {{ \App\Models\DdHouse::firstWhere('id', $user->dd_house)->code }}
+                                @endif
+                            </td>
                             <td>{{ $user->role }}</td>
                             <td>
                                 @switch( $user->status )

@@ -6,6 +6,7 @@ use App\Http\Requests\PasswordUpdateRequest;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Imports\UsersImport;
+use App\Models\DdHouse;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -37,7 +38,8 @@ class UserController extends Controller
      */
     public function create(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        return view('modules.user.create');
+        $houses = DdHouse::all();
+        return view('modules.user.create', compact('houses'));
     }
 
     /**
@@ -71,7 +73,8 @@ class UserController extends Controller
      */
     public function edit(User $user): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        return view('modules.user.edit', compact('user'));
+        $houses = DdHouse::all();
+        return view('modules.user.edit', compact('user','houses'));
     }
 
     /**
