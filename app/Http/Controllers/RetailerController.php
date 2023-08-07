@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\RetailerStoreRequest;
 use App\Http\Requests\RetailerUpdateRequest;
 use App\Imports\RetailerImport;
+use App\Models\Bts;
 use App\Models\DdHouse;
 use App\Models\Retailer;
 use App\Models\Route;
@@ -45,14 +46,14 @@ class RetailerController extends Controller
         $supervisors = Supervisor::all();
         $houses = DdHouse::all();
         $routes = Route::all();
-//        $btsCode = Bts::all();
-        return view('modules.retailer.create', compact('houses','users','rsos','supervisors','routes'));
+        $btsCode = Bts::all();
+        return view('modules.retailer.create', compact('houses','users','rsos','supervisors','routes','btsCode'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(RetailerStoreRequest $request)
+    public function store(RetailerStoreRequest $request): JsonResponse
     {
         try {
             $retailer = $request->validated();
@@ -65,8 +66,8 @@ class RetailerController extends Controller
             }
 
             Retailer::create($retailer);
-            Alert::success('Success', 'Retailer created successfully.');
-            return to_route('retailer.index');
+
+            return Response::json(['success' => 'Retailer created successfully.']);
         }catch (\Exception $exception){
             dd($exception);
         }
@@ -90,8 +91,8 @@ class RetailerController extends Controller
         $supervisors = Supervisor::all();
         $houses = DdHouse::all();
         $routes = Route::all();
-//        $btsCode = Bts::all();
-        return view('modules.retailer.edit', compact('retailer','houses','users','rsos','supervisors','routes'));
+        $btsCode = Bts::all();
+        return view('modules.retailer.edit', compact('retailer','houses','users','rsos','supervisors','routes','btsCode'));
     }
 
     /**
@@ -131,7 +132,7 @@ class RetailerController extends Controller
     /**
      * Import retailer.
      */
-    public function import(Request $request): RedirectResponse
+    public function import(Request $request)
     {
         try {
             if (Rso::all()->count() < 1)
@@ -142,9 +143,7 @@ class RetailerController extends Controller
 
             Excel::import(new RetailerImport, $request->file('import_retailer'));
 
-            Alert::success('Success', 'Retailer imported successfully.');
-
-            return to_route('retailer.index');
+            return Response::json(['success' => 'Retailer imported successfully.']);
 
         } catch (ValidationException $e) {
             return to_route('retailer.create')->with('import_errors', $e->failures());

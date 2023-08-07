@@ -60,6 +60,7 @@
                 </div>
             </li>
 
+            @if( auth()->user()->role == 'superadmin' )
             <li class="nav-item nav-category">Define</li>
             <!-- DD House -->
             <li class="nav-item {{ request()->routeIs('dd-house.*') ? 'active' : '' }}">
@@ -234,7 +235,7 @@
                 </div>
             </li>
 
-
+            @endif
         </ul>
     </div>
 </nav>

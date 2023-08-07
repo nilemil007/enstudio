@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('user_id')->nullable()->constrained();
             $table->string('dd_house');
             $table->string('supervisor');
-            $table->json('routes')->nullable();
+            $table->string('routes')->nullable();
             $table->string('rso_code', 10)->unique();
             $table->string('itop_number', 11)->unique();
             $table->string('pool_number', 11)->unique();

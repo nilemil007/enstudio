@@ -42,7 +42,7 @@ class DdHouseController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(DdHouseStoreRequest $request)
+    public function store(DdHouseStoreRequest $request): RedirectResponse
     {
         try {
             DdHouse::create($request->validated());
@@ -74,7 +74,7 @@ class DdHouseController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(DdHouseUpdateRequest $request, DdHouse $dd_house)
+    public function update(DdHouseUpdateRequest $request, DdHouse $dd_house): RedirectResponse
     {
         try {
             $dd_house->update($request->validated());
@@ -90,7 +90,7 @@ class DdHouseController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(DdHouse $dd_house)
+    public function destroy(DdHouse $dd_house): JsonResponse
     {
         try {
             $dd_house->delete();
@@ -116,14 +116,12 @@ class DdHouseController extends Controller
     /**
      * Import house.
      */
-    public function import(Request $request): RedirectResponse
+    public function import(Request $request)
     {
         try {
             Excel::import(new DdHouseImport, $request->file('import_house'));
 
-            Alert::success('Success', 'DD house imported successfully.');
-
-            return to_route('dd-house.index');
+            return response()->json(['success' => 'DD house imported successfully.']);
 
         } catch (ValidationException $e) {
             return to_route('dd-house.create')->with('import_errors', $e->failures());

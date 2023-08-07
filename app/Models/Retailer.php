@@ -11,6 +11,7 @@ use Illuminate\Support\Str;
 /**
  * @method static create()
  * @method static firstWhere()
+ * @method static where(string $string, $ddCode)
  */
 class Retailer extends Model
 {

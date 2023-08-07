@@ -151,14 +151,12 @@ class UserController extends Controller
     /**
      * Import users.
      */
-    public function import(Request $request): RedirectResponse
+    public function import(Request $request)
     {
         try {
             Excel::import(new UsersImport, $request->file('import_users'));
 
-            Alert::success('Success', 'Users imported successfully.');
-
-            return to_route('user.index');
+            return response()->json(['success' => 'Users imported successfully.']);
 
         } catch (ValidationException $e) {
 

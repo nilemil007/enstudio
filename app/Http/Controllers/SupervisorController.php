@@ -41,14 +41,12 @@ class SupervisorController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(SupervisorStoreRequest $request)
+    public function store(SupervisorStoreRequest $request): JsonResponse
     {
         try {
             Supervisor::create($request->validated());
 
-            Alert::success('Success', 'Supervisor created successfully.');
-
-            return to_route('supervisor.index');
+            return response()->json(['success' => 'Supervisor created successfully.']);
         }catch(ValidationException $exception) {
             dd($exception);
         }
@@ -75,7 +73,7 @@ class SupervisorController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(SupervisorUpdateRequest $request, Supervisor $supervisor)
+    public function update(SupervisorUpdateRequest $request, Supervisor $supervisor): \Illuminate\Http\RedirectResponse
     {
         try {
             $supervisor->update($request->validated());
@@ -91,7 +89,7 @@ class SupervisorController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Supervisor $supervisor)
+    public function destroy(Supervisor $supervisor): JsonResponse
     {
         try {
             $supervisor->delete();

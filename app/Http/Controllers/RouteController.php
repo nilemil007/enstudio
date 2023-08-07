@@ -43,14 +43,12 @@ class RouteController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(RouteStoreRequest $request)
+    public function store(RouteStoreRequest $request): JsonResponse
     {
         try {
             Route::create($request->validated());
 
-            Alert::success('Success', 'Route created successfully.');
-
-            return to_route('route.index');
+            return Response::json(['success' => 'Route created successfully.']);
         }catch(ValidationException $exception) {
             dd($exception);
         }
@@ -118,14 +116,12 @@ class RouteController extends Controller
     /**
      * Import route.
      */
-    public function import(Request $request): RedirectResponse
+    public function import(Request $request)
     {
         try {
             Excel::import(new RouteImport(), $request->file('import_route'));
 
-            Alert::success('Success', 'Route imported successfully.');
-
-            return to_route('route.index');
+            return Response::json(['success' => 'Route imported successfully.']);
 
         } catch (ValidationException $e) {
             return to_route('route.create')->with('import_errors', $e->failures());

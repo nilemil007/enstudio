@@ -11,6 +11,22 @@
                     <form id="retailerForm" action="{{ route('retailer.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
 
+                        <!-- Distribution House -->
+                        <div class="row mb-3">
+                                <label for="dd_house" class="col-sm-3 col-form-label">Distribution House <span class="text-danger">*</span></label>
+                                <div class="col-sm-9">
+                                    <select name="dd_house" class="form-select @error('dd_house') is-invalid @enderror" id="dd_house">
+                                        <option value="">-- Select Distribution House --</option>
+                                        @if(count($houses) > 0)
+                                            @foreach($houses as $house)
+                                                <option value="{{ $house->code }}">{{ $house->code .' - '. $house->name }}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                    @error('dd_house') <span class="text-danger">{{ $message }}</span> @enderror
+                                </div>
+                            </div>
+
                         <!-- User -->
                         <div class="row mb-3">
                             <label for="user_id" class="col-sm-3 col-form-label">User</label>
@@ -24,22 +40,6 @@
                                     @endif
                                 </select>
                                 @error('user_id') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                        </div>
-
-                        <!-- Distribution House -->
-                        <div class="row mb-3">
-                            <label for="dd_house" class="col-sm-3 col-form-label">Distribution House <span class="text-danger">*</span></label>
-                            <div class="col-sm-9">
-                                <select name="dd_house" class="form-select @error('dd_house') is-invalid @enderror" id="dd_house">
-                                    <option value="">-- Select Distribution House --</option>
-                                    @if(count($houses) > 0)
-                                        @foreach($houses as $house)
-                                            <option value="{{ $house->code }}">{{ $house->code .' - '. $house->name }}</option>
-                                        @endforeach
-                                    @endif
-                                </select>
-                                @error('dd_house') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         </div>
 
@@ -79,13 +79,13 @@
                         <div class="row mb-3">
                             <label for="bts_code" class="col-sm-3 col-form-label">BTS Code</label>
                             <div class="col-sm-9">
-                                <select name="bts_code" class="form-select @error('bts_code') is-invalid @enderror" id="bts_code">
+                                <select name="bts_code" class="select-2 form-select @error('bts_code') is-invalid @enderror" id="bts_code">
                                     <option value="">-- Select BTS Code --</option>
-{{--                                    @if(count($btsCode) > 0)--}}
-{{--                                        @foreach($btsCode as $bts)--}}
-{{--                                            <option value="{{ $bts->code }}">{{ $bts->code .' - '. $bts->name }}</option>--}}
-{{--                                        @endforeach--}}
-{{--                                    @endif--}}
+                                    @if(count($btsCode) > 0)
+                                        @foreach($btsCode as $bts)
+                                            <option value="{{ $bts->bts_code }}">{{ $bts->bts_code .' - '. \Illuminate\Support\Str::limit($bts->address, 80) }}</option>
+                                        @endforeach
+                                    @endif
                                 </select>
                                 @error('bts_code') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
@@ -316,7 +316,7 @@
                         <div class="row mb-3">
                             <label for="longitude" class="col-sm-3 col-form-label">Longitude</label>
                             <div class="col-sm-9">
-                                <input name="longitude" id="longitude" type="number"
+                                <input name="longitude" id="longitude" type="text"
                                        class="form-control @error('longitude') is-invalid @enderror" value="{{ old('longitude') }}"
                                        placeholder="Enter Longitude">
                                 @error('longitude') <span class="text-danger">{{ $message }}</span> @enderror
@@ -327,7 +327,7 @@
                         <div class="row mb-3">
                             <label for="latitude" class="col-sm-3 col-form-label">Latitude</label>
                             <div class="col-sm-9">
-                                <input name="latitude" id="latitude" type="number"
+                                <input name="latitude" id="latitude" type="text"
                                        class="form-control @error('latitude') is-invalid @enderror" value="{{ old('latitude') }}"
                                        placeholder="Enter Latitude">
                                 @error('latitude') <span class="text-danger">{{ $message }}</span> @enderror
@@ -411,7 +411,7 @@
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-sm btn-primary me-2">Create New Retailer</button>
+                        <button type="submit" class="btn btn-sm btn-primary me-2 btn-submit">Create New Retailer</button>
                         <a href="{{ route('retailer.index') }}" class="btn btn-sm btn-info me-2 text-white">Back</a>
                     </form>
                 </div>
@@ -435,7 +435,7 @@
 
                 <div class="card-body">
                     <h6 class="card-title">Import Retailer</h6>
-                    <form class="row gy-2 gx-3 align-items-center" action="{{ route('retailer.import') }}" method="post" enctype="multipart/form-data">
+                    <form class="row gy-2 gx-3 align-items-center import-retailer" action="{{ route('retailer.import') }}" method="post" enctype="multipart/form-data">
                         @csrf
 
                         <div class="col-12">
@@ -443,7 +443,7 @@
                             <input name="import_retailer" type="file" class="form-control" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" required>
                         </div>
                         <div class="col-12">
-                            <button type="submit" class="btn btn-sm btn-primary w-100 mt-2">Import Retailer</button>
+                            <button type="submit" class="btn btn-sm btn-primary w-100 mt-2 btn-import-retailer ">Import Retailer</button>
                         </div>
                     </form>
                 </div>
@@ -451,5 +451,191 @@
             <a href="{{ route('retailer.sample.file.download') }}" class="nav-link text-muted">Download sample file.</a>
         </div>
     </div>
+
+    @push('scripts')
+        <script>
+            $(document).ready(function() {
+
+                // Create Retailer
+                $(document).on('submit','#retailerForm',function (e){
+                    e.preventDefault();
+
+                    const data = new FormData($(this)[0]);
+                    const url = $(this).attr('action');
+                    const type = $(this).attr('method');
+                    const redirect = "{{ route('retailer.index') }}";
+
+                    $.ajax({
+                        url: url,
+                        type: type,
+                        data: data,
+                        processData: false,
+                        contentType: false,
+                        beforeSend: function (){
+                            $('.btn-submit').prop('disabled', true).text('Creating...');
+                        },
+                        success: function (response){
+                            $('.btn-submit').prop('disabled', false).text('Create New Retailer');
+                            Swal.fire(
+                                'Success!',
+                                response.success,
+                                'success',
+                            ).then((result) => {
+                                window.location.href = redirect;
+                            });
+                        },
+                        error: function (e){
+                            console.log(e.responseText);
+                            $('.btn-submit').prop('disabled', false).text('Create New Retailer');
+                        },
+                    });
+                });
+
+                // Import Retailer
+                $(document).on('submit','.import-retailer',function (e){
+                    e.preventDefault();
+
+                    const data = new FormData($(this)[0]);
+                    const url = $(this).attr('action');
+                    const type = $(this).attr('method');
+                    const redirect = "{{ route('retailer.index') }}";
+
+                    $.ajax({
+                        url: url,
+                        type: type,
+                        data: data,
+                        processData: false,
+                        contentType: false,
+                        beforeSend: function (){
+                            $('.btn-import-retailer').prop('disabled', true).text('Importing...');
+                        },
+                        success: function (response){
+                            $('.btn-import-retailer').prop('disabled', false).text('Import Retailer');
+                            Swal.fire(
+                                'Success!',
+                                response.success,
+                                'success',
+                            ).then((result) => {
+                                window.location.href = redirect;
+                            });
+                        },
+                        error: function (e){
+                            console.log(e.responseText);
+                            $('.btn-import-retailer').prop('disabled', false).text('Import Retailer');
+                        },
+                    });
+                });
+
+                // $("#retailerForm").validate({
+                //
+                //     rules: {
+                //         cluster_name: {
+                //             required: true,
+                //             maxlength: 30,
+                //         },
+                //         region: {
+                //             required: true,
+                //             maxlength: 20,
+                //         },
+                //         code: {
+                //             required: true,
+                //             maxlength: 10,
+                //         },
+                //         name: {
+                //             required: true,
+                //             maxlength: 100,
+                //             minlength: 3,
+                //         },
+                //         email: {
+                //             required: true,
+                //             email: true,
+                //         },
+                //         district: {
+                //             required: true,
+                //             maxlength: 20,
+                //         },
+                //         address: {
+                //             required: true,
+                //             maxlength: 150,
+                //         },
+                //         proprietor_name: {
+                //             required: true,
+                //             maxlength: 100,
+                //             minlength: 3,
+                //         },
+                //         proprietor_number: {
+                //             required: true,
+                //             number: true,
+                //             maxlength: 11,
+                //             minlength: 11,
+                //         },
+                //         poc_name: {
+                //             required: true,
+                //             maxlength: 100,
+                //             minlength: 3,
+                //         },
+                //         poc_number: {
+                //             required: true,
+                //             number: true,
+                //             maxlength: 11,
+                //             minlength: 11,
+                //         },
+                //         tin_number: {
+                //             required: true,
+                //         },
+                //         bin_number: {
+                //             required: true,
+                //         },
+                //         latitude: {
+                //             pattern: /^[-]?(([0-8]?[0-9])\.(\d+))|(90(\.0+)?)$/
+                //         },
+                //         longitude: {
+                //             pattern: /^[-]?((((1[0-7][0-9])|([0-9]?[0-9]))\.(\d+))|180(\.0+)?)$/
+                //         },
+                //         bts_code: {
+                //             required: true,
+                //             minlength: 7,
+                //         },
+                //         lifting_date: {
+                //             required: true,
+                //         },
+                //     },
+                //     messages: {
+                //
+                //     },
+                //     errorPlacement: function(error, element){
+                //         error.addClass('invalid-feedback');
+                //
+                //         if (element.parent('.input-group').length) {
+                //             error.insertAfter(element.parent());
+                //         }
+                //         else if (element.prop('type') === 'radio' && element.parent('.radio-inline').length) {
+                //             error.insertAfter(element.parent().parent());
+                //         }
+                //         else if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
+                //             error.appendTo(element.parent().parent());
+                //         }
+                //         else {
+                //             error.insertAfter(element);
+                //         }
+                //     },
+                //     highlight: function(element, errorClass){
+                //         if ($(element).prop('type') != 'checkbox' && $(element).prop('type') != 'radio') {
+                //             $( element ).addClass( "is-invalid" );
+                //         }
+                //     },
+                //     unhighlight: function(element, errorClass){
+                //         if ($(element).prop('type') != 'checkbox' && $(element).prop('type') != 'radio') {
+                //             $( element ).removeClass( "is-invalid" );
+                //         }
+                //     },
+                //     submitHandler: function(form) {
+                //         form.submit();
+                //     },
+                // });
+
+            });
+        </script>
+    @endpush
 
 </x-app-layout>

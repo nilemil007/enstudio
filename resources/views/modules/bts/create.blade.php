@@ -8,7 +8,7 @@
             <div class="card">
                 <div class="card-body">
                     <h6 class="card-title">Create New BTS</h6>
-                    <form id="retailerForm" action="{{ route('bts.store') }}" method="POST">
+                    <form id="btsForm" action="{{ route('bts.store') }}" method="POST">
                         @csrf
 
                         <!-- Distribution House -->
@@ -173,7 +173,7 @@
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-sm btn-primary me-2">Create New BTS</button>
+                        <button type="submit" class="btn btn-sm btn-primary me-2 btn-submit">Create New BTS</button>
                         <a href="{{ route('bts.index') }}" class="btn btn-sm btn-info me-2 text-white">Back</a>
                     </form>
                 </div>
@@ -197,7 +197,7 @@
 
                 <div class="card-body">
                     <h6 class="card-title">Import BTS</h6>
-                    <form class="row gy-2 gx-3 align-items-center" action="{{ route('bts.import') }}" method="post" enctype="multipart/form-data">
+                    <form class="row gy-2 gx-3 align-items-center import-bts" action="{{ route('bts.import') }}" method="post" enctype="multipart/form-data">
                         @csrf
 
                         <div class="col-12">
@@ -205,7 +205,7 @@
                             <input name="import_bts" type="file" class="form-control" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" required>
                         </div>
                         <div class="col-12">
-                            <button type="submit" class="btn btn-sm btn-primary w-100 mt-2">Import BTS</button>
+                            <button type="submit" class="btn btn-sm btn-primary w-100 mt-2 btn-import-bts">Import BTS</button>
                         </div>
                     </form>
                 </div>
@@ -213,5 +213,191 @@
             <a href="{{ route('bts.sample.file.download') }}" class="nav-link text-muted">Download sample file.</a>
         </div>
     </div>
+
+    @push('scripts')
+        <script>
+            $(document).ready(function() {
+
+                // Create BTS
+                $(document).on('submit','#btsForm',function (e){
+                    e.preventDefault();
+
+                    const data = new FormData($(this)[0]);
+                    const url = $(this).attr('action');
+                    const type = $(this).attr('method');
+                    const redirect = "{{ route('bts.index') }}";
+
+                    $.ajax({
+                        url: url,
+                        type: type,
+                        data: data,
+                        processData: false,
+                        contentType: false,
+                        beforeSend: function (){
+                            $('.btn-submit').prop('disabled', true).text('Creating...');
+                        },
+                        success: function (response){
+                            $('.btn-submit').prop('disabled', false).text('Create New BTS');
+                            Swal.fire(
+                                'Success!',
+                                response.success,
+                                'success',
+                            ).then((result) => {
+                                window.location.href = redirect;
+                            });
+                        },
+                        error: function (e){
+                            console.log(e.responseText);
+                            $('.btn-submit').prop('disabled', false).text('Create New BTS');
+                        },
+                    });
+                });
+
+                // Import Route
+                $(document).on('submit','.import-bts',function (e){
+                    e.preventDefault();
+
+                    const data = new FormData($(this)[0]);
+                    const url = $(this).attr('action');
+                    const type = $(this).attr('method');
+                    const redirect = "{{ route('bts.index') }}";
+
+                    $.ajax({
+                        url: url,
+                        type: type,
+                        data: data,
+                        processData: false,
+                        contentType: false,
+                        beforeSend: function (){
+                            $('.btn-import-bts').prop('disabled', true).text('Importing...');
+                        },
+                        success: function (response){
+                            $('.btn-import-bts').prop('disabled', false).text('Import BTS');
+                            Swal.fire(
+                                'Success!',
+                                response.success,
+                                'success',
+                            ).then((result) => {
+                                window.location.href = redirect;
+                            });
+                        },
+                        error: function (e){
+                            console.log(e.responseText);
+                            $('.btn-import-bts').prop('disabled', false).text('Import BTS');
+                        },
+                    });
+                });
+
+                // $("#btsForm").validate({
+                //
+                //     rules: {
+                //         cluster_name: {
+                //             required: true,
+                //             maxlength: 30,
+                //         },
+                //         region: {
+                //             required: true,
+                //             maxlength: 20,
+                //         },
+                //         code: {
+                //             required: true,
+                //             maxlength: 10,
+                //         },
+                //         name: {
+                //             required: true,
+                //             maxlength: 100,
+                //             minlength: 3,
+                //         },
+                //         email: {
+                //             required: true,
+                //             email: true,
+                //         },
+                //         district: {
+                //             required: true,
+                //             maxlength: 20,
+                //         },
+                //         address: {
+                //             required: true,
+                //             maxlength: 150,
+                //         },
+                //         proprietor_name: {
+                //             required: true,
+                //             maxlength: 100,
+                //             minlength: 3,
+                //         },
+                //         proprietor_number: {
+                //             required: true,
+                //             number: true,
+                //             maxlength: 11,
+                //             minlength: 11,
+                //         },
+                //         poc_name: {
+                //             required: true,
+                //             maxlength: 100,
+                //             minlength: 3,
+                //         },
+                //         poc_number: {
+                //             required: true,
+                //             number: true,
+                //             maxlength: 11,
+                //             minlength: 11,
+                //         },
+                //         tin_number: {
+                //             required: true,
+                //         },
+                //         bin_number: {
+                //             required: true,
+                //         },
+                //         latitude: {
+                //             pattern: /^[-]?(([0-8]?[0-9])\.(\d+))|(90(\.0+)?)$/
+                //         },
+                //         longitude: {
+                //             pattern: /^[-]?((((1[0-7][0-9])|([0-9]?[0-9]))\.(\d+))|180(\.0+)?)$/
+                //         },
+                //         bts_code: {
+                //             required: true,
+                //             minlength: 7,
+                //         },
+                //         lifting_date: {
+                //             required: true,
+                //         },
+                //     },
+                //     messages: {
+                //
+                //     },
+                //     errorPlacement: function(error, element){
+                //         error.addClass('invalid-feedback');
+                //
+                //         if (element.parent('.input-group').length) {
+                //             error.insertAfter(element.parent());
+                //         }
+                //         else if (element.prop('type') === 'radio' && element.parent('.radio-inline').length) {
+                //             error.insertAfter(element.parent().parent());
+                //         }
+                //         else if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
+                //             error.appendTo(element.parent().parent());
+                //         }
+                //         else {
+                //             error.insertAfter(element);
+                //         }
+                //     },
+                //     highlight: function(element, errorClass){
+                //         if ($(element).prop('type') != 'checkbox' && $(element).prop('type') != 'radio') {
+                //             $( element ).addClass( "is-invalid" );
+                //         }
+                //     },
+                //     unhighlight: function(element, errorClass){
+                //         if ($(element).prop('type') != 'checkbox' && $(element).prop('type') != 'radio') {
+                //             $( element ).removeClass( "is-invalid" );
+                //         }
+                //     },
+                //     submitHandler: function(form) {
+                //         form.submit();
+                //     },
+                // });
+
+            });
+        </script>
+    @endpush
 
 </x-app-layout>

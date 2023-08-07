@@ -14,6 +14,7 @@ use Illuminate\Support\Str;
  * @method static firstWhere()
  * @method static whereNotNull()
  * @method static where(string $string)
+ * @method static orderBy(string $string, string $string1)
  */
 class Rso extends Model
 {

@@ -15,6 +15,7 @@ use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Response;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class HouseCodeActivationController extends Controller
@@ -24,7 +25,14 @@ class HouseCodeActivationController extends Controller
      */
     public function index(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $houseCodeAct = HouseCodeActivation::latest()->get();
+        if ( Auth::user()->role != 'superadmin' )
+        {
+            $ddHouse = DdHouse::firstWhere('id', Auth::user()->dd_house)->code;
+            $houseCodeAct = HouseCodeActivation::where('dd_house', $ddHouse)->get();
+        }else{
+            $houseCodeAct = HouseCodeActivation::latest()->get();
+        }
+
         return view('modules.house_code_activation.index', compact('houseCodeAct'));
     }
 
@@ -33,15 +41,25 @@ class HouseCodeActivationController extends Controller
      */
     public function create(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $users = User::where('role', '!=', 'superadmin')->get();
-        $retailers = Retailer::all();
+//        $users = User::where('role', '!=', 'superadmin')->get();
+
+        if (Auth::user()->role == 'supervisor')
+        {
+            $ddCode = DdHouse::firstWhere('id', Auth::user()->dd_house)->code;
+            $ddId = DdHouse::firstWhere('id', Auth::user()->dd_house)->id;
+            $retailers = Retailer::where('dd_house', $ddCode)->get();
+            $users = User::where('dd_house', $ddId)->where('role','!=','supervisor')->get();
+        }else{
+            $retailers = Retailer::all();
+            $users = User::where('role', '!=', 'superadmin')->get();
+        }
         return view('modules.house_code_activation.create', compact('users','retailers'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(HCAStoreRequest $request)
+    public function store(HCAStoreRequest $request): \Illuminate\Http\JsonResponse
     {
         $data = $request->validated();
 
@@ -49,8 +67,7 @@ class HouseCodeActivationController extends Controller
 
             $data['dd_house'] = Retailer::firstWhere('code', $request->retailer_code)->dd_house;
             HouseCodeActivation::create($data);
-            Alert::success('Success', 'New record created successfully.');
-            return to_route('hca.index');
+            return Response::json(['success' => 'New record created successfully.']);
 
         }catch(\Exception $exception) {
             dd($exception);

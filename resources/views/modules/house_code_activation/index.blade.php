@@ -10,13 +10,17 @@
                     <h4 class="card-title m-0">House Code Activation</h4>
                     &nbsp;
                     &nbsp;
-                    <span><a href="{{ route('hca.summary') }}">Summary</a></span>
+                    @if( auth()->user()->role == 'superadmin' )
+                        <span><a href="{{ route('hca.summary') }}">Summary</a></span>
+                    @endif
                 </div>
 
                 <span>
                     <a href="{{ route('hca.create') }}" class="btn btn-sm btn-primary">Add New</a>
-                    @if(count($houseCodeAct) > 1)
-                        <a id="deleteAllHca" href="{{ route('hca.delete.all') }}" class="btn btn-sm btn-danger">Delete all</a>
+                    @if( auth()->user()->role == 'superadmin' )
+                        @if(count($houseCodeAct) > 1)
+                            <a id="deleteAllHca" href="{{ route('hca.delete.all') }}" class="btn btn-sm btn-danger">Delete all</a>
+                        @endif
                     @endif
                 </span>
             </div>
@@ -49,7 +53,9 @@
                                 <a href="{{ route('hca.edit', $hca->id) }}" class="btn btn-sm btn-primary">Edit</a>
 
                                 <!-- Delete -->
-                                <a href="{{ route('hca.destroy', $hca->id) }}" id="deleteHca" class="btn btn-sm btn-danger">Delete</a>
+                                @if( auth()->user()->role == 'superadmin' )
+                                    <a href="{{ route('hca.destroy', $hca->id) }}" id="deleteHca" class="btn btn-sm btn-danger">Delete</a>
+                                @endif
                             </td>
                         </tr>
                     @endforeach

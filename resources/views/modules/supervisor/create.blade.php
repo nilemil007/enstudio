@@ -27,9 +27,9 @@
                             </div>
                         </div>
 
-                        <!-- Supervisor Name -->
+                        <!-- Assign User -->
                         <div class="row mb-3">
-                            <label for="user_id" class="col-sm-3 col-form-label">Name</label>
+                            <label for="user_id" class="col-sm-3 col-form-label">Assign User</label>
                             <div class="col-sm-9">
                                 <select name="user_id" class="form-select @error('user_id') is-invalid @enderror" id="user_id">
                                     <option value="">-- Select Supervisor --</option>
@@ -153,7 +153,7 @@
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-sm btn-primary me-2">Create New Supervisor</button>
+                        <button type="submit" class="btn btn-sm btn-primary me-2 btn-submit">Create New Supervisor</button>
                         <a href="{{ route('supervisor.index') }}" class="btn btn-sm btn-info me-2 text-white">Back</a>
                     </form>
                 </div>
@@ -193,5 +193,128 @@
 {{--            <a href="{{ route('supervisor.sample.file.download') }}" class="nav-link text-muted">Download sample file.</a>--}}
 {{--        </div>--}}
     </div>
+
+    @push('scripts')
+        <script>
+            $(document).ready(function() {
+                // Create Supervisor
+                $(document).on('submit','#supervisorForm',function (e){
+                    e.preventDefault();
+
+                    const form = $(this)[0];
+                    const data = new FormData(form);
+                    const url = $(this).attr('action');
+                    const type = $(this).attr('method');
+                    const redirect = "{{ route('supervisor.index') }}";
+
+                    $.ajax({
+                        url: url,
+                        type: type,
+                        data: data,
+                        processData: false,
+                        contentType: false,
+                        beforeSend: function (){
+                            $('.btn-submit').prop('disabled', true).text('Creating...');
+                        },
+                        success: function (response){
+                            $('.btn-submit').prop('disabled', false).text('Create New Supervisor');
+                            Swal.fire(
+                                'Success!',
+                                response.success,
+                                'success',
+                            ).then((result) => {
+                                window.location.href = redirect;
+                            });
+                        },
+                        error: function (e){
+                            console.log(e.responseText);
+                            $('.btn-submit').prop('disabled', false).text('Create New Supervisor');
+                        },
+                    });
+                });
+
+                // Show/Hide password
+                $('#passwordShowHide').on('click', function(){
+                    const type = $('#password').attr("type");
+
+                    if(type == "password"){
+                        $('#password').attr("type","text");
+                    }
+                    else{
+                        $('#password').attr("type","password");
+                    }
+                });
+
+                // Validation
+                $('.userForm').validate({
+                    rules: {
+                        name: {
+                            required: true,
+                            maxlength: 100,
+                            minlength: 3,
+                        },
+                        username: {
+                            required: true,
+                            maxlength: 30,
+                            minlength: 3,
+                        },
+                        phone: {
+                            required: true,
+                            number: true,
+                            maxlength: 11,
+                            minlength: 11,
+                        },
+                        email: {
+                            required: true,
+                            email: true,
+                        },
+                        role: {
+                            required: true,
+                        },
+                        password: {
+                            required: true,
+                            minlength: 8,
+                        },
+                        image: {
+                            accept: "image/*",
+                        },
+                    },
+                    messages: {
+
+                    },
+                    errorPlacement: function(error, element){
+                        error.addClass('invalid-feedback');
+
+                        if (element.parent('.input-group').length) {
+                            error.insertAfter(element.parent());
+                        }
+                        else if (element.prop('type') === 'radio' && element.parent('.radio-inline').length) {
+                            error.insertAfter(element.parent().parent());
+                        }
+                        else if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
+                            error.appendTo(element.parent().parent());
+                        }
+                        else {
+                            error.insertAfter(element);
+                        }
+                    },
+                    highlight: function(element, errorClass){
+                        if ($(element).prop('type') != 'checkbox' && $(element).prop('type') != 'radio') {
+                            $( element ).addClass( "is-invalid" );
+                        }
+                    },
+                    unhighlight: function(element, errorClass){
+                        if ($(element).prop('type') != 'checkbox' && $(element).prop('type') != 'radio') {
+                            $( element ).removeClass( "is-invalid" );
+                        }
+                    },
+                });
+
+                $.validator.addMethod("password", function(value, element) {
+                    return this.optional(element) || /^(?=.*\d)(?=.*[A-Z])(?=.*\W).*$/i.test(value);
+                }, 'Password must contain one capital letter,one numerical and one special character');
+            });
+        </script>
+    @endpush
 
 </x-app-layout>

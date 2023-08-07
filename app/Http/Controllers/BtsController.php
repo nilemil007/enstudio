@@ -10,6 +10,7 @@ use App\Models\DdHouse;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
@@ -41,12 +42,12 @@ class BtsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(BtsStoreRequest $request)
+    public function store(BtsStoreRequest $request): JsonResponse
     {
         try {
             Bts::create($request->validated());
-            Alert::success('Success', 'New BTS created successfully.');
-            return to_route('bts.index');
+
+            return Response::json(['success' => 'New BTS created successfully.']);
         }catch(\Exception $exception) {
             dd($exception);
         }
@@ -114,14 +115,12 @@ class BtsController extends Controller
     /**
      * Import bts.
      */
-    public function import(Request $request): RedirectResponse
+    public function import(Request $request)
     {
         try {
             Excel::import(new BtsImport, $request->file('import_bts'));
 
-            Alert::success('Success', 'BTS imported successfully.');
-
-            return to_route('bts.index');
+            return Response::json(['success' => 'BTS imported successfully.']);
 
         } catch (ValidationException $e) {
             return to_route('bts.create')->with('import_errors', $e->failures());

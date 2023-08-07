@@ -79,7 +79,7 @@
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-sm btn-primary me-2">Create New Route</button>
+                        <button type="submit" class="btn btn-sm btn-primary me-2 btn-submit">Create New Route</button>
                         <a href="{{ route('route.index') }}" class="btn btn-sm btn-info me-2 text-white">Back</a>
                     </form>
                 </div>
@@ -103,7 +103,7 @@
 
                 <div class="card-body">
                     <h6 class="card-title">Import route</h6>
-                    <form class="row gy-2 gx-3 align-items-center" action="{{ route('route.import') }}" method="post" enctype="multipart/form-data">
+                    <form class="row gy-2 gx-3 align-items-center import-route" action="{{ route('route.import') }}" method="post" enctype="multipart/form-data">
                         @csrf
 
                         <div class="col-12">
@@ -111,7 +111,7 @@
                             <input name="import_route" type="file" class="form-control" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" required>
                         </div>
                         <div class="col-12">
-                            <button type="submit" class="btn btn-sm btn-primary w-100 mt-2">Import Route</button>
+                            <button type="submit" class="btn btn-sm btn-primary w-100 mt-2 btn-import-route">Import Route</button>
                         </div>
                     </form>
                 </div>
@@ -124,6 +124,76 @@
     @push('scripts')
         <script>
             $(document).ready(function() {
+
+                // Create Route
+                $(document).on('submit','#routeForm',function (e){
+                    e.preventDefault();
+
+                    const data = new FormData($(this)[0]);
+                    const url = $(this).attr('action');
+                    const type = $(this).attr('method');
+                    const redirect = "{{ route('route.index') }}";
+
+                    $.ajax({
+                        url: url,
+                        type: type,
+                        data: data,
+                        processData: false,
+                        contentType: false,
+                        beforeSend: function (){
+                            $('.btn-submit').prop('disabled', true).text('Creating...');
+                        },
+                        success: function (response){
+                            $('.btn-submit').prop('disabled', false).text('Create New Route');
+                            Swal.fire(
+                                'Success!',
+                                response.success,
+                                'success',
+                            ).then((result) => {
+                                window.location.href = redirect;
+                            });
+                        },
+                        error: function (e){
+                            console.log(e.responseText);
+                            $('.btn-submit').prop('disabled', false).text('Create New Route');
+                        },
+                    });
+                });
+
+                // Import Route
+                $(document).on('submit','.import-route',function (e){
+                    e.preventDefault();
+
+                    const data = new FormData($(this)[0]);
+                    const url = $(this).attr('action');
+                    const type = $(this).attr('method');
+                    const redirect = "{{ route('route.index') }}";
+
+                    $.ajax({
+                        url: url,
+                        type: type,
+                        data: data,
+                        processData: false,
+                        contentType: false,
+                        beforeSend: function (){
+                            $('.btn-import-route').prop('disabled', true).text('Importing...');
+                        },
+                        success: function (response){
+                            $('.btn-import-route').prop('disabled', false).text('Import Route');
+                            Swal.fire(
+                                'Success!',
+                                response.success,
+                                'success',
+                            ).then((result) => {
+                                window.location.href = redirect;
+                            });
+                        },
+                        error: function (e){
+                            console.log(e.responseText);
+                            $('.btn-import-route').prop('disabled', false).text('Import Route');
+                        },
+                    });
+                });
 
                 // $("#routeForm").validate({
                 //

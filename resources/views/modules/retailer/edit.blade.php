@@ -10,22 +10,6 @@
                 @csrf
                 @method('PATCH')
 
-                <!-- User -->
-                <div class="row mb-3">
-                    <label for="user_id" class="col-sm-3 col-form-label">User</label>
-                    <div class="col-sm-9">
-                        <select name="user_id" class="select-2 form-select @error('user_id') is-invalid @enderror" id="user_id">
-                            <option value="">-- Select User --</option>
-                            @if(count($users) > 0)
-                                @foreach($users as $user)
-                                    <option @selected($retailer->user_id == $user->id) value="{{ $user->id }}">{{ $user->name .' - '. $user->phone }}</option>
-                                @endforeach
-                            @endif
-                        </select>
-                        @error('user_id') <span class="text-danger">{{ $message }}</span> @enderror
-                    </div>
-                </div>
-
                 <!-- Distribution House -->
                 <div class="row mb-3">
                     <label for="dd_house" class="col-sm-3 col-form-label">Distribution House <span class="text-danger">*</span></label>
@@ -39,6 +23,22 @@
                             @endif
                         </select>
                         @error('dd_house') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                </div>
+
+                <!-- User -->
+                <div class="row mb-3">
+                    <label for="user_id" class="col-sm-3 col-form-label">User</label>
+                    <div class="col-sm-9">
+                        <select name="user_id" class="select-2 form-select @error('user_id') is-invalid @enderror" id="user_id">
+                            <option value="">-- Select User --</option>
+                            @if(count($users) > 0)
+                                @foreach($users as $user)
+                                    <option @selected($retailer->user_id == $user->id) value="{{ $user->id }}">{{ $user->name .' - '. $user->phone }}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                        @error('user_id') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                 </div>
 
@@ -80,11 +80,11 @@
                     <div class="col-sm-9">
                         <select name="bts_code" class="form-select @error('bts_code') is-invalid @enderror" id="bts_code">
                             <option value="">-- Select BTS Code --</option>
-{{--                                    @if(count($btsCode) > 0)--}}
-{{--                                        @foreach($btsCode as $bts)--}}
-{{--                                            <option value="{{ $bts->code }}">{{ $bts->code .' - '. $bts->name }}</option>--}}
-{{--                                        @endforeach--}}
-{{--                                    @endif--}}
+                                    @if(count($btsCode) > 0)
+                                        @foreach($btsCode as $bts)
+                                            <option @selected($retailer->bts_code == $bts->bts_code) value="{{ $bts->bts_code }}">{{ $bts->bts_code .' - '. \Illuminate\Support\Str::limit($bts->address, 80) }}</option>
+                                        @endforeach
+                                    @endif
                         </select>
                         @error('bts_code') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>

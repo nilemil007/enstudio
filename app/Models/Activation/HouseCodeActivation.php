@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static create(mixed $validated)
  * @method static truncate()
  * @method static when(bool $param, \Closure $param1)
+ * @method static where(string $string, $ddHouse)
  */
 class HouseCodeActivation extends Model
 {
