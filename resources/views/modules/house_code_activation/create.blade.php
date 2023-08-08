@@ -20,7 +20,7 @@
                     <form id="hcaForm" action="{{ route('hca.store') }}" method="POST">
                         @csrf
 
-                        @if(auth()->user()->role == 'superadmin')
+                        @if(auth()->user()->role == 'superadmin' || auth()->user()->role == 'supervisor')
                         <!-- User Name -->
                         <div class="row mb-3">
                             <label for="user_id" class="col-sm-3 col-form-label">User Name</label>
@@ -29,7 +29,7 @@
                                     <option value="">-- Select User --</option>
                                     @if(count($users) > 0)
                                         @foreach($users as $user)
-                                            <option value="{{ $user->id }}">{{ $user->phone .' - '. \Illuminate\Support\Str::upper($user->role) .' - '. $user->name }}</option>
+                                            <option value="{{ $user->id }}">{{ \App\Models\DdHouse::firstWhere('id', $user->dd_house)->code .' - '. \Illuminate\Support\Str::upper($user->role) .' - '. $user->name }}</option>
                                         @endforeach
                                     @endif
                                 </select>

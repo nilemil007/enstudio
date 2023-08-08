@@ -51,7 +51,7 @@ class RetailerUpdateRequest extends FormRequest
             'device_sn'         => ['nullable','unique:retailers,device_sn,'.request()->segment(2)],
             'scanner_sn'        => ['nullable','unique:retailers,scanner_sn,'.request()->segment(2)],
             'password'          => ['nullable'],
-            'house_code'        => ['nullable'],
+            'hca'               => ['nullable'],
             'nid'               => ['required', new Nid,'unique:retailers,nid,'.request()->segment(2)],
             'nid_upload'        => ['nullable','image'],
         ];

@@ -379,13 +379,13 @@
 
                 <!-- Trade Camping Code -->
                 <div class="row mb-3">
-                    <label for="house_code" class="col-sm-3 col-form-label">Trade Camping Code</label>
+                    <label for="hca" class="col-sm-3 col-form-label">Trade Camping Code</label>
                     <div class="col-sm-9">
-                        <select name="house_code" class="form-select @error('house_code') is-invalid @enderror" id="house_code">
+                        <select name="hca" class="form-select @error('hca') is-invalid @enderror" id="hca">
                             <option value="">-- Trade Camping Code --</option>
-                            <option @selected($retailer->house_code == 'rso') value="rso">RS0</option>
-                            <option @selected($retailer->house_code == 'bp') value="bp">BP</option>
-                            <option @selected($retailer->house_code == 'tmo') value="tmo">TMO</option>
+                            <option @selected($retailer->hca == 'rso') value="rso">RS0</option>
+                            <option @selected($retailer->hca == 'bp') value="bp">BP</option>
+                            <option @selected($retailer->hca == 'tmo') value="tmo">TMO</option>
                         </select>
                     </div>
                 </div>

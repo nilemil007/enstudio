@@ -7,6 +7,7 @@ use App\Http\Requests\HCAUpdateRequest;
 use App\Models\Activation\HouseCodeActivation;
 use App\Models\DdHouse;
 use App\Models\Retailer;
+use App\Models\Rso;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\Factory;
@@ -25,20 +26,21 @@ class HouseCodeActivationController extends Controller
      */
     public function index(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        if ( Auth::user()->role != 'superadmin' )
+        switch ( Auth::user()->role )
         {
+            case ('supervisor');
+                $usersId = User::where('dd_house', Auth::user()->dd_house)->pluck('id');
+                $houseCodeAct = HouseCodeActivation::where('activation_date', Carbon::now()->toDateString())->whereIn('user_id', $usersId)->get();
+            break;
 
-            $houseCodeAct = HouseCodeActivation::where('user_id', Auth::id())->get();
+            case ('bp'):
+            case ('tmo'):
+            case ('rso');
+                $houseCodeAct = HouseCodeActivation::where('user_id', Auth::id())->where('activation_date', Carbon::now()->toDateString())->get();
+            break;
 
-        }elseif ( Auth::user()->role == 'supervisor' ){
-
-            $ddHouse = DdHouse::firstWhere('id', Auth::user()->dd_house)->code;
-            $houseCodeAct = HouseCodeActivation::where('dd_house', $ddHouse)->get();
-
-        }else{
-
-            $houseCodeAct = HouseCodeActivation::latest()->get();
-
+            default;
+                $houseCodeAct = HouseCodeActivation::latest()->get();
         }
 
         return view('modules.house_code_activation.index', compact('houseCodeAct'));
@@ -49,19 +51,20 @@ class HouseCodeActivationController extends Controller
      */
     public function create(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-//        $users = User::where('role', '!=', 'superadmin')->get();
-
-        if (Auth::user()->role == 'supervisor')
+        switch ( Auth::user()->role )
         {
-            $ddCode = DdHouse::firstWhere('id', Auth::user()->dd_house)->code;
-            $ddId = DdHouse::firstWhere('id', Auth::user()->dd_house)->id;
-            $retailers = Retailer::where('dd_house', $ddCode)->get();
-            $users = User::where('dd_house', $ddId)->where('role','!=','supervisor')->get();
-        }else{
-            $retailers = Retailer::all();
-            $users = User::where('role', '!=', 'superadmin')->get();
+            case('supervisor');
+                $ddCode = DdHouse::firstWhere('id', Auth::user()->dd_house)->code;
+                $retailers = Retailer::where('dd_house', $ddCode)->where('hca','rso')->get();
+                $users = User::where('dd_house', Auth::user()->dd_house)->get();
+            break;
+
+            default;
+                $retailers = Retailer::all();
+                $users = User::where('role', '!=', 'superadmin')->get();
         }
-        return view('modules.house_code_activation.create', compact('users','retailers'));
+
+        return view('modules.house_code_activation.create', compact('retailers','users'));
     }
 
     /**

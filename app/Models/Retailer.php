@@ -64,7 +64,7 @@ class Retailer extends Model
         'scanner_sn',
         'tmp_scanner_sn',
         'password',
-        'house_code',
+        'hca',
         'nid',
         'tmp_nid',
         'nid_upload',
