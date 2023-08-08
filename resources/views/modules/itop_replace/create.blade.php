@@ -3,11 +3,15 @@
     <!-- Title -->
     <x-slot:title>Create New Replace</x-slot:title>
 
+    <div id="replaceErrMsg" class="alert alert-danger err-msg d-none"></div>
+
     <div class="card">
         <div class="card-body">
             <h6 class="card-title">Create new entry</h6>
             <form class="itopReplaceForm" action="{{ route('itop-replace.store') }}" method="POST">
                 @csrf
+
+                @if(auth()->user()->role == 'superadmin')
                 <!-- User -->
                 <div class="row mb-3">
                     <label for="exampleInputUsername2" class="col-sm-3 col-form-label">User</label>
@@ -21,6 +25,9 @@
                         @error('user_id') <small class="text-danger">{{ $message }}</small> @enderror
                     </div>
                 </div>
+                @else
+                        <input name="user_id" type="hidden" value="{{ auth()->id() }}">
+                @endif
 
                 <!-- Replace Number -->
                 <div class="row mb-3">
@@ -31,6 +38,7 @@
                     </div>
                 </div>
 
+                @if(auth()->user()->role == 'superadmin')
                 <!-- Serial Number -->
                 <div class="row mb-3">
                     <label for="serial_number" class="col-sm-3 col-form-label">Serial Number</label>
@@ -40,6 +48,7 @@
                         @error('serial_number') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                 </div>
+                @endif
 
                 <!-- Balance -->
                 <div class="row mb-3">
@@ -72,7 +81,8 @@
                 </div>
 
 
-                <button type="submit" class="btn btn-primary me-2 btn-submit">Create New Replace</button>
+                <button type="submit" class="btn btn-sm btn-primary me-2 btn-submit">Create New Replace</button>
+                    <a href="{{ route('itop-replace.index') }}" class="btn btn-sm btn-info me-2 text-white">Back</a>
             </form>
         </div>
     </div>
@@ -84,8 +94,7 @@
                 $(document).on('submit','.itopReplaceForm', function (e){
                     e.preventDefault();
 
-                    const form = $(this)[0];
-                    const data = new FormData(form);
+                    const data = new FormData(this);
                     const url = $(this).attr('action');
                     const redirect = "{{ route('itop-replace.index') }}";
 
@@ -109,7 +118,13 @@
                             });
                         },
                         error: function (e){
-                            console.log(e.responseText);
+                            const err = JSON.parse(e.responseText);
+
+                            $.each(err.errors,function (key,value){
+                                $('#replaceErrMsg').find('li').remove();
+                                $('.err-msg').removeClass('d-none').append('<li>' + value + '</li>');
+                            });
+
                             $('.btn-submit').prop('disabled', false).text('Create New Replace');
                         },
                     });

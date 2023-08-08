@@ -9,6 +9,8 @@
             <form id="itopReplaceUpdateForm" action="{{ route('itop-replace.update', $itop_replace->id) }}" method="POST">
                 @csrf
                 @method('PATCH')
+
+                @if(auth()->user()->role == 'superadmin')
                 <!-- User -->
                 <div class="row mb-3">
                     <label for="user_id" class="col-sm-3 col-form-label">User</label>
@@ -22,16 +24,18 @@
                         @error('user_id') <small class="text-danger">{{ $message }}</small> @enderror
                     </div>
                 </div>
+                @endif
 
                 <!-- Replace Number -->
                 <div class="row mb-3">
                     <label for="itop_number" class="col-sm-3 col-form-label">Replace Number</label>
                     <div class="col-sm-9">
                         <input name="itop_number" id="itop_number" type="number" class="form-control" value="{{ old('itop_number', $itop_replace->itop_number) }}"
-                               placeholder="Enter Replace Number">
+                               placeholder="Enter Replace Number" {{ $itop_replace->status != 'pending' && auth()->user()->role != 'superadmin' ? 'disabled' : '' }}>
                     </div>
                 </div>
 
+                @if(auth()->user()->role == 'superadmin')
                 <!-- Serial Number -->
                 <div class="row mb-3">
                     <label for="serial_number" class="col-sm-3 col-form-label">Serial Number</label>
@@ -41,13 +45,14 @@
                         @error('serial_number') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                 </div>
+                @endif
 
                 <!-- Balance -->
                 <div class="row mb-3">
                     <label for="balance" class="col-sm-3 col-form-label">Balance</label>
                     <div class="col-sm-9">
                         <input name="balance" id="balance" type="number" class="form-control" value="{{ old('balance', $itop_replace->balance) }}"
-                               placeholder="Enter Balance">
+                               placeholder="Enter Balance" {{ $itop_replace->status != 'pending' && auth()->user()->role != 'superadmin' ? 'disabled' : '' }}>
                     </div>
                 </div>
 
@@ -55,7 +60,7 @@
                 <div class="row mb-3">
                     <label for="reason" class="col-sm-3 col-form-label">Replace Reason</label>
                     <div class="col-sm-9">
-                        <select name="reason" class="form-select" id="reason">
+                        <select name="reason" class="form-select" id="reason" {{ $itop_replace->status != 'pending' && auth()->user()->role != 'superadmin' ? 'disabled' : '' }}>
                             <option {{ $itop_replace->reason == 'sim-lost' ? 'selected' : '' }} value="sim-lost">Sim Lost</option>
                             <option {{ $itop_replace->reason == 'stolen' ? 'selected' : '' }} value="stolen">Stolen</option>
                             <option {{ $itop_replace->reason == 'damaged' ? 'selected' : '' }} value="damaged">Damaged</option>
@@ -68,10 +73,11 @@
                     <label for="description" class="col-sm-3 col-form-label">Description</label>
                     <div class="col-sm-9">
                         <input name="description" id="description" type="text" class="form-control" value="{{ old('description', $itop_replace->description) }}"
-                               placeholder="Enter Description">
+                               placeholder="Enter Description" {{ $itop_replace->status != 'pending' && auth()->user()->role != 'superadmin' ? 'disabled' : '' }}>
                     </div>
                 </div>
 
+                @if(auth()->user()->role == 'superadmin')
                 <!-- Pay Amount -->
                 <div class="row mb-3">
                     <label for="pay_amount" class="col-sm-3 col-form-label">Pay Amount</label>
@@ -80,7 +86,9 @@
                                placeholder="Enter paid amount">
                     </div>
                 </div>
+                @endif
 
+                @if(auth()->user()->role == 'superadmin')
                 <!-- Status -->
                 <div class="row mb-3">
                     <label for="status" class="col-sm-3 col-form-label">Status</label>
@@ -94,14 +102,15 @@
                         </select>
                     </div>
                 </div>
+                @endif
 
 
                 <div class="form-footer d-flex">
-                    <button type="submit" class="btn btn-primary me-2 w-100 d-md-none">Update</button>
-                    <button type="submit" class="btn btn-primary me-2 d-none d-md-block">Update</button>
+                    <button type="submit" class="btn btn-sm btn-primary me-2 w-100 d-md-none">Update</button>
+                    <button type="submit" class="btn btn-sm btn-primary me-2 d-none d-md-block">Update</button>
 
-                    <a href="{{ route('itop-replace.index') }}" class="btn btn-info w-100 d-md-none">Back</a>
-                    <a href="{{ route('itop-replace.index') }}" class="btn btn-info me-2 d-none d-md-block">Back</a>
+                    <a href="{{ route('itop-replace.index') }}" class="btn btn-sm btn-info w-100 d-md-none text-white">Back</a>
+                    <a href="{{ route('itop-replace.index') }}" class="btn btn-sm btn-info me-2 d-none d-md-block text-white">Back</a>
                 </div>
 
             </form>

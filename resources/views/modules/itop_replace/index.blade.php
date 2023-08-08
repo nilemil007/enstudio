@@ -3,6 +3,7 @@
     <!-- Title -->
     <x-slot:title>Itop Replace</x-slot:title>
 
+    @if(auth()->user()->role == 'superadmin')
     <form class="mb-3 d-flex justify-content-center">
         <div class="row">
             <div class="col-md-5">
@@ -27,6 +28,7 @@
             </div>
         </div>
     </form>
+    @endif
 
     <div class="card">
         <div class="card-body">
@@ -34,8 +36,11 @@
                 <h4 class="card-title">Itop Replacement List</h4>
                 <span>
                     <a href="{{ route('itop-replace.create') }}" class="btn btn-sm btn-primary">Add new</a>
-                    @if(count($replaces) > 1)
-                        <a id="deleteAllReplace" href="{{ route('itop-replace.delete.all') }}" class="btn btn-sm btn-danger">Delete all</a>
+
+                    @if(auth()->user()->role == 'superadmin')
+                        @if(count($replaces) > 1)
+                            <a id="deleteAllReplace" href="{{ route('itop-replace.delete.all') }}" class="btn btn-sm btn-danger">Delete all</a>
+                        @endif
                     @endif
                 </span>
             </div>
@@ -56,7 +61,7 @@
                     </thead>
                     <tbody>
                     @foreach( $replaces as $sl => $replace )
-                        <tr {{ $replace->remarks ? 'class=bg-danger-lt' : '' }}>
+                        <tr class="{{ $replace->remarks ? 'alert alert-danger' : ($replace->status == 'paid' ? 'alert alert-success' : '') }}">
                             <td><span class="text-muted">{{ ++$sl }}</span></td>
                             <td>{{ $replace->user->name }}</td>
                             <td>{{ $replace->itop_number }}</td>
@@ -83,32 +88,34 @@
                             <td>
                                 @switch( $replace->status )
                                     @case( 'pending' )
-                                        <span class="badge bg-warning-lt me-1"></span> Pending
+                                        <span class="badge bg-secondary me-1">Pending</span>
                                         @break
 
                                     @case( 'processing' )
-                                        <span class="badge bg-warning me-1"></span> Processing
+                                        <span class="badge bg-warning me-1">Processing</span>
                                         @break
 
                                     @case( 'complete' )
-                                        <span class="badge bg-blue me-1"></span> Complete
+                                        <span class="badge bg-info me-1">Complete</span>
                                         @break
 
                                     @case( 'due' )
-                                        <span class="badge bg-danger me-1"></span> Due
+                                        <span class="badge bg-danger me-1">Due</span>
                                         @break
 
                                     @case( 'paid' )
-                                        <span class="badge bg-success me-1"></span> Paid
+                                        <span class="badge bg-success me-1">Paid</span>
                                         @break
                                 @endswitch
                             </td>
                             <td>
                                 <!-- Edit -->
-                                <a href="{{ route('itop-replace.edit', $replace->id) }}" class="btn btn-sm btn-primary">Edit</a>
+                                <a href="{{ route('itop-replace.edit', $replace->id) }}" class="btn btn-sm btn-primary {{ $replace->status != 'pending' && auth()->user()->role != 'superadmin' ? 'd-none' : '' }}">Edit</a>
 
+                                @if(auth()->user()->role == 'superadmin')
                                 <!-- Delete -->
                                 <a href="{{ route('itop-replace.destroy', $replace->id) }}" id="deleteReplace" class="btn btn-sm btn-danger">Delete</a>
+                                @endif
                             </td>
                             {{--                            @include('itop-replace.modals.approve')--}}
                         </tr>

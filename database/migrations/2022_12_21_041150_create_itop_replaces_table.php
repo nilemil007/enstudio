@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->string('itop_number', 11);
-            $table->string('tmp_itop_number', 11)->nullable();
             $table->string('serial_number', 18)->nullable()->unique();
             $table->integer('balance')->nullable();
             $table->string('reason');

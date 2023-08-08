@@ -18,18 +18,18 @@ class ItopReplaceUpdateRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, ValidationRule|array|string>
+     * @return array
      */
     public function rules(): array
     {
         return [
-            'itop_number' => ['required','starts_with:019,014','digits:11'],
+            'itop_number'   => ['required','starts_with:019,014','digits:11'],
             'serial_number' => ['digits:18','unique:itop_replaces,serial_number,'.request()->segment(2)],
-            'description' => ['max:100'],
-            'reason' => ['required'],
-            'balance' => ['required'],
-            'pay_amount' => ['nullable'],
-            'status' => ['nullable'],
+            'description'   => ['max:100'],
+            'reason'        => ['required'],
+            'balance'       => ['required'],
+            'pay_amount'    => ['nullable'],
+            'status'        => ['nullable'],
         ];
     }
 }

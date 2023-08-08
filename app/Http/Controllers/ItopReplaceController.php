@@ -76,13 +76,6 @@ class ItopReplaceController extends Controller
             unset( $replace['serial_number'] );
         }
 
-        if ( $request->filled('user_id') )
-        {
-            $replace['user_id'] = $request->input('user_id');
-        }else{
-            $replace['user_id'] = Auth::id();
-        }
-
         ItopReplace::create( $replace );
 
         return response()->json(['success' => 'New entry created successfully.']);
@@ -117,7 +110,7 @@ class ItopReplaceController extends Controller
             $update['payment_at'] = Carbon::now();
         }
 
-        if ( $itop_replace->itop_number != $request->itop_number && Auth::user()->role != 'super-admin' )
+        if ( $itop_replace->itop_number != $request->itop_number && Auth::user()->role != 'superadmin' )
         {
             unset( $update['itop_number'] );
             $update['tmp_itop_number'] = $request->itop_number;

@@ -18,17 +18,17 @@ class ItopReplaceStoreRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, ValidationRule|array|string>
+     * @return array
      */
     public function rules(): array
     {
         return [
-            'user_id' => ['required'],
-            'itop_number' => ['required','starts_with:019,014','digits:11'],
+            'user_id'       => ['required'],
+            'itop_number'   => ['required','starts_with:019,014','digits:11'],
             'serial_number' => ['digits:18','unique:itop_replaces,serial_number'],
-            'description' => ['max:100'],
-            'balance' => ['nullable'],
-            'reason' => ['nullable'],
+            'description'   => ['max:100'],
+            'balance'       => ['nullable'],
+            'reason'        => ['nullable'],
         ];
     }
 }

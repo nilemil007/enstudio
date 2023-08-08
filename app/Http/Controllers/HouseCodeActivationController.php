@@ -27,10 +27,18 @@ class HouseCodeActivationController extends Controller
     {
         if ( Auth::user()->role != 'superadmin' )
         {
+
+            $houseCodeAct = HouseCodeActivation::where('user_id', Auth::id())->get();
+
+        }elseif ( Auth::user()->role == 'supervisor' ){
+
             $ddHouse = DdHouse::firstWhere('id', Auth::user()->dd_house)->code;
             $houseCodeAct = HouseCodeActivation::where('dd_house', $ddHouse)->get();
+
         }else{
+
             $houseCodeAct = HouseCodeActivation::latest()->get();
+
         }
 
         return view('modules.house_code_activation.index', compact('houseCodeAct'));

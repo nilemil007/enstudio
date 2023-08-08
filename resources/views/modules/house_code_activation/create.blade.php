@@ -11,12 +11,16 @@
 
     <div class="row">
         <div class="col-md-12">
+
+            <div id="hcaErrMsg" class="alert alert-danger err-msg d-none"></div>
+
             <div class="card">
                 <div class="card-body">
                     <h6 class="card-title">Create new Record</h6>
                     <form id="hcaForm" action="{{ route('hca.store') }}" method="POST">
                         @csrf
 
+                        @if(auth()->user()->role == 'superadmin')
                         <!-- User Name -->
                         <div class="row mb-3">
                             <label for="user_id" class="col-sm-3 col-form-label">User Name</label>
@@ -31,6 +35,9 @@
                                 </select>
                             </div>
                         </div>
+                        @else
+                                <input name="user_id" type="hidden" value="{{ auth()->id() }}">
+                        @endif
 
                         <!-- Retailer Code -->
                         <div class="row mb-3">
@@ -121,7 +128,13 @@
                             });
                         },
                         error: function (e){
-                            console.log(e.responseText);
+                            const err = JSON.parse(e.responseText);
+
+                            $.each(err.errors,function (key,value){
+                                $('#hcaErrMsg').find('li').remove();
+                                $('.err-msg').removeClass('d-none').append('<li>' + value + '</li>');
+                            });
+
                             $('.btn-submit').prop('disabled', false).text('Create');
                         },
                     });
