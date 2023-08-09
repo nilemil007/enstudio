@@ -7,7 +7,11 @@ use App\Models\TradeCampaignRetailerCode;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Validator;
 
 class TradeCampaignRetailerCodeController extends Controller
 {
@@ -25,16 +29,23 @@ class TradeCampaignRetailerCodeController extends Controller
      */
     public function create(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $retailers = Retailer::all();
+        $tcrcId = TradeCampaignRetailerCode::whereNotNull('retailer_id')->pluck('retailer_id');
+        $retailers = Retailer::whereNotIn('id', $tcrcId)->get();
         return view('modules.trade_campaign_retailer_code.create', compact('retailers'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
-        //
+        $request->validate([
+            'retailer_id'   => ['required'],
+            'flag'          => ['required'],
+        ]);
+
+        TradeCampaignRetailerCode::create($request->only('retailer_id','flag'));
+        return Response::json(['success' => 'TCRC created successfully.']);
     }
 
     /**

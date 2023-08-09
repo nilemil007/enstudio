@@ -53,7 +53,9 @@
                 $(document).on('submit','.tcrcForm', function (e){
                     e.preventDefault();
 
-                    const data = new FormData(this);
+                    $('#tcrcErrMsg').addClass('d-none').find('li').remove();
+
+                    const data = new FormData($(this)[0]);
                     const url = $(this).attr('action');
                     const redirect = "{{ route('tcrc.index') }}";
 
@@ -80,8 +82,7 @@
                             const err = JSON.parse(e.responseText);
 
                             $.each(err.errors,function (key,value){
-                                $('#tcrcErrMsg').find('li').remove();
-                                $('#tcrcErrMsg').removeClass('d-none').append('<li>' + value + '</li>');
+                                $('.err-msg').removeClass('d-none').append('<li>' + value + '</li>');
                             });
 
                             $('.btn-submit').prop('disabled', false).text('Create TCRC');
@@ -89,50 +90,50 @@
                     });
                 })
 
-                $('.tcrcForm').validate({
-                    rules: {
-                        retailer_id: {
-                            required: true,
-                        },
-                        flag: {
-                            required: true,
-                        },
-                    },
-                    messages: {
-                        retailer_id: {
-                            required: 'একটি রিটেইলার কোড নির্বাচন করতে হবে।',
-                        },
-                        flag: {
-                            required: 'একটি ফ্ল্যাগ নির্বাচন করতে হবে।',
-                        },
-                    },
-                    errorPlacement: function(error, element){
-                        error.addClass('invalid-feedback');
-
-                        if (element.parent('.input-group').length) {
-                            error.insertAfter(element.parent());
-                        }
-                        else if (element.prop('type') === 'radio' && element.parent('.radio-inline').length) {
-                            error.insertAfter(element.parent().parent());
-                        }
-                        else if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
-                            error.appendTo(element.parent().parent());
-                        }
-                        else {
-                            error.insertAfter(element);
-                        }
-                    },
-                    highlight: function(element, errorClass){
-                        if ($(element).prop('type') !== 'checkbox' && $(element).prop('type') !== 'radio') {
-                            $( element ).addClass( "is-invalid" );
-                        }
-                    },
-                    unhighlight: function(element, errorClass){
-                        if ($(element).prop('type') !== 'checkbox' && $(element).prop('type') !== 'radio') {
-                            $( element ).removeClass( "is-invalid" );
-                        }
-                    },
-                });
+                // $('.tcrcForm').validate({
+                //     rules: {
+                //         retailer_id: {
+                //             required: true,
+                //         },
+                //         flag: {
+                //             required: true,
+                //         },
+                //     },
+                //     messages: {
+                //         retailer_id: {
+                //             required: 'একটি রিটেইলার কোড নির্বাচন করতে হবে।',
+                //         },
+                //         flag: {
+                //             required: 'একটি ফ্ল্যাগ নির্বাচন করতে হবে।',
+                //         },
+                //     },
+                //     errorPlacement: function(error, element){
+                //         error.addClass('invalid-feedback');
+                //
+                //         if (element.parent('.input-group').length) {
+                //             error.insertAfter(element.parent());
+                //         }
+                //         else if (element.prop('type') === 'radio' && element.parent('.radio-inline').length) {
+                //             error.insertAfter(element.parent().parent());
+                //         }
+                //         else if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
+                //             error.appendTo(element.parent().parent());
+                //         }
+                //         else {
+                //             error.insertAfter(element);
+                //         }
+                //     },
+                //     highlight: function(element, errorClass){
+                //         if ($(element).prop('type') !== 'checkbox' && $(element).prop('type') !== 'radio') {
+                //             $( element ).addClass( "is-invalid" );
+                //         }
+                //     },
+                //     unhighlight: function(element, errorClass){
+                //         if ($(element).prop('type') !== 'checkbox' && $(element).prop('type') !== 'radio') {
+                //             $( element ).removeClass( "is-invalid" );
+                //         }
+                //     },
+                // });
             });
         </script>
     @endpush

@@ -41,13 +41,13 @@
 
                         <!-- Retailer Code -->
                         <div class="row mb-3">
-                            <label for="retailer_code" class="col-sm-3 col-form-label">Retailer Code</label>
+                            <label for="retailer_code" class="col-sm-3 col-form-label">Retailer Code <strong>({{ count($retailers) }})</strong></label>
                             <div class="col-sm-9">
                                 <select name="retailer_code" class="select-2 form-select" id="retailer_code">
                                     <option value="">-- Select Retailer Code --</option>
                                     @if(count($retailers) > 0)
                                         @foreach($retailers as $retailer)
-                                            <option value="{{ $retailer->code }}">{{ $retailer->dd_house .' - '. $retailer->code . ' - ' . $retailer->itop_number }}</option>
+                                            <option value="{{ $retailer->code }}">{{ $retailer->code . ' - ' . $retailer->itop_number }}</option>
                                         @endforeach
                                     @endif
                                 </select>

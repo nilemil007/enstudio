@@ -13,6 +13,8 @@ use Illuminate\Support\Str;
  * @method static create()
  * @method static firstWhere()
  * @method static where(string $string, $ddCode)
+ * @method static whereNotIn($tcrcId)
+ * @method static whereIn(string $string, $retId)
  */
 class Retailer extends Model
 {

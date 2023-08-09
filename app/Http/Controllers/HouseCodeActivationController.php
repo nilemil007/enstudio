@@ -2,22 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\HouseCodeActivationExport;
 use App\Http\Requests\HCAStoreRequest;
 use App\Http\Requests\HCAUpdateRequest;
 use App\Models\Activation\HouseCodeActivation;
 use App\Models\DdHouse;
 use App\Models\Retailer;
 use App\Models\Rso;
+use App\Models\Supervisor;
+use App\Models\TradeCampaignRetailerCode;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
+use Maatwebsite\Excel\Facades\Excel;
 use RealRashid\SweetAlert\Facades\Alert;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class HouseCodeActivationController extends Controller
 {
@@ -54,13 +61,22 @@ class HouseCodeActivationController extends Controller
         switch ( Auth::user()->role )
         {
             case('supervisor');
-                $ddCode = DdHouse::firstWhere('id', Auth::user()->dd_house)->code;
-                $retailers = Retailer::where('dd_house', $ddCode)->where('hca','rso')->get();
+                $poolNumber = Supervisor::firstWhere('user_id', Auth::id())->pool_number;
+                $retId = TradeCampaignRetailerCode::whereNotNull('retailer_id')->pluck('retailer_id');
+                $retailers = Retailer::where('supervisor', $poolNumber)->whereIn('id', $retId)->get();
+                $users = User::where('dd_house', Auth::user()->dd_house)->get();
+            break;
+
+            case('rso');
+                $rsoId = Rso::firstWhere('user_id', Auth::id())->id;
+                $retId = TradeCampaignRetailerCode::whereNotNull('retailer_id')->pluck('retailer_id');
+                $retailers = Retailer::where('rso_id', $rsoId)->whereIn('id', $retId)->get();
                 $users = User::where('dd_house', Auth::user()->dd_house)->get();
             break;
 
             default;
-                $retailers = Retailer::all();
+                $retId = TradeCampaignRetailerCode::whereNotNull('retailer_id')->pluck('retailer_id');
+                $retailers = Retailer::whereIn('id', $retId)->get();
                 $users = User::where('role', '!=', 'superadmin')->get();
         }
 
@@ -70,7 +86,7 @@ class HouseCodeActivationController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(HCAStoreRequest $request): \Illuminate\Http\JsonResponse
+    public function store(HCAStoreRequest $request): JsonResponse
     {
         $data = $request->validated();
 
@@ -106,7 +122,7 @@ class HouseCodeActivationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(HCAUpdateRequest $request, HouseCodeActivation $hca)
+    public function update(HCAUpdateRequest $request, HouseCodeActivation $hca): RedirectResponse
     {
         $data = $request->validated();
 
@@ -125,7 +141,7 @@ class HouseCodeActivationController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(HouseCodeActivation $hca)
+    public function destroy(HouseCodeActivation $hca): JsonResponse
     {
         try {
             $hca->delete();
@@ -138,7 +154,7 @@ class HouseCodeActivationController extends Controller
     /**
      * Delete all house code activation.
      */
-    public function deleteAll()
+    public function deleteAll(): JsonResponse
     {
         try {
             HouseCodeActivation::truncate();
@@ -179,5 +195,13 @@ class HouseCodeActivationController extends Controller
 //        }else{
 //            return view('modules.house_code_activation.summary', compact('ddHouse'));
 //        }
+    }
+
+    /**
+     * house code activation summary.
+     */
+    public function export(): BinaryFileResponse
+    {
+        return Excel::download(new HouseCodeActivationExport, 'House Code Activation.xlsx');
     }
 }

@@ -48,9 +48,9 @@
                         <th class="w-1">No.</th>
                         <th>DD Code</th>
                         <th>Retailer Code</th>
-                        <th>Itop Number</th>
                         <th>Flag</th>
                         <th>Status</th>
+                        <th>Created At</th>
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -59,8 +59,10 @@
                         <tr>
                             <td>{{ ++$sl }}</td>
                             <td>{{ $tc->retailer->dd_house }}</td>
-                            <td>{{ $tc->retailer->code }}</td>
-                            <td>{{ $tc->retailer->itop_number }}</td>
+                            <td>
+                                {{ $tc->retailer->code }}
+                                <div class="text-muted">{{ $tc->retailer->itop_number }}</div>
+                            </td>
                             <td>{{ $tc->flag }}</td>
                             <td>{{ $tc->status }}</td>
                             <td>

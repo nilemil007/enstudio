@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static latest()
  * @method static create(mixed $validated)
  * @method static whereNotNull(string $string)
+ * @method static firstWhere(string $string, int|string|null $id)
  */
 class Supervisor extends Model
 {

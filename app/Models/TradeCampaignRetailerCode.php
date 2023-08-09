@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @method static create(array $only)
+ * @method static whereNotNull(string $string)
+ * @method static whereIn(string $string, $retId)
+ */
 class TradeCampaignRetailerCode extends Model
 {
     use HasFactory;

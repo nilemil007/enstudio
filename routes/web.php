@@ -110,6 +110,7 @@ Route::middleware(['auth'])->group(function (){
     Route::controller( HouseCodeActivationController::class )->prefix('/hca')->name('hca.')->group(function (){
         Route::post('/delete/all','deleteAll')->name('delete.all');
         Route::get('/summary','summary')->name('summary');
+        Route::get('/export','export')->name('export');
     });
 
     // Trade Campaign Retailer Code Additional Routes
