@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Str;
 
 /**
@@ -64,7 +65,6 @@ class Retailer extends Model
         'scanner_sn',
         'tmp_scanner_sn',
         'password',
-        'hca',
         'nid',
         'tmp_nid',
         'nid_upload',
@@ -206,11 +206,16 @@ class Retailer extends Model
     {
         return $this->belongsTo( User::class );
     }
-//
-//    public function rso(): BelongsTo
-//    {
-//        return $this->belongsTo( Rso::class );
-//    }
+
+    /**
+     * Retailer belongs to a user.
+     *
+     * @return HasOne
+     */
+    public function tradeCampaignRetailerCode(): HasOne
+    {
+        return $this->hasOne( TradeCampaignRetailerCode::class );
+    }
 //
 //    public function bts(): BelongsTo
 //    {

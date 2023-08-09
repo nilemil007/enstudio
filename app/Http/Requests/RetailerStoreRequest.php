@@ -56,7 +56,6 @@ class RetailerStoreRequest extends FormRequest
             'device_sn'         => ['nullable','unique:retailers,device_sn'],
             'scanner_sn'        => ['nullable','unique:retailers,scanner_sn'],
             'password'          => ['nullable'],
-            'hca'               => ['nullable'],
             'nid'               => ['required', new Nid,'unique:retailers,nid'],
             'nid_upload'        => ['nullable','image'],
         ];

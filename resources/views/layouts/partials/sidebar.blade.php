@@ -61,7 +61,9 @@
             </li>
 
             @if( auth()->user()->role == 'superadmin' )
+
             <li class="nav-item nav-category">Define</li>
+
             <!-- DD House -->
             <li class="nav-item {{ request()->routeIs('dd-house.*') ? 'active' : '' }}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#ddHouse" role="button" aria-expanded="false" aria-controls="ddHouse">
@@ -80,7 +82,6 @@
                     </ul>
                 </div>
             </li>
-
             <!-- Supervisor -->
             <li class="nav-item {{ request()->routeIs('supervisor.*') ? 'active' : '' }}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#supervisor" role="button" aria-expanded="false" aria-controls="supervisor">
@@ -99,7 +100,6 @@
                     </ul>
                 </div>
             </li>
-
             <!-- RS0 -->
             <li class="nav-item {{ request()->routeIs('rso.*') ? 'active' : '' }}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#rso" role="button" aria-expanded="false" aria-controls="rso">
@@ -118,7 +118,6 @@
                     </ul>
                 </div>
             </li>
-
             <!-- BP -->
             <li class="nav-item ">
                 <a class="nav-link" data-bs-toggle="collapse" href="#bp" role="button" aria-expanded="false" aria-controls="bp">
@@ -137,7 +136,6 @@
                     </ul>
                 </div>
             </li>
-
             <!-- TMO -->
             <li class="nav-item ">
                 <a class="nav-link" data-bs-toggle="collapse" href="#tmo" role="button" aria-expanded="false" aria-controls="tmo">
@@ -156,7 +154,6 @@
                     </ul>
                 </div>
             </li>
-
             <!-- Retailer -->
             <li class="nav-item {{ request()->routeIs('retailer.*') ? 'active' : '' }}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#retailer" role="button" aria-expanded="false" aria-controls="retailer">
@@ -175,7 +172,24 @@
                     </ul>
                 </div>
             </li>
-
+            <!-- Trade Campaign Retailer Code -->
+            <li class="nav-item {{ request()->routeIs('tcrc.*') ? 'active' : '' }}">
+                <a class="nav-link" data-bs-toggle="collapse" href="#tcrc" role="button" aria-expanded="false" aria-controls="tcrc">
+                    <i class="link-icon" data-feather="info"></i>
+                    <span class="link-title" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Trade Campaign Retailer Code">TCRC</span>
+                    <i class="link-arrow" data-feather="chevron-down"></i>
+                </a>
+                <div class="collapse {{ request()->routeIs('tcrc.*') ? 'show' : '' }}" id="tcrc">
+                    <ul class="nav sub-menu">
+                        <li class="nav-item">
+                            <a href="{{ route('tcrc.create') }}" class="nav-link {{ request()->routeIs('tcrc.create') ? 'active' : '' }}">Add New</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('tcrc.index') }}" class="nav-link {{ request()->routeIs('tcrc.index') ? 'active' : '' }}">All TCRC List</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
             <!-- BTS -->
             <li class="nav-item {{ request()->routeIs('bts.*') ? 'active' : '' }}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#bts" role="button" aria-expanded="false" aria-controls="bts">
@@ -194,7 +208,6 @@
                     </ul>
                 </div>
             </li>
-
             <!-- Route -->
             <li class="nav-item {{ request()->routeIs('route.*') ? 'active' : '' }}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#route" role="button" aria-expanded="false" aria-controls="route">

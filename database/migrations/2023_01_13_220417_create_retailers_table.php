@@ -61,7 +61,6 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->string('nid_upload')->nullable();
             $table->string('password')->nullable();
-            $table->string('hca')->nullable();
             $table->string('status')->default(1);
             $table->string('remarks')->nullable();
             $table->timestamps();

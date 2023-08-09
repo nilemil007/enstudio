@@ -1,61 +1,78 @@
 <x-app-layout>
 
     <!-- Title -->
-    <x-slot:title>All Retailer</x-slot:title>
+    <x-slot:title>Trade Campaign Retailer Code</x-slot:title>
+
+    @if(auth()->user()->role == 'superadmin')
+    <form class="mb-3 d-flex justify-content-center">
+        <div class="row">
+            <div class="col-md-5">
+                <div class="input-group">
+                    <input name="start_date" id="start_date" value="{{ request()->get('start_date') }}" type="text" class="flatpickr form-control" placeholder="Select date">
+                    <span class="input-group-text input-group-addon" data-toggle>
+                        <i data-feather="calendar"></i>
+                    </span>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="input-group">
+                    <input name="end_date" id="end_date" value="{{ request()->get('end_date') }}" type="text" class="flatpickr form-control" placeholder="Select date">
+                    <span class="input-group-text input-group-addon" data-toggle>
+                        <i data-feather="calendar"></i>
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </div>
+    </form>
+    @endif
 
     <div class="card">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <h4 class="card-title">All Retailer</h4>
+                <h4 class="card-title">Trade Campaign Retailer Code(s)</h4>
                 <span>
-                    <a href="{{ route('retailer.create') }}" class="btn btn-sm btn-primary">Add New</a>
-                    @if(count($retailers) > 1)
-                        <a id="deleteAllRetailer" href="{{ route('retailer.delete.all') }}" class="btn btn-sm btn-danger">Delete All</a>
+                    <a href="{{ route('tcrc.create') }}" class="btn btn-sm btn-primary">Add new</a>
+                    @if(count($tcrc) > 1)
+                        <a id="deleteAllTcrc" href="{{ route('tcrc.delete.all') }}" class="btn btn-sm btn-danger">Delete all</a>
                     @endif
                 </span>
             </div>
             <div class="table-responsive">
-                <table id="retailerTbl" class="table table-sm table-bordered table-hover card-table table-vcenter text-nowrap mt-3 mb-3 text-center">
+                <table id="tcrcTbl" class="table table-sm table-bordered table-hover card-table table-vcenter text-nowrap mt-3 mb-3">
                     <thead>
                     <tr>
                         <th class="w-1">No.</th>
-                        <th>Image</th>
-                        <th>DD House</th>
-                        <th>Code</th>
+                        <th>DD Code</th>
+                        <th>Retailer Code</th>
                         <th>Itop Number</th>
-                        <th>Name</th>
-                        <th>Thana</th>
-                        <th>Address</th>
+                        <th>Flag</th>
+                        <th>Status</th>
                         <th>Action</th>
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach( $retailers as $sl => $retailer )
+                    @foreach( $tcrc as $sl => $tc )
                         <tr>
-                            <td><span class="text-muted">{{ ++$sl }}</span></td>
-                            <td class="py-1">
-                                @if(!empty($retailer->user->image))
-                                    <img src="{{ asset($retailer->user->image) }}" alt="retailer image">
-                                @endif
+                            <td>{{ ++$sl }}</td>
+                            <td>{{ $tc->retailer->dd_house }}</td>
+                            <td>{{ $tc->retailer->code }}</td>
+                            <td>{{ $tc->retailer->itop_number }}</td>
+                            <td>{{ $tc->flag }}</td>
+                            <td>{{ $tc->status }}</td>
+                            <td>
+                                {{ $tc->created_at->diffForHumans() }}
+                                <div class="text-muted">{{ $tc->created_at->toDayDateTimeString() }}</div>
                             </td>
-                            <td class="d-flex align-items-center">
-                                {{ $retailer->dd_house }}
-                                &nbsp;
-                                @if($retailer->hca)
-                                    <span class="badge bg-info"><strong>{{ \Illuminate\Support\Str::upper($retailer->hca) }}</strong></span>
-                                @endif
-                            </td>
-                            <td>{{ $retailer->code }}</td>
-                            <td>{{ $retailer->itop_number }}</td>
-                            <td>{{ $retailer->name }}</td>
-                            <td>{{ $retailer->thana }}</td>
-                            <td>{{ $retailer->address }}</td>
                             <td>
                                 <!-- Edit -->
-                                <a href="{{ route('retailer.edit', $retailer->id) }}" class="btn btn-sm btn-primary">Edit</a>
+                                <a href="{{ route('tcrc.edit', $tc->id) }}" class="btn btn-sm btn-primary">Edit</a>
 
                                 <!-- Delete -->
-                                <a href="{{ route('retailer.destroy', $retailer->id) }}" id="deleteRetailer" class="btn btn-sm btn-danger">Delete</a>
+                                <a href="{{ route('tcrc.destroy', $tc->id) }}" id="deleteTcrc" class="btn btn-sm btn-danger">Delete</a>
                             </td>
                         </tr>
                     @endforeach
@@ -67,7 +84,7 @@
 
     @push('scripts')
         <script>
-            new DataTable('#retailerTbl');
+            new DataTable('#tcrcTbl');
 
             $(document).ready(function(){
                 $.ajaxSetup({
@@ -77,12 +94,12 @@
                 });
 
                 // Single delete
-                $(document).on('click','#deleteRetailer',function(e){
+                $(document).on('click','#deleteTcrc',function(e){
                     e.preventDefault();
 
                     Swal.fire({
                         title: 'Are you sure?',
-                        text: "Delete This Retailer?",
+                        text: "Delete This Entry?",
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonText: 'Yes, delete it!'
@@ -106,15 +123,15 @@
                 });
 
                 // Delete all
-                $(document).on('click','#deleteAllRetailer',function(e){
+                $(document).on('click','#deleteAllTcrc',function(e){
                     e.preventDefault();
 
                     Swal.fire({
                         title: 'Are you sure?',
-                        text: "Delete All Retailer?",
+                        text: "Delete All Entry?",
                         icon: 'warning',
                         showCancelButton: true,
-                        confirmButtonText: 'Yes, delete it !'
+                        confirmButtonText: 'Yes, delete it!'
                     }).then((result) => {
                         if (result.isConfirmed) {
                             $.ajax({

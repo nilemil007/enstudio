@@ -132,7 +132,7 @@
 
                             $.each(err.errors,function (key,value){
                                 $('#hcaErrMsg').find('li').remove();
-                                $('.err-msg').removeClass('d-none').append('<li>' + value + '</li>');
+                                $('#hcaErrMsg').removeClass('d-none').append('<li>' + value + '</li>');
                             });
 
                             $('.btn-submit').prop('disabled', false).text('Create');

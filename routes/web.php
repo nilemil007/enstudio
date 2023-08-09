@@ -8,6 +8,7 @@ use App\Http\Controllers\RetailerController;
 use App\Http\Controllers\RouteController;
 use App\Http\Controllers\RsoController;
 use App\Http\Controllers\SupervisorController;
+use App\Http\Controllers\TradeCampaignRetailerCodeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -111,6 +112,11 @@ Route::middleware(['auth'])->group(function (){
         Route::get('/summary','summary')->name('summary');
     });
 
+    // Trade Campaign Retailer Code Additional Routes
+    Route::controller( TradeCampaignRetailerCodeController::class )->prefix('/tcrc')->name('tcrc.')->group(function (){
+        Route::post('/delete/all','deleteAll')->name('delete.all');
+    });
+
     // Resource Routes
     Route::resources([
         'itop-replace'  => ItopReplaceController::class,
@@ -122,6 +128,7 @@ Route::middleware(['auth'])->group(function (){
         'retailer'      => RetailerController::class,
         'bts'           => BtsController::class,
         'hca'           => HouseCodeActivationController::class,
+        'tcrc'          => TradeCampaignRetailerCodeController::class,
     ]);
 
 });
