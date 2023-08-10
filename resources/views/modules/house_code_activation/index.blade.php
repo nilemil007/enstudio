@@ -65,6 +65,11 @@
         </div>
     </div>
 
+    @if(count($houseCodeAct) > 0)
+        <a href="{{ route('hca.export') }}" class="btn btn-sm btn-success mt-3">Export Excel</a>
+    @endif
+
+
     @push('scripts')
         <script>
             new DataTable('#hcaTbl');

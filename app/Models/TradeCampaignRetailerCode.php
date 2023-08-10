@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static create(array $only)
  * @method static whereNotNull(string $string)
  * @method static whereIn(string $string, $retId)
+ * @method static latest()
+ * @method static truncate()
  */
 class TradeCampaignRetailerCode extends Model
 {

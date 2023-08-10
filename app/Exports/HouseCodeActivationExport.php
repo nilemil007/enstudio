@@ -3,16 +3,18 @@
 namespace App\Exports;
 
 use App\Models\Activation\HouseCodeActivation;
-use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Concerns\FromCollection;
+use Illuminate\Contracts\View\View;
+use Maatwebsite\Excel\Concerns\FromView;
 
-class HouseCodeActivationExport implements FromCollection
+class HouseCodeActivationExport implements FromView
 {
     /**
-    * @return \Illuminate\Support\Collection
-    */
-    public function collection(): Collection
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function view(): View
     {
-        return HouseCodeActivation::all();
+        return view('exports.hca', [
+            'houseCodeAct' => HouseCodeActivation::all()
+        ]);
     }
 }

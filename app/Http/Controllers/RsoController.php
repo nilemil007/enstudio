@@ -89,7 +89,7 @@ class RsoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(RsoUpdateRequest $request, Rso $rso)
+    public function update(RsoUpdateRequest $request, Rso $rso): RedirectResponse
     {
         try {
 
@@ -105,7 +105,7 @@ class RsoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Rso $rso)
+    public function destroy(Rso $rso): JsonResponse
     {
         try {
             $rso->delete();

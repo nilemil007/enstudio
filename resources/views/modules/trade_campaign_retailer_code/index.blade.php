@@ -101,7 +101,7 @@
 
                     Swal.fire({
                         title: 'Are you sure?',
-                        text: "Delete This Entry?",
+                        text: "Delete This TCRC?",
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonText: 'Yes, delete it!'
@@ -130,7 +130,7 @@
 
                     Swal.fire({
                         title: 'Are you sure?',
-                        text: "Delete All Entry?",
+                        text: "Delete All TCRC?",
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonText: 'Yes, delete it!'

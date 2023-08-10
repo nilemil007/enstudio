@@ -12,6 +12,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class TradeCampaignRetailerCodeController extends Controller
 {
@@ -20,7 +21,7 @@ class TradeCampaignRetailerCodeController extends Controller
      */
     public function index(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $tcrc = TradeCampaignRetailerCode::all();
+        $tcrc = TradeCampaignRetailerCode::latest()->get();
         return view('modules.trade_campaign_retailer_code.index', compact('tcrc'));
     }
 
@@ -39,12 +40,12 @@ class TradeCampaignRetailerCodeController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        $request->validate([
+        $tcrc = $request->validate([
             'retailer_id'   => ['required'],
             'flag'          => ['required'],
         ]);
 
-        TradeCampaignRetailerCode::create($request->only('retailer_id','flag'));
+        TradeCampaignRetailerCode::create($tcrc);
         return Response::json(['success' => 'TCRC created successfully.']);
     }
 
@@ -59,24 +60,51 @@ class TradeCampaignRetailerCodeController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(TradeCampaignRetailerCode $tradeCampaignRetailerCode)
+    public function edit(TradeCampaignRetailerCode $tcrc): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        //
+        $retailers = Retailer::all();
+        return view('modules.trade_campaign_retailer_code.edit', compact('tcrc','retailers'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, TradeCampaignRetailerCode $tradeCampaignRetailerCode)
+    public function update(Request $request, TradeCampaignRetailerCode $tcrc)
     {
-        //
+        $data = $request->validate([
+            'retailer_id'   => ['required'],
+            'flag'          => ['required'],
+        ]);
+
+        $tcrc->update($data);
+
+        Alert::success('Success', 'TCRC updated successfully.');
+        return to_route('tcrc.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(TradeCampaignRetailerCode $tradeCampaignRetailerCode)
+    public function destroy(TradeCampaignRetailerCode $tcrc): JsonResponse
     {
-        //
+        try {
+            $tcrc->delete();
+            return response()->json(['success' => 'TCRC has been deleted successfully.']);
+        }catch (\Exception $exception){
+            dd($exception);
+        }
+    }
+
+    /**
+     * Delete all tcrc.
+     */
+    public function deleteAll(): JsonResponse
+    {
+        try {
+            TradeCampaignRetailerCode::truncate();
+            return response()->json(['success' => 'All TCRC has been deleted successfully.']);
+        }catch (\Exception $exception){
+            dd($exception);
+        }
     }
 }
