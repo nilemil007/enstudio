@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Str;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -14,9 +15,9 @@ class RetailerUpdateService {
      *
      * @param $request
      * @param $retailer
-     * @return RedirectResponse
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update($request, $retailer): RedirectResponse
+    public function update($request, $retailer): \Illuminate\Http\JsonResponse
     {
         $information = $request->validated();
 
@@ -24,10 +25,7 @@ class RetailerUpdateService {
         if ( Auth::user()->role == 'superadmin' )
         {
             $retailer->update( $information );
-
-            Alert::success('Success', 'Retailer information updated successfully.');
-
-            return to_route('retailer.index');
+            return Response::json(['success' => 'Retailer information updated successfully.']);
         }
 
 
@@ -165,13 +163,12 @@ class RetailerUpdateService {
         }
 
         $retailer->update( $information );
+        return Response::json(['success' => 'Retailer update request sent successfully.']);
 
 //        $superAdmin = User::firstWhere('role', 'super-admin');
 //        $rso = Rso::firstWhere( 'user_id', Auth::id());
 //
 //        $superAdmin->notify( new RetailerUpdateNotification( $retailer, $rso ) );
 //        Notification::sendNow( $superAdmin,  );
-
-        return to_route('Retailer update request sent successfully.');
     }
 }

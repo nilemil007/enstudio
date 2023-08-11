@@ -129,19 +129,14 @@
                 $(document).on('submit','#routeForm',function (e){
                     e.preventDefault();
 
-                    const data = new FormData($(this)[0]);
-                    const url = $(this).attr('action');
-                    const type = $(this).attr('method');
-                    const redirect = "{{ route('route.index') }}";
-
                     $.ajax({
-                        url: url,
-                        type: type,
-                        data: data,
+                        url: $(this).attr('action'),
+                        type: $(this).attr('method'),
+                        data: new FormData(this),
                         processData: false,
                         contentType: false,
                         beforeSend: function (){
-                            $('.btn-submit').prop('disabled', true).text('Creating...');
+                            $('.btn-submit').prop('disabled', true).text('Creating...').append('<img src="{{ url('public/assets/images/gif/DzUd.gif') }}" alt="" width="18px">');
                         },
                         success: function (response){
                             $('.btn-submit').prop('disabled', false).text('Create New Route');
@@ -150,7 +145,7 @@
                                 response.success,
                                 'success',
                             ).then((result) => {
-                                window.location.href = redirect;
+                                window.location.href = "{{ route('route.index') }}";
                             });
                         },
                         error: function (e){
@@ -164,19 +159,14 @@
                 $(document).on('submit','.import-route',function (e){
                     e.preventDefault();
 
-                    const data = new FormData($(this)[0]);
-                    const url = $(this).attr('action');
-                    const type = $(this).attr('method');
-                    const redirect = "{{ route('route.index') }}";
-
                     $.ajax({
-                        url: url,
-                        type: type,
-                        data: data,
+                        url: $(this).attr('action'),
+                        type: $(this).attr('method'),
+                        data: new FormData(this),
                         processData: false,
                         contentType: false,
                         beforeSend: function (){
-                            $('.btn-import-route').prop('disabled', true).text('Importing...');
+                            $('.btn-import-route').prop('disabled', true).text('Importing...').append('<img src="{{ url('public/assets/images/gif/DzUd.gif') }}" alt="" width="18px">');
                         },
                         success: function (response){
                             $('.btn-import-route').prop('disabled', false).text('Import Route');
@@ -185,7 +175,7 @@
                                 response.success,
                                 'success',
                             ).then((result) => {
-                                window.location.href = redirect;
+                                window.location.href = "{{ route('route.index') }}";
                             });
                         },
                         error: function (e){

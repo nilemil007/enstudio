@@ -3,6 +3,8 @@
     <!-- Title -->
     <x-slot:title>Create New Supervisor</x-slot:title>
 
+    <div id="supervisorErrMsg" class="alert alert-danger err-msg d-none"></div>
+
     <div class="row">
         <div class="col-md-8">
             <div class="card">
@@ -201,20 +203,15 @@
                 $(document).on('submit','#supervisorForm',function (e){
                     e.preventDefault();
 
-                    const form = $(this)[0];
-                    const data = new FormData(form);
-                    const url = $(this).attr('action');
-                    const type = $(this).attr('method');
-                    const redirect = "{{ route('supervisor.index') }}";
-
                     $.ajax({
-                        url: url,
-                        type: type,
-                        data: data,
+                        url: $(this).attr('action'),
+                        type: $(this).attr('method'),
+                        data: new FormData(this),
                         processData: false,
                         contentType: false,
                         beforeSend: function (){
-                            $('.btn-submit').prop('disabled', true).text('Creating...');
+                            $('#supervisorErrMsg').addClass('d-none').find('li').remove();
+                            $('.btn-submit').prop('disabled', true).text('Creating...').append('<img src="{{ url('public/assets/images/gif/DzUd.gif') }}" alt="" width="18px">');
                         },
                         success: function (response){
                             $('.btn-submit').prop('disabled', false).text('Create New Supervisor');
@@ -223,11 +220,16 @@
                                 response.success,
                                 'success',
                             ).then((result) => {
-                                window.location.href = redirect;
+                                window.location.href = "{{ route('supervisor.index') }}";
                             });
                         },
                         error: function (e){
-                            console.log(e.responseText);
+                            const err = JSON.parse(e.responseText);
+
+                            $.each(err.errors,function (key,value){
+                                $('.err-msg').removeClass('d-none').append('<li>' + value + '</li>');
+                            });
+
                             $('.btn-submit').prop('disabled', false).text('Create New Supervisor');
                         },
                     });

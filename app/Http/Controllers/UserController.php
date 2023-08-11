@@ -82,7 +82,7 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UserUpdateRequest $request, User $user): RedirectResponse
+    public function update(UserUpdateRequest $request, User $user): JsonResponse
     {
         $information = $request->validated();
 
@@ -99,9 +99,8 @@ class UserController extends Controller
         }
 
         $user->update($information);
-        Alert::success('Success', 'User updated successfully.');
 
-        return to_route('user.index');
+        return Response::json(['success' => 'User updated successfully.']);
     }
 
     /**
@@ -126,7 +125,7 @@ class UserController extends Controller
     public function deleteAll(): JsonResponse
     {
         try {
-            User::query()->delete();
+            User::truncate();
             return response()->json(['success' => 'All users has been successfully deleted.']);
         }catch (Exception $exception){
            dd($exception);

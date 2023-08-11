@@ -3,6 +3,8 @@
     <!-- Title -->
     <x-slot:title>Create New BTS</x-slot:title>
 
+    <div id="btsErrMsg" class="alert alert-danger err-msg d-none"></div>
+
     <div class="row">
         <div class="col-md-8">
             <div class="card">
@@ -222,19 +224,15 @@
                 $(document).on('submit','#btsForm',function (e){
                     e.preventDefault();
 
-                    const data = new FormData($(this)[0]);
-                    const url = $(this).attr('action');
-                    const type = $(this).attr('method');
-                    const redirect = "{{ route('bts.index') }}";
-
                     $.ajax({
-                        url: url,
-                        type: type,
-                        data: data,
+                        url: $(this).attr('action'),
+                        type: $(this).attr('method'),
+                        data: new FormData(this),
                         processData: false,
                         contentType: false,
                         beforeSend: function (){
-                            $('.btn-submit').prop('disabled', true).text('Creating...');
+                            $('#btsErrMsg').addClass('d-none').find('li').remove();
+                            $('.btn-submit').prop('disabled', true).text('Creating...').append('<img src="{{ url('public/assets/images/gif/DzUd.gif') }}" alt="" width="18px">');
                         },
                         success: function (response){
                             $('.btn-submit').prop('disabled', false).text('Create New BTS');
@@ -243,11 +241,16 @@
                                 response.success,
                                 'success',
                             ).then((result) => {
-                                window.location.href = redirect;
+                                window.location.href = "{{ route('bts.index') }}";
                             });
                         },
                         error: function (e){
-                            console.log(e.responseText);
+                            const err = JSON.parse(e.responseText);
+
+                            $.each(err.errors,function (key,value){
+                                $('.err-msg').removeClass('d-none').append('<li>' + value + '</li>');
+                            });
+
                             $('.btn-submit').prop('disabled', false).text('Create New BTS');
                         },
                     });
@@ -257,19 +260,14 @@
                 $(document).on('submit','.import-bts',function (e){
                     e.preventDefault();
 
-                    const data = new FormData($(this)[0]);
-                    const url = $(this).attr('action');
-                    const type = $(this).attr('method');
-                    const redirect = "{{ route('bts.index') }}";
-
                     $.ajax({
-                        url: url,
-                        type: type,
-                        data: data,
+                        url: $(this).attr('action'),
+                        type: $(this).attr('method'),
+                        data: new FormData(this),
                         processData: false,
                         contentType: false,
                         beforeSend: function (){
-                            $('.btn-import-bts').prop('disabled', true).text('Importing...');
+                            $('.btn-import-bts').prop('disabled', true).text('Importing...').append('<img src="{{ url('public/assets/images/gif/DzUd.gif') }}" alt="" width="18px">');
                         },
                         success: function (response){
                             $('.btn-import-bts').prop('disabled', false).text('Import BTS');
@@ -278,11 +276,16 @@
                                 response.success,
                                 'success',
                             ).then((result) => {
-                                window.location.href = redirect;
+                                window.location.href = "{{ route('bts.index') }}";
                             });
                         },
                         error: function (e){
-                            console.log(e.responseText);
+                            const err = JSON.parse(e.responseText);
+
+                            $.each(err.errors,function (key,value){
+                                $('.err-msg').removeClass('d-none').append('<li>' + value + '</li>');
+                            });
+
                             $('.btn-import-bts').prop('disabled', false).text('Import BTS');
                         },
                     });

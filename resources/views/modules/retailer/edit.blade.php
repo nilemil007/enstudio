@@ -3,6 +3,8 @@
     <!-- Title -->
     <x-slot:title>Update Retailer</x-slot:title>
 
+    <div id="retailerUpdateErrMsg" class="alert alert-danger err-msg d-none"></div>
+
     <div class="card">
         <div class="card-body">
             <h6 class="card-title">Update Retailer</h6>
@@ -410,7 +412,7 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-sm btn-primary me-2">Save Changes</button>
+                <button type="submit" class="btn btn-sm btn-primary me-2 btn-submit">Save Changes</button>
                 <a href="{{ route('retailer.index') }}" class="btn btn-sm btn-info me-2 text-white">Back</a>
             </form>
         </div>
@@ -420,6 +422,41 @@
     @push('scripts')
         <script>
             $(document).ready(function() {
+                // Update Retailer
+                $(document).on('submit','#retailerUpdateForm',function (e){
+                    e.preventDefault();
+
+                    $.ajax({
+                        url: $(this).attr('action'),
+                        type: $(this).attr('method'),
+                        data: new FormData(this),
+                        processData: false,
+                        contentType: false,
+                        beforeSend: function (){
+                            $('#retailerUpdateErrMsg').addClass('d-none').find('li').remove();
+                            $('.btn-submit').prop('disabled', true).text('Saving...').append('<img src="{{ url('public/assets/images/gif/DzUd.gif') }}" alt="" width="18px">');
+                        },
+                        success: function (response){
+                            $('.btn-submit').prop('disabled', false).text('Save Change');
+                            Swal.fire(
+                                'Success!',
+                                response.success,
+                                'success',
+                            ).then((result) => {
+                                window.location.href = "{{ route('retailer.index') }}";
+                            });
+                        },
+                        error: function (e){
+                            const err = JSON.parse(e.responseText);
+
+                            $.each(err.errors,function (key,value){
+                                $('.err-msg').removeClass('d-none').append('<li>' + value + '</li>');
+                            });
+
+                            $('.btn-submit').prop('disabled', false).text('Save Change');
+                        },
+                    });
+                });
 
                 // Validation
                 // $("#retailerUpdateForm").validate({

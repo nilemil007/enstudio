@@ -15,6 +15,7 @@ use Illuminate\Support\Str;
  * @method static where(string $string, $ddCode)
  * @method static whereNotIn($tcrcId)
  * @method static whereIn(string $string, $retId)
+ * @method static truncate()
  */
 class Retailer extends Model
 {

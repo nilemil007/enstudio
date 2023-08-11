@@ -21,6 +21,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Validation\ValidationException;
+use Intervention\Image\Facades\Image;
 use Maatwebsite\Excel\Facades\Excel;
 use RealRashid\SweetAlert\Facades\Alert;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -61,7 +62,7 @@ class RetailerController extends Controller
             // Store retailer nid
             if ($request->hasFile('nid_upload')) {
                 $name = 'retailer.nid'.$request->nid_upload->hashname();
-                $request->nid_upload->storeAs('public/retailers-nid', $name);
+                Image::make($request->image)->resize(324,204)->save(public_path('assets/images/nid/'.$name));
                 $retailer['nid_upload'] = $name;
             }
 
@@ -98,7 +99,7 @@ class RetailerController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(RetailerUpdateRequest $request, Retailer $retailer): RedirectResponse
+    public function update(RetailerUpdateRequest $request, Retailer $retailer): JsonResponse
     {
         return ( new RetailerUpdateService() )->update( $request, $retailer );
     }
@@ -132,7 +133,7 @@ class RetailerController extends Controller
     /**
      * Import retailer.
      */
-    public function import(Request $request)
+    public function import(Request $request): JsonResponse|RedirectResponse
     {
         try {
             if (Rso::all()->count() < 1)

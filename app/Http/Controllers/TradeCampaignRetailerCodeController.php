@@ -83,9 +83,7 @@ class TradeCampaignRetailerCodeController extends Controller
         ]);
 
         $tcrc->update($data);
-
-        Alert::success('Success', 'TCRC updated successfully.');
-        return to_route('tcrc.index');
+        return Response::json(['success' => 'TCRC updated successfully.']);
     }
 
     /**

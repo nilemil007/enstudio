@@ -74,14 +74,12 @@ class RouteController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(RouteUpdateRequest $request, Route $route)
+    public function update(RouteUpdateRequest $request, Route $route): JsonResponse
     {
         try {
             $route->update($request->validated());
 
-            Alert::success('Success', 'Route updated successfully.');
-
-            return to_route('route.index');
+            return Response::json(['success' => 'Route updated successfully.']);
         }catch(ValidationException $exception) {
             dd($exception);
         }
@@ -90,7 +88,7 @@ class RouteController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Route $route)
+    public function destroy(Route $route): JsonResponse
     {
         try {
             $route->delete();
@@ -116,7 +114,7 @@ class RouteController extends Controller
     /**
      * Import route.
      */
-    public function import(Request $request)
+    public function import(Request $request): JsonResponse|RedirectResponse
     {
         try {
             Excel::import(new RouteImport(), $request->file('import_route'));

@@ -73,13 +73,12 @@ class BtsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(BtsUpdateRequest $request, Bts $bt)
+    public function update(BtsUpdateRequest $request, Bts $bt): JsonResponse
     {
         try {
 
             $bt->update($request->validated());
-            Alert::success('Success', 'BTS information updated successfully.');
-            return to_route('bts.index');
+            return Response::json(['success' => 'BTS information updated successfully.']);
 
         }catch(\Exception $exception) {
             dd($exception);
@@ -89,7 +88,7 @@ class BtsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Bts $bt)
+    public function destroy(Bts $bt): JsonResponse
     {
         try {
             $bt->delete();
@@ -102,7 +101,7 @@ class BtsController extends Controller
     /**
      * Delete all bts.
      */
-    public function deleteAll()
+    public function deleteAll(): JsonResponse
     {
         try {
             Bts::truncate();
@@ -115,7 +114,7 @@ class BtsController extends Controller
     /**
      * Import bts.
      */
-    public function import(Request $request)
+    public function import(Request $request): JsonResponse|RedirectResponse
     {
         try {
             Excel::import(new BtsImport, $request->file('import_bts'));

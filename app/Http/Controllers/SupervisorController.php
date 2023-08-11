@@ -73,14 +73,11 @@ class SupervisorController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(SupervisorUpdateRequest $request, Supervisor $supervisor): \Illuminate\Http\RedirectResponse
+    public function update(SupervisorUpdateRequest $request, Supervisor $supervisor): JsonResponse
     {
         try {
             $supervisor->update($request->validated());
-
-            Alert::success('Success', 'Supervisor updated successfully.');
-
-            return to_route('supervisor.index');
+            return response()->json(['success' => 'Supervisor updated successfully.']);
         }catch(ValidationException $exception) {
             dd($exception);
         }

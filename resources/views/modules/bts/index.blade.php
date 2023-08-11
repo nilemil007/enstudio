@@ -15,7 +15,7 @@
                 </span>
             </div>
             <div class="table-responsive">
-                <table id="btsTbl" class="table table-sm table-bordered table-hover card-table table-vcenter text-nowrap mt-3 mb-3 text-center">
+                <table id="btsTbl" class="table table-sm table-bordered table-hover card-table table-vcenter text-nowrap mt-3 mb-3">
                     <thead>
                         <tr>
                             <th class="w-1">No.</th>
@@ -35,7 +35,7 @@
                             <td><span class="text-muted">{{ ++$sl }}</span></td>
                             <td>{{ $bts->dd_house }}</td>
                             <td>{{ $bts->bts_code }}</td>
-                            <td>{{ $bts->address }}</td>
+                            <td>{{ \Illuminate\Support\Str::limit($bts->address, 50) }}</td>
                             <td>{{ $bts->district }}</td>
                             <td>{{ $bts->thana }}</td>
                             <td>{{ $bts->longitude }}</td>

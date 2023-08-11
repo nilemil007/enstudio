@@ -161,21 +161,15 @@
                 $(document).on('submit','.userForm',function (e){
                     e.preventDefault();
 
-                    const form = $(this)[0];
-                    const data = new FormData(form);
-                    const url = $(this).attr('action');
-                    const type = $(this).attr('method');
-                    const redirect = "{{ route('user.index') }}";
-
                     $.ajax({
-                        url: url,
-                        type: type,
-                        data: data,
+                        url: $(this).attr('action'),
+                        type: $(this).attr('method'),
+                        data: new FormData(this),
                         processData: false,
                         contentType: false,
                         beforeSend: function (){
                             $('#userErrMsg').addClass('d-none').find('li').remove();
-                            $('.btn-submit').prop('disabled', true).text('Creating...');
+                            $('.btn-submit').prop('disabled', true).text('Creating...').append('<img src="{{ url('public/assets/images/gif/DzUd.gif') }}" alt="" width="18px">');
                         },
                         success: function (response){
                             $('.btn-submit').prop('disabled', false).text('Create New User');
@@ -184,7 +178,7 @@
                                 response.success,
                                 'success',
                             ).then((result) => {
-                                window.location.href = redirect;
+                                window.location.href = "{{ route('user.index') }}";
                             });
                         },
                         error: function (e){
@@ -203,20 +197,14 @@
                 $(document).on('submit','.user-import',function (e){
                     e.preventDefault();
 
-                    const form = $(this)[0];
-                    const data = new FormData(form);
-                    const url = $(this).attr('action');
-                    const type = $(this).attr('method');
-                    const redirect = "{{ route('user.index') }}";
-
                     $.ajax({
-                        url: url,
-                        type: type,
-                        data: data,
+                        url: $(this).attr('action'),
+                        type: $(this).attr('method'),
+                        data: new FormData(this),
                         processData: false,
                         contentType: false,
                         beforeSend: function (){
-                            $('.btn-import-user').prop('disabled', true).text('Importing...');
+                            $('.btn-import-user').prop('disabled', true).text('Importing...').append('<img src="{{ url('public/assets/images/gif/DzUd.gif') }}" alt="" width="18px">');
                         },
                         success: function (response){
                             $('.btn-import-user').prop('disabled', false).text('Import Users');
@@ -225,7 +213,7 @@
                                 response.success,
                                 'success',
                             ).then((result) => {
-                                window.location.href = redirect;
+                                window.location.href = "{{ route('user.index') }}";
                             });
                         },
                         error: function (e){

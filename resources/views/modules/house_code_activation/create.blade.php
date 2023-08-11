@@ -3,12 +3,6 @@
     <!-- Title -->
     <x-slot:title>Create New Record</x-slot:title>
 
-    @if($errors->any())
-        @foreach($errors->all() as $error)
-            <li class="alert alert-danger">{{ $error }}</li>
-        @endforeach
-    @endif
-
     <div class="row">
         <div class="col-md-12">
 

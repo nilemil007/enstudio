@@ -50,23 +50,19 @@
     @push('scripts')
         <script>
             $(document).ready(function() {
+                // Create Trade Campaign Retailer Code
                 $(document).on('submit','.tcrcForm', function (e){
                     e.preventDefault();
 
-                    $('#tcrcErrMsg').addClass('d-none').find('li').remove();
-
-                    const data = new FormData($(this)[0]);
-                    const url = $(this).attr('action');
-                    const redirect = "{{ route('tcrc.index') }}";
-
                     $.ajax({
-                        url: url,
-                        type: 'POST',
-                        data: data,
+                        url: $(this).attr('action'),
+                        type: $(this).attr('method'),
+                        data: new FormData(this),
                         processData: false,
                         contentType: false,
                         beforeSend: function (){
-                            $('.btn-submit').prop('disabled', true).text('Creating...');
+                            $('#tcrcErrMsg').addClass('d-none').find('li').remove();
+                            $('.btn-submit').prop('disabled', true).text('Creating...').append('<img src="{{ url('public/assets/images/gif/DzUd.gif') }}" alt="" width="18px">');
                         },
                         success: function (response){
                             $('.btn-submit').prop('disabled', false).text('Create TCRC');

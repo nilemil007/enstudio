@@ -3,10 +3,12 @@
     <!-- Title -->
     <x-slot:title>Update Supervisor</x-slot:title>
 
+    <div id="supervisorUpdateErrMsg" class="alert alert-danger err-msg d-none"></div>
+
     <div class="card">
         <div class="card-body">
             <h6 class="card-title">Update Supervisor</h6>
-            <form id="ddHouseUpdateForm" action="{{ route('supervisor.update', $supervisor->id) }}" method="POST">
+            <form id="supervisorUpdateForm" action="{{ route('supervisor.update', $supervisor->id) }}" method="POST">
                 @csrf
                 @method('PATCH')
 
@@ -165,7 +167,7 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-sm btn-primary me-2">Save Changes</button>
+                <button type="submit" class="btn btn-sm btn-primary me-2 btn-submit">Save Changes</button>
                 <a href="{{ route('supervisor.index') }}" class="btn btn-sm btn-info me-2 text-white">Back</a>
             </form>
         </div>
@@ -175,6 +177,41 @@
     @push('scripts')
         <script>
             $(document).ready(function() {
+                // Update Supervisor
+                $(document).on('submit','#supervisorUpdateForm',function (e){
+                    e.preventDefault();
+
+                    $.ajax({
+                        url: $(this).attr('action'),
+                        type: $(this).attr('method'),
+                        data: new FormData(this),
+                        processData: false,
+                        contentType: false,
+                        beforeSend: function (){
+                            $('#supervisorUpdateErrMsg').addClass('d-none').find('li').remove();
+                            $('.btn-submit').prop('disabled', true).text('Saving...').append('<img src="{{ url('public/assets/images/gif/DzUd.gif') }}" alt="" width="18px">');
+                        },
+                        success: function (response){
+                            $('.btn-submit').prop('disabled', false).text('Save Changes');
+                            Swal.fire(
+                                'Success!',
+                                response.success,
+                                'success',
+                            ).then((result) => {
+                                window.location.href = "{{ route('supervisor.index') }}";
+                            });
+                        },
+                        error: function (e){
+                            const err = JSON.parse(e.responseText);
+
+                            $.each(err.errors,function (key,value){
+                                $('.err-msg').removeClass('d-none').append('<li>' + value + '</li>');
+                            });
+
+                            $('.btn-submit').prop('disabled', false).text('Save Changes');
+                        },
+                    });
+                });
 
                 // Validation
                 // $("#ddHouseUpdateForm").validate({
