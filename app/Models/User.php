@@ -26,8 +26,6 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    protected string $uploads = 'storage/users/';
-
     /**
      * The attributes that are mass assignable.
      *
@@ -73,7 +71,7 @@ class User extends Authenticatable
     protected function image(): Attribute
     {
         return Attribute::make(
-            get: fn ( $image ) => empty( $image ) ?  url('public/assets/images/avatar.png') : url('public/' . $this->uploads . $image),
+            get: fn ( $image ) => empty( $image ) ?  url('public/assets/images/avatar.png') : url('public/assets/images/users/' . $image),
         );
     }
 

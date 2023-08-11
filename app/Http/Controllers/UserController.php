@@ -17,6 +17,8 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Str;
+use Intervention\Image\Facades\Image;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Validators\ValidationException;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -51,7 +53,7 @@ class UserController extends Controller
 
         if ($request->hasFile('image')) {
             $name = 'user'.$request->image->hashname();
-            $request->image->storeAs('public/users', $name);
+            Image::make($request->image)->resize(80,80)->save(public_path('assets/images/users/'.$name));
             $user['image'] = $name;
         }
 
@@ -86,13 +88,13 @@ class UserController extends Controller
 
         if ($request->hasFile('image')) {
 
-            if ( File::exists( public_path('storage/users/'.basename( $user->image ) ) ) )
+            if ( File::exists( public_path('assets/images/users/'.basename( $user->image ) ) ) )
             {
-                File::delete( public_path('storage/users/'.basename( $user->image ) ) );
+                File::delete( public_path('assets/images/users/'.basename( $user->image ) ) );
             }
 
             $name = 'user'.$request->image->hashname();
-            $request->image->storeAs('public/users', $name);
+            Image::make($request->image)->resize(80,80)->save(public_path('assets/images/users/'.$name));
             $information['image'] = $name;
         }
 
@@ -109,9 +111,9 @@ class UserController extends Controller
     {
         if ($user->delete()) {
 
-            if ( File::exists( public_path('storage/users/'.basename( $user->image ) ) ) )
+            if ( File::exists( public_path('assets/images/users/'.basename( $user->image ) ) ) )
             {
-                File::delete( public_path('storage/users/'.basename( $user->image ) ) );
+                File::delete( public_path('assets/images/users/'.basename( $user->image ) ) );
             }
         }
 

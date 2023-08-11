@@ -37,12 +37,18 @@ class TradeCampaignRetailerCodeController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request): JsonResponse
     {
-        $tcrc = $request->validate([
+        $tcrc = $this->validate($request,[
             'retailer_id'   => ['required'],
             'flag'          => ['required'],
+        ],[
+            'retailer_id.required' => 'You must select a :attribute.',
+            'flag.required' => 'You must select a :attribute.',
+        ],[
+            'retailer_id' => 'retailer code',
         ]);
 
         TradeCampaignRetailerCode::create($tcrc);

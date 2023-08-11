@@ -88,6 +88,7 @@
                                     <div class="col-sm-9">
                                         <select name="dd_house" class="form-select @error('dd_house') is-invalid @enderror" id="dd_house" required>
                                             <option selected value="">--Select DD House--</option>
+                                            <option @selected(auth()->user()->role == 'superadmin') value="0">All Houses</option>
                                             @foreach($houses as $house)
                                                 <option @selected( $user->dd_house == $house->id) value="{{ $house->id }}">{{ $house->code.' - '.$house->name }}</option>
                                             @endforeach

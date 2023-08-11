@@ -5,6 +5,9 @@
 
     <div class="row">
         <div class="col-md-8">
+
+            <div id="userErrMsg" class="alert alert-danger err-msg d-none"></div>
+
             <div class="card">
                 <div class="card-body">
                     <h6 class="card-title">Create new user</h6>
@@ -171,6 +174,7 @@
                         processData: false,
                         contentType: false,
                         beforeSend: function (){
+                            $('#userErrMsg').addClass('d-none').find('li').remove();
                             $('.btn-submit').prop('disabled', true).text('Creating...');
                         },
                         success: function (response){
@@ -184,7 +188,12 @@
                             });
                         },
                         error: function (e){
-                            console.log(e.responseText);
+                            const err = JSON.parse(e.responseText);
+
+                            $.each(err.errors,function (key,value){
+                                $('.err-msg').removeClass('d-none').append('<li>' + value + '</li>');
+                            });
+
                             $('.btn-submit').prop('disabled', false).text('Create New User');
                         },
                     });
