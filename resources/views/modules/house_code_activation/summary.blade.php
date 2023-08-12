@@ -50,18 +50,24 @@
     <table class="table-bordered mb-5 text-center">
         <thead>
             <tr>
+                <th class="p-2">No.</th>
                 <th class="p-2">Price</th>
                 <th class="p-2">Activation</th>
             </tr>
         </thead>
         <tbody>
-        @foreach($prices as $price)
+        @forelse($prices as $sl => $price)
             @php $activations = \App\Models\Activation\HouseCodeActivation::getActivationByPrice($price->price) @endphp
             <tr>
+                <td>{{ ++$sl }}</td>
                 <td class="p-2">{{ $price->price . ' ' . 'Tk' }}</td>
                 <td  class="p-2">{{ $activations . ' ' . 'Pis' }}</td>
             </tr>
-        @endforeach
+        @empty
+            <tr>
+                <td colspan="3">No data found.</td>
+            </tr>
+        @endforelse
 
         </tbody>
     </table>
