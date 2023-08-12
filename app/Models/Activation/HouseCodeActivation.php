@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static when(bool $param, \Closure $param1)
  * @method static where(string $string, $ddHouse)
  * @method static whereIn()
+ * @method static whereBetween(string $string, array $array)
  */
 class HouseCodeActivation extends Model
 {

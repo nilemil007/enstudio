@@ -81,7 +81,7 @@
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-sm btn-primary me-2 btn-submit">Create</button>
+                        <button type="submit" class="btn btn-sm btn-primary me-2 btn-submit btn-submit">Create</button>
                         <a href="{{ route('hca.index') }}" class="btn btn-sm btn-info me-2 text-white">Back</a>
                     </form>
                 </div>
@@ -92,24 +92,19 @@
     @push('scripts')
         <script>
             $(document).ready(function() {
-
                 // Create HCA Entry
                 $(document).on('submit','#hcaForm',function (e){
                     e.preventDefault();
 
-                    const data = new FormData($(this)[0]);
-                    const url = $(this).attr('action');
-                    const type = $(this).attr('method');
-                    const redirect = "{{ route('hca.index') }}";
-
                     $.ajax({
-                        url: url,
-                        type: type,
-                        data: data,
+                        url: $(this).attr('action'),
+                        type: $(this).attr('method'),
+                        data: new FormData(this),
                         processData: false,
                         contentType: false,
                         beforeSend: function (){
-                            $('.btn-submit').prop('disabled', true).text('Creating...');
+                            $('#hcaErrMsg').addClass('d-none').find('li').remove();
+                            $('.btn-submit').prop('disabled', true).text('Creating...').append('<img src="{{ url('public/assets/images/gif/DzUd.gif') }}" alt="" width="18px">');
                         },
                         success: function (response){
                             $('.btn-submit').prop('disabled', false).text('Create');
@@ -118,15 +113,14 @@
                                 response.success,
                                 'success',
                             ).then((result) => {
-                                window.location.href = redirect;
+                                window.location.href = "{{ route('hca.index') }}";
                             });
                         },
                         error: function (e){
                             const err = JSON.parse(e.responseText);
 
                             $.each(err.errors,function (key,value){
-                                $('#hcaErrMsg').find('li').remove();
-                                $('#hcaErrMsg').removeClass('d-none').append('<li>' + value + '</li>');
+                                $('.err-msg').removeClass('d-none').append('<li>' + value + '</li>');
                             });
 
                             $('.btn-submit').prop('disabled', false).text('Create');

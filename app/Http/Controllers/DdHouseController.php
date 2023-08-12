@@ -42,14 +42,11 @@ class DdHouseController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(DdHouseStoreRequest $request): RedirectResponse
+    public function store(DdHouseStoreRequest $request): JsonResponse
     {
         try {
             DdHouse::create($request->validated());
-
-            Alert::success('Success', 'DD house created successfully.');
-
-            return to_route('dd-house.index');
+            return Response::json(['success' => 'DD house created successfully.']);
         }catch(ValidationException $exception) {
             dd($exception);
         }
@@ -74,14 +71,11 @@ class DdHouseController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(DdHouseUpdateRequest $request, DdHouse $dd_house): RedirectResponse
+    public function update(DdHouseUpdateRequest $request, DdHouse $dd_house): JsonResponse
     {
         try {
             $dd_house->update($request->validated());
-
-            Alert::success('Success', 'DD house updated successfully.');
-
-            return to_route('dd-house.index');
+            return Response::json(['success' => 'DD house updated successfully.']);
         }catch(ValidationException $exception) {
             dd($exception);
         }
@@ -106,7 +100,7 @@ class DdHouseController extends Controller
     public function deleteAll(): JsonResponse
     {
         try {
-            DdHouse::query()->delete();
+            DdHouse::truncate();
             return response()->json(['success' => 'All dd house has been deleted successfully.']);
         }catch (Exception $exception){
             dd($exception);
@@ -116,7 +110,7 @@ class DdHouseController extends Controller
     /**
      * Import house.
      */
-    public function import(Request $request)
+    public function import(Request $request): JsonResponse|RedirectResponse
     {
         try {
             Excel::import(new DdHouseImport, $request->file('import_house'));

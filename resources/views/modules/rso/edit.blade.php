@@ -3,6 +3,8 @@
     <!-- Title -->
     <x-slot:title>Update Rso</x-slot:title>
 
+    <div id="rsoUpdateErrMsg" class="alert alert-danger err-msg d-none"></div>
+
     <div class="card">
         <div class="card-body">
             <h6 class="card-title">Update Rso</h6>
@@ -50,7 +52,7 @@
                             <option value="">-- Select User --</option>
                             @if(count($users) > 0)
                                 @foreach($users as $user)
-                                    <option {{ $rso->user_id == $user->id ? 'selected' : '' }} value="{{ $user->id }}">{{ $user->phone .' - '. $user->name }}</option>
+                                    <option @selected($rso->user_id == $user->id) value="{{ $user->id }}">{{ $user->phone .' - '. $user->name }}</option>
                                 @endforeach
                             @endif
                         </select>
@@ -311,9 +313,9 @@
                     <div class="col-sm-9">
                         <select name="gender" class="form-select @error('gender') is-invalid @enderror" id="gender">
                             <option value="">-- Select Gender --</option>
-                            <option {{ $rso->gender == 'male' ? 'selected' : '' }} value="male">Male</option>
-                            <option {{ $rso->gender == 'female' ? 'selected' : '' }} value="female">Female</option>
-                            <option {{ $rso->gender == 'others' ? 'selected' : '' }} value="others">Others</option>
+                            <option @selected($rso->gender == 'Male') value="male">Male</option>
+                            <option @selected($rso->gender == 'Female') value="female">Female</option>
+                            <option @selected($rso->gender == 'Others') value="others">Others</option>
                         </select>
                         @error('gender') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
@@ -384,7 +386,7 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-sm btn-primary me-2">Save Changes</button>
+                <button type="submit" class="btn btn-sm btn-primary me-2 btn-submit">Save Changes</button>
                 <a href="{{ route('rso.index') }}" class="btn btn-sm btn-info me-2 text-white">Back</a>
             </form>
         </div>
@@ -394,6 +396,41 @@
     @push('scripts')
         <script>
             $(document).ready(function() {
+                // Update Rso
+                $(document).on('submit','#rsoUpdateForm',function (e){
+                    e.preventDefault();
+
+                    $.ajax({
+                        url: $(this).attr('action'),
+                        type: $(this).attr('method'),
+                        data: new FormData(this),
+                        processData: false,
+                        contentType: false,
+                        beforeSend: function (){
+                            $('#rsoUpdateErrMsg').addClass('d-none').find('li').remove();
+                            $('.btn-submit').prop('disabled', true).text('Saving...').append('<img src="{{ url('public/assets/images/gif/DzUd.gif') }}" alt="" width="18px">');
+                        },
+                        success: function (response){
+                            $('.btn-submit').prop('disabled', false).text('Save Changes');
+                            Swal.fire(
+                                'Success!',
+                                response.success,
+                                'success',
+                            ).then((result) => {
+                                window.location.href = "{{ route('rso.index') }}";
+                            });
+                        },
+                        error: function (e){
+                            const err = JSON.parse(e.responseText);
+
+                            $.each(err.errors,function (key,value){
+                                $('.err-msg').removeClass('d-none').append('<li>' + value + '</li>');
+                            });
+
+                            $('.btn-submit').prop('disabled', false).text('Save Changes');
+                        },
+                    });
+                });
 
                 // Validation
                 // $("#rsoUpdateForm").validate({

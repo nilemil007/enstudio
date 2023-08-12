@@ -79,8 +79,7 @@ class RsoController extends Controller
     public function edit(Rso $rso): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
         $houses = DdHouse::all();
-        $userId = Rso::whereNotNull('user_id')->pluck('user_id');
-        $users = User::where('role','rso')->whereNotIn('id', $userId)->orderBy('name','asc')->get();
+        $users = User::where('role','rso')->orderBy('name','asc')->get();
         $supervisors = Supervisor::all();
         $routes = Route::all();
         return view('modules.rso.edit', compact('rso','houses','users','supervisors','routes'));
@@ -89,13 +88,12 @@ class RsoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(RsoUpdateRequest $request, Rso $rso): RedirectResponse
+    public function update(RsoUpdateRequest $request, Rso $rso): JsonResponse
     {
         try {
 
             $rso->update($request->validated());
-            Alert::success('Success', 'Rso updated successfully.');
-            return to_route('rso.index');
+            return Response::json(['success' => 'Rso updated successfully.']);
 
         }catch(\Exception $exception) {
             dd($exception);
@@ -118,10 +116,10 @@ class RsoController extends Controller
     /**
      * Delete all rso.
      */
-    public function deleteAll()
+    public function deleteAll(): JsonResponse
     {
         try {
-            Rso::query()->delete();
+            Rso::truncate();
             return response()->json(['success' => 'All rso has been deleted successfully.']);
         }catch (\Exception $exception){
             dd($exception);
@@ -131,7 +129,7 @@ class RsoController extends Controller
     /**
      * Import rso.
      */
-    public function import(Request $request)
+    public function import(Request $request): JsonResponse|RedirectResponse
     {
         try {
             Excel::import(new RsoImport, $request->file('import_rso'));

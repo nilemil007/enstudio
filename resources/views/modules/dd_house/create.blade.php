@@ -3,12 +3,14 @@
     <!-- Title -->
     <x-slot:title>Create New House</x-slot:title>
 
+    <div id="ddHouseErrMsg" class="alert alert-danger err-msg d-none"></div>
+
     <div class="row">
         <div class="col-md-8">
             <div class="card">
                 <div class="card-body">
                     <h6 class="card-title">Create new house</h6>
-                    <form id="ddHouseForm" action="{{ route('dd-house.store') }}" method="POST">
+                    <form class="ddHouseForm" action="{{ route('dd-house.store') }}" method="POST">
                         @csrf
 
                         <!-- Cluster Name -->
@@ -193,7 +195,7 @@
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-sm btn-primary me-2">Create New House</button>
+                        <button type="submit" class="btn btn-sm btn-primary me-2 btn-submit">Create New House</button>
                         <a href="{{ route('dd-house.index') }}" class="btn btn-sm btn-info me-2 text-white">Back</a>
                     </form>
                 </div>
@@ -238,37 +240,38 @@
     @push('scripts')
         <script>
             $(document).ready(function() {
-                $(document).on('submit','.dd-house-import',function (event){
+                // Create DD House
+                $(document).on('submit','.ddHouseForm',function (event){
                     event.preventDefault();
 
-                    const form = $(this)[0];
-                    const data = new FormData(form);
-                    const url = $(this).attr('action');
-                    const type = $(this).attr('method');
-                    const redirect = "{{ route('dd-house.index') }}";
-
                     $.ajax({
-                        url: url,
-                        type: type,
-                        data: data,
+                        url: $(this).attr('action'),
+                        type: $(this).attr('method'),
+                        data: new FormData(this),
                         processData: false,
                         contentType: false,
                         beforeSend: function (){
-                            $('.btn-submit').prop('disabled', true).text('Importing...');
+                            $('#ddHouseErrMsg').addClass('d-none').find('li').remove();
+                            $('.btn-submit').prop('disabled', true).text('Creating...').append('<img src="{{ url('public/assets/images/gif/DzUd.gif') }}" alt="" width="18px">');
                         },
                         success: function (response){
-                            $('.btn-submit').prop('disabled', false).text('Import House');
+                            $('.btn-submit').prop('disabled', false).text('Create New House');
                             Swal.fire(
                                 'Success!',
                                 response.success,
                                 'success',
                             ).then((result) => {
-                                window.location.href = redirect;
+                                window.location.href = "{{ route('dd-house.index') }}";
                             });
                         },
                         error: function (e){
-                            console.log(e.responseText);
-                            $('.btn-submit').prop('disabled', false).text('Import House');
+                            const err = JSON.parse(e.responseText);
+
+                            $.each(err.errors,function (key,value){
+                                $('.err-msg').removeClass('d-none').append('<li>' + value + '</li>');
+                            });
+
+                            $('.btn-submit').prop('disabled', false).text('Create New House');
                         },
                     });
                 });

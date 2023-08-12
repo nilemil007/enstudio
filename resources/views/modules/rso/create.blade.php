@@ -3,6 +3,8 @@
     <!-- Title -->
     <x-slot:title>Create New Rso</x-slot:title>
 
+    <div id="rsoErrMsg" class="alert alert-danger err-msg d-none"></div>
+
     <div class="row">
         <div class="col-md-8">
             <div class="card">
@@ -415,19 +417,15 @@
                 $(document).on('submit','#rsoForm',function (e){
                     e.preventDefault();
 
-                    const data = new FormData($(this)[0]);
-                    const url = $(this).attr('action');
-                    const type = $(this).attr('method');
-                    const redirect = "{{ route('rso.index') }}";
-
                     $.ajax({
-                        url: url,
-                        type: type,
-                        data: data,
+                        url: $(this).attr('action'),
+                        type: $(this).attr('method'),
+                        data: new FormData(this),
                         processData: false,
                         contentType: false,
                         beforeSend: function (){
-                            $('.btn-submit').prop('disabled', true).text('Creating...');
+                            $('#rsoErrMsg').addClass('d-none').find('li').remove();
+                            $('.btn-submit').prop('disabled', true).text('Creating...').append('<img src="{{ url('public/assets/images/gif/DzUd.gif') }}" alt="" width="18px">');
                         },
                         success: function (response){
                             $('.btn-submit').prop('disabled', false).text('Create New Rso');
@@ -436,11 +434,16 @@
                                 response.success,
                                 'success',
                             ).then((result) => {
-                                window.location.href = redirect;
+                                window.location.href = "{{ route('rso.index') }}";
                             });
                         },
                         error: function (e){
-                            console.log(e.responseText);
+                            const err = JSON.parse(e.responseText);
+
+                            $.each(err.errors,function (key,value){
+                                $('.err-msg').removeClass('d-none').append('<li>' + value + '</li>');
+                            });
+
                             $('.btn-submit').prop('disabled', false).text('Create New Rso');
                         },
                     });
@@ -450,19 +453,14 @@
                 $(document).on('submit','.import-rso',function (e){
                     e.preventDefault();
 
-                    const data = new FormData($(this)[0]);
-                    const url = $(this).attr('action');
-                    const type = $(this).attr('method');
-                    const redirect = "{{ route('rso.index') }}";
-
                     $.ajax({
-                        url: url,
-                        type: type,
-                        data: data,
+                        url: $(this).attr('action'),
+                        type: $(this).attr('method'),
+                        data: new FormData(this),
                         processData: false,
                         contentType: false,
                         beforeSend: function (){
-                            $('.btn-import-rso').prop('disabled', true).text('Importing...');
+                            $('.btn-import-rso').prop('disabled', true).text('Importing...').append('<img src="{{ url('public/assets/images/gif/DzUd.gif') }}" alt="" width="18px">');
                         },
                         success: function (response){
                             $('.btn-import-rso').prop('disabled', false).text('Import Rso');
@@ -471,11 +469,16 @@
                                 response.success,
                                 'success',
                             ).then((result) => {
-                                window.location.href = redirect;
+                                window.location.href = "{{ route('rso.index') }}";
                             });
                         },
                         error: function (e){
-                            console.log(e.responseText);
+                            const err = JSON.parse(e.responseText);
+
+                            $.each(err.errors,function (key,value){
+                                $('.err-msg').removeClass('d-none').append('<li>' + value + '</li>');
+                            });
+
                             $('.btn-import-rso').prop('disabled', false).text('Import Rso');
                         },
                     });

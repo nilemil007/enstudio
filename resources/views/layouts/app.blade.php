@@ -72,7 +72,7 @@
 <!-- inject:js -->
 <script src="{{ url('public/assets/vendors/feather-icons/feather.min.js') }}"></script>
 <script src="{{ url('public/assets/js/template.js') }}"></script>
-<script src="{{ url('public/assets/js/dashboard-light.js') }}"></script>
+{{--<script src="{{ url('public/assets/js/dashboard-light.js') }}"></script>--}}
 <!-- endinject -->
 
 <!-- datatable:js -->
@@ -81,7 +81,7 @@
 <!-- enddatatable -->
 
 <!-- flatpickr -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js" integrity="sha512-K/oyQtMXpxI4+K0W7H25UopjM8pzq0yrVdFdG21Fh5dBe91I40pDd9A4lzNlHPHBIP2cwZuoxaUSX0GJSObvGA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js"></script>
 <!-- endflatpickr -->
 
 <!-- select2 -->
@@ -89,8 +89,8 @@
 <!-- endselect2 -->
 
 <!-- jquery.validate -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js" integrity="sha512-rstIgDs0xPgmG6RX1Aba4KV5cWJbAMcvRCVmglpam9SoHZiUCyQVDdH2LPlxoHtrv17XWblE/V/PP+Tr04hbtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/additional-methods.min.js" integrity="sha512-6S5LYNn3ZJCIm0f9L6BCerqFlQ4f5MwNKq+EthDXabtaJvg3TuFLhpno9pcm+5Ynm6jdA9xfpQoMz2fcjVMk9g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/additional-methods.min.js"></script>
 <!-- endjquery.validate -->
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

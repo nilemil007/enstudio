@@ -122,7 +122,7 @@ class HouseCodeActivationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(HCAUpdateRequest $request, HouseCodeActivation $hca): RedirectResponse
+    public function update(HCAUpdateRequest $request, HouseCodeActivation $hca): JsonResponse
     {
         $data = $request->validated();
 
@@ -130,8 +130,7 @@ class HouseCodeActivationController extends Controller
 
             $data['dd_house'] = Retailer::firstWhere('code', $request->retailer_code)->dd_house;
             $hca->update($data);
-            Alert::success('Success', 'Record updated successfully.');
-            return to_route('hca.index');
+            return Response::json(['success' => 'Record updated successfully.']);
 
         }catch(\Exception $exception) {
             dd($exception);
@@ -173,28 +172,7 @@ class HouseCodeActivationController extends Controller
         $results = HouseCodeActivation::when($request->start_date != null, function (Builder $query) use ($request){
             return $query->whereBetween('activation_date', [$request->start_date, Carbon::parse($request->end_date)->endOfDay()]);
         })->get();
-//        dd($result);
         return view('modules.house_code_activation.summary', compact('results','ddHouse'));
-
-
-
-//        $ddHouse = DdHouse::all();
-//
-//        if ( !empty($request->input('start_date')) && !empty($request->input('end_date')) )
-//        {
-//            $sdate =  $request->input('start_date');
-//            $edate =  $request->input('end_date');
-//            $hca = HouseCodeActivation::search( $request->search )
-//                ->whereBetween('activation_date', [$sdate, Carbon::parse($edate)->endOfDay()])
-//                ->get();
-//            return view('modules.house_code_activation.summary', compact('hca','ddHouse'));
-//        }elseif ($request->dd_house)
-//        {
-//            $hca = HouseCodeActivation::search( $request->search )->get();
-//            return view('modules.house_code_activation.summary', compact('hca','ddHouse'));
-//        }else{
-//            return view('modules.house_code_activation.summary', compact('ddHouse'));
-//        }
     }
 
     /**
