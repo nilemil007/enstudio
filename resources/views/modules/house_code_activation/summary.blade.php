@@ -68,6 +68,10 @@
                 <td colspan="3">No data found.</td>
             </tr>
         @endforelse
+            <tr style="font-weight: bold;">
+                <td colspan="2">Total</td>
+                <td>{{ $results->sum('activation') . ' ' . 'Pis' }}</td>
+            </tr>
 
         </tbody>
     </table>
