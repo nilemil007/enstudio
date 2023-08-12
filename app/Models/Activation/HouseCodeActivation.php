@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static where(string $string, $ddHouse)
  * @method static whereIn()
  * @method static whereBetween(string $string, array $array)
+ * @method static select(string $string)
  */
 class HouseCodeActivation extends Model
 {
@@ -38,5 +39,15 @@ class HouseCodeActivation extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo( User::class );
+    }
+
+    public static function getPrice()
+    {
+        return HouseCodeActivation::select('price')->groupBy('price')->get();
+    }
+
+    public static function getActivationByPrice($price)
+    {
+        return HouseCodeActivation::select('activation')->where('price', $price)->sum('activation');
     }
 }

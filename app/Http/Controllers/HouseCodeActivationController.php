@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\HouseCodeActivationExport;
+use App\Exports\HouseCodeActivationLastMonthExport;
 use App\Http\Requests\HCAStoreRequest;
 use App\Http\Requests\HCAUpdateRequest;
 use App\Models\Activation\HouseCodeActivation;
@@ -169,17 +170,26 @@ class HouseCodeActivationController extends Controller
     public function summary(Request $request): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
         $ddHouse = DdHouse::all();
-        $results = HouseCodeActivation::when($request->start_date != null, function (Builder $query) use ($request){
-            return $query->whereBetween('activation_date', [$request->start_date, Carbon::parse($request->end_date)->endOfDay()]);
-        })->get();
-        return view('modules.house_code_activation.summary', compact('results','ddHouse'));
+
+        $results = HouseCodeActivation::all();
+        $prices = HouseCodeActivation::getPrice();
+
+        return view('modules.house_code_activation.summary', compact('results','ddHouse','prices'));
     }
 
     /**
-     * house code activation summary.
+     * house code activation export.
      */
     public function export(): BinaryFileResponse
     {
         return Excel::download(new HouseCodeActivationExport, 'House Code Activation.xlsx');
+    }
+
+    /**
+     * house code activation last month export.
+     */
+    public function exportLastMonth(): BinaryFileResponse
+    {
+        return Excel::download(new HouseCodeActivationLastMonthExport(), 'House Code Activation.xlsx');
     }
 }

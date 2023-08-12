@@ -111,6 +111,7 @@ Route::middleware(['auth'])->group(function (){
         Route::post('/delete/all','deleteAll')->name('delete.all');
         Route::get('/summary','summary')->name('summary');
         Route::get('/export','export')->name('export');
+        Route::get('/export-last-month','exportLastMonth')->name('export.last.month');
     });
 
     // Trade Campaign Retailer Code Additional Routes

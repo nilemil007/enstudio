@@ -66,13 +66,13 @@
     </div>
 
     @if(count($houseCodeAct) > 0)
-        <div class="btn-group dropup mt-3" role="group">
+        <div class="dropup mt-3" role="group">
             <button type="button" class="btn btn-sm btn-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                 Export Excel
             </button>
             <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="{{ route('hca.export') }}">Current Month</a></li>
-                <li><a class="dropdown-item" href="#">Last Month</a></li>
+                <li><a class="dropdown-item" href="{{ route('hca.export.last.month') }}">Last Month</a></li>
             </ul>
         </div>
     @endif

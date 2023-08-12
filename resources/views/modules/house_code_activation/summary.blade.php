@@ -1,3 +1,5 @@
+@php $sumOfActivation = true; @endphp
+
 <x-app-layout>
 
     <!-- Title -->
@@ -45,94 +47,58 @@
         </div>
     </div>
 
-    @if(!empty($results))
-        <div class="card">
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-sm table-hover table-bordered card-table table-vcenter text-nowrap mt-3 mb-3 text-center">
-                        <thead>
-                        <tr>
-                            <th class="w-1">No.</th>
-                            <th>DD House</th>
-                            <th>Name</th>
-                            <th>Retailer Code</th>
-                            <th>Activation</th>
-                            <th>Price</th>
-                            <th>Date</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($results as $sl => $result)
-                            <tr>
-                                <td>{{ ++$sl }}</td>
-                                <td>{{ $result->dd_house }}</td>
-                                <td>{{ $result->user->name }}</td>
-                                <td>{{ $result->retailer_code }}</td>
-                                <td>{{ $result->activation }}</td>
-                                <td>{{ $result->price }}</td>
-                                <td>{{ $result->activation_date->toFormattedDateString() }}</td>
-                            </tr>
-                        @endforeach
-                        <tr style="font-weight: bold">
-                            <td colspan="4">Grand Total</td>
-                            <td>{{ $results->sum('activation') }}</td>
-                            <td colspan="2"></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    @endif
+    <table class="table-bordered mb-5 text-center">
+        <thead>
+            <tr>
+                <th class="p-2">Price</th>
+                <th class="p-2">Activation</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach($prices as $price)
+            @php $activations = \App\Models\Activation\HouseCodeActivation::getActivationByPrice($price->price) @endphp
+            <tr>
+                <td class="p-2">{{ $price->price . ' ' . 'Tk' }}</td>
+                <td  class="p-2">{{ $activations . ' ' . 'Pis' }}</td>
+            </tr>
+        @endforeach
 
-    @push('scripts')
-        <script>
-            $(document).ready(function() {
-                $('#hcaSummaryForm').validate({
-                    rules: {
-                        start_date: {
-                            required: true,
-                        },
-                        end_date: {
-                            required: true,
-                        },
-                    },
-                    messages: {
-                        start_date: {
-                            required: 'Please select a start date.',
-                        },
-                        end_date: {
-                            required: 'Please select a end date.',
-                        }
-                    },
-                    errorPlacement: function(error, element){
-                        error.addClass('invalid-feedback');
+        </tbody>
+    </table>
 
-                        if (element.parent('.input-group').length) {
-                            error.insertAfter(element.parent());
-                        }
-                        else if (element.prop('type') === 'radio' && element.parent('.radio-inline').length) {
-                            error.insertAfter(element.parent().parent());
-                        }
-                        else if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
-                            error.appendTo(element.parent().parent());
-                        }
-                        else {
-                            error.insertAfter(element);
-                        }
-                    },
-                    highlight: function(element, errorClass){
-                        if ($(element).prop('type') != 'checkbox' && $(element).prop('type') != 'radio') {
-                            $( element ).addClass( "is-invalid" );
-                        }
-                    },
-                    unhighlight: function(element, errorClass){
-                        if ($(element).prop('type') != 'checkbox' && $(element).prop('type') != 'radio') {
-                            $( element ).removeClass( "is-invalid" );
-                        }
-                    },
-                });
-            });
-        </script>
-    @endpush
+
+{{--    <div class="table-responsive mt-5">--}}
+{{--        <table class="table-bordered">--}}
+{{--            <thead>--}}
+{{--            <tr>--}}
+{{--                <th class="w-1">No.</th>--}}
+{{--                <th>DD House</th>--}}
+{{--                <th>Name</th>--}}
+{{--                <th>Retailer Code</th>--}}
+{{--                <th>Activation</th>--}}
+{{--                <th>Price</th>--}}
+{{--                <th>Date</th>--}}
+{{--            </tr>--}}
+{{--            </thead>--}}
+{{--            <tbody>--}}
+{{--            @foreach($results as $sl => $result)--}}
+{{--                <tr>--}}
+{{--                    <td>{{ ++$sl }}</td>--}}
+{{--                    <td>{{ $result->dd_house }}</td>--}}
+{{--                    <td>{{ $result->user->name }}</td>--}}
+{{--                    <td>{{ $result->retailer_code }}</td>--}}
+{{--                    <td>{{ $result->activation }}</td>--}}
+{{--                    <td>{{ $result->price }}</td>--}}
+{{--                    <td>{{ $result->activation_date->toFormattedDateString() }}</td>--}}
+{{--                </tr>--}}
+{{--            @endforeach--}}
+{{--            <tr style="font-weight: bold">--}}
+{{--                <td colspan="4">Grand Total</td>--}}
+{{--                <td>{{ $results->sum('activation') }}</td>--}}
+{{--                <td colspan="2"></td>--}}
+{{--            </tr>--}}
+{{--            </tbody>--}}
+{{--        </table>--}}
+{{--    </div>--}}
+
 </x-app-layout>
