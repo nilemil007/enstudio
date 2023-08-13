@@ -23,7 +23,7 @@
                                     <option value="">-- Select User --</option>
                                     @if(count($users) > 0)
                                         @foreach($users as $user)
-                                            <option value="{{ $user->id }}">{{ \App\Models\DdHouse::firstWhere('id', $user->dd_house)->code .' - '. \Illuminate\Support\Str::upper($user->role) .' - '. $user->name }}</option>
+                                            <option value="{{ $user->id }}">{{ \App\Models\DdHouse::firstWhere('id', $user->dd_house)->code .' - '. optional(\App\Models\Rso::firstWhere('user_id', $user->id))->itop_number . '-' .  \Illuminate\Support\Str::upper($user->role) .' - '. $user->name }}</option>
                                         @endforeach
                                     @endif
                                 </select>
