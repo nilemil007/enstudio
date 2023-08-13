@@ -21,13 +21,6 @@ Route::get('/', function () {
 Route::middleware(['auth'])->group(function (){
     // Dashboard
     Route::get('/dashboard', function (){
-
-        // Link storage folder if dose not linked.
-        if (!\Illuminate\Support\Facades\File::isDirectory('public/storage'))
-        {
-            \Illuminate\Support\Facades\Artisan::call('storage:link');
-        }
-
         return view('dashboard');
     })->name('dashboard');
 
