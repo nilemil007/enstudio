@@ -26,7 +26,7 @@ class BpStoreRequest extends FormRequest
             'user_id'           => ['required'],
             'supervisor'        => ['required'],
             'dd_house_id'       => ['required'],
-            'response_id'       => ['required'],
+            'response_id'       => ['required','unique:bps'],
             'type'              => ['required'],
             'pool_number'       => ['required','numeric','digits: 11','unique:bps'],
             'personal_number'   => ['required','numeric','digits: 11','unique:bps'],
@@ -44,8 +44,8 @@ class BpStoreRequest extends FormRequest
             'education'         => ['required'],
             'gender'            => ['required'],
             'dob'               => ['required','date'],
-            'nid'               => ['required','numeric',new Nid,'unique:bps,nid'],
-            'documents'         => ['nullable'],
+            'nid'               => ['required','numeric',new Nid,'unique:bps'],
+            'documents'         => ['required','mimes:pdf'],
             'joining_date'      => ['required','date'],
         ];
     }

@@ -372,7 +372,7 @@
                         processData: false,
                         contentType: false,
                         beforeSend: function (){
-                            $('#rsoErrMsg').addClass('d-none').find('li').remove();
+                            $('#bpErrMsg').addClass('d-none').find('li').remove();
                             $('.btn-submit').prop('disabled', true).text('Creating...').append('<img src="{{ url('public/assets/images/gif/DzUd.gif') }}" alt="" width="18px">');
                         },
                         success: function (response){

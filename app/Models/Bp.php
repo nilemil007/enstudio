@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @method static create(mixed $data)
+ * @method static latest()
+ * @property mixed documents
  */
 class Bp extends Model
 {
