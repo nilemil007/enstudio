@@ -47,34 +47,39 @@
 {{--        </div>--}}
 {{--    </div>--}}
 
-    <table class="table-bordered mb-5 text-center">
-        <thead>
-            <tr>
-                <th class="p-2">No.</th>
-                <th class="p-2">Price</th>
-                <th class="p-2">Activation</th>
-            </tr>
-        </thead>
-        <tbody>
-        @forelse($prices as $sl => $price)
-            @php $activations = \App\Models\Activation\HouseCodeActivation::getActivationByPrice($price->price) @endphp
-            <tr>
-                <td>{{ ++$sl }}</td>
-                <td class="p-2">{{ $price->price . ' ' . 'Tk' }}</td>
-                <td  class="p-2">{{ $activations . ' ' . 'Pis' }}</td>
-            </tr>
-        @empty
-            <tr>
-                <td colspan="3">No data found.</td>
-            </tr>
-        @endforelse
-            <tr style="font-weight: bold;">
-                <td colspan="2">Total</td>
-                <td>{{ $results->sum('activation') . ' ' . 'Pis' }}</td>
-            </tr>
+    <div class="card">
+        <h5 class="card-header">Summary</h5>
+        <div class="card-body">
+            <table class="table table-bordered text-center">
+                <thead>
+                <tr>
+                    <th class="p-2">No.</th>
+                    <th class="p-2">Price</th>
+                    <th class="p-2">Activation</th>
+                </tr>
+                </thead>
+                <tbody>
+                @forelse($prices as $sl => $price)
+                    @php $activations = \App\Models\Activation\HouseCodeActivation::getActivationByPrice($price->price) @endphp
+                    <tr>
+                        <td>{{ ++$sl }}</td>
+                        <td class="p-2">{{ $price->price . ' ' . 'Tk' }}</td>
+                        <td  class="p-2">{{ $activations . ' ' . 'Pis' }}</td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="3">No data found.</td>
+                    </tr>
+                @endforelse
+                <tr style="font-weight: bold;">
+                    <td colspan="2">Total</td>
+                    <td>{{ $results->sum('activation') . ' ' . 'Pis' }}</td>
+                </tr>
 
-        </tbody>
-    </table>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
 
 {{--    <div class="table-responsive mt-5">--}}
