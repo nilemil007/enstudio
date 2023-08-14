@@ -31,14 +31,23 @@
                 <div class="collapse {{ request()->routeIs('hca.*') ? 'show' : '' }}" id="dailyActivation">
                     <ul class="nav sub-menu">
                         <!-- House Code Activation -->
+                        @if(auth()->user()->role != 'md')
                         <li class="nav-item">
                             <a href="{{ route('hca.index') }}" class="nav-link {{ request()->routeIs('hca.index') ? 'active' : '' }}" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="House Code Activation">HCA</a>
                         </li>
+                        @endif
+
+                       @if(auth()->user()->role == 'md' || auth()->user()->role == 'superadmin')
+                        <li class="nav-item">
+                            <a href="{{ route('hca.summary') }}" class="nav-link {{ request()->routeIs('hca.summary') ? 'active' : '' }}">Summary</a>
+                        </li>
+                        @endif
                     </ul>
                 </div>
             </li>
 
 
+            @if( auth()->user()->role == 'superadmin' )
             <li class="nav-item nav-category">Services</li>
 
             <!-- Itop Replace -->
@@ -59,6 +68,7 @@
                     </ul>
                 </div>
             </li>
+            @endif
 
             @if( auth()->user()->role == 'superadmin' )
 

@@ -75,7 +75,7 @@ class TradeCampaignRetailerCodeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, TradeCampaignRetailerCode $tcrc)
+    public function update(Request $request, TradeCampaignRetailerCode $tcrc): JsonResponse
     {
         $data = $request->validate([
             'retailer_id'   => ['required'],

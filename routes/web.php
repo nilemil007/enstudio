@@ -116,6 +116,7 @@ Route::middleware(['auth'])->group(function (){
         Route::get('/summary','summary')->name('summary');
         Route::get('/export','export')->name('export');
         Route::get('/export-last-month','exportLastMonth')->name('export.last.month');
+        Route::get('/lmtd', 'lmtd')->name('lmtd');
     });
 
     // Trade Campaign Retailer Code Additional Routes

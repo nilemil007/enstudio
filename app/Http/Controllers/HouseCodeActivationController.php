@@ -78,7 +78,7 @@ class HouseCodeActivationController extends Controller
             default;
                 $retId = TradeCampaignRetailerCode::whereNotNull('retailer_id')->pluck('retailer_id');
                 $retailers = Retailer::whereIn('id', $retId)->get();
-                $users = User::where('role', '!=', 'superadmin')->get();
+                $users = User::where('role', '!=', 'superadmin')->where('role', '!=', 'md')->get();
         }
 
         return view('modules.house_code_activation.create', compact('retailers','users'));
@@ -167,14 +167,23 @@ class HouseCodeActivationController extends Controller
     /**
      * house code activation summary.
      */
-    public function summary(Request $request): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
+    public function summary(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $ddHouse = DdHouse::all();
+        $sum = HouseCodeActivation::getSumOfCurrentMonth();
+        $prices = HouseCodeActivation::getPriceOfCurrentMonth();
 
-        $results = HouseCodeActivation::all();
-        $prices = HouseCodeActivation::getPrice();
+        return view('modules.house_code_activation.summary', compact('sum','prices'));
+    }
 
-        return view('modules.house_code_activation.summary', compact('results','ddHouse','prices'));
+    /**
+     * house code activation LMTD.
+     */
+    public function lmtd(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
+    {
+        $sum = HouseCodeActivation::getSumOfPreviousMonth();
+        $prices = HouseCodeActivation::getPriceOfPreviousMonth();
+
+        return view('modules.house_code_activation.lmtd', compact('sum','prices'));
     }
 
     /**

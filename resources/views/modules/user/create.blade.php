@@ -79,7 +79,8 @@
                             <label for="dd_house" class="col-sm-3 col-form-label">DD House</label>
                             <div class="col-sm-9">
                                 <select name="dd_house" class="form-select @error('dd_house') is-invalid @enderror" id="dd_house" required>
-                                    <option selected value="">--Select DD House--</option>
+                                    <option value="">--Select DD House--</option>
+                                    <option value="0">All House</option>
                                     @foreach($houses as $house)
                                         <option value="{{ $house->id }}">{{ $house->code.' - '.$house->name }}</option>
                                     @endforeach
