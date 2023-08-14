@@ -127,5 +127,15 @@ class User extends Authenticatable
         return $this->hasMany( HouseCodeActivation::class );
     }
 
+    /**
+     * User has one bp.
+     *
+     * @return HasOne
+     */
+    public function bp(): HasOne
+    {
+        return $this->hasOne( Bp::class );
+    }
+
 
 }

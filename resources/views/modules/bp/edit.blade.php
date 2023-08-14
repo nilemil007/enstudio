@@ -373,20 +373,6 @@
                     </div>
                 </div>
 
-                <!-- Resigning Date -->
-                <div class="row mb-3">
-                    <label for="resigning_date" class="col-sm-3 col-form-label">Resigning Date</label>
-                    <div class="col-sm-9">
-                        <div class="input-group">
-                            <input name="resigning_date" id="resigning_date" type="text" value="{{ $rso->resigning_date }}" class="flatpickr form-control @error('resigning_date') is-invalid @enderror" placeholder="Select date">
-                            <span class="input-group-text input-group-addon" data-toggle>
-                            <i data-feather="calendar"></i>
-                        </span>
-                        </div>
-                        @error('resigning_date') <span class="text-danger">{{ $message }}</span> @enderror
-                    </div>
-                </div>
-
                 <!-- Status -->
                 <div class="row mb-3">
                     <label for="status" class="col-sm-3 col-form-label">Status</label>

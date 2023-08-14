@@ -119,19 +119,19 @@
                 </div>
             </li>
             <!-- BP -->
-            <li class="nav-item ">
+            <li class="nav-item {{ request()->routeIs('bp.*') ? 'active' : '' }}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#bp" role="button" aria-expanded="false" aria-controls="bp">
                     <i class="link-icon" data-feather="info"></i>
                     <span class="link-title">BP</span>
                     <i class="link-arrow" data-feather="chevron-down"></i>
                 </a>
-                <div class="collapse " id="bp">
+                <div class="collapse {{ request()->routeIs('bp.*') ? 'show' : '' }}" id="bp">
                     <ul class="nav sub-menu">
                         <li class="nav-item">
-                            <a href="#" class="nav-link ">Add New</a>
+                            <a href="{{ route('bp.create') }}" class="nav-link {{ request()->routeIs('bp.create') ? 'active' : '' }}">Add New</a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link ">All BP</a>
+                            <a href="{{ route('bp.index') }}" class="nav-link {{ request()->routeIs('bp.index') ? 'active' : '' }}">All Bp</a>
                         </li>
                     </ul>
                 </div>

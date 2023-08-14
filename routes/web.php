@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BpController;
 use App\Http\Controllers\BtsController;
 use App\Http\Controllers\DdHouseController;
 use App\Http\Controllers\HouseCodeActivationController;
@@ -69,6 +70,16 @@ Route::middleware(['auth'])->group(function (){
         Route::get('/sample-file-download','sampleFileDownload')->name('sample.file.download');
     });
 
+    // BP Additional Routes
+    Route::prefix('/bp')->controller( RsoController::class )->name('bp.')->group(function (){
+        // Delete all
+        Route::post('/delete/all','deleteAll')->name('delete.all');
+        // Import
+        Route::post('/import','import')->name('import');
+        // Download sample file
+        Route::get('/sample-file-download','sampleFileDownload')->name('sample.file.download');
+    });
+
     // Route Additional Routes
     Route::prefix('/route')->controller( RouteController::class )->name('route.')->group(function (){
         // Delete all
@@ -119,6 +130,7 @@ Route::middleware(['auth'])->group(function (){
         'dd-house'      => DdHouseController::class,
         'supervisor'    => SupervisorController::class,
         'rso'           => RsoController::class,
+        'bp'            => BpController::class,
         'route'         => RouteController::class,
         'retailer'      => RetailerController::class,
         'bts'           => BtsController::class,
