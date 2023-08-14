@@ -3,6 +3,7 @@
 namespace App\Models\Activation;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -41,13 +42,82 @@ class HouseCodeActivation extends Model
         return $this->belongsTo( User::class );
     }
 
-    public static function getPrice()
+    /**
+     * Get current month price.
+     *
+     * @return mixed
+     */
+    public static function getPriceOfCurrentMonth(): mixed
     {
-        return HouseCodeActivation::select('price')->groupBy('price')->get();
+        $firstDayofCurrentMonth = Carbon::now()->startOfMonth()->toDateString();
+        $lastDayofCurrentMonth = Carbon::now()->endOfMonth()->toDateString();
+
+        return HouseCodeActivation::select('price')->groupBy('price')->whereBetween('activation_date', [$firstDayofCurrentMonth, $lastDayofCurrentMonth])->get();
     }
 
-    public static function getActivationByPrice($price)
+    /**
+     * Get previous month price.
+     *
+     * @return mixed
+     */
+    public static function getPriceOfPreviousMonth(): mixed
     {
-        return HouseCodeActivation::select('activation')->where('price', $price)->sum('activation');
+        $firstDayofPreviousMonth = Carbon::now()->startOfMonth()->subMonthsNoOverflow()->toDateString();
+        $lastDayofPreviousMonth = Carbon::now()->subMonthsNoOverflow()->endOfMonth()->toDateString();
+
+        return HouseCodeActivation::select('price')->groupBy('price')->whereBetween('activation_date', [$firstDayofPreviousMonth, $lastDayofPreviousMonth])->get();
+    }
+
+    /**
+     * Get current month sum.
+     *
+     * @return mixed
+     */
+    public static function getSumOfCurrentMonth(): mixed
+    {
+        $firstDayofCurrentMonth = Carbon::now()->startOfMonth()->toDateString();
+        $lastDayofCurrentMonth = Carbon::now()->endOfMonth()->toDateString();
+
+        return HouseCodeActivation::whereBetween('activation_date', [$firstDayofCurrentMonth, $lastDayofCurrentMonth])->sum('activation');
+    }
+
+    /**
+     * Get previous month sum.
+     *
+     * @return mixed
+     */
+    public static function getSumOfPreviousMonth(): mixed
+    {
+        $firstDayofPreviousMonth = Carbon::now()->startOfMonth()->subMonthsNoOverflow()->toDateString();
+        $lastDayofPreviousMonth = Carbon::now()->subMonthsNoOverflow()->endOfMonth()->toDateString();
+
+        return HouseCodeActivation::whereBetween('activation_date', [$firstDayofPreviousMonth, $lastDayofPreviousMonth])->sum('activation');
+    }
+
+    /**
+     * Get current month activation by price.
+     *
+     * @param $price
+     * @return mixed
+     */
+    public static function getActivationByPrice($price): mixed
+    {
+        $firstDayofCurrentMonth = Carbon::now()->startOfMonth()->toDateString();
+        $lastDayofCurrentMonth = Carbon::now()->endOfMonth()->toDateString();
+        return HouseCodeActivation::select('activation')->where('price', $price)->whereBetween('activation_date', [$firstDayofCurrentMonth, $lastDayofCurrentMonth])->sum('activation');
+    }
+
+    /**
+     * Get previous month activation by price.
+     *
+     * @param $price
+     * @return mixed
+     */
+    public static function getActivationByPreviousMonthPrice($price): mixed
+    {
+        $firstDayofPreviousMonth = Carbon::now()->startOfMonth()->subMonthsNoOverflow()->toDateString();
+        $lastDayofPreviousMonth = Carbon::now()->subMonthsNoOverflow()->endOfMonth()->toDateString();
+
+        return HouseCodeActivation::select('activation')->where('price', $price)->whereBetween('activation_date', [$firstDayofPreviousMonth, $lastDayofPreviousMonth])->sum('activation');
     }
 }
