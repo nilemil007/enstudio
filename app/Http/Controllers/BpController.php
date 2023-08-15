@@ -83,8 +83,6 @@ class BpController extends Controller
     {
         $brandPromoter = $request->validated();
 
-        dd($bp);
-
         if ($request->hasFile('documents')) {
 
             if ( File::exists( public_path('assets/documents/bp/'.basename( $bp->documents ) ) ) )
@@ -104,5 +102,21 @@ class BpController extends Controller
     public function destroy(Bp $bp)
     {
         //
+    }
+
+    /**
+     * Get supervisors by dd house
+     */
+    public function getSupervisorsByDdHouse($house_code): JsonResponse
+    {
+        return Response::json(['supervisors' => Supervisor::where('dd_house',$house_code)->get()]);
+    }
+
+    /**
+     * Get user by dd house
+     */
+    public function getUserByDdHouse($house_code): JsonResponse
+    {
+        return Response::json(['user' => User::where('dd_house',$house_code)->get()]);
     }
 }

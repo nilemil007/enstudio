@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static create(mixed $validated)
  * @method static whereNotNull(string $string)
  * @method static firstWhere(string $string, int|string|null $id)
+ * @method static where(string $string, $house_code)
  */
 class Supervisor extends Model
 {
