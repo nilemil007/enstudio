@@ -32,10 +32,12 @@ class BpController extends Controller
      */
     public function create(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
+        $generator = Bp::simpleGenerator();
+
         $houses = DdHouse::all();
         $supervisors = Supervisor::all();
         $users = User::where('role', 'bp')->get();
-        return view('modules.bp.create', compact('houses','supervisors','users'));
+        return view('modules.bp.create', compact('houses','supervisors','users','generator'));
     }
 
     /**

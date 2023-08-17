@@ -236,6 +236,24 @@
                     </ul>
                 </div>
             </li>
+            <!-- Scratch Card Serial -->
+            <li class="nav-item {{ request()->routeIs('sc-serial.*') ? 'active' : '' }}">
+                <a class="nav-link" data-bs-toggle="collapse" href="#scSerial" role="button" aria-expanded="false" aria-controls="sc_serial">
+                    <i class="link-icon" data-feather="info"></i>
+                    <span class="link-title">SC Serial</span>
+                    <i class="link-arrow" data-feather="chevron-down"></i>
+                </a>
+                <div class="collapse {{ request()->routeIs('sc-serial.*') ? 'show' : '' }}" id="scSerial">
+                    <ul class="nav sub-menu">
+                        <li class="nav-item">
+                            <a href="{{ route('sc-serial.create') }}" class="nav-link {{ request()->routeIs('sc-serial.create') ? 'active' : '' }}">Add New</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('sc-serial.index') }}" class="nav-link {{ request()->routeIs('sc-serial.index') ? 'active' : '' }}">All SC Serial</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
 
             <li class="nav-item nav-category">New Registration</li>
 

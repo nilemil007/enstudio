@@ -8,6 +8,7 @@ use App\Http\Controllers\ItopReplaceController;
 use App\Http\Controllers\RetailerController;
 use App\Http\Controllers\RouteController;
 use App\Http\Controllers\RsoController;
+use App\Http\Controllers\ScratchCardSerialController;
 use App\Http\Controllers\SupervisorController;
 use App\Http\Controllers\TradeCampaignRetailerCodeController;
 use App\Http\Controllers\UserController;
@@ -128,6 +129,11 @@ Route::middleware(['auth'])->group(function (){
         Route::post('/delete/all','deleteAll')->name('delete.all');
     });
 
+    // Scratch Card Serial Additional Routes
+    Route::controller( ScratchCardSerialController::class )->prefix('/sc-serial')->name('sc-serial.')->group(function (){
+        Route::post('/delete/all','deleteAll')->name('delete.all');
+    });
+
     // Resource Routes
     Route::resources([
         'itop-replace'  => ItopReplaceController::class,
@@ -141,6 +147,7 @@ Route::middleware(['auth'])->group(function (){
         'bts'           => BtsController::class,
         'hca'           => HouseCodeActivationController::class,
         'tcrc'          => TradeCampaignRetailerCodeController::class,
+        'sc-serial'     => ScratchCardSerialController::class,
     ]);
 
 });

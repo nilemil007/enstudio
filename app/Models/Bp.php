@@ -78,4 +78,10 @@ class Bp extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public static function simpleGenerator() {
+        for ($i = 0; $i < 10; $i++) {
+            yield $i;
+        }
+    }
 }
