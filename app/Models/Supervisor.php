@@ -18,7 +18,7 @@ class Supervisor extends Model
     use HasFactory;
 
     protected $fillable = [
-        'dd_house',
+        'dd_house_id',
         'user_id',
         'pool_number',
         'father_name',
@@ -49,6 +49,11 @@ class Supervisor extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function ddHouse(): BelongsTo
+    {
+        return $this->belongsTo(DdHouse::class);
     }
 
 }

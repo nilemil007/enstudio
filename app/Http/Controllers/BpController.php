@@ -34,7 +34,8 @@ class BpController extends Controller
     {
         $houses = DdHouse::all();
         $supervisors = Supervisor::all();
-        $users = User::where('role', 'bp')->get();
+        $userId = Bp::whereNotNull('user_id')->pluck('user_id');
+        $users = User::where('role', 'bp')->whereNotIn('id', $userId)->get();
         return view('modules.bp.create', compact('houses','supervisors','users'));
     }
 
@@ -71,7 +72,7 @@ class BpController extends Controller
     public function edit(Bp $bp): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
         $houses = DdHouse::all();
-        $supervisors = Supervisor::all();
+        $supervisors = Supervisor::where();
         $users = User::where('role', 'bp')->get();
         return view('modules.bp.edit', compact('houses','supervisors','users','bp'));
     }
@@ -85,9 +86,9 @@ class BpController extends Controller
 
         if ($request->hasFile('documents')) {
 
-            if ( File::exists( public_path('assets/documents/bp/'.basename( $bp->documents ) ) ) )
+            if ( File::exists( public_path('assets/documents/bp/'.basename( $bp->documents ))))
             {
-                File::delete( public_path('assets/images/users/'.basename( $bp->documents ) ) );
+                File::delete( public_path('assets/images/users/'.basename( $bp->documents )));
             }
 
             $name = 'user'.$request->image->hashname();
@@ -107,16 +108,17 @@ class BpController extends Controller
     /**
      * Get supervisors by dd house
      */
-    public function getSupervisorsByDdHouse($house_code): JsonResponse
+    public function getSupervisorsByDdHouse($house_id): JsonResponse
     {
-        return Response::json(['supervisors' => Supervisor::where('dd_house',$house_code)->get()]);
+        return Response::json(['supervisors' => Supervisor::with('user')->where('dd_house_id',$house_id)->where('status', 1)->get()]);
     }
 
     /**
      * Get user by dd house
      */
-    public function getUserByDdHouse($house_code): JsonResponse
+    public function getUserByDdHouse($house_id): JsonResponse
     {
-        return Response::json(['user' => User::where('dd_house',$house_code)->get()]);
+        $userId = Bp::whereNotNull('user_id')->pluck('user_id');
+        return Response::json(['user' => User::whereNotIn('id', $userId)->where('dd_house',$house_id)->where('role', 'bp')->where('status', 1)->get()]);
     }
 }

@@ -17,11 +17,11 @@
                         <div class="row mb-3">
                             <label for="dd_house_id" class="col-sm-3 col-form-label">Distribution House ({{ count($houses) }})</label>
                             <div class="col-sm-9">
-                                <select name="dd_house_id" class="form-select @error('dd_house_id') is-invalid @enderror" id="dd_house_id">
+                                <select name="dd_house_id" class="select-2 form-select @error('dd_house_id') is-invalid @enderror" id="dd_house_id">
                                     <option value="">-- Select Distribution House --</option>
                                     @if(count($houses) > 0)
                                         @foreach($houses as $house)
-                                            <option value="{{ $house->code }}">{{ $house->code .' - '. $house->name }}</option>
+                                            <option value="{{ $house->id }}">{{ $house->code .' - '. $house->name }}</option>
                                         @endforeach
                                     @endif
                                 </select>
@@ -33,10 +33,10 @@
                         <div class="row mb-3">
                             <label for="get_supervisor" class="col-sm-3 col-form-label">Supervisor</label>
                             <div class="col-sm-9">
-                                <select name="supervisor" class="form-select @error('supervisor') is-invalid @enderror" id="get_supervisor">
+                                <select name="supervisor_id" class="select-2 form-select @error('supervisor_id') is-invalid @enderror" id="get_supervisor">
                                     <option value="">-- Select Supervisor --</option>
                                 </select>
-                                @error('supervisor') <span class="text-danger">{{ $message }}</span> @enderror
+                                @error('supervisor_id') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         </div>
 
@@ -46,11 +46,6 @@
                             <div class="col-sm-9">
                                 <select name="user_id" class="select-2 form-select @error('user_id') is-invalid @enderror" id="get_user">
                                     <option value="">-- Select User --</option>
-{{--                                    @if(count($users) > 0)--}}
-{{--                                        @foreach($users as $user)--}}
-{{--                                            <option value="{{ $user->id }}">{{ $user->phone .' - '. $user->name }}</option>--}}
-{{--                                        @endforeach--}}
-{{--                                    @endif--}}
                                 </select>
                                 @error('user_id') <span class="text-danger">{{ $message }}</span> @enderror
                                 <small class="text-muted">User Left: <strong class="{{ count($users) < 1 ? 'text-danger' : 'text-success'}}">{{ count($users) }}</strong></small>
@@ -348,9 +343,9 @@
 
             $(document).ready(function() {
                 $(document).on('change','#dd_house_id',function (){
-                    const houseCode = $(this).val();
+                    const houseId = $(this).val();
 
-                    if (houseCode === '')
+                    if (houseId === '')
                     {
                         $('#get_supervisor').html('<option value="">-- Select Supervisor --</option>');
                         $('#get_user').html('<option value="">-- Select User --</option>');
@@ -358,28 +353,28 @@
 
                     // Get supervisor by dd house
                     $.ajax({
-                        url: "{{ route('bp.get.supervisors.by.dd.house') }}/" + houseCode,
+                        url: "{{ route('bp.get.supervisors.by.dd.house') }}/" + houseId,
                         type: 'POST',
                         dataType: 'JSON',
                         success: function (response){
                             $('#get_supervisor').find('option:not(:first)').remove();
 
                             $.each(response.supervisors, function (key, value){
-                                $('#get_supervisor').append('<option value="'+ value.pool_number +'">' + value.pool_number + '</option>')
+                                $('#get_supervisor').append('<option value="'+ value.id +'">' + value.pool_number+' - '+value.user.name + '</option>')
                             });
                         }
                     });
 
-                    // Get supervisor by dd house
+                    // Get user by dd house
                     $.ajax({
-                        url: "{{ route('bp.get.supervisors.by.dd.house') }}/" + houseCode,
+                        url: "{{ route('bp.get.user.by.dd.house') }}/" + houseId,
                         type: 'POST',
                         dataType: 'JSON',
                         success: function (response){
-                            $('#get_supervisor').find('option:not(:first)').remove();
+                            $('#get_user').find('option:not(:first)').remove();
 
-                            $.each(response.supervisors, function (key, value){
-                                $('#get_supervisor').append('<option value="'+ value.pool_number +'">' + value.pool_number + '</option>')
+                            $.each(response.user, function (key, value){
+                                $('#get_user').append('<option value="'+ value.id +'">' + value.phone + ' - ' + value.name + '</option>')
                             });
                         }
                     });

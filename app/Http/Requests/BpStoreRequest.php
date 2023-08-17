@@ -24,7 +24,7 @@ class BpStoreRequest extends FormRequest
     {
         return [
             'user_id'           => ['required'],
-            'supervisor'        => ['required'],
+            'supervisor_id'     => ['required'],
             'dd_house_id'       => ['required'],
             'response_id'       => ['required','unique:bps'],
             'type'              => ['required'],
@@ -61,4 +61,15 @@ class BpStoreRequest extends FormRequest
              'user_id.required' => 'The rso field is required.',
          ];
      }
+
+
+    public function attributes(): array
+    {
+        return [
+            'user_id'       => 'user',
+            'supervisor_id' => 'supervisor',
+            'dd_house_id'   => 'dd house',
+            'response_id'   => 'response',
+        ];
+    }
 }

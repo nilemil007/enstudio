@@ -24,7 +24,7 @@ class BpUpdateRequest extends FormRequest
     {
         return [
             'user_id'           => ['required'],
-            'supervisor'        => ['required'],
+            'supervisor_id'     => ['required'],
             'dd_house_id'       => ['required'],
             'response_id'       => ['required','unique:bps,response_id,'.request()->segment(2)],
             'type'              => ['required'],
