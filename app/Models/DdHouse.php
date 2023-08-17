@@ -47,4 +47,9 @@ class DdHouse extends Model
     {
         return $this->hasMany(Bp::class);
     }
+
+    public function supervisor(): HasMany
+    {
+        return $this->hasMany(Supervisor::class);
+    }
 }

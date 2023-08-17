@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * @method static create(mixed $data)
  * @method static latest()
+ * @method static whereNotNull(string $string)
  * @property mixed documents
  */
 class Bp extends Model
@@ -18,7 +19,7 @@ class Bp extends Model
     protected $fillable = [
         'user_id',
         'dd_house_id',
-        'supervisor',
+        'supervisor_id',
         'response_id',
         'type',
         'pool_number',
@@ -77,11 +78,5 @@ class Bp extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
-    }
-
-    public static function simpleGenerator() {
-        for ($i = 0; $i < 10; $i++) {
-            yield $i;
-        }
     }
 }

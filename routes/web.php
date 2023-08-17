@@ -80,9 +80,9 @@ Route::middleware(['auth'])->group(function (){
         // Download sample file
         Route::get('/sample-file-download','sampleFileDownload')->name('sample.file.download');
         // Get supervisors by dd house
-        Route::post('/get_supervisors_by_dd_house/{house_code?}', 'getSupervisorsByDdHouse')->name('get.supervisors.by.dd.house');
+        Route::post('/get_supervisors_by_dd_house/{house_id?}', 'getSupervisorsByDdHouse')->name('get.supervisors.by.dd.house');
         // Get user by dd house
-        Route::post('/get_user_by_dd_house/{house_code?}', 'getUserByDdHouse')->name('get.user.by.dd.house');
+        Route::post('/get_user_by_dd_house/{house_id?}', 'getUserByDdHouse')->name('get.user.by.dd.house');
     });
 
     // Route Additional Routes

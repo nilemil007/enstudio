@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('supervisors', function (Blueprint $table) {
             $table->id();
-            $table->string('dd_house');
+            $table->foreignId('dd_house_id')->constrained();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('pool_number', 11)->unique();
             $table->string('father_name', 50);

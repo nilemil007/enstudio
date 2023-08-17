@@ -15,17 +15,17 @@
 
                         <!-- Distribution House -->
                         <div class="row mb-3">
-                            <label for="dd_house" class="col-sm-3 col-form-label">Distribution House</label>
+                            <label for="dd_house_id" class="col-sm-3 col-form-label">Distribution House</label>
                             <div class="col-sm-9">
-                                <select name="dd_house" class="form-select @error('dd_house') is-invalid @enderror" id="dd_house">
+                                <select name="dd_house_id" class="form-select @error('dd_house_id') is-invalid @enderror" id="dd_house_id">
                                     <option value="">-- Select Distribution House --</option>
                                     @if(count($houses) > 0)
                                         @foreach($houses as $house)
-                                            <option value="{{ $house->code }}">{{ $house->code .' - '. $house->name }}</option>
+                                            <option value="{{ $house->id }}">{{ $house->code .' - '. $house->name }}</option>
                                         @endforeach
                                     @endif
                                 </select>
-                                @error('dd_house') <span class="text-danger">{{ $message }}</span> @enderror
+                                @error('dd_house_id') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         </div>
 

@@ -17,9 +17,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('dd_house_id')->constrained();
-            $table->string('supervisor');
+            $table->foreignId('supervisor_id')->constrained();
             $table->string('response_id', 10)->unique();
-            $table->string('bp_type');
+            $table->string('type');
             $table->string('pool_number', 11)->unique();
             $table->string('personal_number', 11)->unique();
             $table->string('tmp_personal_number', 11)->nullable()->unique();

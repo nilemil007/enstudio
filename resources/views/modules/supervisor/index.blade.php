@@ -31,7 +31,7 @@
                     @foreach( $supervisors as $sl => $supervisor )
                         <tr>
                             <td><span class="text-muted">{{ ++$sl }}</span></td>
-                            <td>{{ $supervisor->dd_house }}</td>
+                            <td>{{ $supervisor->ddHouse->code }}</td>
                             <td>{{ $supervisor->user->name }}</td>
                             <td>{{ $supervisor->pool_number }}</td>
                             <td>{{ $supervisor->joining_date->toFormattedDateString() }}</td>
