@@ -16,7 +16,7 @@
                     <div class="row mb-3">
                         <label for="dd_house_id" class="col-sm-3 col-form-label">Distribution House ({{ count($houses) }})</label>
                         <div class="col-sm-9">
-                            <select name="dd_house_id" class="form-select @error('dd_house_id') is-invalid @enderror" id="dd_house_id">
+                            <select name="dd_house_id" class="select-2 form-select @error('dd_house_id') is-invalid @enderror" id="dd_house_id">
                                 <option value="">-- Select Distribution House --</option>
                                 @if(count($houses) > 0)
                                     @foreach($houses as $house)
@@ -30,25 +30,25 @@
 
                     <!-- Supervisor -->
                     <div class="row mb-3">
-                        <label for="supervisor" class="col-sm-3 col-form-label">Supervisor</label>
+                        <label for="get_supervisor" class="col-sm-3 col-form-label">Supervisor</label>
                         <div class="col-sm-9">
-                            <select name="supervisor" class="form-select @error('supervisor') is-invalid @enderror" id="supervisor">
+                            <select name="supervisor_id" class="select-2 form-select @error('supervisor_id') is-invalid @enderror" id="get_supervisor">
                                 <option value="">-- Select Supervisor --</option>
                                 @if(count($supervisors) > 0)
                                     @foreach($supervisors as $supervisor)
-                                        <option @selected($bp->supervisor == $supervisor->pool_number) value="{{ $supervisor->pool_number }}">{{ $supervisor->pool_number .' - '. \App\Models\User::firstWhere('id', $supervisor->user_id)->name }}</option>
+                                        <option @selected($bp->supervisor_id == $supervisor->id) value="{{ $supervisor->id }}">{{ $supervisor->pool_number .' - '. \App\Models\User::firstWhere('id', $supervisor->user_id)->name }}</option>
                                     @endforeach
                                 @endif
                             </select>
-                            @error('supervisor') <span class="text-danger">{{ $message }}</span> @enderror
+                            @error('supervisor_id') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
                     </div>
 
                     <!-- User -->
                     <div class="row mb-3">
-                        <label for="user_id" class="col-sm-3 col-form-label">User</label>
+                        <label for="get_user" class="col-sm-3 col-form-label">User</label>
                         <div class="col-sm-9">
-                            <select name="user_id" class="select-2 form-select @error('user_id') is-invalid @enderror" id="user_id">
+                            <select name="user_id" class="select-2 form-select @error('user_id') is-invalid @enderror" id="get_user">
                                 <option value="">-- Select User --</option>
                                 @if(count($users) > 0)
                                     @foreach($users as $user)
@@ -325,8 +325,47 @@
     @push('scripts')
         <script>
             $(document).ready(function() {
+                // Dependent dropdown [DD House => supervisor, user]
+                $(document).on('change','#dd_house_id',function (){
+                    const houseId = $(this).val();
+
+                    if (houseId === '')
+                    {
+                        $('#get_supervisor').html('<option value="">-- Select Supervisor --</option>');
+                        $('#get_user').html('<option value="">-- Select User --</option>');
+                    }
+
+                    // Get supervisor by dd house
+                    $.ajax({
+                        url: "{{ route('bp.get.supervisors.by.dd.house') }}/" + houseId,
+                        type: 'POST',
+                        dataType: 'JSON',
+                        success: function (response){
+                            $('#get_supervisor').find('option:not(:first)').remove();
+
+                            $.each(response.supervisors, function (key, value){
+                                $('#get_supervisor').append('<option value="'+ value.id +'">' + value.pool_number+' - '+value.user.name + '</option>')
+                            });
+                        }
+                    });
+
+                    // Get user by dd house
+                    $.ajax({
+                        url: "{{ route('bp.get.user.by.dd.house') }}/" + houseId,
+                        type: 'POST',
+                        dataType: 'JSON',
+                        success: function (response){
+                            $('#get_user').find('option:not(:first)').remove();
+
+                            $.each(response.user, function (key, value){
+                                $('#get_user').append('<option value="'+ value.id +'">' + value.phone + ' - ' + value.name + '</option>')
+                            });
+                        }
+                    });
+                });
+
                 // Update Bp
-                $(document).on('submit','#bp0UpdateForm',function (e){
+                $(document).on('submit','#bpUpdateForm',function (e){
                     e.preventDefault();
 
                     $.ajax({

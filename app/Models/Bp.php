@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static create(mixed $data)
  * @method static latest()
  * @method static whereNotNull(string $string)
+ * @method static truncate()
  * @property mixed documents
  */
 class Bp extends Model

@@ -69,7 +69,7 @@ class BpStoreRequest extends FormRequest
             'user_id'       => 'user',
             'supervisor_id' => 'supervisor',
             'dd_house_id'   => 'dd house',
-            'response_id'   => 'response',
+            'response_id'   => 'response ID',
         ];
     }
 }

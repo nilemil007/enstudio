@@ -40,9 +40,9 @@ class Supervisor extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'joining_date' => 'datetime',
-        'resigning_date' => 'datetime',
-        'dob' => 'datetime',
+        'joining_date'      => 'datetime',
+        'resigning_date'    => 'datetime',
+        'dob'               => 'datetime',
     ];
 
 

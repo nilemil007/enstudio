@@ -52,4 +52,9 @@ class DdHouse extends Model
     {
         return $this->hasMany(Supervisor::class);
     }
+
+    public function scSerial(): HasMany
+    {
+        return $this->hasMany(ScratchCardSerial::class);
+    }
 }

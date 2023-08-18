@@ -14,29 +14,29 @@
 
                 <!-- Distribution House -->
                 <div class="row mb-3">
-                    <label for="dd_house" class="col-sm-3 col-form-label">Distribution House</label>
+                    <label for="dd_house_id" class="col-sm-3 col-form-label">Distribution House</label>
                     <div class="col-sm-9">
-                        <select name="dd_house" class="form-select @error('dd_house') is-invalid @enderror" id="dd_house">
+                        <select name="dd_house_id" class="form-select @error('dd_house_id') is-invalid @enderror" id="dd_house_id">
                             <option value="">-- Select Distribution House --</option>
                             @if(count($houses) > 0)
                                 @foreach($houses as $house)
-                                    <option {{ $supervisor->dd_house === $house->code ? 'selected' : '' }} value="{{ $house->code }}">{{ $house->code .' - '. $house->name }}</option>
+                                    <option @selected($supervisor->dd_house_id === $house->id) value="{{ $house->id }}">{{ $house->code .' - '. $house->name }}</option>
                                 @endforeach
                             @endif
                         </select>
-                        @error('dd_house') <span class="text-danger">{{ $message }}</span> @enderror
+                        @error('dd_house_id') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                 </div>
 
-                <!-- Supervisor Name -->
+                <!-- Assign User -->
                 <div class="row mb-3">
-                    <label for="user_id" class="col-sm-3 col-form-label">Name</label>
+                    <label for="get_user" class="col-sm-3 col-form-label">Assign User</label>
                     <div class="col-sm-9">
-                        <select name="user_id" class="form-select @error('user_id') is-invalid @enderror" id="user_id">
-                            <option value="">-- Select Supervisor --</option>
+                        <select name="user_id" class="form-select @error('user_id') is-invalid @enderror" id="get_user">
+                            <option value="">-- Select User --</option>
                             @if(count($users) > 0)
                                 @foreach($users as $user)
-                                    <option {{ $supervisor->user_id === $user->id ? 'selected' : '' }} value="{{ $user->id }}">{{ $user->phone .' - '. $user->name }}</option>
+                                    <option @selected($supervisor->user_id === $user->id) value="{{ $user->id }}">{{ $user->phone .' - '. $user->name }}</option>
                                 @endforeach
                             @endif
                         </select>
@@ -177,6 +177,30 @@
     @push('scripts')
         <script>
             $(document).ready(function() {
+                // Dependent dropdown [DD House => user]
+                $(document).on('change','#dd_house_id',function (){
+                    const houseId = $(this).val();
+
+                    if (houseId === '')
+                    {
+                        $('#get_user').html('<option value="">-- Select User --</option>');
+                    }
+
+                    // Get user by dd house
+                    $.ajax({
+                        url: "{{ route('supervisor.get.users.by.dd.house') }}/" + houseId,
+                        type: 'POST',
+                        dataType: 'JSON',
+                        success: function (response){
+                            $('#get_user').find('option:not(:first)').remove();
+
+                            $.each(response.users, function (key, value){
+                                $('#get_user').append('<option value="'+ value.id +'">' + value.phone + ' - ' + value.name + '</option>')
+                            });
+                        }
+                    });
+                });
+
                 // Update Supervisor
                 $(document).on('submit','#supervisorUpdateForm',function (e){
                     e.preventDefault();

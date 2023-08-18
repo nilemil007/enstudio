@@ -31,7 +31,7 @@ class UserController extends Controller
      */
     public function index(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $users = User::latest()->get();
+        $users = User::orderBy('dd_house', 'ASC')->get();
         return view('modules.user.index', compact('users'));
     }
 
@@ -126,6 +126,7 @@ class UserController extends Controller
     {
         try {
             User::truncate();
+            File::cleanDirectory(public_path('assets/images/users'));
             return response()->json(['success' => 'All users has been successfully deleted.']);
         }catch (Exception $exception){
            dd($exception);
@@ -152,7 +153,7 @@ class UserController extends Controller
     /**
      * Import users.
      */
-    public function import(Request $request)
+    public function import(Request $request): JsonResponse|RedirectResponse
     {
         try {
             Excel::import(new UsersImport, $request->file('import_users'));

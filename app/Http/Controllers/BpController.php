@@ -23,7 +23,7 @@ class BpController extends Controller
      */
     public function index(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $bps = Bp::latest()->get();
+        $bps = Bp::orderBy('dd_house_id', 'ASC')->get();
         return view('modules.bp.index', compact('bps'));
     }
 
@@ -33,10 +33,9 @@ class BpController extends Controller
     public function create(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
         $houses = DdHouse::all();
-        $supervisors = Supervisor::all();
         $userId = Bp::whereNotNull('user_id')->pluck('user_id');
         $users = User::where('role', 'bp')->whereNotIn('id', $userId)->get();
-        return view('modules.bp.create', compact('houses','supervisors','users'));
+        return view('modules.bp.create', compact('houses','users'));
     }
 
     /**
@@ -72,7 +71,7 @@ class BpController extends Controller
     public function edit(Bp $bp): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
         $houses = DdHouse::all();
-        $supervisors = Supervisor::where();
+        $supervisors = Supervisor::where('id', $bp->supervisor_id)->get();
         $users = User::where('role', 'bp')->get();
         return view('modules.bp.edit', compact('houses','supervisors','users','bp'));
     }
@@ -80,29 +79,55 @@ class BpController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(BpUpdateRequest $request, Bp $bp)
+    public function update(BpUpdateRequest $request, Bp $bp): JsonResponse
     {
         $brandPromoter = $request->validated();
+
+//        dd();
 
         if ($request->hasFile('documents')) {
 
             if ( File::exists( public_path('assets/documents/bp/'.basename( $bp->documents ))))
             {
-                File::delete( public_path('assets/images/users/'.basename( $bp->documents )));
+                File::delete( public_path('assets/documents/bp/'.basename( $bp->documents )));
             }
 
-            $name = 'user'.$request->image->hashname();
-            Image::make($request->image)->resize(80,80)->save(public_path('assets/images/users/'.$name));
-            $information['image'] = $name;
+            $documents      = $request->file('documents');
+            $documentName   = 'bp'.$documents->hashName();
+            $documents->move(public_path('assets/documents/bp'), $documentName);
+            $brandPromoter['documents'] = $documentName;
         }
+
+        $bp->update($brandPromoter);
+        return Response::json(['success' => 'BP updated successfully.']);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Bp $bp)
+    public function destroy(Bp $bp): JsonResponse
     {
-        //
+        if ( File::exists( public_path('assets/documents/bp/'.basename( $bp->documents ))))
+        {
+            File::delete( public_path('assets/documents/bp/'.basename( $bp->documents )));
+        }
+
+        $bp->delete();
+        return Response::json(['success' => 'BP deleted successfully.']);
+    }
+
+    /**
+     * Delete all bp.
+     */
+    public function deleteAll(): JsonResponse
+    {
+        try {
+            File::cleanDirectory(public_path('assets/documents/bp'));
+            Bp::truncate();
+            return response()->json(['success' => 'All bp has been deleted successfully.']);
+        }catch (\Exception $exception){
+            dd($exception);
+        }
     }
 
     /**
@@ -110,7 +135,11 @@ class BpController extends Controller
      */
     public function getSupervisorsByDdHouse($house_id): JsonResponse
     {
-        return Response::json(['supervisors' => Supervisor::with('user')->where('dd_house_id',$house_id)->where('status', 1)->get()]);
+        return Response::json(['supervisors' => Supervisor::with('user')
+            ->where('dd_house_id',$house_id)
+            ->where('status', 1)
+            ->get()
+        ]);
     }
 
     /**
@@ -119,6 +148,11 @@ class BpController extends Controller
     public function getUserByDdHouse($house_id): JsonResponse
     {
         $userId = Bp::whereNotNull('user_id')->pluck('user_id');
-        return Response::json(['user' => User::whereNotIn('id', $userId)->where('dd_house',$house_id)->where('role', 'bp')->where('status', 1)->get()]);
+        return Response::json(['user' => User::whereNotIn('id', $userId)
+            ->where('dd_house',$house_id)
+            ->where('role', 'bp')
+            ->where('status', 1)
+            ->get()
+        ]);
     }
 }

@@ -22,6 +22,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @method static whereHas(string $string, \Closure $param)
  * @method static whereIn(string $string, $userId)
  * @method static whereNotIn(string $string, $userId)
+ * @method static orderBy(string $string, string $string1)
  * @property mixed $image
  */
 class User extends Authenticatable

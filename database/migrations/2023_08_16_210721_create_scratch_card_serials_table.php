@@ -13,7 +13,10 @@ return new class extends Migration
     {
         Schema::create('scratch_card_serials', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('dd_house_id')->constrained();
+            $table->string('product_code');
             $table->string('serial')->unique();
+            $table->string('group');
             $table->string('status')->default(1);
             $table->timestamps();
         });

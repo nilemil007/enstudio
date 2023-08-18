@@ -59,6 +59,8 @@ Route::middleware(['auth'])->group(function (){
     Route::prefix('/supervisor')->controller( SupervisorController::class )->name('supervisor.')->group(function (){
         // Delete all
         Route::post('/delete/all','deleteAll')->name('delete.all');
+        // Get user by dd house
+        Route::post('/get_users_by_dd_house/{house_id?}', 'getUsersByDdHouse')->name('get.users.by.dd.house');
     });
 
     // Rso Additional Routes
@@ -117,20 +119,27 @@ Route::middleware(['auth'])->group(function (){
 
     // House Code Activation Additional Routes
     Route::controller( HouseCodeActivationController::class )->prefix('/hca')->name('hca.')->group(function (){
+        // Delete all
         Route::post('/delete/all','deleteAll')->name('delete.all');
+        // Summary
         Route::get('/summary','summary')->name('summary');
+        // Export
         Route::get('/export','export')->name('export');
+        // Export [Last Month Data]
         Route::get('/export-last-month','exportLastMonth')->name('export.last.month');
+        // LMTD
         Route::get('/lmtd', 'lmtd')->name('lmtd');
     });
 
     // Trade Campaign Retailer Code Additional Routes
     Route::controller( TradeCampaignRetailerCodeController::class )->prefix('/tcrc')->name('tcrc.')->group(function (){
+        // Delete all
         Route::post('/delete/all','deleteAll')->name('delete.all');
     });
 
     // Scratch Card Serial Additional Routes
     Route::controller( ScratchCardSerialController::class )->prefix('/sc-serial')->name('sc-serial.')->group(function (){
+        // Delete all
         Route::post('/delete/all','deleteAll')->name('delete.all');
     });
 

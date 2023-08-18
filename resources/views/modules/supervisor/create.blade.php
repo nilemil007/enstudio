@@ -31,15 +31,10 @@
 
                         <!-- Assign User -->
                         <div class="row mb-3">
-                            <label for="user_id" class="col-sm-3 col-form-label">Assign User</label>
+                            <label for="get_user" class="col-sm-3 col-form-label">Assign User</label>
                             <div class="col-sm-9">
-                                <select name="user_id" class="form-select @error('user_id') is-invalid @enderror" id="user_id">
+                                <select name="user_id" class="form-select @error('user_id') is-invalid @enderror" id="get_user">
                                     <option value="">-- Select Supervisor --</option>
-                                    @if(count($users) > 0)
-                                        @foreach($users as $user)
-                                            <option value="{{ $user->id }}">{{ $user->phone .' - '. $user->name }}</option>
-                                        @endforeach
-                                    @endif
                                 </select>
                                 @error('user_id') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
@@ -199,6 +194,29 @@
     @push('scripts')
         <script>
             $(document).ready(function() {
+                $(document).on('change','#dd_house_id',function (){
+                    const houseId = $(this).val();
+
+                    if (houseId === '')
+                    {
+                        $('#get_user').html('<option value="">-- Select User --</option>');
+                    }
+
+                    // Get user by dd house
+                    $.ajax({
+                        url: "{{ route('supervisor.get.users.by.dd.house') }}/" + houseId,
+                        type: 'POST',
+                        dataType: 'JSON',
+                        success: function (response){
+                            $('#get_user').find('option:not(:first)').remove();
+
+                            $.each(response.users, function (key, value){
+                                $('#get_user').append('<option value="'+ value.id +'">' + value.phone + ' - ' + value.name + '</option>')
+                            });
+                        }
+                    });
+                });
+
                 // Create Supervisor
                 $(document).on('submit','#supervisorForm',function (e){
                     e.preventDefault();

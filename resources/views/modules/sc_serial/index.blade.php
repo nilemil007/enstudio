@@ -19,7 +19,11 @@
                     <thead>
                         <tr>
                             <th class="w-1">No.</th>
+                            <th>DD House</th>
+                            <th>Product Name</th>
                             <th>Serial</th>
+                            <th>Group</th>
+                            <th>Status</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -27,7 +31,21 @@
                     @foreach( $scSerials as $sl => $serial )
                         <tr>
                             <td><span class="text-muted">{{ ++$sl }}</span></td>
+                            <td>{{ $serial->ddHouse->code }}</td>
+                            <td>{{ $serial->product_name }}</td>
                             <td>{{ $serial->serial }}</td>
+                            <td>{{ $serial->group }}</td>
+                            <td>
+                                @switch( $serial->status )
+                                    @case(1)
+                                    <p class="text-success">Active</p>
+                                    @break
+
+                                    @case(0)
+                                    <p class="text-danger">Expired</p>
+                                    @break
+                                @endswitch
+                            </td>
                             <td>
                                 <!-- Edit -->
                                 <a href="{{ route('sc-serial.edit', $serial->id) }}" class="btn btn-sm btn-primary">Edit</a>

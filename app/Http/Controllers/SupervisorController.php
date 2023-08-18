@@ -13,6 +13,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Validation\ValidationException;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -23,7 +24,7 @@ class SupervisorController extends Controller
      */
     public function index(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $supervisors = Supervisor::latest()->get();
+        $supervisors = Supervisor::query()->orderBy('dd_house_id','ASC')->get();
         return view('modules.supervisor.index', compact('supervisors'));
     }
 
@@ -33,9 +34,7 @@ class SupervisorController extends Controller
     public function create(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
         $houses = DdHouse::all();
-        $userId = Supervisor::whereNotNull('user_id')->pluck('user_id');
-        $users = User::where('role', 'supervisor')->whereNotIn('id', $userId)->get();
-        return view('modules.supervisor.create', compact('houses','users'));
+        return view('modules.supervisor.create', compact('houses'));
     }
 
     /**
@@ -66,7 +65,7 @@ class SupervisorController extends Controller
     public function edit(Supervisor $supervisor): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
         $houses = DdHouse::all();
-        $users = User::where('role', 'supervisor')->get();
+        $users = User::where('role', 'supervisor')->where('dd_house', $supervisor->dd_house_id)->get();
         return view('modules.supervisor.edit', compact('supervisor','houses','users'));
     }
 
@@ -107,5 +106,19 @@ class SupervisorController extends Controller
         }catch (Exception $exception){
             dd($exception);
         }
+    }
+
+    /**
+     * Get users by dd house
+     */
+    public function getUsersByDdHouse($house_id): JsonResponse
+    {
+        $userId = Supervisor::whereNotNull('user_id')->pluck('user_id');
+        return Response::json(['users' => User::whereNotIn('id', $userId)
+            ->where('dd_house',$house_id)
+            ->where('role', 'supervisor')
+            ->where('status', 1)
+            ->get()
+        ]);
     }
 }
