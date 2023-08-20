@@ -23,6 +23,8 @@ return new class extends Migration
             $table->string('product_name');
             $table->string('sim_serial');
             $table->string('msisdn');
+            $table->string('bp_flag');
+            $table->string('bp_number');
             $table->string('selling_price');
             $table->date('activation_date');
             $table->date('bio_date');
