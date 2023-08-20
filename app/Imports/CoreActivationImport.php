@@ -2,60 +2,44 @@
 
 namespace App\Imports;
 
-use App\Models\Rso;
-use App\Rules\Nid;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
-use Maatwebsite\Excel\Concerns\Importable;
+use App\Models\DdHouse;
+use App\Models\Retailer;
 use Maatwebsite\Excel\Concerns\ToModel;
+use App\Models\Activation\CoreActivation;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
+use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
-use PhpOffice\PhpSpreadsheet\Shared\Date;
 
-class RsoImport implements ToModel, WithHeadingRow, WithValidation
+class CoreActivationImport implements ToModel, WithHeadingRow, WithValidation
 {
     use Importable;
 
     /**
-     * @param array $row
-     *
-     * @return Model|Rso|null
-     */
-    public function model(array $row): Model|Rso|null
+    * @param array $row
+    *
+    * @return \Illuminate\Database\Eloquent\Model|null
+    */
+    public function model(array $row)
     {
-        return new Rso([
-            'dd_house'          => $row['dd_code'],
-            'supervisor'        => $row['supervisor'],
-            'routes'            => explode(',', $row['routes']),
-            'rso_code'          => $row['rso_code'],
-            'itop_number'       => $row['itop_number'],
-            'pool_number'       => $row['pool_number'],
-            'personal_number'   => $row['personal_number'],
-            'rid'               => $row['rid'],
-            'sr_no'             => $row['sr_no'],
-            'father_name'       => $row['father_name'],
-            'mother_name'       => $row['mother_name'],
-            'division'          => $row['division'],
-            'district'          => $row['district'],
-            'thana'             => $row['thana'],
-            'address'           => $row['address'],
-            'blood_group'       => $row['blood_group'],
-            'account_number'    => $row['account_number'],
-            'bank_name'         => $row['bank_name'],
-            'brunch_name'       => $row['brunch_name'],
-            'routing_number'    => $row['routing_number'],
-            'salary'            => $row['salary'],
-            'education'         => $row['education'],
-            'marital_status'    => $row['marital_status'],
-            'gender'            => $row['gender'],
-            'dob'               => Carbon::instance(Date::excelToDateTimeObject($row['date_of_birth']))->toDateString(),
-            'nid'               => $row['nid'],
-            'residential_rso'   => $row['residential_rso'],
-            'joining_date'      => Carbon::instance(Date::excelToDateTimeObject($row['joining_date']))->toDateString(),
+        return new CoreActivation([
+            'activation_date'   => Carbon::instance(Date::excelToDateTimeObject($row['activation_date']))->toDateString(),
+            'dd_house_id'       => DdHouse::firstWhere('code', $row['distributor_code'])->id,
+            'retailer_id'       => Retailer::firstWhere('code', $row['retailer_code'])->id,
+            'supervisor_id'     => Retailer::firstWhere('code', $row['retailer_code'])->id,
+            'rso_id'            => Retailer::firstWhere('code', $row['retailer_code'])->id,
+            'product_code'      => $row['product_code'],
+            'product_name'      => $row['product_name'],
+            'sim_serial'        => $row['sim_no'],
+            'msisdn'            => $row['msisdn'],
+            'selling_price'     => $row['selling_price'],
+            'bp_flag'           => $row['bp_flag'],
+            'bp_number'         => $row['bp_number'],
         ]);
     }
 
-    /**
+        /**
      * @return array
      */
     public function rules(): array

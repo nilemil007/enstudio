@@ -72,16 +72,16 @@
 
             <li class="nav-item nav-category">import</li>
             <!-- DD House -->
-            <li class="nav-item {{ request()->routeIs('dd-house.*') ? 'active' : '' }}">
-                <a class="nav-link" data-bs-toggle="collapse" href="#ddHouse" role="button" aria-expanded="false" aria-controls="ddHouse">
+            <li class="nav-item {{ request()->routeIs('core.*') ? 'active' : '' }}">
+                <a class="nav-link" data-bs-toggle="collapse" href="#core" role="button" aria-expanded="false" aria-controls="core">
                     <i class="link-icon" data-feather="info"></i>
                     <span class="link-title">Core Data Import</span>
                     <i class="link-arrow" data-feather="chevron-down"></i>
                 </a>
-                <div class="collapse {{ request()->routeIs('dd-house.*') ? 'show' : '' }}" id="ddHouse">
+                <div class="collapse {{ request()->routeIs('core.*') ? 'show' : '' }}" id="core">
                     <ul class="nav sub-menu">
                         <li class="nav-item">
-                            <a href="{{ route('dd-house.create') }}" class="nav-link {{ request()->routeIs('dd-house.create') ? 'active' : '' }}">Activation</a>
+                            <a href="{{ route('core.activation') }}" class="nav-link {{ request()->routeIs('core.activation') ? 'active' : '' }}">Activation</a>
                         </li>
                     </ul>
                 </div>

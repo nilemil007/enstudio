@@ -1,37 +1,49 @@
 <x-app-layout>
 
     <!-- Title -->
-    <x-slot:title>All Rso</x-slot:title>
+    <x-slot:title>Activation</x-slot:title>
 
     <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h4 class="card-title">Activation Import</h4>
+            <span>
+                <div class="input-group">
+                    <input name="core_activation_import" type="file" class="form-control" id="coreActivationImport" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" required>
+                    <button class="btn btn-outline-primary" type="button" id="coreActivationImport">Import</button>
+                </div>
+                {{-- @if(count($rsos) > 1)
+                    <a id="deleteAllRso" href="{{ route('rso.delete.all') }}" class="btn btn-sm btn-danger">Delete All</a>
+                @endif --}}
+            </span>
+        </div>
         <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h4 class="card-title">All Rso</h4>
-                <span>
-                    <a href="{{ route('rso.create') }}" class="btn btn-sm btn-primary">Add New</a>
-                    @if(count($rsos) > 1)
-                        <a id="deleteAllRso" href="{{ route('rso.delete.all') }}" class="btn btn-sm btn-danger">Delete All</a>
-                    @endif
-                </span>
+            <div class=" mb-3">
             </div>
             <div class="table-responsive">
                 <table id="rsoTbl" class="table table-sm table-bordered table-hover card-table table-vcenter text-nowrap mt-3 mb-3 text-center">
                     <thead>
                     <tr>
                         <th class="w-1">No.</th>
-                        <th>DD House</th>
-                        <th>Supervisor</th>
-                        <th>Rso Code</th>
-                        <th>Rso Itop</th>
-                        <th>Rso name</th>
-                        <th>Pool Number</th>
-                        <th>Joining Date</th>
-                        <th>status</th>
-                        <th>Action</th>
+                        <th>activaton date</th>
+                        <th>distributor code</th>
+                        <th>distributor name</th>
+                        <th>retailer code</th>
+                        <th>retailer name</th>
+                        <th>bts code</th>
+                        <th>thana</th>
+                        <th>promotion</th>
+                        <th>product code</th>
+                        <th>product name</th>
+                        <th>sim no</th>
+                        <th>msisdn</th>
+                        <th>selling price</th>
+                        <th>bio date</th>
+                        <th>bp flag</th>
+                        <th>bp number</th>
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach( $rsos as $sl => $rso )
+                    {{-- @foreach( $rsos as $sl => $rso )
                         <tr>
                             <td><span class="text-muted">{{ ++$sl }}</span></td>
                             <td>{{ $rso->dd_house }}</td>
@@ -60,7 +72,7 @@
                                 <a href="{{ route('rso.destroy', $rso->id) }}" id="deleteRso" class="btn btn-sm btn-danger">Delete</a>
                             </td>
                         </tr>
-                    @endforeach
+                    @endforeach --}}
                     </tbody>
                 </table>
             </div>
@@ -71,7 +83,7 @@
         <script>
             new DataTable('#rsoTbl');
 
-            $(document).ready(function(){
+            // $(document).ready(function(){
                 // Single delete
                 $(document).on('click','#deleteRso',function(e){
                     e.preventDefault();

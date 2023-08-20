@@ -8,12 +8,10 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('activations', function (Blueprint $table) {
+        Schema::create('core_activations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('dd_house_id');
             $table->foreignId('supervisor_id');
@@ -27,18 +25,15 @@ return new class extends Migration
             $table->string('bp_number');
             $table->string('selling_price');
             $table->date('activation_date');
-            $table->date('bio_date');
             $table->timestamps();
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::dropIfExists('activations');
+        Schema::dropIfExists('core_activations');
     }
 };

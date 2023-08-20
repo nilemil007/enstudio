@@ -9,7 +9,6 @@ use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
-use Termwind\Components\Dd;
 
 class UsersImport implements ToModel, WithHeadingRow, WithValidation
 {

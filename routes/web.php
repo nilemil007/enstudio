@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BpController;
 use App\Http\Controllers\BtsController;
+use App\Http\Controllers\CoreDataImportController;
 use App\Http\Controllers\DdHouseController;
 use App\Http\Controllers\HouseCodeActivationController;
 use App\Http\Controllers\ItopReplaceController;
@@ -141,6 +142,12 @@ Route::middleware(['auth'])->group(function (){
     Route::controller( ScratchCardSerialController::class )->prefix('/sc-serial')->name('sc-serial.')->group(function (){
         // Delete all
         Route::post('/delete/all','deleteAll')->name('delete.all');
+    });
+
+    // Core Data Import Routes
+    Route::controller( CoreDataImportController::class )->prefix('/core')->name('core.')->group(function (){
+        // Activation [view]
+        Route::get('/activation','activation')->name('activation');
     });
 
     // Resource Routes
