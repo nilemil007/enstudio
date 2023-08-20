@@ -15,17 +15,17 @@
 
                         <!-- Distribution House -->
                         <div class="row mb-3">
-                                <label for="dd_house" class="col-sm-3 col-form-label">Distribution House <span class="text-danger">*</span></label>
+                                <label for="dd_house_id" class="col-sm-3 col-form-label">Distribution House <span class="text-danger">*</span></label>
                                 <div class="col-sm-9">
-                                    <select name="dd_house" class="form-select @error('dd_house') is-invalid @enderror" id="dd_house">
+                                    <select name="dd_house_id" class="form-select @error('dd_house_id') is-invalid @enderror" id="dd_house_id">
                                         <option value="">-- Select Distribution House --</option>
                                         @if(count($houses) > 0)
                                             @foreach($houses as $house)
-                                                <option value="{{ $house->code }}">{{ $house->code .' - '. $house->name }}</option>
+                                                <option value="{{ $house->id }}">{{ $house->code .' - '. $house->name }}</option>
                                             @endforeach
                                         @endif
                                     </select>
-                                    @error('dd_house') <span class="text-danger">{{ $message }}</span> @enderror
+                                    @error('dd_house_id') <span class="text-danger">{{ $message }}</span> @enderror
                                 </div>
                             </div>
 
@@ -63,49 +63,49 @@
 
                         <!-- Supervisor -->
                         <div class="row mb-3">
-                            <label for="supervisor" class="col-sm-3 col-form-label">Supervisor <span class="text-danger">*</span></label>
+                            <label for="supervisor_id" class="col-sm-3 col-form-label">Supervisor <span class="text-danger">*</span></label>
                             <div class="col-sm-9">
-                                <select name="supervisor" class="form-select @error('supervisor') is-invalid @enderror" id="supervisor">
+                                <select name="supervisor_id" class="form-select @error('supervisor_id') is-invalid @enderror" id="supervisor_id">
                                     <option value="">-- Select Supervisor --</option>
                                     @if(count($supervisors) > 0)
                                         @foreach($supervisors as $supervisor)
-                                            <option value="{{ $supervisor->pool_number }}">{{ $supervisor->pool_number .' - '. \App\Models\User::firstWhere('id', $supervisor->user_id)->name }}</option>
+                                            <option value="{{ $supervisor->id }}">{{ $supervisor->pool_number .' - '. \App\Models\User::firstWhere('id', $supervisor->user_id)->name }}</option>
                                         @endforeach
                                     @endif
                                 </select>
-                                @error('supervisor') <span class="text-danger">{{ $message }}</span> @enderror
+                                @error('supervisor_id') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         </div>
 
                         <!-- BTS Code -->
                         <div class="row mb-3">
-                            <label for="bts_code" class="col-sm-3 col-form-label">BTS Code</label>
+                            <label for="bts_id" class="col-sm-3 col-form-label">BTS Code</label>
                             <div class="col-sm-9">
-                                <select name="bts_code" class="select-2 form-select @error('bts_code') is-invalid @enderror" id="bts_code">
+                                <select name="bts_id" class="select-2 form-select @error('bts_id') is-invalid @enderror" id="bts_id">
                                     <option value="">-- Select BTS Code --</option>
                                     @if(count($btsCode) > 0)
                                         @foreach($btsCode as $bts)
-                                            <option value="{{ $bts->bts_code }}">{{ $bts->bts_code .' - '. \Illuminate\Support\Str::limit($bts->address, 80) }}</option>
+                                            <option value="{{ $bts->id }}">{{ $bts->bts_code .' - '. \Illuminate\Support\Str::limit($bts->address, 50) }}</option>
                                         @endforeach
                                     @endif
                                 </select>
-                                @error('bts_code') <span class="text-danger">{{ $message }}</span> @enderror
+                                @error('bts_id') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         </div>
 
                         <!-- Route -->
                         <div class="row mb-3">
-                            <label for="route" class="col-sm-3 col-form-label">Route <span class="text-danger">*</span></label>
+                            <label for="route_id" class="col-sm-3 col-form-label">Route <span class="text-danger">*</span></label>
                             <div class="col-sm-9">
-                                <select name="route" class="select-2 form-select @error('route') is-invalid @enderror" id="route">
+                                <select name="route_id" class="select-2 form-select @error('route_id') is-invalid @enderror" id="route_id">
                                     <option value="">-- Select Route --</option>
                                     @if(count($routes) > 0)
                                         @foreach($routes as $route)
-                                            <option value="{{ $route->code }}">{{ $route->code .' - '. $route->name }}</option>
+                                            <option value="{{ $route->id }}">{{ $route->code .' - '. $route->name }}</option>
                                         @endforeach
                                     @endif
                                 </select>
-                                @error('route') <span class="text-danger">{{ $message }}</span> @enderror
+                                @error('route_id') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         </div>
 

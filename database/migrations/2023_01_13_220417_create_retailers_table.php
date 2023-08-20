@@ -15,12 +15,12 @@ return new class extends Migration
     {
         Schema::create('retailers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->nullable()->constrained();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('dd_house_id')->constrained();
+            $table->foreignId('supervisor_id')->constrained();
             $table->foreignId('rso_id')->constrained();
-            $table->string('dd_house');
-            $table->string('supervisor');
-            $table->string('bts_code')->nullable();
-            $table->string('route');
+            $table->foreignId('bts_id')->nullable()->constrained();
+            $table->foreignId('route_id')->constrained();
             $table->string('code')->unique();
             $table->string('name');
             $table->string('tmp_name')->nullable();
@@ -34,7 +34,7 @@ return new class extends Migration
             $table->string('owner_name');
             $table->string('tmp_owner_name')->nullable();
             $table->string('contact_no')->unique();
-            $table->string('tmp_contact_no')->nullable();
+            $table->string('tmp_contact_no')->nullable()->unique();
             $table->string('own_shop');
             $table->string('district');
             $table->string('thana');
@@ -43,7 +43,7 @@ return new class extends Migration
             $table->string('tmp_address')->nullable();
             $table->enum('blood_group', ['a+','ab+','a-','ab-','b+','b-','o+','o-']);
             $table->string('nid')->unique();
-            $table->string('tmp_nid')->nullable();
+            $table->string('tmp_nid')->nullable()->unique();
             $table->string('trade_license_no')->nullable();
             $table->string('tmp_trade_license_no')->nullable();
             $table->json('others_operator')->nullable();
@@ -55,9 +55,9 @@ return new class extends Migration
             $table->string('device_name')->nullable();
             $table->string('tmp_device_name')->nullable();
             $table->string('device_sn')->nullable()->unique();
-            $table->string('tmp_device_sn')->nullable();
+            $table->string('tmp_device_sn')->nullable()->unique();
             $table->string('scanner_sn')->nullable()->unique();
-            $table->string('tmp_scanner_sn')->nullable();
+            $table->string('tmp_scanner_sn')->nullable()->unique();
             $table->string('image')->nullable();
             $table->string('nid_upload')->nullable();
             $table->string('password')->nullable();

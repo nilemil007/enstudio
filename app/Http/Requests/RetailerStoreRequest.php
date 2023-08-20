@@ -29,11 +29,11 @@ class RetailerStoreRequest extends FormRequest
     {
         return [
             'user_id'           => ['nullable'],
-            'dd_house'          => ['required'],
+            'dd_house_id'       => ['required'],
             'rso_id'            => ['required'],
-            'supervisor'        => ['required'],
-            'bts_code'          => ['nullable'],
-            'route'             => ['required'],
+            'supervisor_id'     => ['required'],
+            'bts_id'            => ['nullable'],
+            'route_id'          => ['required'],
             'code'              => ['required','unique:retailers,code'],
             'name'              => ['required'],
             'type'              => ['required'],

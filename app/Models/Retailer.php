@@ -21,14 +21,11 @@ class Retailer extends Model
 {
     use HasFactory;
 
-    protected string $uploads = 'storage/retailers/';
-    protected string $nidUploads = 'storage/retailers-nid/';
-
     protected $fillable = [
         'user_id',
         'dd_house',
         'rso_id',
-        'supervisor',
+        'supervisor_id',
         'bts_code',
         'route',
         'code',
@@ -84,7 +81,7 @@ class Retailer extends Model
     protected function nidUpload(): Attribute
     {
         return Attribute::make(
-            get: fn ( $nid ) => empty( $nid ) ? asset('assets/images/default-nid.jpg') : $this->nidUploads . $nid,
+            get: fn ( $nid ) => empty( $nid ) ? url('assets/images/default-nid.jpg') : url('assets/images/nid/retailer/') . $nid,
         );
     }
 
@@ -219,53 +216,4 @@ class Retailer extends Model
     {
         return $this->hasOne( TradeCampaignRetailerCode::class );
     }
-//
-//    public function bts(): BelongsTo
-//    {
-//        return $this->belongsTo( Bts::class );
-//    }
-//
-//    public function route(): BelongsTo
-//    {
-//        return $this->belongsTo( Route::class );
-//    }
-//
-//    public function ddHouse(): BelongsTo
-//    {
-//        return $this->belongsTo( DdHouse::class );
-//    }
-//
-//    public function c2s(): HasMany
-//    {
-//        return $this->hasMany( C2S::class );
-//    }
-//
-//    public function simIssue(): HasMany
-//    {
-//        return $this->hasMany( SimIssue::class );
-//    }
-//    public function liveSimIssue(): HasMany
-//    {
-//        return $this->hasMany( LiveSimIssue::class );
-//    }
-//
-//    public function balance(): HasMany
-//    {
-//        return $this->hasMany( Balance::class );
-//    }
-//
-//    public function bso(): HasMany
-//    {
-//        return $this->hasMany( Bso::class );
-//    }
-//
-//    public function dso(): HasMany
-//    {
-//        return $this->hasMany( Dso::class );
-//    }
-//
-//    public function esaf(): HasMany
-//    {
-//        return $this->hasMany( Esaf::class );
-//    }
 }
