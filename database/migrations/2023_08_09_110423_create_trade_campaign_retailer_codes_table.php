@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('trade_campaign_retailer_codes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('retailer_id')->constrained();
+            $table->foreignId('retailer_id')->constrained()->cascadeOnDelete();
             $table->string('flag');
             $table->string('status')->default('tcrc');
             $table->timestamps();

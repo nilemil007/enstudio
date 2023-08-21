@@ -72,7 +72,7 @@
 
             $(document).ready(function(){
                 // Import Activation
-                $(document).on('submit','#importCoreActivation',function (e){
+                $(document).on('submit','#importCoreActivation9',function (e){
                     e.preventDefault();
 
                     $.ajax({

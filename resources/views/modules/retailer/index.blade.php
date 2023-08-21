@@ -70,12 +70,6 @@
             new DataTable('#retailerTbl');
 
             $(document).ready(function(){
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-
                 // Single delete
                 $(document).on('click','#deleteRetailer',function(e){
                     e.preventDefault();

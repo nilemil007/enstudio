@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\BpController;
 use App\Http\Controllers\BtsController;
-use App\Http\Controllers\CoreDataImportController;
+use App\Http\Controllers\CoreActivationController;
 use App\Http\Controllers\DdHouseController;
 use App\Http\Controllers\HouseCodeActivationController;
 use App\Http\Controllers\ItopReplaceController;
@@ -65,7 +65,7 @@ Route::middleware(['auth'])->group(function (){
     });
 
     // Rso Additional Routes
-    Route::prefix('/rso')->controller( RsoController::class )->name('rso.')->group(function (){
+    Route::controller(RsoController::class )->prefix('/rso')->name('rso.')->group(function (){
         // Delete all
         Route::post('/delete/all','deleteAll')->name('delete.all');
         // Import
@@ -75,7 +75,7 @@ Route::middleware(['auth'])->group(function (){
     });
 
     // BP Additional Routes
-    Route::prefix('/bp')->controller( BpController::class )->name('bp.')->group(function (){
+    Route::controller(BpController::class )->prefix('/bp')->name('bp.')->group(function (){
         // Delete all
         Route::post('/delete/all','deleteAll')->name('delete.all');
         // Import
@@ -89,7 +89,7 @@ Route::middleware(['auth'])->group(function (){
     });
 
     // Route Additional Routes
-    Route::prefix('/route')->controller( RouteController::class )->name('route.')->group(function (){
+    Route::controller(RouteController::class )->prefix('/route')->name('route.')->group(function (){
         // Delete all
         Route::post('/delete/all','deleteAll')->name('delete.all');
         // Import
@@ -99,7 +99,7 @@ Route::middleware(['auth'])->group(function (){
     });
 
     // Retailer Additional Routes
-    Route::prefix('/retailer')->controller( RetailerController::class )->name('retailer.')->group(function (){
+    Route::controller(RetailerController::class )->prefix('/retailer')->name('retailer.')->group(function (){
         // Delete all
         Route::post('/delete/all','deleteAll')->name('delete.all');
         // Import
@@ -109,7 +109,7 @@ Route::middleware(['auth'])->group(function (){
     });
 
     // BTS Additional Routes
-    Route::prefix('/bts')->controller( BtsController::class )->name('bts.')->group(function (){
+    Route::controller(BtsController::class )->prefix('/bts')->name('bts.')->group(function (){
         // Delete all
         Route::post('/delete/all','deleteAll')->name('delete.all');
         // Import
@@ -119,7 +119,7 @@ Route::middleware(['auth'])->group(function (){
     });
 
     // House Code Activation Additional Routes
-    Route::controller( HouseCodeActivationController::class )->prefix('/hca')->name('hca.')->group(function (){
+    Route::controller(HouseCodeActivationController::class )->prefix('/hca')->name('hca.')->group(function (){
         // Delete all
         Route::post('/delete/all','deleteAll')->name('delete.all');
         // Summary
@@ -139,17 +139,17 @@ Route::middleware(['auth'])->group(function (){
     });
 
     // Scratch Card Serial Additional Routes
-    Route::controller( ScratchCardSerialController::class )->prefix('/sc-serial')->name('sc-serial.')->group(function (){
+    Route::controller(ScratchCardSerialController::class )->prefix('/sc-serial')->name('sc-serial.')->group(function (){
         // Delete all
         Route::post('/delete/all','deleteAll')->name('delete.all');
     });
 
     // Core Data Import Routes
-    Route::controller( CoreDataImportController::class )->prefix('/core')->name('core.')->group(function (){
+    Route::controller( CoreActivationController::class )->prefix('/core')->name('core.')->group(function (){
         // Activation [view]
-        Route::get('/activation','activation')->name('activation');
+        Route::get('/activation','index')->name('activation');
         // Activation [import]
-        Route::post('/activation/import','activationImport')->name('activation.import');
+        Route::post('/activation/import','coreActivationImport')->name('activation.import');
     });
 
     // Resource Routes
