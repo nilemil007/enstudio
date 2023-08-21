@@ -2,12 +2,15 @@
 
 namespace App\Imports;
 
-use App\Models\Retailer;
-use App\Models\Rso;
 use App\Rules\Nid;
+use App\Models\Rso;
+use App\Models\DdHouse;
+use App\Models\Retailer;
+use App\Models\Route;
+use App\Models\Supervisor;
 use Illuminate\Database\Eloquent\Model;
-use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
 
@@ -23,13 +26,13 @@ class RetailerImport implements ToModel, WithHeadingRow, WithValidation
     public function model(array $row): Model|Retailer|null
     {
         return new Retailer([
-            'dd_house'          => $row['dd_code'],
+            'dd_house_id'       => DdHouse::firstWhere('code', $row['dd_code'])->id,
             'code'              => $row['retailer_code'],
             'name'              => $row['retailer_name'],
             'type'              => $row['retailer_type'],
             'enabled'           => $row['enabled'],
             'sim_seller'        => $row['sim_seller'],
-            'supervisor'        => $row['supervisor_number'],
+            'supervisor_id'     => Supervisor::firstWhere('pool_number', $row['supervisor_number'])->id,
             'rso_id'            => Rso::firstWhere('itop_number', $row['rso_number'])->id,
             'itop_number'       => $row['itop_number'],
             'service_point'     => $row['service_point'],
@@ -41,7 +44,7 @@ class RetailerImport implements ToModel, WithHeadingRow, WithValidation
             'address'           => $row['address'],
             'nid'               => $row['nid'],
             'trade_license_no'  => $row['trade_license'],
-            'route'             => $row['route'],
+            'route_id'          => Route::firstWhere('code', $row['route'])->id,
             'password'          => $row['password'],
         ]);
     }

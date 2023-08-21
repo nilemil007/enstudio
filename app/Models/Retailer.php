@@ -23,11 +23,11 @@ class Retailer extends Model
 
     protected $fillable = [
         'user_id',
-        'dd_house',
+        'dd_house_id',
         'rso_id',
         'supervisor_id',
-        'bts_code',
-        'route',
+        'bts_id',
+        'route_id',
         'code',
         'name',
         'tmp_name',

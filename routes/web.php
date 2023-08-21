@@ -148,6 +148,8 @@ Route::middleware(['auth'])->group(function (){
     Route::controller( CoreDataImportController::class )->prefix('/core')->name('core.')->group(function (){
         // Activation [view]
         Route::get('/activation','activation')->name('activation');
+        // Activation [import]
+        Route::get('/activation/import','activationImport')->name('activation.import');
     });
 
     // Resource Routes

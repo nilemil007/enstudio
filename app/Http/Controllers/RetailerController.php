@@ -42,12 +42,12 @@ class RetailerController extends Controller
      */
     public function create(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $users = User::where('role','retailer')->get();
-        $rsos = Rso::orderBy('itop_number','asc')->get();
-        $supervisors = Supervisor::all();
-        $houses = DdHouse::all();
-        $routes = Route::all();
-        $btsCode = Bts::all();
+        $users          = User::where('role','retailer')->get();
+        $rsos           = Rso::orderBy('itop_number','asc')->get();
+        $supervisors    = Supervisor::all();
+        $houses         = DdHouse::all();
+        $routes         = Route::all();
+        $btsCode        = Bts::all();
         return view('modules.retailer.create', compact('houses','users','rsos','supervisors','routes','btsCode'));
     }
 
@@ -87,12 +87,12 @@ class RetailerController extends Controller
      */
     public function edit(Retailer $retailer): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $users = User::where('role','retailer')->get();
-        $rsos = Rso::orderBy('itop_number','asc')->get();
-        $supervisors = Supervisor::all();
-        $houses = DdHouse::all();
-        $routes = Route::all();
-        $btsCode = Bts::all();
+        $users          = User::where('role','retailer')->get();
+        $rsos           = Rso::orderBy('itop_number','asc')->get();
+        $supervisors    = Supervisor::all();
+        $houses         = DdHouse::all();
+        $routes         = Route::all();
+        $btsCode        = Bts::all();
         return view('modules.retailer.edit', compact('retailer','houses','users','rsos','supervisors','routes','btsCode'));
     }
 

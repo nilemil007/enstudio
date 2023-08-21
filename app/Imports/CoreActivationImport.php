@@ -39,7 +39,7 @@ class CoreActivationImport implements ToModel, WithHeadingRow, WithValidation
         ]);
     }
 
-        /**
+    /**
      * @return array
      */
     public function rules(): array

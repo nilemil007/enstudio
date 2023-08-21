@@ -8,8 +8,11 @@
             <h4 class="card-title">Activation Import</h4>
             <span>
                 <div class="input-group">
-                    <input name="core_activation_import" type="file" class="form-control" id="coreActivationImport" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" required>
-                    <button class="btn btn-outline-primary" type="button" id="coreActivationImport">Import</button>
+                    <form class="import-core-activation" action="{{ route('core.activation.import')}}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <input name="core_activation_import" type="file" class="form-control form-control-sm" id="coreActivationImport" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" required>
+                        <button class="btn btn-sm btn-primary" type="submit" id="coreActivationImport">Import</button>
+                    </form>
                 </div>
                 {{-- @if(count($rsos) > 1)
                     <a id="deleteAllRso" href="{{ route('rso.delete.all') }}" class="btn btn-sm btn-danger">Delete All</a>
@@ -20,7 +23,7 @@
             <div class=" mb-3">
             </div>
             <div class="table-responsive">
-                <table id="rsoTbl" class="table table-sm table-bordered table-hover card-table table-vcenter text-nowrap mt-3 mb-3 text-center">
+                <table id="coreActivationTbl" class="table table-sm table-bordered table-hover card-table table-vcenter text-nowrap mt-3 mb-3 text-center">
                     <thead>
                     <tr>
                         <th class="w-1">No.</th>
@@ -81,64 +84,41 @@
 
     @push('scripts')
         <script>
-            new DataTable('#rsoTbl');
+            new DataTable('#coreActivationTbl');
 
-            // $(document).ready(function(){
-                // Single delete
-                $(document).on('click','#deleteRso',function(e){
+            $(document).ready(function(){
+                // Import Activation
+                $(document).on('submit','.import-core-activation',function (e){
                     e.preventDefault();
 
-                    Swal.fire({
-                        title: 'Are you sure?',
-                        text: "Delete This Rso?",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonText: 'Yes, delete it!'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            $.ajax({
-                                url: $(this).attr('href'),
-                                type: 'DELETE',
-                                success: function (response){
-                                    Swal.fire(
-                                        'Deleted!',
-                                        response.success,
-                                        'success',
-                                    ).then((result) => {
-                                        location.reload();
-                                    });
-                                },
+                    $.ajax({
+                        url: $(this).attr('action'),
+                        type: $(this).attr('method'),
+                        data: new FormData(this),
+                        processData: false,
+                        contentType: false,
+                        beforeSend: function (){
+                            $('.btn-import-rso').prop('disabled', true).text('Importing...').append('<img src="{{ url('public/assets/images/gif/DzUd.gif') }}" alt="" width="18px">');
+                        },
+                        success: function (response){
+                            $('.btn-import-rso').prop('disabled', false).text('Import Rso');
+                            Swal.fire(
+                                'Success!',
+                                response.success,
+                                'success',
+                            ).then((result) => {
+                                window.location.href = "{{ route('rso.index') }}";
                             });
-                        }
-                    });
-                });
+                        },
+                        error: function (e){
+                            const err = JSON.parse(e.responseText);
 
-                // Delete all
-                $(document).on('click','#deleteAllRso',function(e){
-                    e.preventDefault();
-
-                    Swal.fire({
-                        title: 'Are you sure?',
-                        text: "Delete All Rso?",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonText: 'Yes, delete it !'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            $.ajax({
-                                url: $(this).attr('href'),
-                                type: 'POST',
-                                success: function (response){
-                                    Swal.fire(
-                                        'Deleted!',
-                                        response.success,
-                                        'success',
-                                    ).then((result) => {
-                                        location.reload();
-                                    });
-                                },
+                            $.each(err.errors,function (key,value){
+                                $('.err-msg').removeClass('d-none').append('<li>' + value + '</li>');
                             });
-                        }
+
+                            $('.btn-import-rso').prop('disabled', false).text('Import Rso');
+                        },
                     });
                 });
             });
