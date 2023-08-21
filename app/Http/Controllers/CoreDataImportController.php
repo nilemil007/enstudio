@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Activation\CoreActivation;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Maatwebsite\Excel\Facades\Excel;
@@ -13,9 +17,10 @@ use Illuminate\Validation\ValidationException;
 class CoreDataImportController extends Controller
 {
     // Core Activation
-    public function activation()
+    public function activation(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        return view('modules.core_data.activation.index');
+        $activations = CoreActivation::all();
+        return view('modules.core_data.activation.activation', compact('activations'));
     }
 
     /**
@@ -28,9 +33,8 @@ class CoreDataImportController extends Controller
 
             return Response::json(['success' => 'Activation imported successfully.']);
 
-
         } catch (ValidationException $e) {
-            return to_route('rso.create')->with('import_errors', $e->failures());
+            return to_route('core.activation')->with('import_errors', $e->failures());
         }
     }
 }

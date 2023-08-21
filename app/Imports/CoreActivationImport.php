@@ -5,6 +5,7 @@ namespace App\Imports;
 use Carbon\Carbon;
 use App\Models\DdHouse;
 use App\Models\Retailer;
+use Illuminate\Database\Eloquent\Model;
 use Maatwebsite\Excel\Concerns\ToModel;
 use App\Models\Activation\CoreActivation;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
@@ -17,11 +18,11 @@ class CoreActivationImport implements ToModel, WithHeadingRow, WithValidation
     use Importable;
 
     /**
-    * @param array $row
-    *
-    * @return \Illuminate\Database\Eloquent\Model|null
-    */
-    public function model(array $row)
+     * @param array $row
+     *
+     * @return Model|CoreActivation|null
+     */
+    public function model(array $row): Model|CoreActivation|null
     {
         return new CoreActivation([
             'activation_date'   => Carbon::instance(Date::excelToDateTimeObject($row['activation_date']))->toDateString(),
@@ -51,22 +52,22 @@ class CoreActivationImport implements ToModel, WithHeadingRow, WithValidation
             '*.dd_house_id'     => ['required'],
             'retailer_id'       => ['required'],
             '*.retailer_id'     => ['required'],
-            'supervisor_id'     => ['required', 'max:10', 'unique:rsos,rso_code'],
-            '*.supervisor_id'   => ['required', 'max:10', 'unique:rsos,rso_code'],
-            'rso_id'            => ['required', 'numeric', 'digits: 11', 'unique:rsos,itop_number'],
-            '*.rso_id'          => ['required', 'numeric', 'digits: 11', 'unique:rsos,itop_number'],
-            'product_code'      => ['required', 'numeric', 'digits: 11', 'unique:rsos,pool_number'],
-            '*.product_code'    => ['required', 'numeric', 'digits: 11', 'unique:rsos,pool_number'],
-            'product_name'      => ['required', 'numeric', 'digits: 11', 'unique:rsos,personal_number'],
-            '*.product_name'    => ['required', 'numeric', 'digits: 11', 'unique:rsos,personal_number'],
-            'sim_serial'        => ['required', 'unique:rsos,rid'],
-            '*.sim_serial'      => ['required', 'unique:rsos,rid'],
-            'msisdn'            => ['required', 'max:8', 'unique:rsos,sr_no'],
-            '*.msisdn'          => ['required', 'max:8', 'unique:rsos,sr_no'],
-            'selling_price'     => ['required', 'min: 3', 'max: 50', 'string'],
-            '*.selling_price'   => ['required', 'min: 3', 'max: 50', 'string'],
-            'bp_flag'           => ['required', 'min: 3', 'max: 50', 'string'],
-            '*.bp_flag'         => ['required', 'min: 3', 'max: 50', 'string'],
+            'supervisor_id'     => ['required'],
+            '*.supervisor_id'   => ['required'],
+            'rso_id'            => ['required'],
+            '*.rso_id'          => ['required'],
+            'product_code'      => ['required'],
+            '*.product_code'    => ['required'],
+            'product_name'      => ['required'],
+            '*.product_name'    => ['required'],
+            'sim_serial'        => ['required', 'unique:core_activations,sim_serial'],
+            '*.sim_serial'      => ['required', 'unique:core_activations,sim_serial'],
+            'msisdn'            => ['required', 'unique:core_activations,msisdn'],
+            '*.msisdn'          => ['required', 'unique:core_activations,msisdn'],
+            'selling_price'     => ['required'],
+            '*.selling_price'   => ['required'],
+            'bp_flag'           => ['required'],
+            '*.bp_flag'         => ['required'],
             'bp_number'         => ['required'],
             '*.bp_number'       => ['required'],
         ];

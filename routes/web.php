@@ -149,7 +149,7 @@ Route::middleware(['auth'])->group(function (){
         // Activation [view]
         Route::get('/activation','activation')->name('activation');
         // Activation [import]
-        Route::get('/activation/import','activationImport')->name('activation.import');
+        Route::post('/activation/import','activationImport')->name('activation.import');
     });
 
     // Resource Routes

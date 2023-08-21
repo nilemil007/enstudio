@@ -23,4 +23,13 @@ class CoreActivation extends Model
         'selling_price',
         'activation_date',
     ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'activation_date' => 'datetime',
+    ];
 }

@@ -7,7 +7,6 @@ use App\Exports\HouseCodeActivationLastMonthExport;
 use App\Http\Requests\HCAStoreRequest;
 use App\Http\Requests\HCAUpdateRequest;
 use App\Models\Activation\HouseCodeActivation;
-use App\Models\DdHouse;
 use App\Models\Retailer;
 use App\Models\Rso;
 use App\Models\Supervisor;
@@ -16,15 +15,11 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Maatwebsite\Excel\Facades\Excel;
-use RealRashid\SweetAlert\Facades\Alert;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class HouseCodeActivationController extends Controller

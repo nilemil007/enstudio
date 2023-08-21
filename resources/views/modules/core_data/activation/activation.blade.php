@@ -3,15 +3,17 @@
     <!-- Title -->
     <x-slot:title>Activation</x-slot:title>
 
+    <div id="coreActivationErrMsg" class="alert alert-danger err-msg d-none"></div>
+
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h4 class="card-title">Activation Import</h4>
             <span>
                 <div class="input-group">
-                    <form class="import-core-activation" action="{{ route('core.activation.import')}}" method="POST" enctype="multipart/form-data">
+                    <form id="importCoreActivation" action="{{ route('core.activation.import')}}" method="POST" enctype="multipart/form-data">
                         @csrf
-                        <input name="core_activation_import" type="file" class="form-control form-control-sm" id="coreActivationImport" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" required>
-                        <button class="btn btn-sm btn-primary" type="submit" id="coreActivationImport">Import</button>
+                        <input name="core_activation_import" type="file" class="form-control form-control-sm" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" required>
+                        <button class="btn btn-sm btn-primary btn-submit" type="submit">Import Activation</button>
                     </form>
                 </div>
                 {{-- @if(count($rsos) > 1)
@@ -46,36 +48,18 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {{-- @foreach( $rsos as $sl => $rso )
+                    @foreach( $activations as $sl => $activation )
                         <tr>
                             <td><span class="text-muted">{{ ++$sl }}</span></td>
-                            <td>{{ $rso->dd_house }}</td>
-                            <td>{{ $rso->supervisor }}</td>
-                            <td>{{ $rso->rso_code }}</td>
-                            <td>{{ $rso->itop_number }}</td>
-                            <td>{{ optional($rso->user)->name }}</td>
-                            <td>{{ $rso->pool_number }}</td>
-                            <td>{{ $rso->joining_date->toFormattedDateString() }}</td>
-                            <td>
-                                @switch( $rso->status )
-                                    @case(1)
-                                        <p class="text-success">Active</p>
-                                    @break
-
-                                    @case(0)
-                                        <p class="text-danger">Inactive</p>
-                                        @break
-                                @endswitch
-                            </td>
-                            <td>
-                                <!-- Edit -->
-                                <a href="{{ route('rso.edit', $rso->id) }}" class="btn btn-sm btn-primary">Edit</a>
-
-                                <!-- Delete -->
-                                <a href="{{ route('rso.destroy', $rso->id) }}" id="deleteRso" class="btn btn-sm btn-danger">Delete</a>
-                            </td>
+                            <td>{{ $activation->activation_date }}</td>
+{{--                            <td>{{ $rso->supervisor }}</td>--}}
+{{--                            <td>{{ $rso->rso_code }}</td>--}}
+{{--                            <td>{{ $rso->itop_number }}</td>--}}
+{{--                            <td>{{ optional($rso->user)->name }}</td>--}}
+{{--                            <td>{{ $rso->pool_number }}</td>--}}
+{{--                            <td>{{ $rso->joining_date->toFormattedDateString() }}</td>--}}
                         </tr>
-                    @endforeach --}}
+                    @endforeach
                     </tbody>
                 </table>
             </div>
@@ -88,7 +72,7 @@
 
             $(document).ready(function(){
                 // Import Activation
-                $(document).on('submit','.import-core-activation',function (e){
+                $(document).on('submit','#importCoreActivation',function (e){
                     e.preventDefault();
 
                     $.ajax({
@@ -98,16 +82,17 @@
                         processData: false,
                         contentType: false,
                         beforeSend: function (){
-                            $('.btn-import-rso').prop('disabled', true).text('Importing...').append('<img src="{{ url('public/assets/images/gif/DzUd.gif') }}" alt="" width="18px">');
+                            $('#coreActivationErrMsg').addClass('d-none').find('li').remove();
+                            $('.btn-submit').prop('disabled', true).text('Importing...').append('<img src="{{ url('public/assets/images/gif/DzUd.gif') }}" alt="" width="18px">');
                         },
                         success: function (response){
-                            $('.btn-import-rso').prop('disabled', false).text('Import Rso');
+                            $('.btn-submit').prop('disabled', false).text('Import Activation');
                             Swal.fire(
                                 'Success!',
                                 response.success,
                                 'success',
                             ).then((result) => {
-                                window.location.href = "{{ route('rso.index') }}";
+                                window.location.href = "{{ route('core.activation') }}";
                             });
                         },
                         error: function (e){
@@ -117,7 +102,7 @@
                                 $('.err-msg').removeClass('d-none').append('<li>' + value + '</li>');
                             });
 
-                            $('.btn-import-rso').prop('disabled', false).text('Import Rso');
+                            $('.btn-submit').prop('disabled', false).text('Import Activation');
                         },
                     });
                 });
