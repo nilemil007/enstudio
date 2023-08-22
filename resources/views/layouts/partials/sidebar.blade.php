@@ -21,14 +21,14 @@
 
             <li class="nav-item nav-category">reports</li>
 
-            <!-- Daily Activation -->
+            <!-- Activation -->
             <li class="nav-item {{ request()->routeIs('hca.*') ? 'active' : '' }}">
-                <a class="nav-link" data-bs-toggle="collapse" href="#dailyActivation" role="button" aria-expanded="false" aria-controls="dailyActivation">
+                <a class="nav-link" data-bs-toggle="collapse" href="#activation" role="button" aria-expanded="false" aria-controls="activation">
                     <i class="link-icon" data-feather="mail"></i>
-                    <span class="link-title">Daily Activation</span>
+                    <span class="link-title">Activation</span>
                     <i class="link-arrow" data-feather="chevron-down"></i>
                 </a>
-                <div class="collapse {{ request()->routeIs('hca.*') ? 'show' : '' }}" id="dailyActivation">
+                <div class="collapse {{ request()->routeIs('hca.*') ? 'show' : '' }}" id="activation">
                     <ul class="nav sub-menu">
                         <!-- House Code Activation [HCA] -->
                         @if(auth()->user()->role != 'md')
@@ -42,6 +42,10 @@
                             <a href="{{ route('hca.summary') }}" class="nav-link {{ request()->routeIs('hca.summary') ? 'active' : (request()->routeIs('hca.lmtd') ? 'active' : '') }}">Summary</a>
                         </li>
                         @endif
+                        <!-- Summary -->
+                        <li class="nav-item">
+                            <a href="{{ route('core.activation.summary') }}" class="nav-link {{ request()->routeIs('core.activation.summary') ? 'active' : '' }}">Activation Summary</a>
+                        </li>
                     </ul>
                 </div>
             </li>
@@ -71,7 +75,7 @@
             @endif
 
             <li class="nav-item nav-category">import</li>
-            <!-- DD House -->
+            <!-- Core Activation -->
             <li class="nav-item {{ request()->routeIs('core.*') ? 'active' : '' }}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#core" role="button" aria-expanded="false" aria-controls="core">
                     <i class="link-icon" data-feather="info"></i>

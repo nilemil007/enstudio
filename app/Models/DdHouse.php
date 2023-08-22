@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Activation\CoreActivation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -56,5 +57,10 @@ class DdHouse extends Model
     public function scSerial(): HasMany
     {
         return $this->hasMany(ScratchCardSerial::class);
+    }
+
+    public function coreActivation(): HasMany
+    {
+        return $this->hasMany(CoreActivation::class);
     }
 }

@@ -123,7 +123,7 @@ class RetailerController extends Controller
     public function deleteAll(): JsonResponse
     {
         try {
-            Retailer::truncate();
+            Retailer::query()->delete();
             return response()->json(['success' => 'All retailer has been deleted successfully.']);
         }catch (\Exception $exception){
             dd($exception);

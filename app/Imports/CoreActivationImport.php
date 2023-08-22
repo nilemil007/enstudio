@@ -24,13 +24,12 @@ class CoreActivationImport implements ToModel, WithHeadingRow, WithValidation
      */
     public function model(array $row): Model|CoreActivation|null
     {
-//        dd($row['activation_date']);
         return new CoreActivation([
-            'activation_date'   => Carbon::instance(Date::excelToDateTimeObject($row['activation_date']))->toDateString(),
+            'activation_date'   => Carbon::parse($row['activation_date'])->toDateString(),
             'dd_house_id'       => DdHouse::firstWhere('code', $row['distributor_code'])->id,
             'retailer_id'       => Retailer::firstWhere('code', $row['retailer_code'])->id,
-            'supervisor_id'     => Retailer::firstWhere('code', $row['retailer_code'])->id,
-            'rso_id'            => Retailer::firstWhere('code', $row['retailer_code'])->id,
+            'supervisor_id'     => Retailer::firstWhere('code', $row['retailer_code'])->supervisor_id,
+            'rso_id'            => Retailer::firstWhere('code', $row['retailer_code'])->rso_id,
             'product_code'      => $row['product_code'],
             'product_name'      => $row['product_name'],
             'sim_serial'        => $row['sim_no'],
@@ -47,30 +46,22 @@ class CoreActivationImport implements ToModel, WithHeadingRow, WithValidation
     public function rules(): array
     {
         return [
-            'activation_date'   => ['required'],
-            '*.activation_date' => ['required'],
-//            'dd_house_id'       => ['required'],
-//            '*.dd_house_id'     => ['required'],
-//            'retailer_id'       => ['required'],
-//            '*.retailer_id'     => ['required'],
-//            'supervisor_id'     => ['required'],
-//            '*.supervisor_id'   => ['required'],
-//            'rso_id'            => ['required'],
-//            '*.rso_id'          => ['required'],
-//            'product_code'      => ['required'],
-//            '*.product_code'    => ['required'],
-//            'product_name'      => ['required'],
-//            '*.product_name'    => ['required'],
-//            'sim_serial'        => ['required', 'unique:core_activations,sim_serial'],
-//            '*.sim_serial'      => ['required', 'unique:core_activations,sim_serial'],
-//            'msisdn'            => ['required', 'unique:core_activations,msisdn'],
-//            '*.msisdn'          => ['required', 'unique:core_activations,msisdn'],
-//            'selling_price'     => ['required'],
-//            '*.selling_price'   => ['required'],
-//            'bp_flag'           => ['required'],
-//            '*.bp_flag'         => ['required'],
-//            'bp_number'         => ['required'],
-//            '*.bp_number'       => ['required'],
+            'activation_date'       => ['required'],
+            '*.activation_date'     => ['required'],
+            'distributor_code'      => ['required'],
+            '*.distributor_code'    => ['required'],
+            'retailer_code'         => ['required'],
+            '*.retailer_code'       => ['required'],
+            'product_code'          => ['required'],
+            '*.product_code'        => ['required'],
+            'product_name'          => ['required'],
+            '*.product_name'        => ['required'],
+            'sim_no'                => ['required', 'unique:core_activations,sim_serial'],
+            '*.sim_no'              => ['required', 'unique:core_activations,sim_serial'],
+            'msisdn'                => ['required', 'unique:core_activations,msisdn'],
+            '*.msisdn'              => ['required', 'unique:core_activations,msisdn'],
+            'selling_price'         => ['required'],
+            '*.selling_price'       => ['required'],
         ];
     }
 }

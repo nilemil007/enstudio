@@ -276,6 +276,36 @@
                     });
                 });
 
+                // Import DD House
+                $(document).on('submit','.dd-house-import',function (e){
+                    e.preventDefault();
+
+                    $.ajax({
+                        url: $(this).attr('action'),
+                        type: $(this).attr('method'),
+                        data: new FormData(this),
+                        processData: false,
+                        contentType: false,
+                        beforeSend: function (){
+                            $('.btn-submit').prop('disabled', true).text('Importing...').append('<img src="{{ url('public/assets/images/gif/DzUd.gif') }}" alt="" width="18px">');
+                        },
+                        success: function (response){
+                            $('.btn-submit').prop('disabled', false).text('Import House');
+                            Swal.fire(
+                                'Success!',
+                                response.success,
+                                'success',
+                            ).then((result) => {
+                                window.location.href = "{{ route('dd-house.index') }}";
+                            });
+                        },
+                        error: function (e){
+                            console.log(e.responseText);
+                            $('.btn-submit').prop('disabled', false).text('Import House');
+                        },
+                    });
+                });
+
                 $("#ddHouseForm").validate({
 
                     rules: {

@@ -150,6 +150,8 @@ Route::middleware(['auth'])->group(function (){
         Route::get('/activation','index')->name('activation');
         // Activation [import]
         Route::post('/activation/import','coreActivationImport')->name('activation.import');
+        // Activation Summary
+        Route::get('/activation/summary','coreActivationSummary')->name('activation.summary');
     });
 
     // Resource Routes

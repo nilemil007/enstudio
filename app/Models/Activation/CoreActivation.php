@@ -2,9 +2,18 @@
 
 namespace App\Models\Activation;
 
+use App\Models\DdHouse;
+use App\Models\Retailer;
+use App\Models\Rso;
+use App\Models\Supervisor;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @method static whereNotNull(string $string)
+ * @method static where(string $string, $date)
+ */
 class CoreActivation extends Model
 {
     use HasFactory;
@@ -32,4 +41,26 @@ class CoreActivation extends Model
     protected $casts = [
         'activation_date' => 'datetime',
     ];
+
+    public static function getActivation($retailerId, $date)
+    {
+        return CoreActivation::where('activation_date', $date)->where('retailer_id', $retailerId)->count('retailer_id');
+    }
+
+    public function ddHouse(): BelongsTo
+    {
+        return $this->belongsTo(DdHouse::class);
+    }
+    public function supervisor(): BelongsTo
+    {
+        return $this->belongsTo(Supervisor::class);
+    }
+    public function rso(): BelongsTo
+    {
+        return $this->belongsTo(Rso::class);
+    }
+    public function retailer(): BelongsTo
+    {
+        return $this->belongsTo(Retailer::class);
+    }
 }

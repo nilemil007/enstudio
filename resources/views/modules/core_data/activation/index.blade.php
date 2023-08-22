@@ -29,20 +29,16 @@
                     <thead>
                     <tr>
                         <th class="w-1">No.</th>
-                        <th>activaton date</th>
+                        <th>activation date</th>
                         <th>distributor code</th>
                         <th>distributor name</th>
                         <th>retailer code</th>
                         <th>retailer name</th>
-                        <th>bts code</th>
-                        <th>thana</th>
-                        <th>promotion</th>
                         <th>product code</th>
                         <th>product name</th>
                         <th>sim no</th>
                         <th>msisdn</th>
                         <th>selling price</th>
-                        <th>bio date</th>
                         <th>bp flag</th>
                         <th>bp number</th>
                     </tr>
@@ -51,13 +47,18 @@
                     @foreach( $activations as $sl => $activation )
                         <tr>
                             <td><span class="text-muted">{{ ++$sl }}</span></td>
-                            <td>{{ $activation->activation_date }}</td>
-{{--                            <td>{{ $rso->supervisor }}</td>--}}
-{{--                            <td>{{ $rso->rso_code }}</td>--}}
-{{--                            <td>{{ $rso->itop_number }}</td>--}}
-{{--                            <td>{{ optional($rso->user)->name }}</td>--}}
-{{--                            <td>{{ $rso->pool_number }}</td>--}}
-{{--                            <td>{{ $rso->joining_date->toFormattedDateString() }}</td>--}}
+                            <td>{{ $activation->activation_date->toFormattedDateString() }}</td>
+                            <td>{{ $activation->ddHouse->code }}</td>
+                            <td>{{ $activation->ddHouse->name }}</td>
+                            <td>{{ $activation->retailer->code }}</td>
+                            <td>{{ $activation->retailer->name }}</td>
+                            <td>{{ $activation->product_code }}</td>
+                            <td>{{ $activation->product_name }}</td>
+                            <td>{{ $activation->sim_serial }}</td>
+                            <td>{{ $activation->msisdn }}</td>
+                            <td>{{ $activation->selling_price }}</td>
+                            <td>{{ $activation->bp_flag }}</td>
+                            <td>{{ $activation->bp_number }}</td>
                         </tr>
                     @endforeach
                     </tbody>
@@ -72,7 +73,7 @@
 
             $(document).ready(function(){
                 // Import Activation
-                $(document).on('submit','#importCoreActivation9',function (e){
+                $(document).on('submit','#importCoreActivation',function (e){
                     e.preventDefault();
 
                     $.ajax({
@@ -92,7 +93,7 @@
                                 response.success,
                                 'success',
                             ).then((result) => {
-                                window.location.href = "{{ route('core.activation') }}";
+                                location.reload();
                             });
                         },
                         error: function (e){

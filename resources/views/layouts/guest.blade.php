@@ -8,7 +8,7 @@
     <meta name="author" content="ENStudio">
     <meta name="keywords" content="enstudio, bootstrap, bootstrap 5, bootstrap5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
 
-    <title>{{ !isset($title) ? config('app.name') : $title .' :: '. config('app.name') }}</title>
+    <title>{{ !isset($title) ? config('app.name') : $title .' : : '. config('app.name') }}</title>
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">

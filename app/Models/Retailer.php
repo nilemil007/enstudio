@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Activation\CoreActivation;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -16,6 +17,8 @@ use Illuminate\Support\Str;
  * @method static whereNotIn($tcrcId)
  * @method static whereIn(string $string, $retId)
  * @method static truncate()
+ * @method static select(string $string)
+ * @method static groupBy(string $string)
  */
 class Retailer extends Model
 {
@@ -208,12 +211,22 @@ class Retailer extends Model
     }
 
     /**
-     * Retailer belongs to a user.
+     * Retailer has one TCRC.
      *
      * @return HasOne
      */
     public function tradeCampaignRetailerCode(): HasOne
     {
         return $this->hasOne( TradeCampaignRetailerCode::class );
+    }
+
+    /**
+     * Retailer has one core activation.
+     *
+     * @return HasOne
+     */
+    public function coreActivation(): HasOne
+    {
+        return $this->hasOne( CoreActivation::class );
     }
 }

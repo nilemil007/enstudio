@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use App\Models\Activation\CoreActivation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @method static latest()
@@ -54,6 +56,11 @@ class Supervisor extends Model
     public function ddHouse(): BelongsTo
     {
         return $this->belongsTo(DdHouse::class);
+    }
+
+    public function coreActivation(): HasMany
+    {
+        return $this->hasMany(CoreActivation::class);
     }
 
 }

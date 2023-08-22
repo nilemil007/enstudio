@@ -100,7 +100,7 @@ class DdHouseController extends Controller
     public function deleteAll(): JsonResponse
     {
         try {
-            DdHouse::truncate();
+            DdHouse::query()->delete();
             return response()->json(['success' => 'All dd house has been deleted successfully.']);
         }catch (Exception $exception){
             dd($exception);
