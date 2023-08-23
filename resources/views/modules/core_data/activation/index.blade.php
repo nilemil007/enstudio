@@ -9,13 +9,13 @@
         <div class="card-header d-flex justify-content-between align-items-center">
             <h4 class="card-title">Activation Import</h4>
             <span>
-                <div class="input-group">
-                    <form id="importCoreActivation" action="{{ route('core.activation.import')}}" method="POST" enctype="multipart/form-data">
-                        @csrf
+                <form id="importCoreActivation" action="{{ route('core.activation.import')}}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="input-group">
                         <input name="core_activation_import" type="file" class="form-control form-control-sm" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" required>
                         <button class="btn btn-sm btn-primary btn-submit" type="submit">Import Activation</button>
-                    </form>
-                </div>
+                    </div>
+                </form>
                 {{-- @if(count($rsos) > 1)
                     <a id="deleteAllRso" href="{{ route('rso.delete.all') }}" class="btn btn-sm btn-danger">Delete All</a>
                 @endif --}}

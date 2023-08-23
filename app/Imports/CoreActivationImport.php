@@ -58,8 +58,8 @@ class CoreActivationImport implements ToModel, WithHeadingRow, WithValidation
             '*.product_name'        => ['required'],
             'sim_no'                => ['required', 'unique:core_activations,sim_serial'],
             '*.sim_no'              => ['required', 'unique:core_activations,sim_serial'],
-            'msisdn'                => ['required', 'unique:core_activations,msisdn'],
-            '*.msisdn'              => ['required', 'unique:core_activations,msisdn'],
+            'msisdn'                => ['required'],
+            '*.msisdn'              => ['required'],
             'selling_price'         => ['required'],
             '*.selling_price'       => ['required'],
         ];
