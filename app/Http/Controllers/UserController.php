@@ -156,7 +156,7 @@ class UserController extends Controller
     public function import(Request $request): JsonResponse|RedirectResponse
     {
         try {
-            Excel::import(new UsersImport, $request->file('import_users'));
+            Excel::queueImport(new UsersImport, $request->file('import_users'));
 
             return response()->json(['success' => 'Users imported successfully.']);
 

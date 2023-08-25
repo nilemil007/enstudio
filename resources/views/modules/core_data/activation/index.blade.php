@@ -44,7 +44,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach( $activations as $sl => $activation )
+                    @forelse( $activations as $sl => $activation )
                         <tr>
                             <td><span class="text-muted">{{ ++$sl }}</span></td>
                             <td>{{ $activation->activation_date->toFormattedDateString() }}</td>
@@ -60,16 +60,23 @@
                             <td>{{ $activation->bp_flag }}</td>
                             <td>{{ $activation->bp_number }}</td>
                         </tr>
-                    @endforeach
+                    @empty
+                        <tr>
+                            <td colspan="13">No data found.</td>
+                        </tr>
+                    @endforelse
                     </tbody>
                 </table>
             </div>
+        </div>
+        <div class="card-footer">
+            {{ $activations->links('pagination::bootstrap-5') }}
         </div>
     </div>
 
     @push('scripts')
         <script>
-            new DataTable('#coreActivationTbl');
+            // new DataTable('#coreActivationTbl');
 
             $(document).ready(function(){
                 // Import Activation

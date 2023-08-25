@@ -26,8 +26,8 @@ class RsoStoreRequest extends FormRequest
     {
         return [
             'user_id' => ['required'],
-            'supervisor' => ['required'],
-            'dd_house' => ['required'],
+            'supervisor_id' => ['required'],
+            'dd_house_id' => ['required'],
             'routes' => ['required'],
             'rso_code' => [
                 'required',

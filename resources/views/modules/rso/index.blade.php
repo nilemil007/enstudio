@@ -34,8 +34,8 @@
                     @foreach( $rsos as $sl => $rso )
                         <tr>
                             <td><span class="text-muted">{{ ++$sl }}</span></td>
-                            <td>{{ $rso->dd_house }}</td>
-                            <td>{{ $rso->supervisor }}</td>
+                            <td>{{ $rso->ddHouse->code }}</td>
+                            <td>{{ $rso->supervisor->user->name }}</td>
                             <td>{{ $rso->rso_code }}</td>
                             <td>{{ $rso->itop_number }}</td>
                             <td>{{ optional($rso->user)->name }}</td>

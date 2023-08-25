@@ -26,8 +26,8 @@ class Rso extends Model
     protected $fillable = [
         'user_id',
         'nominee_id',
-        'supervisor',
-        'dd_house',
+        'supervisor_id',
+        'dd_house_id',
         'routes',
         'rso_code',
         'itop_number',
@@ -94,9 +94,20 @@ class Rso extends Model
     {
         return $this->belongsTo( User::class );
     }
+
     public function coreActivation(): HasMany
     {
         return $this->hasMany( CoreActivation::class );
+    }
+
+    public function ddHouse(): BelongsTo
+    {
+        return $this->belongsTo( DdHouse::class );
+    }
+
+    public function supervisor(): BelongsTo
+    {
+        return $this->belongsTo( Supervisor::class );
     }
 
     /**

@@ -13,10 +13,10 @@ use Illuminate\Foundation\Application;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Response;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Validators\ValidationException;
-use RealRashid\SweetAlert\Facades\Alert;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class DdHouseController extends Controller
@@ -113,7 +113,7 @@ class DdHouseController extends Controller
     public function import(Request $request): JsonResponse|RedirectResponse
     {
         try {
-            Excel::import(new DdHouseImport, $request->file('import_house'));
+            Excel::queueImport(new DdHouseImport, $request->file('import_house'));
 
             return response()->json(['success' => 'DD house imported successfully.']);
 

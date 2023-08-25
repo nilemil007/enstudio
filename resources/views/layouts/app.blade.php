@@ -72,7 +72,6 @@
 <!-- inject:js -->
 <script src="{{ url('public/assets/vendors/feather-icons/feather.min.js') }}"></script>
 <script src="{{ url('public/assets/js/template.js') }}"></script>
-{{--<script src="{{ url('public/assets/js/dashboard-light.js') }}"></script>--}}
 <!-- endinject -->
 
 <!-- datatable:js -->

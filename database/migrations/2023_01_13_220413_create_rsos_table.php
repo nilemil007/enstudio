@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('rsos', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained();
-            $table->string('dd_house');
-            $table->string('supervisor');
+            $table->foreignId('dd_house_id')->constrained();
+            $table->foreignId('supervisor_id')->constrained();
             $table->string('routes')->nullable();
             $table->string('rso_code', 10)->unique();
             $table->string('itop_number', 11)->unique();

@@ -2,17 +2,21 @@
 
 namespace App\Imports;
 
-use App\Models\Rso;
+use App\Models\DdHouse;
 use App\Rules\Nid;
 use Carbon\Carbon;
+use App\Models\Rso;
+use App\Models\Supervisor;
 use Illuminate\Database\Eloquent\Model;
-use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
+use Maatwebsite\Excel\Concerns\Importable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
-use PhpOffice\PhpSpreadsheet\Shared\Date;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
 
-class RsoImport implements ToModel, WithHeadingRow, WithValidation
+class RsoImport implements ToModel, WithHeadingRow, WithValidation, ShouldQueue, WithChunkReading
 {
     use Importable;
 
@@ -24,8 +28,8 @@ class RsoImport implements ToModel, WithHeadingRow, WithValidation
     public function model(array $row): Model|Rso|null
     {
         return new Rso([
-            'dd_house'          => $row['dd_code'],
-            'supervisor'        => $row['supervisor'],
+            'dd_house_id'       => DdHouse::firstWhere('code', $row['dd_code'])->id,
+            'supervisor_id'     => Supervisor::firstWhere('pool_number', $row['supervisor'])->id,
             'routes'            => explode(',', $row['routes']),
             'rso_code'          => $row['rso_code'],
             'itop_number'       => $row['itop_number'],
@@ -53,6 +57,11 @@ class RsoImport implements ToModel, WithHeadingRow, WithValidation
             'residential_rso'   => $row['residential_rso'],
             'joining_date'      => Carbon::instance(Date::excelToDateTimeObject($row['joining_date']))->toDateString(),
         ]);
+    }
+
+    public function chunkSize(): int
+    {
+        return 1000;
     }
 
     /**

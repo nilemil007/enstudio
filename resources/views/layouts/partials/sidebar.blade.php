@@ -21,6 +21,23 @@
 
             <li class="nav-item nav-category">reports</li>
 
+            <!-- Daily Report -->
+            <li class="nav-item {{ request()->routeIs('daily.report.*') ? 'active' : '' }}">
+                <a class="nav-link" data-bs-toggle="collapse" href="#dailyReport" role="button" aria-expanded="false" aria-controls="dailyReport">
+                    <i class="link-icon" data-feather="mail"></i>
+                    <span class="link-title">Daily Report</span>
+                    <i class="link-arrow" data-feather="chevron-down"></i>
+                </a>
+                <div class="collapse {{ request()->routeIs('daily.report.*') ? 'show' : '' }}" id="dailyReport">
+                    <ul class="nav sub-menu">
+                        <!-- GA [Target vs Achievement] -->
+                        <li class="nav-item">
+                            <a href="{{ route('daily.report.ga') }}" class="nav-link {{ request()->routeIs('daily.report.ga') ? 'active' : '' }}" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Target vs Achievement">Gross Add [GA]</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
             <!-- Activation -->
             <li class="nav-item {{ request()->routeIs(['hca.*','report.*']) ? 'active' : '' }}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#activation" role="button" aria-expanded="false" aria-controls="activation">
@@ -37,7 +54,7 @@
                         </li>
                         @endif
                         <!-- HCA Summary -->
-                       @if(auth()->user()->role == 'md' || auth()->user()->role == 'superadmin')
+                        @if(auth()->user()->role == 'md' || auth()->user()->role == 'superadmin')
                         <li class="nav-item">
                             <a href="{{ route('hca.summary') }}" class="nav-link {{ request()->routeIs('hca.summary') ? 'active' : (request()->routeIs('hca.lmtd') ? 'active' : '') }}">Summary</a>
                         </li>

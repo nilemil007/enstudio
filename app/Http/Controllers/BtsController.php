@@ -117,7 +117,7 @@ class BtsController extends Controller
     public function import(Request $request): JsonResponse|RedirectResponse
     {
         try {
-            Excel::import(new BtsImport, $request->file('import_bts'));
+            Excel::queueImport(new BtsImport, $request->file('import_bts'));
 
             return Response::json(['success' => 'BTS imported successfully.']);
 

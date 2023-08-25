@@ -4,12 +4,14 @@ namespace App\Imports;
 
 use App\Models\Route;
 use Illuminate\Database\Eloquent\Model;
-use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\Importable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
 
-class RouteImport implements ToModel, WithHeadingRow, WithValidation
+class RouteImport implements ToModel, WithHeadingRow, WithValidation, ShouldQueue, WithChunkReading
 {
     use Importable;
 
@@ -28,6 +30,11 @@ class RouteImport implements ToModel, WithHeadingRow, WithValidation
             'weekdays'      => $row['weekday'],
             'length'        => $row['route_length'],
         ]);
+    }
+
+    public function chunkSize(): int
+    {
+        return 1000;
     }
 
     /**

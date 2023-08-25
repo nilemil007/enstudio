@@ -4,17 +4,19 @@ namespace App\Imports;
 
 use App\Rules\Nid;
 use App\Models\Rso;
+use App\Models\Route;
 use App\Models\DdHouse;
 use App\Models\Retailer;
-use App\Models\Route;
 use App\Models\Supervisor;
 use Illuminate\Database\Eloquent\Model;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\Importable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
 
-class RetailerImport implements ToModel, WithHeadingRow, WithValidation
+class RetailerImport implements ToModel, WithHeadingRow, WithValidation, ShouldQueue, WithChunkReading
 {
     use Importable;
 
@@ -47,6 +49,11 @@ class RetailerImport implements ToModel, WithHeadingRow, WithValidation
             'route_id'          => Route::firstWhere('code', $row['route'])->id,
             'password'          => $row['password'],
         ]);
+    }
+
+    public function chunkSize(): int
+    {
+        return 1000;
     }
 
     /**

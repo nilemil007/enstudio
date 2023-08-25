@@ -60,18 +60,6 @@ class ScratchCardSerialController extends Controller
             'group'         => 'group',
         ]);
 
-//        for ($i = $request->input('f_serial'); $i <= $request->input('l_serial'); $i++)
-//        {
-//            $scSerial = explode(' ', $i);
-//
-//            ScratchCardSerial::create([
-//                'dd_house_id' => $request->input('dd_house_id'),
-//                'product_code' => $request->input('product_code'),
-//                'group' => $request->input('group'),
-//                'serial' => $scSerial[0],
-//            ]);
-//        }
-
         ScratchCardSerialJob::dispatch($fields);
 
         return Response::json(['success' => 'New scratch card serial number created successfully.']);

@@ -2,15 +2,17 @@
 
 namespace App\Imports;
 
-use App\Models\DdHouse;
 use App\Models\User;
+use App\Models\DdHouse;
 use Illuminate\Database\Eloquent\Model;
-use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\Importable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
 
-class UsersImport implements ToModel, WithHeadingRow, WithValidation
+class UsersImport implements ToModel, WithHeadingRow, WithValidation, ShouldQueue, WithChunkReading
 {
     use Importable;
 
@@ -30,6 +32,11 @@ class UsersImport implements ToModel, WithHeadingRow, WithValidation
             'role'      => $row['role'],
             'password'  => $row['password'],
         ]);
+    }
+
+    public function chunkSize(): int
+    {
+        return 1000;
     }
 
     /**

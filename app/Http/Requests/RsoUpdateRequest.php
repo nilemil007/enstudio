@@ -25,8 +25,8 @@ class RsoUpdateRequest extends FormRequest
     {
         return [
             'user_id' => ['required'],
-            'supervisor' => ['required'],
-            'dd_house' => ['required'],
+            'supervisor_id' => ['required'],
+            'dd_house_id' => ['required'],
             'routes' => ['sometimes'],
             'rso_code' => [
                 'required',

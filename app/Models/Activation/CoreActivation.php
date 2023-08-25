@@ -45,14 +45,14 @@ class CoreActivation extends Model
     public static function getActivation($retailerId, $date)
     {
         return CoreActivation::where('activation_date', $date)
-        ->where('product_code','MMST')
+        ->whereIn('product_code',['MMST','MMSTS'])
         ->where('retailer_id', $retailerId)
         ->count('retailer_id');
     }
 
     public static function getTotalActivaton($id)
     {
-        return CoreActivation::where('product_code','MMST')
+        return CoreActivation::whereIn('product_code',['MMST','MMSTS'])
         ->where('retailer_id', $id)
         ->count('retailer_id');
     }

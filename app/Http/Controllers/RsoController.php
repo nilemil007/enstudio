@@ -132,7 +132,7 @@ class RsoController extends Controller
     public function import(Request $request): JsonResponse|RedirectResponse
     {
         try {
-            Excel::import(new RsoImport, $request->file('import_rso'));
+            Excel::queueImport(new RsoImport, $request->file('import_rso'));
 
             return Response::json(['success' => 'Rso imported successfully.']);
 

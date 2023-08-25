@@ -117,7 +117,7 @@ class RouteController extends Controller
     public function import(Request $request): JsonResponse|RedirectResponse
     {
         try {
-            Excel::import(new RouteImport(), $request->file('import_route'));
+            Excel::queueImport(new RouteImport(), $request->file('import_route'));
 
             return Response::json(['success' => 'Route imported successfully.']);
 

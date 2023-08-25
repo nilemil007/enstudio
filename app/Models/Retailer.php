@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Str;
 
@@ -19,6 +20,7 @@ use Illuminate\Support\Str;
  * @method static truncate()
  * @method static select(string $string)
  * @method static groupBy(string $string)
+ * @method static paginate(int $int)
  */
 class Retailer extends Model
 {
@@ -200,6 +202,17 @@ class Retailer extends Model
 
 
     //_______________________________________Relationship___________________________________________
+
+    /**
+     * Retailer belongs to a dd house.
+     *
+     * @return BelongsTo
+     */
+    public function ddHouse(): BelongsTo
+    {
+        return $this->belongsTo( DdHouse::class );
+    }
+
     /**
      * Retailer belongs to a user.
      *
@@ -225,8 +238,8 @@ class Retailer extends Model
      *
      * @return HasOne
      */
-    public function coreActivation(): HasOne
+    public function coreActivation(): HasMany
     {
-        return $this->hasOne( CoreActivation::class );
+        return $this->hasMany( CoreActivation::class );
     }
 }

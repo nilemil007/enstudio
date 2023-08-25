@@ -1,14 +1,7 @@
-@php
-    $date = \Carbon\Carbon::now()->startOfMonth()->toDateString();//start date
-    $end_date = \Carbon\Carbon::now()->endOfMonth()->toDateString();//end date
-@endphp
-
 <x-app-layout>
 
     <!-- Title -->
-    <x-slot:title>Summary</x-slot:title>
-
-{{--    <div id="coreActivationErrMsg" class="alert alert-danger err-msg d-none"></div>--}}
+    <x-slot:title>Activation Summary</x-slot:title>
 
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
@@ -22,7 +15,7 @@
                         <th class="w-1">No.</th>
                         <th>retailer code</th>
                         <th>total activation</th>
-                        @for($i = $date; $i <= $end_date; $i++)
+                        @for($i = $startDate; $i <= $endDate; $i++)
                             <th>{{ date('d M', strtotime($i)) }}</th>
                         @endfor
                     </tr>
@@ -33,7 +26,7 @@
                             <td><span class="text-muted">{{ ++$sl }}</span></td>
                             <td>{{ $retailer->code }}</td>
                             <td><strong>{{ \App\Models\Activation\CoreActivation::getTotalActivaton($retailer->id) }}</strong></td>
-                            @for ($a = $date; $a <= $end_date; $a++)
+                            @for ($a = $startDate; $a <= $endDate; $a++)
                             <td>{{ \App\Models\Activation\CoreActivation::getActivation($retailer->id, $a) }}</td>
                             @endfor
                         </tr>

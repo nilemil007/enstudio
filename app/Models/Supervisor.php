@@ -63,4 +63,9 @@ class Supervisor extends Model
         return $this->hasMany(CoreActivation::class);
     }
 
+    public function rso(): HasMany
+    {
+        return $this->hasMany(Rso::class);
+    }
+
 }

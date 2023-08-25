@@ -2,16 +2,18 @@
 
 namespace App\Imports;
 
-use App\Models\DdHouse;
 use Carbon\Carbon;
+use App\Models\DdHouse;
 use Illuminate\Database\Eloquent\Model;
-use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
+use Maatwebsite\Excel\Concerns\Importable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
-use PhpOffice\PhpSpreadsheet\Shared\Date;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
 
-class DdHouseImport implements ToModel, WithHeadingRow, WithValidation
+class DdHouseImport implements ToModel, WithHeadingRow, WithValidation, ShouldQueue, WithChunkReading
 {
     use Importable;
 
@@ -41,6 +43,11 @@ class DdHouseImport implements ToModel, WithHeadingRow, WithValidation
             'bts_code'          => $row['bts_code'],
             'lifting_date'      => Carbon::instance(Date::excelToDateTimeObject($row['lifting_date']))->toDateString(),
         ]);
+    }
+
+    public function chunkSize(): int
+    {
+        return 1000;
     }
 
     /**

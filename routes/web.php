@@ -3,6 +3,7 @@
 use App\Http\Controllers\BpController;
 use App\Http\Controllers\BtsController;
 use App\Http\Controllers\CoreActivationController;
+use App\Http\Controllers\DailyReportController;
 use App\Http\Controllers\DdHouseController;
 use App\Http\Controllers\HouseCodeActivationController;
 use App\Http\Controllers\ItopReplaceController;
@@ -157,6 +158,12 @@ Route::middleware(['auth'])->group(function (){
     Route::controller(ReportController::class)->prefix('/report')->name('report.')->group(function(){
         // Activation Summary
         Route::get('/activation/summary','coreActivationSummary')->name('activation.summary');
+    });
+
+    // Daily Report Routes
+    Route::controller(ReportController::class)->prefix('/daily-report')->name('daily.report.')->group(function(){
+        // GA
+        Route::get('/ga','ga')->name('ga');
     });
 
     // Resource Routes

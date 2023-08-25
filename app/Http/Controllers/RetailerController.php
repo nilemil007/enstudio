@@ -33,7 +33,7 @@ class RetailerController extends Controller
      */
     public function index(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $retailers = Retailer::all();
+        $retailers = Retailer::paginate(10);
         return view('modules.retailer.index', compact('retailers'));
     }
 
@@ -142,7 +142,7 @@ class RetailerController extends Controller
                 return to_route('retailer.create');
             }
 
-            Excel::import(new RetailerImport, $request->file('import_retailer'));
+            Excel::queueImport(new RetailerImport, $request->file('import_retailer'));
 
             return Response::json(['success' => 'Retailer imported successfully.']);
 

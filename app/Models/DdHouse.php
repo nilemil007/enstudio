@@ -54,6 +54,16 @@ class DdHouse extends Model
         return $this->hasMany(Supervisor::class);
     }
 
+    public function rso(): HasMany
+    {
+        return $this->hasMany(Rso::class);
+    }
+
+    public function retailer(): HasMany
+    {
+        return $this->hasMany(Retailer::class);
+    }
+
     public function scSerial(): HasMany
     {
         return $this->hasMany(ScratchCardSerial::class);

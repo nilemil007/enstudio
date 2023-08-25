@@ -2,18 +2,19 @@
 
 namespace App\Imports;
 
-use App\Models\Activation\CoreActivation;
+use Carbon\Carbon;
 use App\Models\DdHouse;
 use App\Models\Retailer;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
+use App\Models\Activation\CoreActivation;
+use Maatwebsite\Excel\Concerns\Importable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
-use PhpOffice\PhpSpreadsheet\Shared\Date;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
 
-class CoreActivationImport implements ToModel, WithHeadingRow, WithValidation
+class CoreActivationImport implements ToModel, WithHeadingRow, WithValidation, ShouldQueue, WithChunkReading
 {
     use Importable;
 
@@ -38,6 +39,11 @@ class CoreActivationImport implements ToModel, WithHeadingRow, WithValidation
             'bp_flag'           => $row['bp_flag'],
             'bp_number'         => $row['bp_number'],
         ]);
+    }
+
+    public function chunkSize(): int
+    {
+        return 1000;
     }
 
     /**

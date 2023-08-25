@@ -2,16 +2,18 @@
 
 namespace App\Imports;
 
-use App\Models\Bts;
 use Carbon\Carbon;
+use App\Models\Bts;
 use Illuminate\Database\Eloquent\Model;
-use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
+use Maatwebsite\Excel\Concerns\Importable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
-use PhpOffice\PhpSpreadsheet\Shared\Date;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
 
-class BtsImport implements ToModel, WithHeadingRow, WithValidation
+class BtsImport implements ToModel, WithHeadingRow, WithValidation, ShouldQueue, WithChunkReading
 {
     use Importable;
 
@@ -38,6 +40,11 @@ class BtsImport implements ToModel, WithHeadingRow, WithValidation
             'four_g_on_air_date'    => Carbon::instance(Date::excelToDateTimeObject($row['4g_on_air_date'] ?? ''))->toDateString(),
             'urban_rural'           => $row['urban_rural'],
         ]);
+    }
+
+    public function chunkSize(): int
+    {
+        return 1000;
     }
 
     /**
