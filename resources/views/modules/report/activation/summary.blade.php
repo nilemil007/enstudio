@@ -25,9 +25,9 @@
                         <tr>
                             <td><span class="text-muted">{{ ++$sl }}</span></td>
                             <td>{{ $retailer->code }}</td>
-                            <td><strong>{{ \App\Models\Activation\CoreActivation::getTotalActivaton($retailer->id) }}</strong></td>
+                            <td><strong>{{ \App\Models\Activation\CoreActivation::getRetailerTotalActivaton($retailer->id) }}</strong></td>
                             @for ($a = $startDate; $a <= $endDate; $a++)
-                            <td>{{ \App\Models\Activation\CoreActivation::getActivation($retailer->id, $a) }}</td>
+                            <td>{{ \App\Models\Activation\CoreActivation::getRetailerActivationByDate($retailer->id, $a) }}</td>
                             @endfor
                         </tr>
                     @empty

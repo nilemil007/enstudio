@@ -34,7 +34,7 @@
                             <td>{{ $rso->ddHouse->code }}</td>
                             <td>{{ $rso->itop_number }}</td>
                             <td></td>
-                            <td></td>
+                            <td>{{ $rso->coreActivation->count() }}</td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -45,8 +45,15 @@
                             <td></td>
                         </tr>
                         @empty
-
+                        <tr>
+                            <td>No data found.</td>
+                        </tr>
                         @endforelse
+                        <tr style="font-weight: bold">
+                            <td colspan="3">Grand Total</td>
+                            <td>0</td>
+                            <td>{{ $sumOfTotalActivation }}</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>

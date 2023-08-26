@@ -3,7 +3,6 @@
 use App\Http\Controllers\BpController;
 use App\Http\Controllers\BtsController;
 use App\Http\Controllers\CoreActivationController;
-use App\Http\Controllers\DailyReportController;
 use App\Http\Controllers\DdHouseController;
 use App\Http\Controllers\HouseCodeActivationController;
 use App\Http\Controllers\ItopReplaceController;

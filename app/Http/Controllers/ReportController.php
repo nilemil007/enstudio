@@ -24,10 +24,14 @@ class ReportController extends Controller
     }
 
     // GA Target vs Achievement
-    public function ga()
+    public function ga(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $rsos = Rso::select('dd_house_id','itop_number')->groupBy('itop_number')->where('status', 1)->get();
+        $rsos = Rso::with(['coreActivation' => function($query){
+            $query->whereIn('product_code',['MMST','MMSTS']);
+        }])->groupBy('itop_number')->where('status', 1)->get();
 
-        return view('modules.report.activation.ga', compact('rsos'));
+        $sumOfTotalActivation = CoreActivation::getTotalActivatonByHouse(['MYMVAI01','MYMVAI02','MYMVAI03']);
+
+        return view('modules.report.activation.ga', compact('rsos','sumOfTotalActivation'));
     }
 }

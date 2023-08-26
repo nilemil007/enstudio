@@ -97,7 +97,7 @@ class Rso extends Model
 
     public function coreActivation(): HasMany
     {
-        return $this->hasMany( CoreActivation::class );
+        return $this->hasMany(CoreActivation::class);
     }
 
     public function ddHouse(): BelongsTo

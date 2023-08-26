@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * @method static whereNotNull(string $string)
  * @method static where(string $string, $date)
+ * @method static whereIn(string $string, string[] $array)
  */
 class CoreActivation extends Model
 {
@@ -42,7 +43,7 @@ class CoreActivation extends Model
         'activation_date' => 'datetime',
     ];
 
-    public static function getActivation($retailerId, $date)
+    public static function getRetailerActivationByDate($retailerId, $date)
     {
         return CoreActivation::where('activation_date', $date)
         ->whereIn('product_code',['MMST','MMSTS'])
@@ -50,11 +51,17 @@ class CoreActivation extends Model
         ->count('retailer_id');
     }
 
-    public static function getTotalActivaton($id)
+    public static function getRetailerTotalActivaton($id)
     {
         return CoreActivation::whereIn('product_code',['MMST','MMSTS'])
         ->where('retailer_id', $id)
         ->count('retailer_id');
+    }
+
+    public static function getTotalActivatonByHouse($house)
+    {
+        $id = DdHouse::whereIn('code', $house)->pluck('id');
+        return CoreActivation::whereIn('product_code',['MMST','MMSTS'])->whereIn('dd_house_id', $id)->count('retailer_id');
     }
 
     public function ddHouse(): BelongsTo
