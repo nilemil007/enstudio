@@ -14,7 +14,7 @@
         <div class="card-header d-flex justify-content-between align-items-center">
             <h4 class="card-title">Gross Add [GA]</h4>
             <div>
-                <select name="dd_house_id" id="findByHouse" class="select-2 form-select form-select-sm">
+                <select id="findByHouse" class="select-2 form-select form-select-sm">
                     <option value="">-- Select DD House --</option>
                     @foreach($ddHouses as $ddHouse)
                         <option value="{{ $ddHouse->id }}">{{ $ddHouse->code .' - '. $ddHouse->name }}</option>
@@ -80,14 +80,24 @@
                 $('#findByHouse').on('change', function (){
                     const id = $(this).val();
 
-                    if (id.length > 0)
-                    {
-                        $.ajax({
-                            url:
-                            type:
-
-                        });
-                    }
+                    $.ajax({
+                        url: "{{ route('daily.report.ga') }}",
+                        type: "GET",
+                        data: {'id':id},
+                        success: function(response){
+                            if(response.success.length > 0)
+                            {
+                                $.each(response.success, function(key, value){
+                                    console.log(value);
+                                    $('tbody').html(
+                                    '<tr>\
+                                        <td>' + value.kpi_target.ga + '</td>\
+                                    </tr>'
+                                    );
+                                });
+                            }
+                        }
+                    });
                 });
             });
         </script>

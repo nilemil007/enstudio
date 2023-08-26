@@ -12,6 +12,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class ReportController extends Controller
 {
@@ -27,16 +28,33 @@ class ReportController extends Controller
     }
 
     // GA Target vs Achievement
-    public function ga(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
+    public function ga(Request $request)
     {
-        $ddHouses = DdHouse::get();
-        $rsos = Rso::with(['coreActivation' => function($query){
+        $query = Rso::query();
+        $dd = DdHouse::query();
+
+        if($request->ajax())
+        {
+            $rsos = $query->with(['coreActivation' => function($query){
+                $query->whereIn('product_code',['MMST','MMSTS']);
+            },'kpiTarget'])->groupBy('itop_number')->where('dd_house_id', $request->id)->where('status', 1)->get();
+
+            return response()->json(['success' => $rsos]);
+        }
+
+
+        $rsos = $query->with(['coreActivation' => function($query){
             $query->whereIn('product_code',['MMST','MMSTS']);
         },'kpiTarget'])->groupBy('itop_number')->where('status', 1)->get();
 
         $sumOfTotalActivation = CoreActivation::getTotalActivatonByHouse(['MYMVAI01','MYMVAI02','MYMVAI03']);
         $sumOfTotalTarget = KpiTarget::getTotalTargetByHouse(['MYMVAI01','MYMVAI02','MYMVAI03']);
 
-        return view('modules.report.activation.ga', compact('rsos','sumOfTotalActivation','sumOfTotalTarget','ddHouses'));
+        return view('modules.report.activation.ga', [
+            'ddHouses' => $dd->get(),
+            'rsos' => $rsos,
+            'sumOfTotalActivation' => $sumOfTotalActivation,
+            'sumOfTotalTarget' => $sumOfTotalTarget,
+        ]);
     }
 }
