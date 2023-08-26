@@ -17,7 +17,6 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Validators\ValidationException;

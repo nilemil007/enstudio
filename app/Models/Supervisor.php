@@ -68,4 +68,9 @@ class Supervisor extends Model
         return $this->hasMany(Rso::class);
     }
 
+    public function kpiTarget(): HasMany
+    {
+        return $this->hasMany(KpiTarget::class);
+    }
+
 }

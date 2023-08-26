@@ -33,7 +33,7 @@
                             <td>{{ ++$sl }}</td>
                             <td>{{ $rso->ddHouse->code }}</td>
                             <td>{{ $rso->itop_number }}</td>
-                            <td></td>
+                            <td>{{ round($rso->kpiTarget->ga) }}</td>
                             <td>{{ $rso->coreActivation->count() }}</td>
                             <td></td>
                             <td></td>
@@ -51,7 +51,7 @@
                         @endforelse
                         <tr style="font-weight: bold">
                             <td colspan="3">Grand Total</td>
-                            <td>0</td>
+                            <td>{{ round($sumOfTotalTarget) }}</td>
                             <td>{{ $sumOfTotalActivation }}</td>
                         </tr>
                     </tbody>

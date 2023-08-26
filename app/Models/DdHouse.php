@@ -74,4 +74,9 @@ class DdHouse extends Model
     {
         return $this->hasMany(CoreActivation::class);
     }
+
+    public function kpiTarget(): HasMany
+    {
+        return $this->hasMany(KpiTarget::class);
+    }
 }

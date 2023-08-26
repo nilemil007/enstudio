@@ -6,6 +6,7 @@ use App\Http\Controllers\CoreActivationController;
 use App\Http\Controllers\DdHouseController;
 use App\Http\Controllers\HouseCodeActivationController;
 use App\Http\Controllers\ItopReplaceController;
+use App\Http\Controllers\KpiTargetController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RetailerController;
 use App\Http\Controllers\RouteController;
@@ -165,6 +166,16 @@ Route::middleware(['auth'])->group(function (){
         Route::get('/ga','ga')->name('ga');
     });
 
+    // KPI Target Additional Routes
+    Route::controller(KpiTargetController::class )->prefix('/kpi-target')->name('kpi-target.')->group(function (){
+        // Delete all
+        Route::post('/delete/all','deleteAll')->name('delete.all');
+        // Import
+        Route::post('/import','import')->name('import');
+        // Download sample file
+        Route::get('/sample-file-download','sampleFileDownload')->name('sample.file.download');
+    });
+
     // Resource Routes
     Route::resources([
         'itop-replace'  => ItopReplaceController::class,
@@ -179,6 +190,7 @@ Route::middleware(['auth'])->group(function (){
         'hca'           => HouseCodeActivationController::class,
         'tcrc'          => TradeCampaignRetailerCodeController::class,
         'sc-serial'     => ScratchCardSerialController::class,
+        'kpi-target'    => KpiTargetController::class,
     ]);
 
 });

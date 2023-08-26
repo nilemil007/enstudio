@@ -121,13 +121,23 @@ class User extends Authenticatable
     }
 
     /**
-     * User has one retailer.
+     * User has many retailer.
      *
      * @return HasMany
      */
     public function houseCodeActivation(): HasMany
     {
         return $this->hasMany( HouseCodeActivation::class );
+    }
+
+    /**
+     * User has many kpi target.
+     *
+     * @return HasMany
+     */
+    public function kpiTarget(): HasMany
+    {
+        return $this->hasMany( KpiTarget::class );
     }
 
     /**

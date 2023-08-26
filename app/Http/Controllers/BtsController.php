@@ -16,7 +16,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Validators\ValidationException;
-use RealRashid\SweetAlert\Facades\Alert;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class BtsController extends Controller

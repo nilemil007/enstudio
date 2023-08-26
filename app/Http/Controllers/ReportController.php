@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Activation\CoreActivation;
+use App\Models\KpiTarget;
 use App\Models\Retailer;
 use App\Models\Rso;
 use Illuminate\Contracts\View\Factory;
@@ -28,10 +29,11 @@ class ReportController extends Controller
     {
         $rsos = Rso::with(['coreActivation' => function($query){
             $query->whereIn('product_code',['MMST','MMSTS']);
-        }])->groupBy('itop_number')->where('status', 1)->get();
+        },'kpiTarget'])->groupBy('itop_number')->where('status', 1)->get();
 
         $sumOfTotalActivation = CoreActivation::getTotalActivatonByHouse(['MYMVAI01','MYMVAI02','MYMVAI03']);
+        $sumOfTotalTarget = KpiTarget::getTotalTargetByHouse(['MYMVAI01','MYMVAI02','MYMVAI03']);
 
-        return view('modules.report.activation.ga', compact('rsos','sumOfTotalActivation'));
+        return view('modules.report.activation.ga', compact('rsos','sumOfTotalActivation','sumOfTotalTarget'));
     }
 }

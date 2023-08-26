@@ -96,13 +96,32 @@
             <li class="nav-item {{ request()->routeIs('core.*') ? 'active' : '' }}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#core" role="button" aria-expanded="false" aria-controls="core">
                     <i class="link-icon" data-feather="info"></i>
-                    <span class="link-title">Core Data Import</span>
+                    <span class="link-title">Core Data</span>
                     <i class="link-arrow" data-feather="chevron-down"></i>
                 </a>
                 <div class="collapse {{ request()->routeIs('core.*') ? 'show' : '' }}" id="core">
                     <ul class="nav sub-menu">
                         <li class="nav-item">
                             <a href="{{ route('core.activation') }}" class="nav-link {{ request()->routeIs('core.activation') ? 'active' : '' }}">Activation</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
+            <!-- KPI Target -->
+            <li class="nav-item {{ request()->routeIs('kpi-target.*') ? 'active' : '' }}">
+                <a class="nav-link" data-bs-toggle="collapse" href="#kpiTarget" role="button" aria-expanded="false" aria-controls="kpiTarget">
+                    <i class="link-icon" data-feather="info"></i>
+                    <span class="link-title">KPI Target</span>
+                    <i class="link-arrow" data-feather="chevron-down"></i>
+                </a>
+                <div class="collapse {{ request()->routeIs('kpi-target.*') ? 'show' : '' }}" id="kpiTarget">
+                    <ul class="nav sub-menu">
+                        <li class="nav-item">
+                            <a href="{{ route('kpi-target.create') }}" class="nav-link {{ request()->routeIs('kpi-target.create') ? 'active' : '' }}">Add New</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('kpi-target.index') }}" class="nav-link {{ request()->routeIs('kpi-target.index') ? 'active' : '' }}">All Target</a>
                         </li>
                     </ul>
                 </div>

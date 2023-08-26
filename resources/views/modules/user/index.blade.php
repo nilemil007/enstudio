@@ -80,12 +80,6 @@
             new DataTable('#userTbl');
 
             $(document).ready(function(){
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-
                 // Single delete
                 $(document).on('click','#deleteUser',function(e){
                     e.preventDefault();
