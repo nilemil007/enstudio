@@ -63,11 +63,11 @@
                             <td>{{ round((float)$target->dsso) }}</td>
                             <td>{{ round((float)$target->ddso) }}</td>
                             <td>{{ round((float)$target->dso) }}</td>
-                            <td>{{ round((float)$target->main_house_osdo_residential_rso) }}</td>
-                            <td>{{ round((float)$target->thana) }}</td>
-                            <td>{{ round((float)$target->sran_rso) }}</td>
-                            <td>{{ round((float)$target->sran_site_count) }}</td>
-                            <td>{{ round((float)$target->remarks) }}</td>
+                            <td>{{ $target->main_house_osdo_residential_rso }}</td>
+                            <td>{{ $target->thana }}</td>
+                            <td>{{ $target->sran_rso }}</td>
+                            <td>{{ $target->sran_site_count }}</td>
+                            <td>{{ $target->remarks }}</td>
                             <td>
                                 <!-- Edit -->
                                 <a href="{{ route('kpi-target.edit', $target->id) }}" class="btn btn-sm btn-primary">Edit</a>

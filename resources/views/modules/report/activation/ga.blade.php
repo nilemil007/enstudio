@@ -1,3 +1,10 @@
+@php
+    $firstDayofCurrentMonth = \Carbon\Carbon::now()->startOfMonth();
+    $lastDayofCurrentMonth = \Carbon\Carbon::now();
+    $restOfDay = \Carbon\Carbon::now()->daysInMonth - $firstDayofCurrentMonth->diffInDays($lastDayofCurrentMonth);
+@endphp
+
+
 <x-app-layout>
 
     <!-- Title -->
@@ -6,6 +13,14 @@
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h4 class="card-title">Gross Add [GA]</h4>
+            <div>
+                <select name="dd_house_id" id="findByHouse" class="select-2 form-select form-select-sm">
+                    <option value="">-- Select DD House --</option>
+                    @foreach($ddHouses as $ddHouse)
+                        <option value="{{ $ddHouse->id }}">{{ $ddHouse->code .' - '. $ddHouse->name }}</option>
+                    @endforeach
+                </select>
+            </div>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -28,36 +43,54 @@
                     </tr>
                     </thead>
                     <tbody>
-                        @forelse ($rsos as $sl => $rso)
+                        @foreach ($rsos as $sl => $rso)
                         <tr>
                             <td>{{ ++$sl }}</td>
-                            <td>{{ $rso->ddHouse->code }}</td>
-                            <td>{{ $rso->itop_number }}</td>
-                            <td>{{ round($rso->kpiTarget->ga) }}</td>
-                            <td>{{ $rso->coreActivation->count() }}</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td>{{ $rso->ddHouse->code }}</td> <!-- DD Code -->
+                            <td>{{ $rso->itop_number }}</td> <!-- Rso Itop Number -->
+                            <td>{{ round($rso->kpiTarget->ga ?? 0) }}</td> <!-- GA Target -->
+                            <td>{{ $rso->coreActivation->count() }}</td> <!-- Achievement -->
+                            <td>{{ round($rso->coreActivation->count() / round($rso->kpiTarget->ga ?? 0) * 100) . '%' }}</td> <!-- Ach % -->
+                            <td>{{ round($rso->kpiTarget->ga ?? 0) - $rso->coreActivation->count() }}</td> <!-- Remaining -->
+                            <td>{{ round((round($rso->kpiTarget->ga ?? 0) - $rso->coreActivation->count()) / $restOfDay) }}</td> <!-- Daily Required -->
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        @empty
-                        <tr>
-                            <td>No data found.</td>
-                        </tr>
-                        @endforelse
+                        @endforeach
                         <tr style="font-weight: bold">
                             <td colspan="3">Grand Total</td>
-                            <td>{{ round($sumOfTotalTarget) }}</td>
+                            <td>{{ round($sumOfTotalTarget ?? 0) }}</td>
                             <td>{{ $sumOfTotalActivation }}</td>
+                            <td>{{ round($sumOfTotalActivation / round($sumOfTotalTarget ?? 0) * 100) . '%' }}</td>
+                            <td>{{ round($sumOfTotalTarget ?? 0) - $sumOfTotalActivation }}</td>
+                            <td>{{ (round($sumOfTotalTarget ?? 0) - $sumOfTotalActivation) / $restOfDay }}</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
+
+    @push('scripts')
+        <script>
+            $(document).ready(function (){
+                $('#findByHouse').on('change', function (){
+                    const id = $(this).val();
+
+                    if (id.length > 0)
+                    {
+                        $.ajax({
+                            url:
+                            type:
+
+                        });
+                    }
+                });
+            });
+        </script>
+    @endpush
 
 </x-app-layout>

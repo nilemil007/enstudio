@@ -7,6 +7,7 @@ use App\Models\KpiTarget;
 use App\Models\Rso;
 use App\Models\Supervisor;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -17,11 +18,11 @@ class KpiTargetImport implements ToModel, WithHeadingRow, WithValidation
     use Importable;
 
     /**
-    * @param array $row
-    *
-    * @return \Illuminate\Database\Eloquent\Model|null
-    */
-    public function model(array $row)
+     * @param array $row
+     *
+     * @return Model|KpiTarget|null
+     */
+    public function model(array $row): Model|KpiTarget|null
     {
         return new KpiTarget([
             'user_id'                           => User::firstWhere('phone', $row['dd_manager_number'])->id,
@@ -41,10 +42,10 @@ class KpiTargetImport implements ToModel, WithHeadingRow, WithValidation
             'ddso'                              => $row['daily_dso_target'],
             'dso'                               => $row['dso_target'],
             'main_house_osdo_residential_rso'   => $row['main_houseosdoresidential_rso'],
-            'thana'                             => $row['thana_name'],
+            'thana'                             => $row['thana_name_only_for_osdo'],
             'sran_rso'                          => $row['sran_rs0'],
             'sran_site_count'                   => $row['sran_site_count'],
-            'remarks'                           => $row['remarks'],
+            'remarks'                           => $row['remarks_if_any'],
         ]);
     }
 

@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static create(mixed $house)
  * @method static firstWhere(string $string, $ddCode)
  * @method static whereIn(string $string, $house)
+ * @method static get()
  */
 class DdHouse extends Model
 {
