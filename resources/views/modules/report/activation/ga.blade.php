@@ -39,32 +39,32 @@
                         @foreach ($rsos as $sl => $rso)
                         <tr>
                             <td>{{ ++$sl }}</td>
-                            <td>{{ $rso->ddHouse->code }}</td> <!-- DD Code -->
-                            <td>{{ $rso->itop_number }}</td> <!-- Rso Itop Number -->
-                            <td>{{ round($rso->kpiTarget->ga ?? 0) }}</td> <!-- GA Target -->
-                            <td>{{ round($rso->coreActivation->count()) }}</td> <!-- Achievement -->
-                            <td>{{ round($rso->coreActivation->count() ?? 0 / ($rso->kpiTarget->ga ?? 0) * 100) . '%' }}</td> <!-- Ach % -->
-                            <td>{{ round($rso->kpiTarget->ga ?? 0) - $rso->coreActivation->count() }}</td> <!-- Remaining -->
-                            <td>{{ round((($rso->kpiTarget->ga ?? 0) - $rso->coreActivation->count()) / $restOfDay) }}</td> <!-- Daily Required -->
-                            <td>{{ round(($rso->kpiTarget->ga ?? 0) * 30 / 100 ?? 0) }}</td> <!-- GA Target [Shera Partnar] -->
-                            <td>{{ round($rso->coreActivation->count()) }}</td> <!-- Achievement -->
-                            <td>{{ round($rso->coreActivation->count() ?? 0 / (($rso->kpiTarget->ga ?? 0) * 30 / 100 ?? 0) * 100) . '%' }}</td> <!-- Ach % -->
-                            <td>{{ round(($rso->kpiTarget->ga ?? 0) * 30 / 100 ?? 0) - $rso->coreActivation->count() }}</td> <!-- Remaining -->
-                            <td>{{ round(((($rso->kpiTarget->ga ?? 0) * 30 / 100 ?? 0) - $rso->coreActivation->count()) / $restOfDay) }}</td> <!-- Daily Required -->
+                            <td>{{ $rso->ddHouse->code }}</td>                                                                                  <!-- DD Code -->
+                            <td>{{ $rso->itop_number }}</td>                                                                                    <!-- Rso Itop Number -->
+                            <td>{{ round($rso->kpiTarget->ga ?? 0) }}</td>                                                                      <!-- GA Target -->
+                            <td>{{ round($rso->coreActivation->count()) }}</td>                                                                 <!-- Achievement -->
+                            <td>{{ round(($rso->coreActivation->count() ?? 0) / ($rso->kpiTarget->ga ?? 0) * 100) . '%' }}</td>                 <!-- Ach % -->
+                            <td>{{ round($rso->kpiTarget->ga ?? 0) - $rso->coreActivation->count() }}</td>                                      <!-- Remaining -->
+                            <td>{{ round((($rso->kpiTarget->ga ?? 0) - $rso->coreActivation->count()) / $restOfDay) }}</td>                     <!-- Daily Required -->
+                            <td>{{ round(($rso->kpiTarget->ga ?? 0) * 30 / 100) }}</td>                                                         <!-- GA Target [Shera Partner] -->
+                            <td>{{ round($rso->coreActivation->count() ?? 0) }}</td>                                                            <!-- Achievement [Shera Partner] -->
+                            <td>{{ round($rso->coreActivation->count() ?? 0 / (($rso->kpiTarget->ga ?? 0) * 30 / 100 ?? 0) * 100) . '%' }}</td> <!-- Ach % [Shera Partner] -->
+                            <td>{{ round((($rso->kpiTarget->ga ?? 0) * 30 / 100 ?? 0) - $rso->coreActivation->count()) }}</td>                  <!-- Remaining [Shera Partner] -->
+                            <td>{{ round(((($rso->kpiTarget->ga ?? 0) * 30 / 100 ?? 0) - $rso->coreActivation->count()) / $restOfDay) }}</td>   <!-- Daily Required [Shera Partner] -->
                         </tr>
                         @endforeach
                         <tr style="font-weight: bold">
                             <td colspan="3">Grand Total</td>
-                            <td>{{ round($sumOfTotalTarget ?? 0) }}</td> <!-- GA Target -->
-                            <td>{{ round($sumOfTotalActivation) }}</td> <!-- Achievement -->
-                            <td>{{ round($sumOfTotalActivation ?? 0 / ($sumOfTotalTarget ?? 0) * 100) . '%' }}</td> <!-- Ach % -->
-                            <td>{{ round($sumOfTotalTarget ?? 0) - $sumOfTotalActivation }}</td> <!-- Remaining -->
-                            <td>{{ round((($sumOfTotalTarget ?? 0) - $sumOfTotalActivation) / $restOfDay) }}</td> <!-- Daily Required -->
-                            <td>{{ round($sumOfTotalTarget * 30 / 100) }}</td> <!-- GA Target [Shera Partnar] -->
-                            <td>{{ round($sumOfTotalActivation) }}</td> <!-- Achievement -->
-                            <td>{{ round($sumOfTotalActivation ?? 0 / (($sumOfTotalTarget ?? 0) * 30 / 100) * 100) . '%' }}</td> <!-- Ach % -->
-                            <td>{{ round(($sumOfTotalTarget ?? 0) * 30 / 100) - $sumOfTotalActivation }}</td> <!-- Remaining -->
-                            <td>{{ round(((($sumOfTotalTarget ?? 0) * 30 / 100) - $sumOfTotalActivation) / $restOfDay) }}</td> <!-- Daily Required -->
+                            <td>{{ $sumOfTotalTarget }}</td>        <!-- GA Target -->
+                            <td>{{ $sumOfTotalActivation }}</td>    <!-- Achievement -->
+                            <td>{{ $achPercent }}</td>              <!-- Ach % -->
+                            <td>{{ $remaining }}</td>               <!-- Remaining -->
+                            <td>{{ $dailyRequired }}</td>           <!-- Daily Required -->
+                            <td>{{ $spGaTarget }}</td>              <!-- GA Target [Shera Partner] -->
+                            <td>{{ $sumOfTotalActivation }}</td>    <!-- Achievement [Shera Partner] -->
+                            <td>{{ $spAchPercent }}</td>            <!-- Ach % [Shera Partner] -->
+                            <td>{{ $spRemaining }}</td>             <!-- Remaining [Shera Partner] -->
+                            <td>{{ $spDailyRequired }}</td>         <!-- Daily Required [Shera Partner] -->
                         </tr>
                     </tbody>
                 </table>

@@ -12,6 +12,7 @@ use App\Http\Controllers\RetailerController;
 use App\Http\Controllers\RouteController;
 use App\Http\Controllers\RsoController;
 use App\Http\Controllers\ScratchCardSerialController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SupervisorController;
 use App\Http\Controllers\TradeCampaignRetailerCodeController;
 use App\Http\Controllers\UserController;
@@ -174,6 +175,12 @@ Route::middleware(['auth'])->group(function (){
         Route::post('/import','import')->name('import');
         // Download sample file
         Route::get('/sample-file-download','sampleFileDownload')->name('sample.file.download');
+    });
+
+    // Settings Additional Routes
+    Route::controller(SettingController::class )->prefix('/settings')->name('settings.')->group(function (){
+        // Index
+        Route::get('/index','index')->name('index');
     });
 
     // Resource Routes

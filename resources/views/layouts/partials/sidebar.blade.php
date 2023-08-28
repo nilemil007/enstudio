@@ -333,6 +333,15 @@
                 </div>
             </li>
 
+            <li class="nav-item nav-category">Settings</li>
+
+            <!-- Setting -->
+            <li class="nav-item {{ request()->routeIs('settings.*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('settings.index') }}" >
+                        <i class="link-icon" data-feather="settings"></i>
+                        <span class="link-title">Site Setting</span>
+                    </a>
+                </li>
             @endif
         </ul>
     </div>

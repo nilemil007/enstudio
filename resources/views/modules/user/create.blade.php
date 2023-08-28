@@ -9,8 +9,10 @@
             <div id="userErrMsg" class="alert alert-danger err-msg d-none"></div>
 
             <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Create new user</h4>
+                </div>
                 <div class="card-body">
-                    <h6 class="card-title">Create new user</h6>
                     <form class="userForm" action="{{ route('user.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
 

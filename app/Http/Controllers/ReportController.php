@@ -54,26 +54,34 @@ class ReportController extends Controller
                 foreach($rsos as $sl => $rso)
                 {
                     $tableData.= '<tr>'.
-                    '<td>'. ++$sl .'</td>'.
-                    '<td>'. $rso->ddHouse->code .'</td>'.
-                    '<td>'. $rso->itop_number .'</td>'.
-                    '<td>'. round($rso->kpiTarget->ga ?? 0) .'</td>'.
-                    '<td>'. $rso->coreActivation->count() .'</td>'.
-                    '<td>'. round($rso->coreActivation->count() / round($rso->kpiTarget->ga ?? 0) * 100) . '%' .'</td>'.
-                    '<td>'. round($rso->kpiTarget->ga ?? 0) - $rso->coreActivation->count() .'</td>'.
-                    '<td>'. round((round($rso->kpiTarget->ga ?? 0) - $rso->coreActivation->count()) / $restOfDay) .'</td>'.
-                    '<td>'. round($rso->kpiTarget->ga * 30 / 100 ?? 0) .'</td>'.
+                    '<td>'. ++$sl .'</td>'.                                                                                                      // Serial Number
+                    '<td>'. $rso->ddHouse->code .'</td>'.                                                                                        // DD Code
+                    '<td>'. $rso->itop_number .'</td>'.                                                                                          // Rso Itop Number
+                    '<td>'. round($rso->kpiTarget->ga ?? 0) .'</td>'.                                                                       // GA Target
+                    '<td>'. round($rso->coreActivation->count() ?? 0) .'</td>'.                                                             // Achievement
+                    '<td>'. round(($rso->coreActivation->count() ?? 0) / ($rso->kpiTarget->ga ?? 0) * 100) . '%' .'</td>'.                  // Achievement %
+                    '<td>'. round($rso->kpiTarget->ga ?? 0) - $rso->coreActivation->count() .'</td>'.                                       // Remaining
+                    '<td>'. round((($rso->kpiTarget->ga ?? 0) - $rso->coreActivation->count()) / $restOfDay) .'</td>'.                      // Daily Required
+                    '<td>'. round(($rso->kpiTarget->ga ?? 0) * 30 / 100) .'</td>'.                                                          // GA Target [Shera Partner]
+                    '<td>'. round($rso->coreActivation->count() ?? 0) .'</td>'.                                                             // Achievement [Shera Partner]
+                    '<td>'. round($rso->coreActivation->count() ?? 0 / (($rso->kpiTarget->ga ?? 0) * 30 / 100 ?? 0) * 100) . '%' .'</td>'.  // Achievement % [Shera Partner]
+                    '<td>'. round((($rso->kpiTarget->ga ?? 0) * 30 / 100 ?? 0) - $rso->coreActivation->count()) .'</td>'.                   // Remaining [Shera Partner]
+                    '<td>'. round(((($rso->kpiTarget->ga ?? 0) * 30 / 100 ?? 0) - $rso->coreActivation->count()) / $restOfDay) .'</td>'.    // Daily Required [Shera Partner]
                     '</tr>';
                 }
 
                 $tableData.= '<tr style="font-weight: bold">'.
                     '<td colspan="3">Grand Total</td>'.
                     '<td>'. round($sumOfTotalTarget ?? 0) .'</td>'.
-                    '<td>'. $sumOfTotalActivation .'</td>'.
-                    '<td>'. round($sumOfTotalActivation / round($sumOfTotalTarget ?? 0) * 100) . '%' .'</td>'.
-                    '<td>'. round($sumOfTotalTarget ?? 0) - $sumOfTotalActivation .'</td>'.
-                    '<td>'. round((round($sumOfTotalTarget ?? 0) - $sumOfTotalActivation) / $restOfDay) .'</td>'.
-                    '<td>'. round($sumOfTotalActivation * 30 / 100) .'</td>'.
+                    '<td>'. round($sumOfTotalActivation ?? 0) .'</td>'.
+                    '<td>'. round(($sumOfTotalActivation ?? 0) / ($sumOfTotalTarget ?? 0) * 100) . '%' .'</td>'.
+                    '<td>'. round(($sumOfTotalTarget ?? 0) - $sumOfTotalActivation) .'</td>'.
+                    '<td>'. round((($sumOfTotalTarget ?? 0) - $sumOfTotalActivation) / $restOfDay) .'</td>'.
+                    '<td>'. round(($sumOfTotalTarget ?? 0) * 30 / 100) .'</td>'.
+                    '<td>'. round($sumOfTotalActivation ?? 0) .'</td>'.
+                    '<td>'. round(($sumOfTotalActivation ?? 0) / (($sumOfTotalTarget ?? 0) * 30 / 100) * 100) . '%' .'</td>'.
+                    '<td>'. round((($sumOfTotalTarget ?? 0) * 30 / 100) - $sumOfTotalActivation) .'</td>'.
+                    '<td>'. round(((($sumOfTotalTarget ?? 0) * 30 / 100) - $sumOfTotalActivation) / $restOfDay) .'</td>'.
                 '</tr>';
 
                 return response()->json(['data' => $tableData]);
@@ -94,25 +102,33 @@ class ReportController extends Controller
                 {
                     $tableData.= '<tr>'.
                     '<td>'. ++$sl .'</td>'.
-                    '<td>'. $rso->ddHouse->code .'</td>'.
+                    '<td>'. $rso->ddHouse->code .'</td>'. // DD Code
                     '<td>'. $rso->itop_number .'</td>'.
                     '<td>'. round($rso->kpiTarget->ga ?? 0) .'</td>'.
-                    '<td>'. $rso->coreActivation->count() .'</td>'.
-                    '<td>'. round($rso->coreActivation->count() / round($rso->kpiTarget->ga ?? 0) * 100) . '%' .'</td>'.
+                    '<td>'. round($rso->coreActivation->count() ?? 0) .'</td>'.
+                    '<td>'. round($rso->coreActivation->count() / ($rso->kpiTarget->ga ?? 0) * 100) . '%' .'</td>'.
                     '<td>'. round($rso->kpiTarget->ga ?? 0) - $rso->coreActivation->count() .'</td>'.
-                    '<td>'. round((round($rso->kpiTarget->ga ?? 0) - $rso->coreActivation->count()) / $restOfDay) .'</td>'.
-                    '<td>'. round($rso->kpiTarget->ga * 30 / 100 ?? 0) .'</td>'.
+                    '<td>'. round((($rso->kpiTarget->ga ?? 0) - $rso->coreActivation->count()) / $restOfDay) .'</td>'.
+                    '<td>'. round(($rso->kpiTarget->ga ?? 0) * 30 / 100) .'</td>'.
+                    '<td>'. round($rso->coreActivation->count() ?? 0) .'</td>'.
+                    '<td>'. round($rso->coreActivation->count() ?? 0 / (($rso->kpiTarget->ga ?? 0) * 30 / 100 ?? 0) * 100) . '%' .'</td>'.
+                    '<td>'. round((($rso->kpiTarget->ga ?? 0) * 30 / 100 ?? 0) - $rso->coreActivation->count()) .'</td>'.
+                    '<td>'. round(((($rso->kpiTarget->ga ?? 0) * 30 / 100 ?? 0) - $rso->coreActivation->count()) / $restOfDay) .'</td>'.
                     '</tr>';
                 }
 
                 $tableData.= '<tr style="font-weight: bold">'.
-                    '<td colspan="3">Grand Total</td>'.
-                    '<td>'. round($sumOfTotalTarget ?? 0) .'</td>'.
-                    '<td>'. $sumOfTotalActivation .'</td>'.
-                    '<td>'. round($sumOfTotalActivation / round($sumOfTotalTarget ?? 0) * 100) . '%' .'</td>'.
-                    '<td>'. round($sumOfTotalTarget ?? 0) - $sumOfTotalActivation .'</td>'.
-                    '<td>'. round((round($sumOfTotalTarget ?? 0) - $sumOfTotalActivation) / $restOfDay) .'</td>'.
-                    '<td>'. round($sumOfTotalActivation * 30 / 100) .'</td>'.
+                    '<td colspan="3">Grand Total</td>'.                                                                              // Grand Total
+                    '<td>'. round($sumOfTotalTarget ?? 0) .'</td>'.                                                             // GA Target
+                    '<td>'. round($sumOfTotalActivation ?? 0) .'</td>'.                                                         // Achievement
+                    '<td>'. round($sumOfTotalActivation / ($sumOfTotalTarget ?? 0) * 100) . '%' .'</td>'.                       // Ach %
+                    '<td>'. round($sumOfTotalTarget ?? 0) - $sumOfTotalActivation .'</td>'.                                     // Remaining
+                    '<td>'. round((($sumOfTotalTarget ?? 0) - $sumOfTotalActivation) / $restOfDay) .'</td>'.                    // Daily Required
+                    '<td>'. round($sumOfTotalActivation * 30 / 100) .'</td>'.                                                   // GA Target [Shera Partner]
+                    '<td>'. round($sumOfTotalActivation ?? 0) .'</td>'.                                                         // Achievement [Shera Partner]
+                    '<td>'. round(($sumOfTotalActivation ?? 0) / (($sumOfTotalTarget ?? 0) * 30 / 100) * 100) . '%' .'</td>'.   // Ach % [Shera Partner]
+                    '<td>'. round((($sumOfTotalTarget ?? 0) * 30 / 100) - $sumOfTotalActivation) .'</td>'.                      // Remaining [Shera Partner]
+                    '<td>'. round(((($sumOfTotalTarget ?? 0) * 30 / 100) - $sumOfTotalActivation) / $restOfDay) .'</td>'.       // Daily Required [Shera Partner]
                 '</tr>';
 
                 return response()->json(['data' => $tableData]);
@@ -122,8 +138,15 @@ class ReportController extends Controller
         return view('modules.report.activation.ga', [
             'ddHouses'              => $dd->get(),
             'rsos'                  => $rsos,
-            'sumOfTotalActivation'  => $sumOfTotalActivation,
-            'sumOfTotalTarget'      => $sumOfTotalTarget,
+            'sumOfTotalTarget'      => round($sumOfTotalTarget ?? 0),
+            'sumOfTotalActivation'  => round($sumOfTotalActivation),
+            'achPercent'            => round(($sumOfTotalActivation ?? 0) / ($sumOfTotalTarget ?? 0) * 100) . '%',
+            'remaining'             => round(($sumOfTotalTarget ?? 0) - $sumOfTotalActivation),
+            'dailyRequired'         => round((($sumOfTotalTarget ?? 0) - $sumOfTotalActivation) / $restOfDay),
+            'spGaTarget'            => round(($sumOfTotalTarget ?? 0) * 30 / 100),
+            'spAchPercent'          => round(($sumOfTotalActivation ?? 0) / (($sumOfTotalTarget ?? 0) * 30 / 100) * 100) . '%',
+            'spRemaining'           => round((($sumOfTotalTarget ?? 0) * 30 / 100) - $sumOfTotalActivation),
+            'spDailyRequired'       => round(((($sumOfTotalTarget ?? 0) * 30 / 100) - $sumOfTotalActivation) / $restOfDay),
             'restOfDay'             => $restOfDay,
         ]);
     }
