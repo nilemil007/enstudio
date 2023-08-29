@@ -181,6 +181,8 @@ Route::middleware(['auth'])->group(function (){
     Route::controller(SettingController::class )->prefix('/settings')->name('settings.')->group(function (){
         // Index
         Route::get('/index','index')->name('index');
+        // General
+        Route::post('/general','general')->name('general');
     });
 
     // Resource Routes

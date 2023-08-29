@@ -13,4 +13,14 @@ class SettingController extends Controller
     {
         return view('modules.setting.index');
     }
+
+    public function general(Request $request)
+    {
+        dd($request->all());
+    }
+
+    public function sheraPartner(Request $request)
+    {
+
+    }
 }

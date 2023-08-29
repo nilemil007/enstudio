@@ -19,16 +19,32 @@
             <div class="tab-content border border-top-0 p-3" id="myTabContent">
                 <!-- General -->
                 <div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab">
-                    <form class="general-tab" action="" method="POST">
+                    <form class="general-tab" action="{{ route('settings.general') }}" method="POST">
                     @csrf
 
                         <!-- DRC Code -->
                         <div class="row mb-3">
                             <label for="drc_code" class="col-sm-3 col-form-label">DRC Code</label>
                             <div class="col-sm-9">
-                                <input name="drc_code[]" id="drc_code" type="text" class="form-control @error('drc_code') is-invalid @enderror"
-                                       placeholder="e.g. R028986">
-                                @error('drc_code') <span class="text-danger">{{ $message }}</span> @enderror
+                                <input name="drc_code" id="tags">
+                            </div>
+                        </div>
+
+                        <!-- Exclude DRC Activation -->
+                        <div class="row mb-3">
+                            <label for="exclude_drc_act" class="col-sm-3 col-form-label">Exclude DRC Activation</label>
+                            <div class="col-sm-9">
+                                <!-- Exclude From Core Activaton -->
+                                <div class="form-check form-switch">
+                                    <input name="exclude_from_core_act" class="form-check-input" type="checkbox" role="switch" id="exclude_from_core_act">
+                                    <label class="form-check-label" for="exclude_from_core_act">Exclude From Core Activaton</label>
+                                </div>
+
+                                <!-- Exclude From Live Activaton -->
+                                <div class="form-check form-switch">
+                                    <input name="exclude_from_live_act" class="form-check-input" type="checkbox" role="switch" id="exclude_from_live_act">
+                                    <label class="form-check-label" for="exclude_from_live_act">Exclude From Live Activaton</label>
+                                </div>
                             </div>
                         </div>
 

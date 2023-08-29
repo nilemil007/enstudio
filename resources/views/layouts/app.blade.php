@@ -24,6 +24,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
+    <link rel="stylesheet" href="{{ url('public/assets/css/jquery.tagsinput.min.css') }}">
     <!-- End plugin css for this page -->
 
     <!-- inject:css -->
@@ -87,6 +88,10 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <!-- endselect2 -->
 
+<!-- jQuery Tags Input Plugin -->
+<script src="{{ url('public/assets/js/jquery.tagsinput.min.js') }}"></script>
+<!-- End jQuery Tags Input Plugin -->
+
 <!-- jquery.validate -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/additional-methods.min.js"></script>
@@ -109,6 +114,16 @@
         })
 
         $('.select-2').select2();
+        $('#tags').tagsInput({
+            // 'width': '100%',
+            'height': '100%',
+            'interactive': true,
+            'defaultText': 'Add More',
+            'removeWithBackspace': true,
+            'minChars': 0,
+            'maxChars': 200,
+            'placeholderColor': '#666666'
+        });
 
         // Date Pickr
         $(".flatpickr").flatpickr({
