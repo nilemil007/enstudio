@@ -13,7 +13,12 @@ return new class extends Migration
     {
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained();
+            $table->string('shera_partner_day')->nullable();
             $table->string('shera_partner_percentage')->nullable();
+            $table->string('drc_code')->nullable();
+            $table->string('exclude_from_core_act')->nullable();
+            $table->string('exclude_from_live_act')->nullable();
             $table->timestamps();
         });
     }

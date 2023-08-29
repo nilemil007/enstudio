@@ -22,11 +22,13 @@
                     <form class="general-tab" action="{{ route('settings.general') }}" method="POST">
                     @csrf
 
+                        {{-- <input type="hidden" name="id" value="{{ $setting->id }}"> --}}
+
                         <!-- DRC Code -->
                         <div class="row mb-3">
                             <label for="drc_code" class="col-sm-3 col-form-label">DRC Code</label>
                             <div class="col-sm-9">
-                                <input name="drc_code" id="tags">
+                                <input name="drc_code" id="tags" value="{{ $setting->drc_code ?? null }}">
                             </div>
                         </div>
 
@@ -36,13 +38,13 @@
                             <div class="col-sm-9">
                                 <!-- Exclude From Core Activaton -->
                                 <div class="form-check form-switch">
-                                    <input name="exclude_from_core_act" class="form-check-input" type="checkbox" role="switch" id="exclude_from_core_act">
+                                    <input name="exclude_from_core_act" value="yes" @checked(!empty($setting->exclude_from_core_act)) class="form-check-input" type="checkbox" role="switch" id="exclude_from_core_act">
                                     <label class="form-check-label" for="exclude_from_core_act">Exclude From Core Activaton</label>
                                 </div>
 
                                 <!-- Exclude From Live Activaton -->
                                 <div class="form-check form-switch">
-                                    <input name="exclude_from_live_act" class="form-check-input" type="checkbox" role="switch" id="exclude_from_live_act">
+                                    <input name="exclude_from_live_act" value="yes" @checked(!empty($setting->exclude_from_live_act)) class="form-check-input" type="checkbox" role="switch" id="exclude_from_live_act">
                                     <label class="form-check-label" for="exclude_from_live_act">Exclude From Live Activaton</label>
                                 </div>
                             </div>

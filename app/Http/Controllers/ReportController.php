@@ -7,12 +7,10 @@ use App\Models\DdHouse;
 use App\Models\KpiTarget;
 use App\Models\Retailer;
 use App\Models\Rso;
-use Carbon\Carbon;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 class ReportController extends Controller
 {

@@ -9,5 +9,5 @@ class Setting extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['shera_partner_percentage'];
+    protected $fillable = ['user_id','shera_partner_percentage','shera_partner_day','drc_code','exclude_from_core_act','exclude_from_live_act'];
 }
