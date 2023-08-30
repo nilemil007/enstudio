@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Activation\CoreActivation;
-use App\Models\DdHouse;
-use App\Models\KpiTarget;
-use App\Models\Retailer;
 use App\Models\Rso;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
-use Illuminate\Foundation\Application;
+use App\Models\DdHouse;
+use App\Models\Setting;
+use App\Models\Retailer;
+use App\Models\KpiTarget;
 use Illuminate\Http\Request;
+use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Foundation\Application;
+use App\Models\Activation\CoreActivation;
 
 class ReportController extends Controller
 {
@@ -40,8 +42,20 @@ class ReportController extends Controller
 
         $tableData = '';
 
+
+
+
         $rsos = $query->with(['coreActivation' => function($query){
-            $query->whereIn('product_code',['MMST','MMSTS']);
+
+            $retailerId = [];
+
+            $setting = Setting::where('user_id', Auth::id())->first();
+
+            if ($setting->drc_code && $setting->exclude_from_core_act) {
+                $retailerId = Setting::getDrc();
+            }
+
+            $query->whereIn('product_code',['MMST','MMSTS'])->whereNotIn('retailer_id', $retailerId);
         },'kpiTarget'])->groupBy('itop_number')->where('status', 1)->get();
 
         if($request->ajax())
@@ -93,7 +107,16 @@ class ReportController extends Controller
                 $sumOfTotalTarget = KpiTarget::getTotalTargetByHouse([$ddCode]);
 
                 $rsos = $query->with(['coreActivation' => function($query){
-                    $query->whereIn('product_code',['MMST','MMSTS']);
+
+                    $retailerId = [];
+
+                    $setting = Setting::where('user_id', Auth::id())->first();
+
+                    if ($setting->drc_code && $setting->exclude_from_core_act) {
+                        $retailerId = Setting::getDrc();
+                    }
+
+                    $query->whereIn('product_code',['MMST','MMSTS'])->whereNotIn('retailer_id', $retailerId);
                 },'kpiTarget'])->groupBy('itop_number')->where('dd_house_id', $request->id)->where('status', 1)->get();
 
                 foreach($rsos as $sl => $rso)
