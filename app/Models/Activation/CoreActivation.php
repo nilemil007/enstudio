@@ -5,10 +5,12 @@ namespace App\Models\Activation;
 use App\Models\DdHouse;
 use App\Models\Retailer;
 use App\Models\Rso;
+use App\Models\Setting;
 use App\Models\Supervisor;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * @method static whereNotNull(string $string)
@@ -58,10 +60,15 @@ class CoreActivation extends Model
         ->count('retailer_id');
     }
 
-    public static function getTotalActivatonByHouse($house)
+    public static function getTotalActivatonByHouse()
     {
-        $id = DdHouse::whereIn('code', $house)->pluck('id');
-        return CoreActivation::whereIn('product_code',['MMST','MMSTS'])->whereIn('dd_house_id', $id)->count('retailer_id');
+        $setting = Setting::where('user_id', Auth::id())->first();
+        $retailerId = !empty($setting->drc_code) && !empty($setting->exclude_from_core_act) ? Setting::getDrc() : [];
+
+        return CoreActivation::whereIn('product_code', $setting->product_code)
+            ->whereIn('dd_house_id', DdHouse::whereIn('id', $setting->dd_house)->pluck('id'))
+            ->whereNotIn('retailer_id', $retailerId)
+            ->count('retailer_id');
     }
 
     public function ddHouse(): BelongsTo

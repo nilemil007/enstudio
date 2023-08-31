@@ -4,7 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Auth;
 
+/**
+ * @method static whereIn(string $string, $pluck)
+ */
 class KpiTarget extends Model
 {
     use HasFactory;
@@ -33,29 +38,30 @@ class KpiTarget extends Model
         'remarks',
     ];
 
-    public static function getTotalTargetByHouse($house)
+    public static function getTotalTargetByHouse()
     {
-        $id = DdHouse::whereIn('code', $house)->pluck('id');
-        return KpiTarget::whereIn('dd_house_id', $id)->sum('ga');
+        $setting = Setting::where('user_id', Auth::id())->first();
+
+        return KpiTarget::whereIn('dd_house_id', DdHouse::whereIn('id', $setting->dd_house)->pluck('id'))->sum('ga');
     }
 
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function ddHouse()
+    public function ddHouse(): BelongsTo
     {
         return $this->belongsTo(DdHouse::class);
     }
 
-    public function rso()
+    public function rso(): BelongsTo
     {
         return $this->belongsTo(Rso::class);
     }
 
-    public function supervisor()
+    public function supervisor(): BelongsTo
     {
         return $this->belongsTo(Supervisor::class);
     }

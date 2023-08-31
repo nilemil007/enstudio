@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('drc_code')->nullable();
             $table->string('exclude_from_core_act')->nullable();
             $table->string('exclude_from_live_act')->nullable();
+            $table->json('product_code')->nullable();
+            $table->json('dd_house')->nullable();
             $table->timestamps();
         });
     }

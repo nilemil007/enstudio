@@ -30,8 +30,8 @@ class ReportController extends Controller
     // GA Target vs Achievement
     public function ga(Request $request)
     {
-        $sumOfTotalActivation = CoreActivation::getTotalActivatonByHouse(['MYMVAI01','MYMVAI02','MYMVAI03']);
-        $sumOfTotalTarget = KpiTarget::getTotalTargetByHouse(['MYMVAI01','MYMVAI02','MYMVAI03']);
+        $sumOfTotalActivation = CoreActivation::getTotalActivatonByHouse();
+        $sumOfTotalTarget = KpiTarget::getTotalTargetByHouse();
 
         $firstDayofCurrentMonth = \Carbon\Carbon::now()->startOfMonth();
         $lastDayofCurrentMonth = \Carbon\Carbon::now();
@@ -42,20 +42,12 @@ class ReportController extends Controller
 
         $tableData = '';
 
-
-
-
         $rsos = $query->with(['coreActivation' => function($query){
 
-            $retailerId = [];
-
             $setting = Setting::where('user_id', Auth::id())->first();
+            $retailerId = !empty($setting->drc_code) && !empty($setting->exclude_from_core_act) ? Setting::getDrc() : [];
 
-            if ($setting->drc_code && $setting->exclude_from_core_act) {
-                $retailerId = Setting::getDrc();
-            }
-
-            $query->whereIn('product_code',['MMST','MMSTS'])->whereNotIn('retailer_id', $retailerId);
+            $query->whereIn('product_code', $setting->product_code)->whereNotIn('retailer_id', $retailerId);
         },'kpiTarget'])->groupBy('itop_number')->where('status', 1)->get();
 
         if($request->ajax())
@@ -108,15 +100,10 @@ class ReportController extends Controller
 
                 $rsos = $query->with(['coreActivation' => function($query){
 
-                    $retailerId = [];
-
                     $setting = Setting::where('user_id', Auth::id())->first();
+                    $retailerId = !empty($setting->drc_code) && !empty($setting->exclude_from_core_act) ? Setting::getDrc() : [];
 
-                    if ($setting->drc_code && $setting->exclude_from_core_act) {
-                        $retailerId = Setting::getDrc();
-                    }
-
-                    $query->whereIn('product_code',['MMST','MMSTS'])->whereNotIn('retailer_id', $retailerId);
+                    $query->whereIn('product_code', $setting->product_code)->whereNotIn('retailer_id', $retailerId);
                 },'kpiTarget'])->groupBy('itop_number')->where('dd_house_id', $request->id)->where('status', 1)->get();
 
                 foreach($rsos as $sl => $rso)
