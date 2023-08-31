@@ -65,8 +65,8 @@ class CoreActivation extends Model
         $setting = Setting::where('user_id', Auth::id())->first();
         $retailerId = !empty($setting->drc_code) && !empty($setting->exclude_from_core_act) ? Setting::getDrc() : [];
 
-        return CoreActivation::whereIn('product_code', $setting->product_code)
-            ->whereIn('dd_house_id', DdHouse::whereIn('id', $setting->dd_house)->pluck('id'))
+        return CoreActivation::whereIn('product_code', $setting->product_code ?? [])
+            ->whereIn('dd_house_id', DdHouse::whereIn('id', $setting->dd_house ?? [])->pluck('id'))
             ->whereNotIn('retailer_id', $retailerId)
             ->count('retailer_id');
     }

@@ -19,21 +19,21 @@
             <div class="table-responsive">
                 <table class="table table-sm table-striped table-bordered text-center">
                     <thead>
-                    <tr>
-                        <th class="w-1">No.</th>
-                        <th>dd code</th>
-                        <th>rso number</th>
-                        <th>ga target</th>
-                        <th>ach</th>
-                        <th>ach %</th>
-                        <th>remain</th>
-                        <th>daily req</th>
-                        <th>ga target [30%]</th>
-                        <th>ach</th>
-                        <th>ach %</th>
-                        <th>remain</th>
-                        <th>daily req</th>
-                    </tr>
+                        <tr>
+                            <th class="w-1">No.</th>
+                            <th>dd code</th>
+                            <th>rso number</th>
+                            <th>ga target</th>
+                            <th>ach</th>
+                            <th>ach %</th>
+                            <th>remain</th>
+                            <th>daily req</th>
+                            <th>ga target [30%]</th>
+                            <th>ach</th>
+                            <th>ach %</th>
+                            <th>remain</th>
+                            <th>daily req</th>
+                        </tr>
                     </thead>
                     <tbody>
                         @foreach ($rsos as $sl => $rso)

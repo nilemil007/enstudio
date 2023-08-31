@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Traits\SettingsTrait;
 use App\Models\Rso;
 use App\Models\DdHouse;
 use App\Models\Setting;
@@ -16,6 +17,16 @@ use App\Models\Activation\CoreActivation;
 
 class ReportController extends Controller
 {
+    use SettingsTrait;
+
+    protected $setting;
+
+    public function __construct()
+    {
+        $this->setting = $this->getAllSettings();
+    }
+
+
     // Core Activation Summary
     public function coreActivationSummary(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
@@ -45,10 +56,14 @@ class ReportController extends Controller
         $rsos = $query->with(['coreActivation' => function($query){
 
             $setting = Setting::where('user_id', Auth::id())->first();
-            $retailerId = !empty($setting->drc_code) && !empty($setting->exclude_from_core_act) ? Setting::getDrc() : [];
+            $retailerId = !empty($this->setting->drc_code) && !empty($this->setting->exclude_from_core_act) ? Setting::getDrc() : [];
 
-            $query->whereIn('product_code', $setting->product_code)->whereNotIn('retailer_id', $retailerId);
-        },'kpiTarget'])->groupBy('itop_number')->where('status', 1)->get();
+            $query->whereIn('product_code', $setting->product_code ?? [])->whereNotIn('retailer_id', $retailerId);
+        },'kpiTarget' => function($query){
+
+            $query->whereIn('dd_house_id', $this->setting->dd_house ?? []);
+
+        }])->groupBy('itop_number')->where('status', 1)->get();
 
         if($request->ajax())
         {
@@ -148,11 +163,11 @@ class ReportController extends Controller
             'rsos'                  => $rsos,
             'sumOfTotalTarget'      => round($sumOfTotalTarget ?? 0),
             'sumOfTotalActivation'  => round($sumOfTotalActivation),
-            'achPercent'            => round(($sumOfTotalActivation ?? 0) / ($sumOfTotalTarget ?? 0) * 100) . '%',
+            'achPercent'            => round((isset($sumOfTotalActivation) ?? 0) / (isset($sumOfTotalTarget) ?? 0) * 100) . '%',
             'remaining'             => round(($sumOfTotalTarget ?? 0) - $sumOfTotalActivation),
             'dailyRequired'         => round((($sumOfTotalTarget ?? 0) - $sumOfTotalActivation) / $restOfDay),
             'spGaTarget'            => round(($sumOfTotalTarget ?? 0) * 30 / 100),
-            'spAchPercent'          => round(($sumOfTotalActivation ?? 0) / (($sumOfTotalTarget ?? 0) * 30 / 100) * 100) . '%',
+            'spAchPercent'          => round((isset($sumOfTotalActivation) ?? 0) / ((isset($sumOfTotalTarget) ?? 0) * 30 / 100) * 100) . '%',
             'spRemaining'           => round((($sumOfTotalTarget ?? 0) * 30 / 100) - $sumOfTotalActivation),
             'spDailyRequired'       => round(((($sumOfTotalTarget ?? 0) * 30 / 100) - $sumOfTotalActivation) / $restOfDay),
             'restOfDay'             => $restOfDay,

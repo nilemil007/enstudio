@@ -42,7 +42,7 @@ class KpiTarget extends Model
     {
         $setting = Setting::where('user_id', Auth::id())->first();
 
-        return KpiTarget::whereIn('dd_house_id', DdHouse::whereIn('id', $setting->dd_house)->pluck('id'))->sum('ga');
+        return KpiTarget::whereIn('dd_house_id', DdHouse::whereIn('id', $setting->dd_house ?? [])->pluck('id'))->sum('ga');
     }
 
 
