@@ -6,11 +6,11 @@ use App\Models\Setting;
 use Illuminate\Support\Facades\Auth;
 
 
-trait SettingsTrait {
+trait Settings {
 
-    public function getAllSettings()
+    public static function getSettings()
     {
         return Setting::firstWhere('user_id', Auth::id());
     }
-    
+
 }

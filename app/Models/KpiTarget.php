@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Traits\Settings;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
  */
 class KpiTarget extends Model
 {
-    use HasFactory;
+    use HasFactory, Settings;
 
     protected $fillable = [
         'user_id',
@@ -40,9 +41,8 @@ class KpiTarget extends Model
 
     public static function getTotalTargetByHouse()
     {
-        $setting = Setting::where('user_id', Auth::id())->first();
-
-        return KpiTarget::whereIn('dd_house_id', DdHouse::whereIn('id', $setting->dd_house ?? [])->pluck('id'))->sum('ga');
+        $ddHouseId = DdHouse::whereIn('id', KpiTarget::getSettings()->dd_house ?? [])->pluck('id');
+        return KpiTarget::whereIn('dd_house_id', $ddHouseId)->sum('ga');
     }
 
 

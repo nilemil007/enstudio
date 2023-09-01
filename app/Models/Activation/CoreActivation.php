@@ -2,6 +2,7 @@
 
 namespace App\Models\Activation;
 
+use App\Http\Traits\Settings;
 use App\Models\DdHouse;
 use App\Models\Retailer;
 use App\Models\Rso;
@@ -19,7 +20,7 @@ use Illuminate\Support\Facades\Auth;
  */
 class CoreActivation extends Model
 {
-    use HasFactory;
+    use HasFactory, Settings;
 
     protected $fillable = [
         'dd_house_id',
@@ -53,21 +54,20 @@ class CoreActivation extends Model
         ->count('retailer_id');
     }
 
-    public static function getRetailerTotalActivaton($id)
+    public static function getRetailerTotalActivation($id)
     {
         return CoreActivation::whereIn('product_code',['MMST','MMSTS'])
         ->where('retailer_id', $id)
         ->count('retailer_id');
     }
 
-    public static function getTotalActivatonByHouse()
+    public static function getTotalActivationByHouse( $id )
     {
-        $setting = Setting::where('user_id', Auth::id())->first();
-        $retailerId = !empty($setting->drc_code) && !empty($setting->exclude_from_core_act) ? Setting::getDrc() : [];
+        $drc = !empty(CoreActivation::getSettings()->drc_code) && !empty(CoreActivation::getSettings()->exclude_from_core_act) ? Setting::getDrcCode() : [];
 
-        return CoreActivation::whereIn('product_code', $setting->product_code ?? [])
-            ->whereIn('dd_house_id', DdHouse::whereIn('id', $setting->dd_house ?? [])->pluck('id'))
-            ->whereNotIn('retailer_id', $retailerId)
+        return CoreActivation::whereIn('product_code', CoreActivation::getSettings()->product_code ?? [])
+            ->where('dd_house_id', $id)
+            ->whereNotIn('retailer_id', $drc)
             ->count('retailer_id');
     }
 

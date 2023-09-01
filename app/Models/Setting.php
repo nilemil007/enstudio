@@ -16,7 +16,16 @@ class Setting extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id','shera_partner_percentage','shera_partner_day','drc_code','exclude_from_core_act','exclude_from_live_act','product_code','dd_house'];
+    protected $fillable = [
+        'user_id',
+        'shera_partner_percentage',
+        'shera_partner_day',
+        'drc_code',
+        'exclude_from_rso_act',
+        'exclude_from_live_act',
+        'product_code',
+        'dd_house'
+    ];
 
     public function productCode(): Attribute
     {
@@ -34,7 +43,7 @@ class Setting extends Model
         );
     }
 
-    public static function getDrc()
+    public static function getDrcCode(): array
     {
         foreach(Setting::get() as $setting)
         {

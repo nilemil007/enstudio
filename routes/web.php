@@ -183,6 +183,8 @@ Route::middleware(['auth'])->group(function (){
         Route::get('/index','index')->name('index');
         // General
         Route::post('/general','general')->name('general');
+        // Shera Partner
+        Route::post('/shera-partner','sheraPartner')->name('shera.partner');
     });
 
     // Resource Routes

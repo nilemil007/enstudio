@@ -34,16 +34,16 @@
                         <div class="row mb-3">
                             <label for="exclude_drc_act" class="col-sm-3 col-form-label">Exclude DRC Activation</label>
                             <div class="col-sm-9">
-                                <!-- Exclude From Core Activaton -->
+                                <!-- Exclude From RS0 Activation -->
                                 <div class="form-check form-switch">
-                                    <input name="exclude_from_core_act" value="yes" @checked(!empty($setting->exclude_from_core_act)) class="form-check-input" type="checkbox" role="switch" id="exclude_from_core_act">
-                                    <label class="form-check-label" for="exclude_from_core_act">Exclude From Core Activaton</label>
+                                    <input name="exclude_from_rso_act" value="yes" @checked(!empty($setting->exclude_from_rso_act)) class="form-check-input" type="checkbox" role="switch" id="exclude_from_rso_act">
+                                    <label class="form-check-label" for="exclude_from_rso_act">Exclude From RS0 Activation</label>
                                 </div>
 
-                                <!-- Exclude From Live Activaton -->
+                                <!-- Exclude From Live Activation -->
                                 <div class="form-check form-switch">
                                     <input name="exclude_from_live_act" value="yes" @checked(!empty($setting->exclude_from_live_act)) class="form-check-input" type="checkbox" role="switch" id="exclude_from_live_act">
-                                    <label class="form-check-label" for="exclude_from_live_act">Exclude From Live Activaton</label>
+                                    <label class="form-check-label" for="exclude_from_live_act">Exclude From Live Activation</label>
                                 </div>
                             </div>
                         </div>
@@ -106,26 +106,22 @@
 
                 <!-- Shera Partner -->
                 <div class="tab-pane fade" id="sheraPartner" role="tabpanel" aria-labelledby="shera-partner-tab">
-                    <form class="shera-partner-tab" action="" method="POST">
+                    <form class="shera-partner-tab" action="{{ route('settings.shera.partner') }}" method="POST">
                     @csrf
 
                         <!-- Shera Partner Day -->
                         <div class="row mb-3">
                             <label for="shera_partner_day" class="col-sm-3 col-form-label">Shera Partner Day</label>
                             <div class="col-sm-9">
-                                <input name="shera_partner_day" id="shera_partner_day" type="number" class="form-control @error('shera_partner_day') is-invalid @enderror"
-                                       placeholder="e.g. 10/20/30">
-                                @error('shera_partner_day') <span class="text-danger">{{ $message }}</span> @enderror
+                                <input name="shera_partner_day" value="{{ $setting->shera_partner_day }}" id="shera_partner_day" type="number" class="form-control" placeholder="e.g. 10/20/30">
                             </div>
                         </div>
 
                         <!-- Shera Partner Percent -->
                         <div class="row mb-3">
-                            <label for="name" class="col-sm-3 col-form-label">Shera Partner Percent</label>
+                            <label for="shera_partner_percentage" class="col-sm-3 col-form-label">Shera Partner Percent</label>
                             <div class="col-sm-9">
-                                <input name="shera_partner_percent" id="shera_partner_percent" type="number" class="form-control @error('shera_partner_percent') is-invalid @enderror"
-                                       placeholder="e.g. 30%/65%">
-                                @error('shera_partner_percent') <span class="text-danger">{{ $message }}</span> @enderror
+                                <input name="shera_partner_percentage" value="{{ $setting->shera_partner_percentage }}" id="shera_partner_percentage" type="number" class="form-control" placeholder="e.g. 30%/65%">
                             </div>
                         </div>
 
