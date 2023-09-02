@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 /**
  * @method static whereIn(string $string, $pluck)
+ * @method static where(string $string, $ddHouseId)
  */
 class KpiTarget extends Model
 {
@@ -39,10 +40,10 @@ class KpiTarget extends Model
         'remarks',
     ];
 
-    public static function getTotalTargetByHouse()
+    public static function getTotalTargetByHouse($id)
     {
-        $ddHouseId = DdHouse::whereIn('id', KpiTarget::getSettings()->dd_house ?? [])->pluck('id');
-        return KpiTarget::whereIn('dd_house_id', $ddHouseId)->sum('ga');
+        $ddHouseId = DdHouse::firstWhere('id', $id)->id;
+        return KpiTarget::where('dd_house_id', $ddHouseId)->sum('ga');
     }
 
 

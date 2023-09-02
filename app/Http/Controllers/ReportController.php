@@ -35,20 +35,33 @@ class ReportController extends Controller
     // GA Target vs Achievement
     public function ga(Request $request): View|Application|Factory|JsonResponse|\Illuminate\Contracts\Foundation\Application
     {
-
-//        $sumOfTotalActivation = CoreActivation::getTotalActivationByHouse();
-        $sumOfTotalTarget = KpiTarget::getTotalTargetByHouse();
-        $firstDayofCurrentMonth = Carbon::now()->startOfMonth();
-        $lastDayofCurrentMonth = Carbon::now();
-        $restOfDay = Carbon::now()->daysInMonth - $firstDayofCurrentMonth->diffInDays($lastDayofCurrentMonth);
-        $spRestOfDay = $this->getSettings()->shera_partner_day - $firstDayofCurrentMonth->diffInDays($lastDayofCurrentMonth);
-        $tableData = '';
-
         if($request->ajax())
         {
-            $house = DdHouse::firstWhere('id', $request->input('id'))->id;
-            $totalActivation = CoreActivation::getTotalActivationByHouse( $house );
-            $sumOfTotalTarget = KpiTarget::getTotalTargetByHouse();
+            $tableData = '';
+            $firstDayofCurrentMonth = Carbon::now()->startOfMonth();
+            $lastDayofCurrentMonth = Carbon::now();
+            $restOfDay = Carbon::now()->daysInMonth - $firstDayofCurrentMonth->diffInDays($lastDayofCurrentMonth);
+            $spRestOfDay = $this->getSettings()->shera_partner_day - $firstDayofCurrentMonth->diffInDays($lastDayofCurrentMonth);
+
+            // Total target by selected dd house.
+            $totalTarget = KpiTarget::getTotalTargetByHouse( $request->input('id') );
+            // Total activation by selected dd house.
+            $totalActivation = CoreActivation::getTotalActivationByHouse( $request->input('id') );
+            // Achievement %
+            $achPercent = round($totalActivation / $totalTarget * 100) . '%';
+            // Remaining
+            $remaining = $totalTarget - $totalActivation;
+            // Daily Required
+            $dailyRequired = round($remaining / $restOfDay);
+            // Shera Partner Target vs Achievement
+            // GA Target [Shera Partner]
+            $spTarget = round($totalTarget * $this->getSettings()->shera_partner_percentage / 100);
+            // Achievement % [Shera Partner]
+            $spAchPercent = round( $totalActivation / $spTarget * 100 ) . '%';
+            // Remaining [Shera Partner]
+            $spRemaining = $spTarget - $totalActivation;
+            // Daily Required [Shera Partner]
+            $spDailyRequired = round( $spRemaining / $spRestOfDay );
 
             $rsos = Rso::with(['coreActivation' => function($query) use ($request){
                 $drc = !empty($this->getSettings()->drc_code) && !empty($this->getSettings()->exclude_from_rso_act) ? Setting::getDrcCode() : [];
@@ -61,7 +74,9 @@ class ReportController extends Controller
             {
                 $tableData.= '<tr>'.
                     '<td>'. ++$sl .'</td>'.
-                    '<td>'. $rso->ddHouse->code .'</td>'. // DD Code
+                    // DD Code
+                    '<td>'. $rso->ddHouse->code .'</td>'.
+                    // RSO ItopUp Number
                     '<td>'. $rso->itop_number .'</td>'.
                     // Monthly Target vs Achievement
                     '<td>'. round(($rso->kpiTarget->ga ?? 0)) .'</td>'.
@@ -83,32 +98,32 @@ class ReportController extends Controller
                     '</tr>';
             }
 
-//            $tableData.= '<tr style="font-weight: bold">'.
-//                // Monthly Target vs Achievement
-//                // Grand Total
-//                '<td colspan="3">Grand Total</td>'.
-//                // GA Target
-//                '<td>'. round($sumOfTotalTarget ?? 0) .'</td>'.
-//                // Achievement
-//                '<td>'. round($sumOfTotalActivation ?? 0) .'</td>'.
-//                // Achievement %
-//                '<td>'. round($sumOfTotalActivation / ($sumOfTotalTarget ?? 0) * 100) . '%' .'</td>'.
-//                // Remaining
-//                '<td>'. round($sumOfTotalTarget ?? 0) - $sumOfTotalActivation .'</td>'.
-//                // Daily Required
-//                '<td>'. round((($sumOfTotalTarget ?? 0) - $sumOfTotalActivation) / $restOfDay) .'</td>'.
-//                // Shera Partner Target vs Achievement
-//                // GA Target [Shera Partner]
-//                '<td>'. round($sumOfTotalActivation * 30 / 100) .'</td>'.
-//                // Achievement [Shera Partner]
-//                '<td>'. round($sumOfTotalActivation ?? 0) .'</td>'.
-//                // Achievement % [Shera Partner]
-//                '<td>'. round(($sumOfTotalActivation ?? 0) / (($sumOfTotalTarget ?? 0) * 30 / 100) * 100) . '%' .'</td>'.
-//                // Remaining [Shera Partner]
-//                '<td>'. round((($sumOfTotalTarget ?? 0) * 30 / 100) - $sumOfTotalActivation) .'</td>'.
-//                // Daily Required [Shera Partner]
-//                '<td>'. round(((($sumOfTotalTarget ?? 0) * 30 / 100) - $sumOfTotalActivation) / $restOfDay) .'</td>'.
-//                '</tr>';
+            $tableData.= '<tr style="font-weight: bold">'.
+                // Monthly Target vs Achievement
+                // Grand Total
+                '<td colspan="3">Grand Total</td>'.
+                // GA Target
+                '<td>'. ($totalTarget ?? 0) .'</td>'.
+                // Achievement
+                '<td>'. ($totalActivation ?? 0) .'</td>'.
+                // Achievement %
+                '<td>'. $achPercent .'</td>'.
+                // Remaining
+                '<td>'. $remaining .'</td>'.
+                // Daily Required
+                '<td>'. $dailyRequired .'</td>'.
+                // Shera Partner Target vs Achievement
+                // GA Target [Shera Partner]
+                '<td>'. $spTarget .'</td>'.
+                // Achievement [Shera Partner]
+                '<td>'. ($totalActivation ?? 0) .'</td>'.
+                // Achievement % [Shera Partner]
+                '<td>'. $spAchPercent .'</td>'.
+                // Remaining [Shera Partner]
+                '<td>'. $spRemaining .'</td>'.
+                // Daily Required [Shera Partner]
+                '<td>'. $spDailyRequired .'</td>'.
+                '</tr>';
 
             return response()->json(['data' => $tableData]);
         }
