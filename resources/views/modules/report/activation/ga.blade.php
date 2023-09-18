@@ -13,7 +13,7 @@
                 <select name="houseId" class="select-2 form-select form-select-sm">
                     <option selected value="">-- Select House --</option>
                     @foreach($ddHouses as $ddHouse)
-                        <option value="{{ $ddHouse->id }}">{{ $ddHouse->code .' - '. $ddHouse->name }}</option>
+                        <option @selected($ddHouse->id == request()->get('houseId')) value="{{ $ddHouse->id }}">{{ $ddHouse->code .' - '. $ddHouse->name }}</option>
                     @endforeach
                 </select>
                 <button class="btn btn-sm btn-primary" type="submit">Apply Filter</button>
