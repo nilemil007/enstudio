@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static latest()
  * @method static whereNotNull(string $string)
  * @method static truncate()
+ * @method static orderBy(string $string, string $string1)
  * @property mixed documents
  */
 class Bp extends Model

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 /**
  * @method static whereIn(string $string, $pluck)
  * @method static where(string $string, $ddHouseId)
+ * @method static get()
  */
 class KpiTarget extends Model
 {

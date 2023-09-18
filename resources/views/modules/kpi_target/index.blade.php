@@ -81,6 +81,9 @@
                 </table>
             </div>
         </div>
+        <div class="card-footer">
+            {{ $kpiTargets->links('pagination::bootstrap-5') }}
+        </div>
     </div>
 
     @push('scripts')

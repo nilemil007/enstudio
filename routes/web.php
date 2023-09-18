@@ -165,6 +165,8 @@ Route::middleware(['auth'])->group(function (){
     Route::controller(ReportController::class)->prefix('/daily-report')->name('daily.report.')->group(function(){
         // GA
         Route::get('/ga','ga')->name('ga');
+        // Get rso by dd house
+        Route::post('/get_rso_by_dd_house/{house_id?}', 'getRsoByDdHouse')->name('get.rso.by.dd.house');
     });
 
     // KPI Target Additional Routes

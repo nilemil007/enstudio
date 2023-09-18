@@ -14,33 +14,33 @@
 
                 <!-- Distribution House -->
                 <div class="row mb-3">
-                    <label for="dd_house" class="col-sm-3 col-form-label">Distribution House</label>
+                    <label for="dd_house_id" class="col-sm-3 col-form-label">Distribution House</label>
                     <div class="col-sm-9">
-                        <select name="dd_house" class="form-select @error('dd_house') is-invalid @enderror" id="dd_house">
+                        <select name="dd_house_id" class="form-select @error('dd_house_id') is-invalid @enderror" id="dd_house_id">
                             <option value="">-- Select Distribution House --</option>
                             @if(count($houses) > 0)
                                 @foreach($houses as $house)
-                                    <option {{ $rso->dd_house == $house->code ? 'selected' : '' }} value="{{ $house->code }}">{{ $house->code .' - '. $house->name }}</option>
+                                    <option {{ $rso->dd_house_id == $house->id ? 'selected' : '' }} value="{{ $house->id }}">{{ $house->code .' - '. $house->name }}</option>
                                 @endforeach
                             @endif
                         </select>
-                        @error('dd_house') <span class="text-danger">{{ $message }}</span> @enderror
+                        @error('dd_house_id') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                 </div>
 
                 <!-- Supervisor -->
                 <div class="row mb-3">
-                    <label for="supervisor" class="col-sm-3 col-form-label">Supervisor</label>
+                    <label for="supervisor_id" class="col-sm-3 col-form-label">Supervisor</label>
                     <div class="col-sm-9">
-                        <select name="supervisor" class="form-select @error('supervisor') is-invalid @enderror" id="supervisor">
+                        <select name="supervisor_id" class="form-select @error('supervisor_id') is-invalid @enderror" id="supervisor_id">
                             <option value="">-- Select Supervisor --</option>
                             @if(count($supervisors) > 0)
                                 @foreach($supervisors as $supervisor)
-                                    <option {{ $rso->supervisor == $supervisor->pool_number ? 'selected' : '' }} value="{{ $supervisor->pool_number }}">{{ $supervisor->pool_number .' - '. \App\Models\User::firstWhere('id', $supervisor->user_id)->name }}</option>
+                                    <option {{ $rso->supervisor_id == $supervisor->id ? 'selected' : '' }} value="{{ $supervisor->id }}">{{ $supervisor->pool_number .' - '. \App\Models\User::firstWhere('id', $supervisor->user_id)->name }}</option>
                                 @endforeach
                             @endif
                         </select>
-                        @error('supervisor') <span class="text-danger">{{ $message }}</span> @enderror
+                        @error('supervisor_id') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                 </div>
 

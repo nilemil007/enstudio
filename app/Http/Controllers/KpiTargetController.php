@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\KpiTarget;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use App\Imports\KpiTargetImport;
 use Illuminate\Http\JsonResponse;
@@ -17,9 +20,9 @@ class KpiTargetController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $kpiTargets = KpiTarget::get();
+        $kpiTargets = KpiTarget::paginate(10);
         return view('modules.kpi_target.index', compact('kpiTargets'));
     }
 

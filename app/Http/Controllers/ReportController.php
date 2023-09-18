@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Application;
 use App\Models\Activation\CoreActivation;
+use Illuminate\Support\Facades\Response;
 
 class ReportController extends Controller
 {
@@ -33,6 +34,11 @@ class ReportController extends Controller
         return view('modules.report.activation.summary', compact('retailerCode'));
     }
 
+    public function getRsoByDdHouse($id): JsonResponse
+    {
+        return Response::json(['rso' => Rso::where('dd_house_id',$id)->where('status', 1)->get()]);
+    }
+
     // GA Target vs Achievement
     public function ga(Request $request): View|Application|Factory|JsonResponse|\Illuminate\Contracts\Foundation\Application
     {
@@ -45,7 +51,7 @@ class ReportController extends Controller
                 ->where('dd_house_id', $request->input('houseId'));
         },'kpiTarget'])->when($request->input('houseId'), function ($query, $id){
             $query->where('dd_house_id', $id);
-        })->get();
+        })->paginate(10);
 
 //        $totalTarget = KpiTarget::getTotalTargetByHouse( $request->input('houseId') );
 
