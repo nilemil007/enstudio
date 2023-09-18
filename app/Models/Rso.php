@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static where(string $string)
  * @method static orderBy(string $string, string $string1)
  * @method static truncate()
+ * @method static when(mixed $findByHouse, \Closure $param)
  */
 class Rso extends Model
 {
@@ -85,6 +86,19 @@ class Rso extends Model
         'joining_date'      => 'datetime',
         'resigning_date'    => 'datetime',
     ];
+
+    // Search
+//    public function scopeSearch( $query, $term )
+//    {
+//        $term = "%$term%";
+//        $query->where( function ( $query ) use ( $term ){
+//            $query->where( 'rso_code', 'like', $term )
+//                ->orWhere( 'itop_number', 'like', $term )
+//                ->orWhereHas('ddHouse', function ( $query ) use ( $term ){
+//                    $query->where( 'id', 'like', $term );
+//                });
+//        });
+//    }
 
     /**
      * Relationship.
