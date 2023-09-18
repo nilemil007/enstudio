@@ -166,7 +166,9 @@ Route::middleware(['auth'])->group(function (){
         // GA
         Route::get('/ga','ga')->name('ga');
         // Get rso by dd house
-        Route::post('/get_rso_by_dd_house/{house_id?}', 'getRsoByDdHouse')->name('get.rso.by.dd.house');
+        Route::post('/get_rso/{house_id?}', 'getRso')->name('get.rso');
+        // Get supervisor and user
+        Route::post('/get_supervisor_and_user/{house_id?}', 'getSupervisorAndUser')->name('get.supervisor.and.user');
     });
 
     // KPI Target Additional Routes

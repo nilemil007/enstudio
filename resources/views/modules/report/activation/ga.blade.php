@@ -6,7 +6,7 @@
     <div class="card mb-3">
         <div class="card-header">Data Filter</div>
         <div class="card-body">
-            <form class="row g-3">
+            <form id="gaFilter" action="{{ route('daily.report.ga') }}" method="GET" class="row g-3">
                 <!-- Start Date -->
                 <div class="col-md-6">
                     <label for="start_date" class="form-label">Start Date</label>
@@ -72,29 +72,32 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @forelse($rsos as $sl => $rso)
-                        <tr>
-                            <td>{{ ++$sl }}</td>
-                            <td>{{ $rso->ddHouse->code }}</td>
-                            <td>{{ $rso->itop_number  }}</td>
-                            <td>{{ round(($rso->kpiTarget->ga ?? 0)) }}</td>
-{{--                            <td>{{  }}</td>--}}
-{{--                            <td>{{  }}</td>--}}
-{{--                            <td>{{  }}</td>--}}
-{{--                            <td>{{  }}</td>--}}
-{{--                            <td>{{  }}</td>--}}
-{{--                            <td>{{  }}</td>--}}
-{{--                            <td>{{  }}</td>--}}
-{{--                            <td>{{  }}</td>--}}
-{{--                            <td>{{  }}</td>--}}
-{{--                            <td>{{  }}</td>--}}
-{{--                            <td>{{  }}</td>--}}
-                        </tr>
-                    @empty
                         <tr>
                             <td colspan="13">No house selected.</td>
                         </tr>
-                    @endforelse
+{{--                    @forelse($rsos as $sl => $rso)--}}
+{{--                        <tr>--}}
+{{--                            <td>{{ ++$sl }}</td>--}}
+{{--                            <td>{{ $rso->ddHouse->code }}</td>--}}
+{{--                            <td>{{ $rso->itop_number  }}</td>--}}
+{{--                            <td>{{ round(($rso->kpiTarget->ga ?? 0)) }}</td>--}}
+{{--                            <td>{{  }}</td>--}}
+{{--                            <td>{{  }}</td>--}}
+{{--                            <td>{{  }}</td>--}}
+{{--                            <td>{{  }}</td>--}}
+{{--                            <td>{{  }}</td>--}}
+{{--                            <td>{{  }}</td>--}}
+{{--                            <td>{{  }}</td>--}}
+{{--                            <td>{{  }}</td>--}}
+{{--                            <td>{{  }}</td>--}}
+{{--                            <td>{{  }}</td>--}}
+{{--                            <td>{{  }}</td>--}}
+{{--                        </tr>--}}
+{{--                    @empty--}}
+{{--                        <tr>--}}
+{{--                            <td colspan="13">No house selected.</td>--}}
+{{--                        </tr>--}}
+{{--                    @endforelse--}}
 
                     <tr>
                         <td colspan="3">Grand Total</td>
@@ -104,14 +107,12 @@
                 </table>
             </div>
         </div>
-        <div class="card-footer">
-            {{ $rsos->links('pagination::bootstrap-5') }}
-        </div>
     </div>
 
     @push('scripts')
         <script>
             $(document).ready(function (){
+                // Get house wise rso
                $(document).on('change','#houseId',function (){
                    const id = $(this).val();
 
@@ -122,45 +123,49 @@
 
                    // Get rso by dd house
                    $.ajax({
-                       url: "{{ route('daily.report.get.rso.by.dd.house') }}/" + id,
+                       url: "{{ route('daily.report.get.rso') }}/" + id,
                        type: 'POST',
                        dataType: 'JSON',
                        success: function (response){
                            $('#get_rso').find('option:not(:first)').remove();
 
                            $.each(response.rso, function (key, value){
-                               $('#get_rso').append('<option value="'+ value.id +'">' + value.itop_number+' - '+value.user.name + '</option>')
+                               $('#get_rso').append('<option value="'+ value.id +'">' + value.itop_number + ' - ' + value.user.name + '</option>')
                            });
                        }
                    });
                });
+
+                $(document).on('submit','#gaFilter', function (e){
+                    e.preventDefault();
+
+                    const startDate = $('#start_date').val();
+                    const endDate = $('#end_date').val();
+                    const houseId = $('#houseId').val();
+                    const get_rso = $('#get_rso').val();
+
+                    // console.log($(this).attr('action'));
+
+                    $.ajax({
+                        url: $(this).attr('action'),
+                        type: $(this).attr('method'),
+                        data: {
+                            startDate:startDate,
+                            endDate:endDate,
+                            houseId:houseId,
+                            get_rso:get_rso,
+                        },
+                        success: function(response){
+                            if(response.data.length > 0)
+                            {
+                                $('tbody').html(response.data);
+                            }else{
+                                alert('all result.');
+                            }
+                        }
+                    });
+                });
             });
-
-            {{--$(document).ready(function (){--}}
-            {{--    $('#ga_filter').on('submit', function (e){--}}
-            {{--        e.preventDefault();--}}
-
-            {{--        $.ajax({--}}
-            {{--            url: $(this).attr('action'),--}}
-            {{--            type: $(this).attr('method'),--}}
-            {{--            data: new FormData(this),--}}
-            {{--            processData: false,--}}
-            {{--            contentType: false,--}}
-            {{--            beforeSend: function (){--}}
-            {{--                --}}{{--$('#rsoErrMsg').addClass('d-none').find('li').remove();--}}
-            {{--                --}}{{--$('.btn-submit').prop('disabled', true).text('Creating...').append('<img src="{{ url('public/assets/images/gif/DzUd.gif') }}" alt="" width="18px">');--}}
-            {{--            },--}}
-            {{--            success: function(response){--}}
-            {{--                if(response.data.length > 0)--}}
-            {{--                {--}}
-            {{--                    $('tbody').html(response.data);--}}
-            {{--                }else{--}}
-            {{--                    alert('all result.');--}}
-            {{--                }--}}
-            {{--            }--}}
-            {{--        });--}}
-            {{--    });--}}
-            {{--});--}}
         </script>
     @endpush
 
