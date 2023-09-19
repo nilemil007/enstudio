@@ -77,10 +77,10 @@ class ReportController extends Controller
             $restOfDay = Carbon::now()->daysInMonth - $firstDayofCurrentMonth->diffInDays($lastDayofCurrentMonth);
             $spRestOfDay = $this->getSettings()->shera_partner_day - $firstDayofCurrentMonth->diffInDays($lastDayofCurrentMonth);
 
-            // Total target by selected dd house.
-            $totalTarget = KpiTarget::getTotalTargetByHouse( $request->input('houseId') );
-            // Total activation by selected dd house.
-            $totalActivation = CoreActivation::getTotalActivationByHouse( $request->input('id') );
+            // Total target.
+            $totalTarget = KpiTarget::getTotalTarget( $request->input('houseId'), $request->startDate, $request->endDate );
+            // Total activation.
+            $totalActivation = CoreActivation::getTotalActivation( $request->input('id'), $request->startDate, $request->endDate );
             // Achievement %
             $achPercent = round($totalActivation / $totalTarget * 100) . '%';
             // Remaining

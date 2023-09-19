@@ -10,12 +10,12 @@
                 <!-- Start Date -->
                 <div class="col-md-6">
                     <label for="start_date" class="form-label">Start Date</label>
-                    <input type="date" name="start_date" class="form-control" value="" id="start_date">
+                    <input type="date" name="start_date" class="form-control" value="{{ $startDate }}" id="start_date" required>
                 </div>
                 <!-- End Date -->
                 <div class="col-md-6">
                     <label for="end_date" class="form-label">End Date</label>
-                    <input type="date" name="end_date" class="form-control" id="end_date">
+                    <input type="date" name="end_date" value="{{ $endDate }}" class="form-control" id="end_date" required>
                 </div>
                 <!-- DD House -->
                 <div class="col-md-6">

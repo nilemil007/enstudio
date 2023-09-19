@@ -61,12 +61,13 @@ class CoreActivation extends Model
         ->count('retailer_id');
     }
 
-    public static function getTotalActivationByHouse( $id )
+    public static function getTotalActivation( $id, $startDate, $endDate )
     {
         $drc = !empty(CoreActivation::getSettings()->drc_code) && !empty(CoreActivation::getSettings()->exclude_from_rso_act) ? Setting::getDrcCode() : [];
 
         return CoreActivation::whereIn('product_code', CoreActivation::getSettings()->product_code ?? [])
             ->where('dd_house_id', $id)
+            ->whereBetween('activation_date', [$startDate, $endDate])
             ->whereNotIn('retailer_id', $drc)
             ->count('retailer_id');
     }

@@ -41,10 +41,9 @@ class KpiTarget extends Model
         'remarks',
     ];
 
-    public static function getTotalTargetByHouse($id)
+    public static function getTotalTarget( $id, $startDate, $endDate )
     {
-        $ddHouseId = DdHouse::firstWhere('id', $id)->id;
-        return KpiTarget::where('dd_house_id', $ddHouseId)->sum('ga');
+        return KpiTarget::where('dd_house_id', $id)->whereBetween('created_at', [$startDate, $endDate])->sum('ga');
     }
 
 
