@@ -75,6 +75,8 @@ Route::middleware(['auth'])->group(function (){
         Route::post('/import','import')->name('import');
         // Download sample file
         Route::get('/sample-file-download','sampleFileDownload')->name('sample.file.download');
+        // Get Supervisor and User
+        Route::post('/get_supervisor_and_user/{houseId?}', 'getSupervisorAndUser')->name('get.supervisor.and.user');
     });
 
     // BP Additional Routes
@@ -167,8 +169,6 @@ Route::middleware(['auth'])->group(function (){
         Route::get('/ga','ga')->name('ga');
         // Get rso by dd house
         Route::post('/get_rso/{house_id?}', 'getRso')->name('get.rso');
-        // Get supervisor and user
-        Route::post('/get_supervisor_and_user/{house_id?}', 'getSupervisorAndUser')->name('get.supervisor.and.user');
     });
 
     // KPI Target Additional Routes

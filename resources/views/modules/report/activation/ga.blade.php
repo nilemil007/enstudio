@@ -99,10 +99,10 @@
 {{--                        </tr>--}}
 {{--                    @endforelse--}}
 
-                    <tr>
-                        <td colspan="3">Grand Total</td>
-                        <td>{{ ($totalTarget ?? 0) }}</td>
-                    </tr>
+{{--                    <tr>--}}
+{{--                        <td colspan="3">Grand Total</td>--}}
+{{--                        <td>{{ ($totalTarget ?? 0) }}</td>--}}
+{{--                    </tr>--}}
                     </tbody>
                 </table>
             </div>
@@ -130,6 +130,7 @@
                            $('#get_rso').find('option:not(:first)').remove();
 
                            $.each(response.rso, function (key, value){
+                               console.log(value);
                                $('#get_rso').append('<option value="'+ value.id +'">' + value.itop_number + ' - ' + value.user.name + '</option>')
                            });
                        }
@@ -142,7 +143,7 @@
                     const startDate = $('#start_date').val();
                     const endDate = $('#end_date').val();
                     const houseId = $('#houseId').val();
-                    const get_rso = $('#get_rso').val();
+                    const rsoId = $('#get_rso').val();
 
                     // console.log($(this).attr('action'));
 
@@ -153,7 +154,7 @@
                             startDate:startDate,
                             endDate:endDate,
                             houseId:houseId,
-                            get_rso:get_rso,
+                            rsoId:rsoId,
                         },
                         success: function(response){
                             if(response.data.length > 0)

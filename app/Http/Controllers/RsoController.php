@@ -79,7 +79,7 @@ class RsoController extends Controller
     public function edit(Rso $rso): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
         $houses = DdHouse::all();
-        $users = User::where('role','rso')->orderBy('name','asc')->get();
+        $users = User::where('role','rso')->where('dd_house', $rso->dd_house_id)->orderBy('name','asc')->get();
         $supervisors = Supervisor::all();
         $routes = Route::all();
         return view('modules.rso.edit', compact('rso','houses','users','supervisors','routes'));
@@ -148,5 +148,16 @@ class RsoController extends Controller
     public function sampleFileDownload(): BinaryFileResponse
     {
         return Response::download(public_path('download/sample/Rso List.xlsx'));
+    }
+
+    /**
+     * Get supervisor and user by dd house.
+     */
+    public function getSupervisorAndUser($houseId): JsonResponse
+    {
+        return Response::json([
+            'supervisor' => Supervisor::with('user')->where('dd_house_id', $houseId)->where('status', 1)->get(),
+            'user' => User::where('dd_house', $houseId)->where('status', 1)->where('role','rso')->get(),
+        ]);
     }
 }

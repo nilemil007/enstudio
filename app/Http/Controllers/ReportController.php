@@ -36,17 +36,10 @@ class ReportController extends Controller
         return view('modules.report.activation.summary', compact('retailerCode'));
     }
 
+    // Get rso by house
     public function getRso($id): JsonResponse
     {
-        return Response::json(['rso' => Rso::where('dd_house_id',$id)->where('status', 1)->get()]);
-    }
-
-    public function getSupervisorAndUser($id): JsonResponse
-    {
-        return Response::json([
-            'supervisor' => Supervisor::where('dd_house_id',$id)->where('status', 1)->get(),
-            'user' => User::where('dd_house', $id)->where('role', 'rso')->where('status', 1)->get(),
-        ]);
+        return Response::json(['rso' => Rso::with('user')->where('dd_house_id',$id)->where('status', 1)->get()]);
     }
 
     // GA Target vs Achievement
@@ -76,7 +69,7 @@ class ReportController extends Controller
 
         if($request->ajax())
         {
-            dd($request->startDate.' | '.$request->endDate.' | '.$request->houseId.' | '.$request->get_rso);
+//            dd($request->startDate.' | '.$request->endDate.' | '.$request->houseId.' | '.$request->rsoId);
 
             $tableData = '';
             $firstDayofCurrentMonth = Carbon::now()->startOfMonth();
@@ -85,7 +78,7 @@ class ReportController extends Controller
             $spRestOfDay = $this->getSettings()->shera_partner_day - $firstDayofCurrentMonth->diffInDays($lastDayofCurrentMonth);
 
             // Total target by selected dd house.
-            $totalTarget = KpiTarget::getTotalTargetByHouse( $request->input('id') );
+            $totalTarget = KpiTarget::getTotalTargetByHouse( $request->input('houseId') );
             // Total activation by selected dd house.
             $totalActivation = CoreActivation::getTotalActivationByHouse( $request->input('id') );
             // Achievement %
@@ -108,8 +101,19 @@ class ReportController extends Controller
                 $drc = !empty($this->getSettings()->drc_code) && !empty($this->getSettings()->exclude_from_rso_act) ? Setting::getDrcCode() : [];
                 $query->whereIn('product_code', $this->getSettings()->product_code)
                     ->whereNotIn('retailer_id', $drc)
-                    ->where('dd_house_id', $request->input('id'));
-            },'kpiTarget'])->groupBy('itop_number')->where('dd_house_id', $request->id)->where('status', 1)->get();
+                    ->where('dd_house_id', $request->input('houseId'));
+            },'kpiTarget' => function($query) use ($request){
+                $query->whereBetween('created_at', [$request->startDate, $request->endDate]);
+            }])
+                ->groupBy('itop_number')
+                ->when($request->houseId, function ($query, $house_id){
+                    $query->where('dd_house_id', $house_id);
+                })
+                ->when($request->rsoId, function ($query, $rso_id){
+                    $query->where('id', $rso_id);
+                })
+                ->where('status', 1)
+                ->get();
 
             foreach($rsos as $sl => $rso)
             {
