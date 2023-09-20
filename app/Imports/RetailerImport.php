@@ -16,7 +16,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 
-class RetailerImport implements ToModel, WithHeadingRow, WithValidation, ShouldQueue, WithChunkReading
+class RetailerImport implements ToModel, WithHeadingRow, WithValidation, WithChunkReading, ShouldQueue
 {
     use Importable;
 

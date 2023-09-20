@@ -142,7 +142,7 @@ class RetailerController extends Controller
                 return to_route('retailer.create');
             }
 
-            Excel::queueImport(new RetailerImport, $request->file('import_retailer'));
+            Excel::import(new RetailerImport, $request->file('import_retailer'));
 
             return Response::json(['success' => 'Retailer imported successfully.']);
 

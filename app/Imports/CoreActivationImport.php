@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Models\User;
 use Carbon\Carbon;
 use App\Models\DdHouse;
 use App\Models\Retailer;
@@ -13,8 +14,9 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Maatwebsite\Excel\Events\ImportFailed;
 
-class CoreActivationImport implements ToModel, WithHeadingRow, WithValidation, ShouldQueue, WithChunkReading
+class CoreActivationImport implements ToModel, WithHeadingRow, WithValidation, WithChunkReading
 {
     use Importable;
 
