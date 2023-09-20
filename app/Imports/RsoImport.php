@@ -11,12 +11,12 @@ use Illuminate\Database\Eloquent\Model;
 use Maatwebsite\Excel\Concerns\ToModel;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 use Maatwebsite\Excel\Concerns\Importable;
-use Illuminate\Contracts\Queue\ShouldQueue;
+//use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 
-class RsoImport implements ToModel, WithHeadingRow, WithValidation, ShouldQueue, WithChunkReading
+class RsoImport implements ToModel, WithHeadingRow, WithValidation, WithChunkReading
 {
     use Importable;
 

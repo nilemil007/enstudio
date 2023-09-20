@@ -29,7 +29,7 @@ class KpiTargetController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
         return view('modules.kpi_target.create');
     }

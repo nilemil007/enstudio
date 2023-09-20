@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
  * @method static whereIn(string $string, $pluck)
  * @method static where(string $string, $ddHouseId)
  * @method static get()
+ * @method static paginate(int $int)
  */
 class KpiTarget extends Model
 {
@@ -34,11 +35,6 @@ class KpiTarget extends Model
         'dsso',
         'ddso',
         'dso',
-        'main_house_osdo_residential_rso',
-        'thana',
-        'sran_rso',
-        'sran_site_count',
-        'remarks',
     ];
 
     public static function getTotalTarget( $id, $startDate, $endDate )

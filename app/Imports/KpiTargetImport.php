@@ -41,11 +41,6 @@ class KpiTargetImport implements ToModel, WithHeadingRow, WithValidation
             'dsso'                              => $row['dsso_target'],
             'ddso'                              => $row['daily_dso_target'],
             'dso'                               => $row['dso_target'],
-            'main_house_osdo_residential_rso'   => $row['main_houseosdoresidential_rso'],
-            'thana'                             => $row['thana_name_only_for_osdo'],
-            'sran_rso'                          => $row['sran_rs0'],
-            'sran_site_count'                   => $row['sran_site_count'],
-            'remarks'                           => $row['remarks_if_any'],
         ]);
     }
 

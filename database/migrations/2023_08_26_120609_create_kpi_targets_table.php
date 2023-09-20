@@ -29,11 +29,6 @@ return new class extends Migration
             $table->string('dsso');
             $table->string('ddso');
             $table->string('dso');
-            $table->string('main_house_osdo_residential_rso');
-            $table->string('thana')->nullable();
-            $table->string('sran_rso')->nullable();
-            $table->string('sran_site_count')->nullable();
-            $table->string('remarks')->nullable();
             $table->timestamps();
         });
     }
