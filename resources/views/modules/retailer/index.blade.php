@@ -3,6 +3,10 @@
     <!-- Title -->
     <x-slot:title>All Retailer</x-slot:title>
 
+    @if(session()->has('success'))
+        <p class="alert alert-success">{{ session()->get('success') }}</p>
+    @endif
+
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h4 class="card-title">All Retailer</h4>

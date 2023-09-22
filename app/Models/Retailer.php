@@ -236,7 +236,7 @@ class Retailer extends Model
     /**
      * Retailer has one core activation.
      *
-     * @return HasOne
+     * @return HasMany
      */
     public function coreActivation(): HasMany
     {

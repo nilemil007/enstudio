@@ -144,7 +144,7 @@ class RetailerController extends Controller
 
             Excel::import(new RetailerImport, $request->file('import_retailer'));
 
-            return Response::json(['success' => 'Retailer imported successfully.']);
+            return to_route('retailer.index')->with(['success' => 'Retailer imported successfully.']);
 
         } catch (ValidationException $e) {
             return to_route('retailer.create')->with('import_errors', $e->failures());

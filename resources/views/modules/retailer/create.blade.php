@@ -495,41 +495,41 @@
                 });
 
                 // Import Retailer
-                $(document).on('submit','.import-retailer',function (e){
-                    e.preventDefault();
+                {{--$(document).on('submit','.import-retailer',function (e){--}}
+                {{--    e.preventDefault();--}}
 
-                    $.ajax({
-                        url: $(this).attr('action'),
-                        type: $(this).attr('method'),
-                        data: new FormData(this),
-                        processData: false,
-                        contentType: false,
-                        beforeSend: function (){
-                            $('#retailerErrMsg').addClass('d-none').find('li').remove();
-                            $('.btn-import-retailer').prop('disabled', true).text('Importing...').append('<img src="{{ url('public/assets/images/gif/DzUd.gif') }}" alt="" width="18px">');
-                        },
-                        success: function (response){
-                            $('.btn-import-retailer').prop('disabled', false).text('Import Retailer');
-                            Swal.fire(
-                                'Success!',
-                                response.success,
-                                'success',
-                            ).then((result) => {
-                                window.location.href = "{{ route('retailer.index') }}";
-                            });
-                        },
-                        error: function (e){
-                            const err = JSON.parse(e.responseText);
+                {{--    $.ajax({--}}
+                {{--        url: $(this).attr('action'),--}}
+                {{--        type: $(this).attr('method'),--}}
+                {{--        data: new FormData(this),--}}
+                {{--        processData: false,--}}
+                {{--        contentType: false,--}}
+                {{--        beforeSend: function (){--}}
+                {{--            $('#retailerErrMsg').addClass('d-none').find('li').remove();--}}
+                {{--            $('.btn-import-retailer').prop('disabled', true).text('Importing...').append('<img src="{{ url('public/assets/images/gif/DzUd.gif') }}" alt="" width="18px">');--}}
+                {{--        },--}}
+                {{--        success: function (response){--}}
+                {{--            $('.btn-import-retailer').prop('disabled', false).text('Import Retailer');--}}
+                {{--            Swal.fire(--}}
+                {{--                'Success!',--}}
+                {{--                response.success,--}}
+                {{--                'success',--}}
+                {{--            ).then((result) => {--}}
+                {{--                window.location.href = "{{ route('retailer.index') }}";--}}
+                {{--            });--}}
+                {{--        },--}}
+                {{--        error: function (e){--}}
+                {{--            const err = JSON.parse(e.responseText);--}}
 
-                            $.each(err.errors,function (key,value){
-                                console.log(value);
-                                $('.err-msg').removeClass('d-none').append('<li>' + value + '</li>');
-                            });
+                {{--            $.each(err.errors,function (key,value){--}}
+                {{--                console.log(value);--}}
+                {{--                $('.err-msg').removeClass('d-none').append('<li>' + value + '</li>');--}}
+                {{--            });--}}
 
-                            $('.btn-import-retailer').prop('disabled', false).text('Import Retailer');
-                        },
-                    });
-                });
+                {{--            $('.btn-import-retailer').prop('disabled', false).text('Import Retailer');--}}
+                {{--        },--}}
+                {{--    });--}}
+                {{--});--}}
             });
         </script>
     @endpush

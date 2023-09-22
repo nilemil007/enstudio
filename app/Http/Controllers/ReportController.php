@@ -80,7 +80,7 @@ class ReportController extends Controller
             // Total target.
             $totalTarget = KpiTarget::getTotalTarget( $request->input('houseId'), $request->startDate, $request->endDate );
             // Total activation.
-            $totalActivation = CoreActivation::getTotalActivation( $request->input('id'), $request->startDate, $request->endDate );
+            $totalActivation = CoreActivation::getTotalActivation( $request->input('houseId'), $request->startDate, $request->endDate );
             // Achievement %
             $achPercent = round($totalActivation / $totalTarget * 100) . '%';
             // Remaining

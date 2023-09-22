@@ -113,7 +113,7 @@
                         <div class="row mb-3">
                             <label for="shera_partner_day" class="col-sm-3 col-form-label">Shera Partner Day</label>
                             <div class="col-sm-9">
-                                <input name="shera_partner_day" value="{{ $setting->shera_partner_day }}" id="shera_partner_day" type="number" class="form-control" placeholder="e.g. 10/20/30">
+                                <input name="shera_partner_day" value="{{ $setting->shera_partner_day ?? null }}" id="shera_partner_day" type="number" class="form-control" placeholder="e.g. 10/20/30">
                             </div>
                         </div>
 
@@ -121,7 +121,7 @@
                         <div class="row mb-3">
                             <label for="shera_partner_percentage" class="col-sm-3 col-form-label">Shera Partner Percent</label>
                             <div class="col-sm-9">
-                                <input name="shera_partner_percentage" value="{{ $setting->shera_partner_percentage }}" id="shera_partner_percentage" type="number" class="form-control" placeholder="e.g. 30%/65%">
+                                <input name="shera_partner_percentage" value="{{ $setting->shera_partner_percentage ?? null }}" id="shera_partner_percentage" type="number" class="form-control" placeholder="e.g. 30%/65%">
                             </div>
                         </div>
 

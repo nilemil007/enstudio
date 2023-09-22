@@ -25,7 +25,7 @@ class CoreActivationController extends Controller
     // Core Activation Import
     public function coreActivationImport(Request $request): JsonResponse
     {
-        Excel::queueImport(new CoreActivationImport, $request->file('core_activation_import'));
+        Excel::import(new CoreActivationImport, $request->file('core_activation_import'));
 
         return Response::json(['success' => 'Core activation imported successfully.']);
     }

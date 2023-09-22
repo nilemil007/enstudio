@@ -62,7 +62,7 @@
                             <th>
                                 <p>ga target</p>
                                 <p class="text-muted">
-                                    {{ $setting->shera_partner_day }} day, {{ $setting->shera_partner_percentage . '%' }}
+                                    {{ $setting->shera_partner_day ?? '[Not Set]' }} day, {{ $setting->shera_partner_percentage ?? '[Not Set]' . '%' }}
                                 </p>
                             </th>
                             <th>ach</th>

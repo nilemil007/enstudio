@@ -17,11 +17,11 @@
                         <div class="row mb-3">
                             <label for="dd_house" class="col-sm-3 col-form-label">Distribution House ({{ count($houses) }})</label>
                             <div class="col-sm-9">
-                                <select name="dd_house" class="form-select @error('dd_house') is-invalid @enderror" id="dd_house">
+                                <select name="dd_house_id" class="form-select @error('dd_house') is-invalid @enderror" id="dd_house">
                                     <option value="">-- Select Distribution House --</option>
                                     @if(count($houses) > 0)
                                         @foreach($houses as $house)
-                                            <option value="{{ $house->code }}">{{ $house->code .' - '. $house->name }}</option>
+                                            <option value="{{ $house->id }}">{{ $house->code .' - '. $house->name }}</option>
                                         @endforeach
                                     @endif
                                 </select>
@@ -33,11 +33,11 @@
                         <div class="row mb-3">
                             <label for="supervisor" class="col-sm-3 col-form-label">Supervisor ({{ count($supervisors) }})</label>
                             <div class="col-sm-9">
-                                <select name="supervisor" class="form-select @error('supervisor') is-invalid @enderror" id="supervisor">
+                                <select name="supervisor_id" class="form-select @error('supervisor') is-invalid @enderror" id="supervisor">
                                     <option value="">-- Select Supervisor --</option>
                                     @if(count($supervisors) > 0)
                                         @foreach($supervisors as $supervisor)
-                                            <option value="{{ $supervisor->pool_number }}">{{ $supervisor->pool_number .' - '. \App\Models\User::firstWhere('id', $supervisor->user_id)->name }}</option>
+                                            <option value="{{ $supervisor->id }}">{{ $supervisor->pool_number .' - '. \App\Models\User::firstWhere('id', $supervisor->user_id)->name }}</option>
                                         @endforeach
                                     @endif
                                 </select>
@@ -483,115 +483,6 @@
                         },
                     });
                 });
-
-                // $("#retailerForm").validate({
-                //
-                //     rules: {
-                //         cluster_name: {
-                //             required: true,
-                //             maxlength: 30,
-                //         },
-                //         region: {
-                //             required: true,
-                //             maxlength: 20,
-                //         },
-                //         code: {
-                //             required: true,
-                //             maxlength: 10,
-                //         },
-                //         name: {
-                //             required: true,
-                //             maxlength: 100,
-                //             minlength: 3,
-                //         },
-                //         email: {
-                //             required: true,
-                //             email: true,
-                //         },
-                //         district: {
-                //             required: true,
-                //             maxlength: 20,
-                //         },
-                //         address: {
-                //             required: true,
-                //             maxlength: 150,
-                //         },
-                //         proprietor_name: {
-                //             required: true,
-                //             maxlength: 100,
-                //             minlength: 3,
-                //         },
-                //         proprietor_number: {
-                //             required: true,
-                //             number: true,
-                //             maxlength: 11,
-                //             minlength: 11,
-                //         },
-                //         poc_name: {
-                //             required: true,
-                //             maxlength: 100,
-                //             minlength: 3,
-                //         },
-                //         poc_number: {
-                //             required: true,
-                //             number: true,
-                //             maxlength: 11,
-                //             minlength: 11,
-                //         },
-                //         tin_number: {
-                //             required: true,
-                //         },
-                //         bin_number: {
-                //             required: true,
-                //         },
-                //         latitude: {
-                //             pattern: /^[-]?(([0-8]?[0-9])\.(\d+))|(90(\.0+)?)$/
-                //         },
-                //         longitude: {
-                //             pattern: /^[-]?((((1[0-7][0-9])|([0-9]?[0-9]))\.(\d+))|180(\.0+)?)$/
-                //         },
-                //         bts_code: {
-                //             required: true,
-                //             minlength: 7,
-                //         },
-                //         lifting_date: {
-                //             required: true,
-                //         },
-                //     },
-                //     messages: {
-                //
-                //     },
-                //     errorPlacement: function(error, element){
-                //         error.addClass('invalid-feedback');
-                //
-                //         if (element.parent('.input-group').length) {
-                //             error.insertAfter(element.parent());
-                //         }
-                //         else if (element.prop('type') === 'radio' && element.parent('.radio-inline').length) {
-                //             error.insertAfter(element.parent().parent());
-                //         }
-                //         else if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
-                //             error.appendTo(element.parent().parent());
-                //         }
-                //         else {
-                //             error.insertAfter(element);
-                //         }
-                //     },
-                //     highlight: function(element, errorClass){
-                //         if ($(element).prop('type') != 'checkbox' && $(element).prop('type') != 'radio') {
-                //             $( element ).addClass( "is-invalid" );
-                //         }
-                //     },
-                //     unhighlight: function(element, errorClass){
-                //         if ($(element).prop('type') != 'checkbox' && $(element).prop('type') != 'radio') {
-                //             $( element ).removeClass( "is-invalid" );
-                //         }
-                //     },
-                //     submitHandler: function(form) {
-                //         form.submit();
-                //     },
-                // });
-
             });
         </script>
     @endpush
