@@ -75,15 +75,9 @@
 
     @push('scripts')
         <script>
-            new DataTable('#hcaTbl');
+            // new DataTable('#hcaTbl');
 
             $(document).ready(function(){
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-
                 // Single delete
                 $(document).on('click','#deleteHca',function(e){
                     e.preventDefault();

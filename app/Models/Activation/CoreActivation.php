@@ -64,7 +64,6 @@ class CoreActivation extends Model
 
     public static function getTotalActivation( $id, $startDate, $endDate )
     {
-        dd(Setting::getDrcCode());
         $drc = !empty(CoreActivation::getSettings()->drc_code) && !empty(CoreActivation::getSettings()->exclude_from_rso_act) ? Setting::getDrcCode() : [];
 
         return CoreActivation::whereIn('product_code', CoreActivation::getSettings()->product_code ?? [])
