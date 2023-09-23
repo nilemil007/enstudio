@@ -58,7 +58,7 @@
                     @foreach( $tcrc as $sl => $tc )
                         <tr>
                             <td>{{ ++$sl }}</td>
-                            <td>{{ $tc->retailer->dd_house }}</td>
+                            <td>{{ $tc->retailer->ddHouse->code }}</td>
                             <td>
                                 {{ $tc->retailer->code }}
                                 <div class="text-muted">{{ $tc->retailer->itop_number }}</div>
