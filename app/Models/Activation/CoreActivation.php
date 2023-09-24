@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Auth;
  * @method static where(string $string, $date)
  * @method static whereIn(string $string, string[] $array)
  * @method static paginate(int $int)
+ * @method static whereBetween(string $string, string[] $array)
  */
 class CoreActivation extends Model
 {
@@ -64,7 +65,6 @@ class CoreActivation extends Model
 
     public static function getTotalActivation( $id, $startDate, $endDate )
     {
-        dd(Setting::getDrcCode());
         $drc = !empty(CoreActivation::getSettings()->drc_code) && !empty(CoreActivation::getSettings()->exclude_from_rso_act) ? Setting::getDrcCode() : [];
 
         return CoreActivation::whereIn('product_code', CoreActivation::getSettings()->product_code ?? [])

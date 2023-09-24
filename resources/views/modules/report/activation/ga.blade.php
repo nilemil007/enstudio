@@ -145,8 +145,6 @@
                     const houseId = $('#houseId').val();
                     const rsoId = $('#get_rso').val();
 
-                    // console.log($(this).attr('action'));
-
                     $.ajax({
                         url: $(this).attr('action'),
                         type: $(this).attr('method'),

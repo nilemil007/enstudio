@@ -26,14 +26,36 @@ class ReportController extends Controller
     use Settings;
 
     // Core Activation Summary
-    public function coreActivationSummary(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
+    public function coreActivationSummary(Request $request): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $retailerId = CoreActivation::whereNotNull('retailer_id')->pluck('retailer_id');
-        $retailerCode = Retailer::select('id','code')->groupBy('code')
-            ->where('sim_seller','Y')
-            ->whereIn('id', $retailerId)
-            ->paginate(10);
-        return view('modules.report.activation.summary', compact('retailerCode'));
+        $ddHouses = DdHouse::all();
+
+        if ($request->ajax())
+        {
+//            dd($request->startDate .'=>'.$request->endDate.'=>'.$request->houseId.'=>'.$request->search);
+            $retailerId = CoreActivation::whereBetween('activation_date', [$request->startDate, $request->endDate])
+                ->when($request->houseId, function ($query) use ($request){
+                    $query->where('dd_house_id', $request->houseId);
+                })
+                ->when($request->search, function ($query) use ($request){
+                    $query->where('retailer_id', 'like', Retailer::firstWhere('code', $request->search)->id);
+                })
+                ->pluck('retailer_id');
+//            dd($retailerId);
+
+            $retailers = Retailer::select('id','rso_id','code','itop_number')->groupBy('rso_id')
+                ->where([
+                    ['enabled','=','Y'],
+                    ['sim_seller','=','Y'],
+                ])
+                ->whereIn('id', $retailerId)
+                ->paginate(10);
+
+
+            return view('modules.report.activation.summary', compact('retailers','ddHouses'));
+        }
+
+        return view('modules.report.activation.summary', compact('ddHouses'));
     }
 
     // Get rso by house
@@ -43,7 +65,7 @@ class ReportController extends Controller
     }
 
     // GA Target vs Achievement
-    public function ga(Request $request)
+    public function ga(Request $request): View|Application|Factory|JsonResponse|\Illuminate\Contracts\Foundation\Application
     {
         $ddHouses = DdHouse::get();
         $setting = $this->getSettings();
@@ -69,8 +91,6 @@ class ReportController extends Controller
 
         if($request->ajax())
         {
-//            dd($request->startDate.' | '.$request->endDate.' | '.$request->houseId.' | '.$request->rsoId);
-
             $tableData = '';
             $firstDayofCurrentMonth = Carbon::now()->startOfMonth();
             $lastDayofCurrentMonth = Carbon::now();
