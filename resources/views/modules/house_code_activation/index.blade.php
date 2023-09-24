@@ -37,7 +37,7 @@
                     @foreach( $houseCodeAct as $sl => $hca )
                         <tr>
                             <td><span class="text-muted">{{ ++$sl }}</span></td>
-                            <td>{{ $hca->dd_house }}</td>
+                            <td>{{ \App\Models\DdHouse::firstWhere('id', $hca->dd_house)->code }}</td>
                             <td>{{ $hca->user->name.' - '.\Illuminate\Support\Str::upper($hca->user->role) }}</td>
                             <td>{{ $hca->retailer_code }}</td>
                             <td>{{ $hca->activation }}</td>
@@ -58,6 +58,9 @@
                 </table>
             </div>
         </div>
+        <div class="card-footer">
+            {{ $houseCodeAct->links('pagination::bootstrap-5') }}
+        </div>
     </div>
 
     @if(count($houseCodeAct) > 0)
@@ -75,15 +78,9 @@
 
     @push('scripts')
         <script>
-            new DataTable('#hcaTbl');
+            // new DataTable('#hcaTbl');
 
             $(document).ready(function(){
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-
                 // Single delete
                 $(document).on('click','#deleteHca',function(e){
                     e.preventDefault();

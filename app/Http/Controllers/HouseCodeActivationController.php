@@ -33,17 +33,17 @@ class HouseCodeActivationController extends Controller
         {
             case ('supervisor');
                 $usersId = User::where('dd_house', Auth::user()->dd_house)->pluck('id');
-                $houseCodeAct = HouseCodeActivation::where('activation_date', Carbon::now()->toDateString())->whereIn('user_id', $usersId)->get();
+                $houseCodeAct = HouseCodeActivation::where('activation_date', Carbon::now()->toDateString())->whereIn('user_id', $usersId)->paginate(5);
             break;
 
             case ('bp'):
             case ('tmo'):
             case ('rso');
-                $houseCodeAct = HouseCodeActivation::where('user_id', Auth::id())->where('activation_date', Carbon::now()->toDateString())->get();
+                $houseCodeAct = HouseCodeActivation::where('user_id', Auth::id())->where('activation_date', Carbon::now()->toDateString())->paginate(5);
             break;
 
             default;
-                $houseCodeAct = HouseCodeActivation::latest()->get();
+                $houseCodeAct = HouseCodeActivation::latest()->paginate(5);
         }
 
         return view('modules.house_code_activation.index', compact('houseCodeAct'));
@@ -88,7 +88,7 @@ class HouseCodeActivationController extends Controller
 
         try {
 
-            $data['dd_house'] = Retailer::firstWhere('code', $request->retailer_code)->dd_house;
+            $data['dd_house'] = Retailer::firstWhere('code', $request->retailer_code)->dd_house_id;
             HouseCodeActivation::create($data);
             return Response::json(['success' => 'New record created successfully.']);
 
