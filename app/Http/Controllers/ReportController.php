@@ -26,12 +26,13 @@ class ReportController extends Controller
     use Settings;
 
     // Core Activation Summary
-    public function coreActivationSummary(Request $request): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
+    public function coreActivationSummary(Request $request): View|Application|Factory|JsonResponse|\Illuminate\Contracts\Foundation\Application
     {
         $ddHouses = DdHouse::all();
 
         if ($request->ajax())
         {
+            $activationData = '';
 //            dd($request->startDate .'=>'.$request->endDate.'=>'.$request->houseId.'=>'.$request->search);
             $retailerId = CoreActivation::whereBetween('activation_date', [$request->startDate, $request->endDate])
                 ->when($request->houseId, function ($query) use ($request){
@@ -41,7 +42,6 @@ class ReportController extends Controller
                     $query->where('retailer_id', 'like', Retailer::firstWhere('code', $request->search)->id);
                 })
                 ->pluck('retailer_id');
-//            dd($retailerId);
 
             $retailers = Retailer::select('id','rso_id','code','itop_number')->groupBy('rso_id')
                 ->where([
@@ -49,10 +49,41 @@ class ReportController extends Controller
                     ['sim_seller','=','Y'],
                 ])
                 ->whereIn('id', $retailerId)
+//                ->get();
                 ->paginate(10);
 
+//            dd($retailers);
 
-            return view('modules.report.activation.summary', compact('retailers','ddHouses'));
+            foreach($retailers as $sl => $retailer)
+            {
+                $activationData.= '<tr>'.
+                    '<td>'. ++$sl .'</td>'.
+                    // DD Code
+                    '<td>'. $retailer->ddHouse->code .'</td>'.
+                    // RSO ItopUp Number
+                    '<td>'. $retailer->code .'</td>'.
+                    '<td>'. $retailer->itop_number .'</td>'.
+                    // Monthly Target vs Achievement
+//                    '<td>'. round(($rso->kpiTarget->ga ?? 0)) .'</td>'.
+//                    '<td>'. round($rso->coreActivation->count() ?? 0) .'</td>'.
+//                    '<td>'. round($rso->coreActivation->count() / ($rso->kpiTarget->ga ?? 0) * 100) . '%' .'</td>'.
+//                    '<td>'. round($rso->kpiTarget->ga ?? 0) - $rso->coreActivation->count() .'</td>'.
+//                    '<td>'. round((($rso->kpiTarget->ga ?? 0) - $rso->coreActivation->count()) / $restOfDay) .'</td>'.
+//                    // Shera Partner Target vs Achievement
+//                    // Target [Shera Partner]
+//                    '<td>'. round(($rso->kpiTarget->ga ?? 0) * $this->getSettings()->shera_partner_percentage / 100) .'</td>'.
+//                    // Achievement [Shera Partner]
+//                    '<td>'. ($rso->coreActivation->count() ?? 0) .'</td>'.
+//                    // Achievement % [Shera Partner]
+//                    '<td>'. round(($rso->coreActivation->count() ?? 0) / round(($rso->kpiTarget->ga * $this->getSettings()->shera_partner_percentage / 100)) * 100) . '%' .'</td>'.
+//                    // Remaining [Shera Partner]
+//                    '<td>'. round((($rso->kpiTarget->ga ?? 0) * $this->getSettings()->shera_partner_percentage / 100 ?? 0) - $rso->coreActivation->count()) .'</td>'.
+//                    // Daily Required [Shera Partner]
+//                    '<td>'. round(round((($rso->kpiTarget->ga ?? 0) * $this->getSettings()->shera_partner_percentage / 100 ?? 0) - $rso->coreActivation->count()) / $spRestOfDay) .'</td>'.
+                    '</tr>';
+            }
+
+            return Response::json(['data' => $activationData]);
         }
 
         return view('modules.report.activation.summary', compact('ddHouses'));
