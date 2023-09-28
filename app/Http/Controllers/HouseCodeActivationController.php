@@ -124,7 +124,7 @@ class HouseCodeActivationController extends Controller
 
         try {
 
-            $data['dd_house'] = Retailer::firstWhere('code', $request->retailer_code)->dd_house;
+            $data['dd_house'] = Retailer::firstWhere('code', $request->retailer_code)->dd_house_id;
             $hca->update($data);
             return Response::json(['success' => 'Record updated successfully.']);
 
