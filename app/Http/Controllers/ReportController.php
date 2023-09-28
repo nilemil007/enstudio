@@ -42,14 +42,9 @@ class ReportController extends Controller
         })
         ->pluck('retailer_id');
 
-        $retailers = Retailer::where([
-            ['enabled','=','Y'],
-            ['sim_seller','=','Y'],
-        ])
-        ->whereIn('id', $retailerId)
-        ->get();
+        $retailers = Retailer::where('enabled','Y')->where('sim_seller','Y')->whereIn('id', $retailerId)->get();
 
-        return view('modules.report.activation.summary', compact('ddHouses','retailers','sDate','eDate'));
+        return view('modules.report.activation.summary', compact('ddHouses','retailers'));
     }
 
     // Get rso by house
@@ -59,7 +54,7 @@ class ReportController extends Controller
     }
 
     // Get retailer by house
-    public function getRetailerByHouse($id)
+    public function getRetailerByHouse($id): JsonResponse
     {
         return Response::json(['retCode' => Retailer::where('dd_house_id',$id)->where('status', 1)->get()]);
     }

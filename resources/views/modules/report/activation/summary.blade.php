@@ -55,7 +55,7 @@
                         <th class="w-1">No.</th>
                         <th>retailer code</th>
                         <th>total activation</th>
-                        @for($i = $sDate; $i <= $eDate; $i++)
+                        @for($i = request()->get('sDate'); $i <= request()->get('eDate'); $i++)
                             <th>{{ date('d M', strtotime($i)) }}</th>
                         @endfor
                     </tr>
