@@ -6,7 +6,7 @@
     <div class="card mb-3">
         <div class="card-header">Data Filter</div>
         <div class="card-body">
-            <form id="activationFilter" action="{{ route('report.activation.summary') }}" method="GET" class="row g-3">
+            <form class="row g-3">
                 <!-- Start Date -->
                 <div class="col-md-6">
                     <label for="start_date" class="form-label">Start Date</label>
@@ -27,10 +27,12 @@
                         @endforeach
                     </select>
                 </div>
-                <!-- Search Box -->
+                <!-- Retailer Code -->
                 <div class="col-md-6">
-                    <label for="search" class="form-label">Search Box</label>
-                    <input class="form-control" type="text" name="search" id="search" value="{{ request()->get('search') }}" placeholder="Type something...">
+                    <label for="getRetailer" class="form-label">Retailer Code</label>
+                    <select name="retailerId" class="select-2 form-select form-select-sm" id="getRetailer">
+                        <option selected value="">-- Select Retailer Code --</option>
+                    </select>
                 </div>
                 <!-- Button -->
                 <div class="col-12">
@@ -40,7 +42,7 @@
         </div>
     </div>
 
-    @if(isset($retailerCode))
+    @if(isset($retailers))
         <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h4 class="card-title">Activation Summary</h4>
@@ -53,63 +55,57 @@
                         <th class="w-1">No.</th>
                         <th>retailer code</th>
                         <th>total activation</th>
-                        @for($i = $startDate; $i <= $endDate; $i++)
+                        @for($i = $sDate; $i <= $eDate; $i++)
                             <th>{{ date('d M', strtotime($i)) }}</th>
                         @endfor
                     </tr>
                     </thead>
                     <tbody>
-{{--                    @forelse( $retailerCode as $sl => $retailer )--}}
-{{--                        <tr>--}}
-{{--                            <td><span class="text-muted">{{ ++$sl }}</span></td>--}}
-{{--                            <td>{{ $retailer->code }}</td>--}}
-{{--                            <td><strong>{{ \App\Models\Activation\CoreActivation::getRetailerTotalActivation($retailer->id) }}</strong></td>--}}
-{{--                            @for ($a = $startDate; $a <= $endDate; $a++)--}}
-{{--                            <td>{{ \App\Models\Activation\CoreActivation::getRetailerActivationByDate($retailer->id, $a) }}</td>--}}
-{{--                            @endfor--}}
-{{--                        </tr>--}}
-{{--                    @empty--}}
-{{--                        <tr>--}}
-{{--                            <td>No data found.</td>--}}
-{{--                        </tr>--}}
-{{--                    @endforelse--}}
+                    @forelse( $retailers as $sl => $retailer )
+                        <tr>
+                            <td><span class="text-muted">{{ ++$sl }}</span></td>
+                            <td>{{ $retailer->code }}</td>
+                            <td><strong>{{ \App\Models\Activation\CoreActivation::getRetailerTotalActivation($retailer->id) }}</strong></td>
+                            @for ($a = $sDate; $a <= $eDate; $a++)
+                            <td>{{ \App\Models\Activation\CoreActivation::getRetailerActivationByDate($retailer->id, $a) }}</td>
+                            @endfor
+                        </tr>
+                    @empty
+                        <tr>
+                            <td>No data found.</td>
+                        </tr>
+                    @endforelse
                     </tbody>
                 </table>
             </div>
         </div>
-        <div class="card-footer">
-            {{ $retailerCode->links('pagination::bootstrap-5') }}
-        </div>
+{{--        <div class="card-footer">--}}
+{{--            {{ $retailers->links('pagination::bootstrap-5') }}--}}
+{{--        </div>--}}
     </div>
     @endif
 
     @push('scripts')
         <script>
             $(document).ready(function (){
-                $(document).on('submit','#activationFilter',function (e){
-                    e.preventDefault();
+                $(document).on('change','#houseId',function (){
+                    const houseId = $(this).val();
 
-                    const startDate = $('#start_date').val();
-                    const endDate = $('#end_date').val();
-                    const houseId = $('#houseId').val();
-                    const search = $('#search').val();
+                    if (houseId === '')
+                    {
+                        $('#getRetailer').html('<option value="">-- Select Retailer Code --</option>');
+                    }
 
+                    // Get retailer by dd house
                     $.ajax({
-                        url: $(this).attr('action'),
-                        type: $(this).attr('method'),
-                        data: {
-                            startDate:startDate,
-                            endDate:endDate,
-                            houseId:houseId,
-                            search:search,
-                        },
-                        success: function(response){
-                            if(response.data.length > 0)
-                            {
-                                $('tbody').html(response.data);
-                            }else{
-                                alert('all result.');
-                            }
+                        url: "{{ route('report.get.retailer') }}/" + houseId,
+                        type: 'POST',
+                        success: function (response){
+                            $('#getRetailer').find('option:not(:first)').remove();
+
+                            $.each(response.retCode, function (key, value){
+                                $('#getRetailer').append('<option value="'+ value.id +'">' + value.code+' - '+value.itop_number + '</option>')
+                            });
                         }
                     });
                 });

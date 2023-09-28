@@ -26,73 +26,42 @@ class ReportController extends Controller
     use Settings;
 
     // Core Activation Summary
-    public function coreActivationSummary(Request $request): View|Application|Factory|JsonResponse|\Illuminate\Contracts\Foundation\Application
+    public function coreActivationSummary(Request $request): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
         $ddHouses = DdHouse::all();
+        $sDate = $request->startDate;
+        $eDate = $request->endDate;
 
-        if ($request->ajax())
-        {
-            $activationData = '';
-//            dd($request->startDate .'=>'.$request->endDate.'=>'.$request->houseId.'=>'.$request->search);
-            $retailerId = CoreActivation::whereBetween('activation_date', [$request->startDate, $request->endDate])
-                ->when($request->houseId, function ($query) use ($request){
-                    $query->where('dd_house_id', $request->houseId);
-                })
-                ->when($request->search, function ($query) use ($request){
-                    $query->where('retailer_id', 'like', Retailer::firstWhere('code', $request->search)->id);
-                })
-                ->pluck('retailer_id');
 
-            $retailers = Retailer::select('id','rso_id','code','itop_number')->groupBy('rso_id')
-                ->where([
-                    ['enabled','=','Y'],
-                    ['sim_seller','=','Y'],
-                ])
-                ->whereIn('id', $retailerId)
-//                ->get();
-                ->paginate(10);
+        $retailerId = CoreActivation::whereBetween('activation_date', [$sDate, $eDate])
+        ->when($request->houseId, function ($query) use ($request){
+            $query->where('dd_house_id', $request->houseId);
+        })
+        ->when($request->retailerId, function ($query) use ($request){
+            $query->where('retailer_id', $request->retailerId);
+        })
+        ->pluck('retailer_id');
 
-//            dd($retailers);
+        $retailers = Retailer::where([
+            ['enabled','=','Y'],
+            ['sim_seller','=','Y'],
+        ])
+        ->whereIn('id', $retailerId)
+        ->get();
 
-            foreach($retailers as $sl => $retailer)
-            {
-                $activationData.= '<tr>'.
-                    '<td>'. ++$sl .'</td>'.
-                    // DD Code
-                    '<td>'. $retailer->ddHouse->code .'</td>'.
-                    // RSO ItopUp Number
-                    '<td>'. $retailer->code .'</td>'.
-                    '<td>'. $retailer->itop_number .'</td>'.
-                    // Monthly Target vs Achievement
-//                    '<td>'. round(($rso->kpiTarget->ga ?? 0)) .'</td>'.
-//                    '<td>'. round($rso->coreActivation->count() ?? 0) .'</td>'.
-//                    '<td>'. round($rso->coreActivation->count() / ($rso->kpiTarget->ga ?? 0) * 100) . '%' .'</td>'.
-//                    '<td>'. round($rso->kpiTarget->ga ?? 0) - $rso->coreActivation->count() .'</td>'.
-//                    '<td>'. round((($rso->kpiTarget->ga ?? 0) - $rso->coreActivation->count()) / $restOfDay) .'</td>'.
-//                    // Shera Partner Target vs Achievement
-//                    // Target [Shera Partner]
-//                    '<td>'. round(($rso->kpiTarget->ga ?? 0) * $this->getSettings()->shera_partner_percentage / 100) .'</td>'.
-//                    // Achievement [Shera Partner]
-//                    '<td>'. ($rso->coreActivation->count() ?? 0) .'</td>'.
-//                    // Achievement % [Shera Partner]
-//                    '<td>'. round(($rso->coreActivation->count() ?? 0) / round(($rso->kpiTarget->ga * $this->getSettings()->shera_partner_percentage / 100)) * 100) . '%' .'</td>'.
-//                    // Remaining [Shera Partner]
-//                    '<td>'. round((($rso->kpiTarget->ga ?? 0) * $this->getSettings()->shera_partner_percentage / 100 ?? 0) - $rso->coreActivation->count()) .'</td>'.
-//                    // Daily Required [Shera Partner]
-//                    '<td>'. round(round((($rso->kpiTarget->ga ?? 0) * $this->getSettings()->shera_partner_percentage / 100 ?? 0) - $rso->coreActivation->count()) / $spRestOfDay) .'</td>'.
-                    '</tr>';
-            }
-
-            return Response::json(['data' => $activationData]);
-        }
-
-        return view('modules.report.activation.summary', compact('ddHouses'));
+        return view('modules.report.activation.summary', compact('ddHouses','retailers','sDate','eDate'));
     }
 
     // Get rso by house
     public function getRso($id): JsonResponse
     {
         return Response::json(['rso' => Rso::with('user')->where('dd_house_id',$id)->where('status', 1)->get()]);
+    }
+
+    // Get retailer by house
+    public function getRetailerByHouse($id)
+    {
+        return Response::json(['retCode' => Retailer::where('dd_house_id',$id)->where('status', 1)->get()]);
     }
 
     // GA Target vs Achievement

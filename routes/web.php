@@ -161,6 +161,8 @@ Route::middleware(['auth'])->group(function (){
     Route::controller(ReportController::class)->prefix('/report')->name('report.')->group(function(){
         // Activation Summary
         Route::get('/activation/summary','coreActivationSummary')->name('activation.summary');
+        // Activation Summary
+        Route::post('/get/retailer/{id?}','getRetailerByHouse')->name('get.retailer');
     });
 
     // Daily Report Routes
