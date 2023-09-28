@@ -25,7 +25,7 @@ class HCAStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id'           => ['required'],
+            'user_id'           => ['nullable'],
             'dd_house'          => ['nullable'],
             'retailer_code'     => ['required'],
             'activation'        => ['required'],
