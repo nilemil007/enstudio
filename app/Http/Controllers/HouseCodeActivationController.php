@@ -54,6 +54,9 @@ class HouseCodeActivationController extends Controller
      */
     public function create(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
+        $startDate = Carbon::now()->startOfMonth()->toDateString();
+        $endDate = Carbon::now()->endOfMonth()->toDateString();
+
         switch ( Auth::user()->role )
         {
             case('supervisor');
@@ -71,9 +74,9 @@ class HouseCodeActivationController extends Controller
             break;
 
             default;
-                $retId = TradeCampaignRetailerCode::whereNotNull('retailer_id')->pluck('retailer_id');
+                $retId = TradeCampaignRetailerCode::whereBetween('created_at', [$startDate, $endDate])->whereNotNull('retailer_id')->pluck('retailer_id');
                 $retailers = Retailer::whereIn('id', $retId)->get();
-                $users = User::where('role', '!=', 'superadmin')->where('role', '!=', 'md')->get();
+                $users = User::where('role', '!=', 'superadmin')->where('role', '!=', 'md')->where('role', '!=', 'manager')->get();
         }
 
         return view('modules.house_code_activation.create', compact('retailers','users'));

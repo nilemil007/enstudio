@@ -21,6 +21,7 @@ use Illuminate\Support\Str;
  * @method static select(string $string)
  * @method static groupBy(string $string)
  * @method static paginate(int $int)
+ * @method static whereBetween(string $string, array $array)
  */
 class Retailer extends Model
 {
