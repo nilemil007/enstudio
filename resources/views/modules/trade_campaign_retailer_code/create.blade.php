@@ -19,7 +19,7 @@
                             <option value="">-- Select Retailer Code --</option>
                             @if(count($retailers) > 0)
                                 @foreach($retailers as $retailer)
-                                    <option value="{{ $retailer->id }}">{{ $retailer->dd_house .' - '. $retailer->code .' - '. $retailer->itop_number }}</option>
+                                    <option value="{{ $retailer->id }}">{{ $retailer->ddHouse->code .' - '. $retailer->code .' - '. $retailer->itop_number }}</option>
                                 @endforeach
                             @endif
                         </select>
@@ -35,12 +35,22 @@
                             <option value="">-- Select Flag --</option>
                             <option value="rso">RS0</option>
                             <option value="bp">BP</option>
-                            <option value="tmo">TMO</option>
+                            <option value="cm">CM</option>
                         </select>
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-sm btn-primary me-2 btn-submit">Create TCRC</button>
+                <!-- User -->
+                <div class="row mb-3">
+                    <label for="setUsers" class="col-sm-3 col-form-label">User</label>
+                    <div class="col-sm-9">
+                        <select name="user_id" class="form-select @error('users') is-invalid @enderror" id="setUsers">
+                            <option value="">-- Select User --</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-sm btn-primary me-2 btn-submit">Create</button>
                     <a href="{{ route('tcrc.index') }}" class="btn btn-sm btn-info me-2 text-white">Back</a>
             </form>
         </div>
@@ -84,7 +94,45 @@
                             $('.btn-submit').prop('disabled', false).text('Create TCRC');
                         },
                     });
-                })
+                });
+
+                // Get users by flag
+                $(document).on('change','#flag',function (){
+                    const flag = $(this).val();
+
+                    if (flag === '')
+                    {
+                        $('#setUsers').html('<option value="">-- Select User --</option>');
+                    }
+
+                    // Get supervisor by dd house
+                    $.ajax({
+                        url: "{{ route('tcrc.get.users') }}/" + flag,
+                        type: 'POST',
+                        dataType: 'JSON',
+                        success: function (response){
+                            $('#setUsers').find('option:not(:first)').remove();
+
+                            $.each(response.users, function (key, value){
+                                $('#setUsers').append('<option value="'+ value.id +'">' + value.name +' - '+ value.username + '</option>')
+                            });
+                        }
+                    });
+
+                    // Get user by dd house
+                    $.ajax({
+                        url: "{{ route('bp.get.user.by.dd.house') }}/" + houseId,
+                        type: 'POST',
+                        dataType: 'JSON',
+                        success: function (response){
+                            $('#get_user').find('option:not(:first)').remove();
+
+                            $.each(response.user, function (key, value){
+                                $('#get_user').append('<option value="'+ value.id +'">' + value.phone + ' - ' + value.name + '</option>')
+                            });
+                        }
+                    });
+                });
 
                 // $('.tcrcForm').validate({
                 //     rules: {

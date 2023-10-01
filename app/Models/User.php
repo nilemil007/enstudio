@@ -131,6 +131,16 @@ class User extends Authenticatable
     }
 
     /**
+     * User has many TCRC.
+     *
+     * @return HasMany
+     */
+    public function tradeCampaignRetailerCode(): HasMany
+    {
+        return $this->hasMany( TradeCampaignRetailerCode::class );
+    }
+
+    /**
      * User has many kpi target.
      *
      * @return HasMany

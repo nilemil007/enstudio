@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Retailer;
 use App\Models\TradeCampaignRetailerCode;
+use App\Models\User;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
@@ -42,16 +43,20 @@ class TradeCampaignRetailerCodeController extends Controller
     public function store(Request $request): JsonResponse
     {
         $tcrc = $this->validate($request,[
+            'user_id'       => ['required'],
             'retailer_id'   => ['required'],
             'flag'          => ['required'],
         ],[
-            'retailer_id.required' => 'You must select a :attribute.',
-            'flag.required' => 'You must select a :attribute.',
+            'user_id.required'      => 'You must select a :attribute.',
+            'retailer_id.required'  => 'You must select a :attribute.',
+            'flag.required'         => 'You must select a :attribute.',
         ],[
-            'retailer_id' => 'retailer code',
+            'user_id'       => 'user',
+            'retailer_id'   => 'retailer code',
         ]);
 
         TradeCampaignRetailerCode::create($tcrc);
+
         return Response::json(['success' => 'TCRC created successfully.']);
     }
 
@@ -110,5 +115,10 @@ class TradeCampaignRetailerCodeController extends Controller
         }catch (\Exception $exception){
             dd($exception);
         }
+    }
+
+    public function getUsersByFlag($flag): JsonResponse
+    {
+        return Response::json(['users' => User::with('rso')->where('role', $flag)->where('status', 1)->get()]);
     }
 }

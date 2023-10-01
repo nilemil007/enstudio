@@ -141,6 +141,8 @@ Route::middleware(['auth'])->group(function (){
     Route::controller( TradeCampaignRetailerCodeController::class )->prefix('/tcrc')->name('tcrc.')->group(function (){
         // Delete all
         Route::post('/delete/all','deleteAll')->name('delete.all');
+        // Get users by flag
+        Route::post('/users/{flag?}','getUsersByFlag')->name('get.users');
     });
 
     // Scratch Card Serial Additional Routes
@@ -161,7 +163,7 @@ Route::middleware(['auth'])->group(function (){
     Route::controller(ReportController::class)->prefix('/report')->name('report.')->group(function(){
         // Activation Summary
         Route::get('/activation/summary','coreActivationSummary')->name('activation.summary');
-        // Activation Summary
+        // Get retailers by house
         Route::post('/get/retailer/{id?}','getRetailerByHouse')->name('get.retailer');
     });
 

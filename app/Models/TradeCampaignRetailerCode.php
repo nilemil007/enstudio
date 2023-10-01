@@ -18,15 +18,25 @@ class TradeCampaignRetailerCode extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['retailer_id','flag','status'];
+    protected $fillable = ['user_id','retailer_id','flag','status'];
 
     /**
-     * Retailer belongs to a user.
+     * TCRC belongs to a retailer.
      *
      * @return BelongsTo
      */
     public function retailer(): BelongsTo
     {
         return $this->belongsTo( Retailer::class );
+    }
+
+    /**
+     * TCRC belongs to a user.
+     *
+     * @return BelongsTo
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo( User::class );
     }
 }

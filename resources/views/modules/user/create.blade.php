@@ -68,7 +68,7 @@
                                     <option value="supervisor">Supervisor</option>
                                     <option value="rso">Rso</option>
                                     <option value="bp">Bp</option>
-                                    <option value="tmo">TMO</option>
+                                    <option value="cm">CM</option>
                                     <option value="retailer">Retailer</option>
                                     <option value="accountant">Accountant</option>
                                 </select>

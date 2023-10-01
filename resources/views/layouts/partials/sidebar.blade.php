@@ -89,7 +89,7 @@
                     </ul>
                 </div>
             </li>
-            @endif
+
 
             <li class="nav-item nav-category">import</li>
             <!-- Core Activation -->
@@ -126,8 +126,6 @@
                     </ul>
                 </div>
             </li>
-
-            @if( auth()->user()->role == 'superadmin' )
 
             <li class="nav-item nav-category">Define</li>
 
