@@ -44,11 +44,12 @@ class TradeCampaignRetailerCodeController extends Controller
     {
         $tcrc = $this->validate($request,[
             'user_id'       => ['required'],
-            'retailer_id'   => ['required'],
+            'retailer_id'   => ['required','unique:trade_campaign_retailer_codes,retailer_id'],
             'flag'          => ['required'],
         ],[
             'user_id.required'      => 'You must select a :attribute.',
             'retailer_id.required'  => 'You must select a :attribute.',
+            'retailer_id.unique'    => 'This :attribute already exist.',
             'flag.required'         => 'You must select a :attribute.',
         ],[
             'user_id'       => 'user',

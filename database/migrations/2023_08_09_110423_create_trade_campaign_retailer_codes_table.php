@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('trade_campaign_retailer_codes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('retailer_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('retailer_id')->unique()->constrained()->cascadeOnDelete();
             $table->string('flag');
             $table->string('status')->nullable();
             $table->timestamps();

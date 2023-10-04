@@ -75,7 +75,7 @@
                             $('.btn-submit').prop('disabled', true).text('Creating...').append('<img src="{{ url('public/assets/images/gif/DzUd.gif') }}" alt="" width="18px">');
                         },
                         success: function (response){
-                            $('.btn-submit').prop('disabled', false).text('Create TCRC');
+                            $('.btn-submit').prop('disabled', false).text('Create');
                             Swal.fire(
                                 'Success!',
                                 response.success,
@@ -91,7 +91,7 @@
                                 $('.err-msg').removeClass('d-none').append('<li>' + value + '</li>');
                             });
 
-                            $('.btn-submit').prop('disabled', false).text('Create TCRC');
+                            $('.btn-submit').prop('disabled', false).text('Create');
                         },
                     });
                 });
