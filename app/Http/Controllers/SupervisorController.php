@@ -12,6 +12,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Validation\ValidationException;
@@ -39,12 +40,12 @@ class SupervisorController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(SupervisorStoreRequest $request): JsonResponse
+    public function store(SupervisorStoreRequest $request): RedirectResponse
     {
         try {
             Supervisor::create($request->validated());
-
-            return response()->json(['success' => 'Supervisor created successfully.']);
+            toastr('Supervisor created successfully.','success','Success');
+            return to_route('supervisor.index');
         }catch(ValidationException $exception) {
             dd($exception);
         }
@@ -71,11 +72,12 @@ class SupervisorController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(SupervisorUpdateRequest $request, Supervisor $supervisor): JsonResponse
+    public function update(SupervisorUpdateRequest $request, Supervisor $supervisor): RedirectResponse
     {
         try {
             $supervisor->update($request->validated());
-            return response()->json(['success' => 'Supervisor updated successfully.']);
+            toastr('Supervisor updated successfully.','success','Success');
+            return to_route('supervisor.index');
         }catch(ValidationException $exception) {
             dd($exception);
         }

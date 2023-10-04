@@ -46,7 +46,7 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(UserStoreRequest $request): JsonResponse
+    public function store(UserStoreRequest $request): RedirectResponse
     {
         $user = $request->validated();
 
@@ -58,7 +58,9 @@ class UserController extends Controller
 
         User::create($user);
 
-        return response()->json(['success' => 'New user created successfully.']);
+        toastr('New user created successfully.','success','Success');
+
+        return to_route('user.index');
     }
 
     /**
@@ -81,7 +83,7 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UserUpdateRequest $request, User $user): JsonResponse
+    public function update(UserUpdateRequest $request, User $user): RedirectResponse
     {
         $information = $request->validated();
 
@@ -99,7 +101,9 @@ class UserController extends Controller
 
         $user->update($information);
 
-        return Response::json(['success' => 'User updated successfully.']);
+        toastr('User updated successfully.','success','Success!');
+
+        return to_route('user.index');
     }
 
     /**
@@ -141,9 +145,9 @@ class UserController extends Controller
 
         if($user->update($password))
         {
-            Alert::success('Success', 'User password updated successfully.');
+            toastr('User password updated successfully.','success','Success');
         }else{
-            Alert::error('Error', 'User password not updated.');
+            toastr('User password not updated.','error','Error!');
         }
 
         return to_route('user.index');
@@ -155,12 +159,12 @@ class UserController extends Controller
     public function import(Request $request): JsonResponse|RedirectResponse
     {
         try {
-            Excel::queueImport(new UsersImport, $request->file('import_users'));
-
-            return response()->json(['success' => 'Users imported successfully.']);
+            Excel::import(new UsersImport, $request->file('import_users'));
+            toastr('Users imported successfully.','success','Success');
+            return to_route('user.index');
 
         } catch (ValidationException $e) {
-
+            toastr('Users not imported.','error','Error!');
             return to_route('user.create')->with('import_errors', $e->failures());
         }
     }

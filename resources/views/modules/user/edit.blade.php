@@ -192,41 +192,6 @@
     @push('scripts')
         <script>
             $(document).ready(function() {
-                // Create Users
-                $(document).on('submit','.userUpdateForm',function (e){
-                    e.preventDefault();
-
-                    $.ajax({
-                        url: $(this).attr('action'),
-                        type: $(this).attr('method'),
-                        data: new FormData(this),
-                        processData: false,
-                        contentType: false,
-                        beforeSend: function (){
-                            $('#userUpdateErrMsg').addClass('d-none').find('li').remove();
-                            $('.btn-submit').prop('disabled', true).text('Updating...').append('<img src="{{ url('public/assets/images/gif/DzUd.gif') }}" alt="" width="18px">');
-                        },
-                        success: function (response){
-                            $('.btn-submit').prop('disabled', false).text('Update');
-                            Swal.fire(
-                                'Success!',
-                                response.success,
-                                'success',
-                            ).then((result) => {
-                                window.location.href = "{{ route('user.index') }}";
-                            });
-                        },
-                        error: function (e){
-                            const err = JSON.parse(e.responseText);
-
-                            $.each(err.errors,function (key,value){
-                                $('.err-msg').removeClass('d-none').append('<li>' + value + '</li>');
-                            });
-
-                            $('.btn-submit').prop('disabled', false).text('Update');
-                        },
-                    });
-                });
 
                 // Show/Hide current password
                 $('#currentPasswordShowHide').on('click', function(){

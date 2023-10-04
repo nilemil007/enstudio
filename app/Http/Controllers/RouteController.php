@@ -43,12 +43,12 @@ class RouteController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(RouteStoreRequest $request): JsonResponse
+    public function store(RouteStoreRequest $request): RedirectResponse
     {
         try {
             Route::create($request->validated());
-
-            return Response::json(['success' => 'Route created successfully.']);
+            toastr('Route created successfully.','success','Success');
+            return to_route('route.index');
         }catch(ValidationException $exception) {
             dd($exception);
         }
@@ -74,12 +74,12 @@ class RouteController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(RouteUpdateRequest $request, Route $route): JsonResponse
+    public function update(RouteUpdateRequest $request, Route $route): RedirectResponse
     {
         try {
             $route->update($request->validated());
-
-            return Response::json(['success' => 'Route updated successfully.']);
+            toastr('Route updated successfully.','success','Success');
+            return to_route('route.index');
         }catch(ValidationException $exception) {
             dd($exception);
         }
@@ -117,11 +117,12 @@ class RouteController extends Controller
     public function import(Request $request): JsonResponse|RedirectResponse
     {
         try {
-            Excel::queueImport(new RouteImport(), $request->file('import_route'));
-
-            return Response::json(['success' => 'Route imported successfully.']);
+            Excel::import(new RouteImport(), $request->file('import_route'));
+            toastr('Route imported successfully.','success','Success');
+            return to_route('route.index');
 
         } catch (ValidationException $e) {
+            toastr('Route not imported.','error','Error!');
             return to_route('route.create')->with('import_errors', $e->failures());
         }
     }

@@ -125,66 +125,6 @@
         <script>
             $(document).ready(function() {
 
-                // Create Route
-                $(document).on('submit','#routeForm',function (e){
-                    e.preventDefault();
-
-                    $.ajax({
-                        url: $(this).attr('action'),
-                        type: $(this).attr('method'),
-                        data: new FormData(this),
-                        processData: false,
-                        contentType: false,
-                        beforeSend: function (){
-                            $('.btn-submit').prop('disabled', true).text('Creating...').append('<img src="{{ url('public/assets/images/gif/DzUd.gif') }}" alt="" width="18px">');
-                        },
-                        success: function (response){
-                            $('.btn-submit').prop('disabled', false).text('Create New Route');
-                            Swal.fire(
-                                'Success!',
-                                response.success,
-                                'success',
-                            ).then((result) => {
-                                window.location.href = "{{ route('route.index') }}";
-                            });
-                        },
-                        error: function (e){
-                            console.log(e.responseText);
-                            $('.btn-submit').prop('disabled', false).text('Create New Route');
-                        },
-                    });
-                });
-
-                // Import Route
-                $(document).on('submit','.import-route',function (e){
-                    e.preventDefault();
-
-                    $.ajax({
-                        url: $(this).attr('action'),
-                        type: $(this).attr('method'),
-                        data: new FormData(this),
-                        processData: false,
-                        contentType: false,
-                        beforeSend: function (){
-                            $('.btn-import-route').prop('disabled', true).text('Importing...').append('<img src="{{ url('public/assets/images/gif/DzUd.gif') }}" alt="" width="18px">');
-                        },
-                        success: function (response){
-                            $('.btn-import-route').prop('disabled', false).text('Import Route');
-                            Swal.fire(
-                                'Success!',
-                                response.success,
-                                'success',
-                            ).then((result) => {
-                                window.location.href = "{{ route('route.index') }}";
-                            });
-                        },
-                        error: function (e){
-                            console.log(e.responseText);
-                            $('.btn-import-route').prop('disabled', false).text('Import Route');
-                        },
-                    });
-                });
-
                 // $("#routeForm").validate({
                 //
                 //     rules: {

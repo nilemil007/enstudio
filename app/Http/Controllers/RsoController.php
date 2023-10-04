@@ -53,12 +53,12 @@ class RsoController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(RsoStoreRequest $request): JsonResponse
+    public function store(RsoStoreRequest $request): RedirectResponse
     {
         try {
             Rso::create($request->validated());
-
-            return Response::json(['success' => 'Rso created successfully.']);
+            toastr('Rso created successfully.','success','Success');
+            return to_route('rso.index');
 
         }catch(\Exception $exception) {
             dd($exception);
@@ -93,7 +93,8 @@ class RsoController extends Controller
         try {
 
             $rso->update($request->validated());
-            return Response::json(['success' => 'Rso updated successfully.']);
+            toastr('Rso updated successfully.','success','Success');
+            return to_route('rso.index');
 
         }catch(\Exception $exception) {
             dd($exception);
@@ -129,15 +130,14 @@ class RsoController extends Controller
     /**
      * Import rso.
      */
-    public function import(Request $request): JsonResponse|RedirectResponse
+    public function import(Request $request): RedirectResponse
     {
         try {
             Excel::import(new RsoImport, $request->file('import_rso'));
-
-            return Response::json(['success' => 'Rso imported successfully.']);
-
-
+            toastr('Rso imported successfully.','success','Success');
+            return to_route('rso.index');
         } catch (ValidationException $e) {
+            toastr('Rso imported failed.','error','Error!');
             return to_route('rso.create')->with('import_errors', $e->failures());
         }
     }

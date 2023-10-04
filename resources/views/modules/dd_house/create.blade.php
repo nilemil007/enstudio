@@ -219,7 +219,7 @@
 
                 <div class="card-body">
                     <h6 class="card-title">Import dd house</h6>
-                    <form class="row gy-2 gx-3 align-items-center dd-house-import" action="{{ route('dd-house.import') }}" method="post" enctype="multipart/form-data">
+                    <form class="row gy-2 gx-3 align-items-center" action="{{ route('dd-house.import') }}" method="post" enctype="multipart/form-data">
                         @csrf
 
                         <div class="col-12">
@@ -227,7 +227,7 @@
                             <input name="import_house" type="file" class="form-control" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" required>
                         </div>
                         <div class="col-12">
-                            <button type="submit" class="btn btn-sm btn-primary w-100 mt-2 btn-submit">Import House</button>
+                            <button type="submit" class="btn btn-sm btn-primary w-100 mt-2">Import House</button>
                         </div>
                     </form>
                 </div>
@@ -240,71 +240,6 @@
     @push('scripts')
         <script>
             $(document).ready(function() {
-                // Create DD House
-                $(document).on('submit','.ddHouseForm',function (event){
-                    event.preventDefault();
-
-                    $.ajax({
-                        url: $(this).attr('action'),
-                        type: $(this).attr('method'),
-                        data: new FormData(this),
-                        processData: false,
-                        contentType: false,
-                        beforeSend: function (){
-                            $('#ddHouseErrMsg').addClass('d-none').find('li').remove();
-                            $('.btn-submit').prop('disabled', true).text('Creating...').append('<img src="{{ url('public/assets/images/gif/DzUd.gif') }}" alt="" width="18px">');
-                        },
-                        success: function (response){
-                            $('.btn-submit').prop('disabled', false).text('Create New House');
-                            Swal.fire(
-                                'Success!',
-                                response.success,
-                                'success',
-                            ).then((result) => {
-                                window.location.href = "{{ route('dd-house.index') }}";
-                            });
-                        },
-                        error: function (e){
-                            const err = JSON.parse(e.responseText);
-
-                            $.each(err.errors,function (key,value){
-                                $('.err-msg').removeClass('d-none').append('<li>' + value + '</li>');
-                            });
-
-                            $('.btn-submit').prop('disabled', false).text('Create New House');
-                        },
-                    });
-                });
-
-                // Import DD House
-                $(document).on('submit','.dd-house-import',function (e){
-                    e.preventDefault();
-
-                    $.ajax({
-                        url: $(this).attr('action'),
-                        type: $(this).attr('method'),
-                        data: new FormData(this),
-                        processData: false,
-                        contentType: false,
-                        beforeSend: function (){
-                            $('.btn-submit').prop('disabled', true).text('Importing...').append('<img src="{{ url('public/assets/images/gif/DzUd.gif') }}" alt="" width="18px">');
-                        },
-                        success: function (response){
-                            $('.btn-submit').prop('disabled', false).text('Import House');
-                            Swal.fire(
-                                'Success!',
-                                response.success,
-                                'success',
-                            ).then((result) => {
-                                window.location.href = "{{ route('dd-house.index') }}";
-                            });
-                        },
-                        error: function (e){
-                            console.log(e.responseText);
-                            $('.btn-submit').prop('disabled', false).text('Import House');
-                        },
-                    });
-                });
 
                 $("#ddHouseForm").validate({
 

@@ -103,42 +103,6 @@
         <script>
             $(document).ready(function() {
 
-                // Update Route
-                $(document).on('submit','#routeUpdateForm',function (e){
-                    e.preventDefault();
-
-                    $.ajax({
-                        url: $(this).attr('action'),
-                        type: $(this).attr('method'),
-                        data: new FormData(this),
-                        processData: false,
-                        contentType: false,
-                        beforeSend: function (){
-                            $('#routeUpdateErrMsg').addClass('d-none').find('li').remove();
-                            $('.btn-submit').prop('disabled', true).text('Saving...').append('<img src="{{ url('public/assets/images/gif/DzUd.gif') }}" alt="" width="18px">');
-                        },
-                        success: function (response){
-                            $('.btn-submit').prop('disabled', false).text('Save Changes');
-                            Swal.fire(
-                                'Success!',
-                                response.success,
-                                'success',
-                            ).then((result) => {
-                                window.location.href = "{{ route('route.index') }}";
-                            });
-                        },
-                        error: function (e){
-                            const err = JSON.parse(e.responseText);
-
-                            $.each(err.errors,function (key,value){
-                                $('.err-msg').removeClass('d-none').append('<li>' + value + '</li>');
-                            });
-
-                            $('.btn-submit').prop('disabled', false).text('Save Changes');
-                        },
-                    });
-                });
-
                 // Validation
                 // $("#routeUpdateForm").validate({
                 //

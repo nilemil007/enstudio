@@ -217,54 +217,6 @@
                     });
                 });
 
-                // Create Supervisor
-                $(document).on('submit','#supervisorForm',function (e){
-                    e.preventDefault();
-
-                    $.ajax({
-                        url: $(this).attr('action'),
-                        type: $(this).attr('method'),
-                        data: new FormData(this),
-                        processData: false,
-                        contentType: false,
-                        beforeSend: function (){
-                            $('#supervisorErrMsg').addClass('d-none').find('li').remove();
-                            $('.btn-submit').prop('disabled', true).text('Creating...').append('<img src="{{ url('public/assets/images/gif/DzUd.gif') }}" alt="" width="18px">');
-                        },
-                        success: function (response){
-                            $('.btn-submit').prop('disabled', false).text('Create New Supervisor');
-                            Swal.fire(
-                                'Success!',
-                                response.success,
-                                'success',
-                            ).then((result) => {
-                                window.location.href = "{{ route('supervisor.index') }}";
-                            });
-                        },
-                        error: function (e){
-                            const err = JSON.parse(e.responseText);
-
-                            $.each(err.errors,function (key,value){
-                                $('.err-msg').removeClass('d-none').append('<li>' + value + '</li>');
-                            });
-
-                            $('.btn-submit').prop('disabled', false).text('Create New Supervisor');
-                        },
-                    });
-                });
-
-                // Show/Hide password
-                $('#passwordShowHide').on('click', function(){
-                    const type = $('#password').attr("type");
-
-                    if(type == "password"){
-                        $('#password').attr("type","text");
-                    }
-                    else{
-                        $('#password').attr("type","password");
-                    }
-                });
-
                 // Validation
                 $('.userForm').validate({
                     rules: {

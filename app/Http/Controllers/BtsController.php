@@ -45,8 +45,8 @@ class BtsController extends Controller
     {
         try {
             Bts::create($request->validated());
-
-            return Response::json(['success' => 'New BTS created successfully.']);
+            toastr('New BTS created successfully.','success','Success');
+            return to_route('bts.index');
         }catch(\Exception $exception) {
             dd($exception);
         }
@@ -77,7 +77,8 @@ class BtsController extends Controller
         try {
 
             $bt->update($request->validated());
-            return Response::json(['success' => 'BTS information updated successfully.']);
+            toastr('BTS information updated successfully.','success','Success');
+            return to_route('bts.index');
 
         }catch(\Exception $exception) {
             dd($exception);
@@ -116,11 +117,12 @@ class BtsController extends Controller
     public function import(Request $request): JsonResponse|RedirectResponse
     {
         try {
-            Excel::queueImport(new BtsImport, $request->file('import_bts'));
-
-            return Response::json(['success' => 'BTS imported successfully.']);
+            Excel::import(new BtsImport, $request->file('import_bts'));
+            toastr('BTS imported successfully.','success','Success');
+            return to_route('btn.index');
 
         } catch (ValidationException $e) {
+            toastr('BTS imported failed.','error','Error!');
             return to_route('bts.create')->with('import_errors', $e->failures());
         }
     }

@@ -42,11 +42,12 @@ class DdHouseController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(DdHouseStoreRequest $request): JsonResponse
+    public function store(DdHouseStoreRequest $request): RedirectResponse
     {
         try {
             DdHouse::create($request->validated());
-            return Response::json(['success' => 'DD house created successfully.']);
+            toastr('DD house created successfully.','success','Success!');
+            return to_route('dd-house.index');
         }catch(ValidationException $exception) {
             dd($exception);
         }
@@ -71,11 +72,12 @@ class DdHouseController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(DdHouseUpdateRequest $request, DdHouse $dd_house): JsonResponse
+    public function update(DdHouseUpdateRequest $request, DdHouse $dd_house): RedirectResponse
     {
         try {
             $dd_house->update($request->validated());
-            return Response::json(['success' => 'DD house updated successfully.']);
+            toastr('DD house updated successfully.','success','Success!');
+            return to_route('dd-house.index');
         }catch(ValidationException $exception) {
             dd($exception);
         }
@@ -110,14 +112,15 @@ class DdHouseController extends Controller
     /**
      * Import house.
      */
-    public function import(Request $request): JsonResponse|RedirectResponse
+    public function import(Request $request): RedirectResponse
     {
         try {
-            Excel::queueImport(new DdHouseImport, $request->file('import_house'));
-
-            return response()->json(['success' => 'DD house imported successfully.']);
+            Excel::import(new DdHouseImport, $request->file('import_house'));
+            toastr('DD house imported successfully.','success','Success!');
+            return to_route('dd-house.index');
 
         } catch (ValidationException $e) {
+            toastr('DD house imported failed.','error','Error!');
             return to_route('dd-house.create')->with('import_errors', $e->failures());
         }
     }
