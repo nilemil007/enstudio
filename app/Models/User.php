@@ -11,6 +11,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
@@ -158,5 +159,15 @@ class User extends Authenticatable
     public function bp(): HasOne
     {
         return $this->hasOne( Bp::class );
+    }
+
+    /**
+     * User belongs to many dd house.
+     *
+     * @return BelongsToMany
+     */
+    public function ddHouse(): BelongsToMany
+    {
+        return $this->belongsToMany( DdHouse::class );
     }
 }

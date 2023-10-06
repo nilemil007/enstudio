@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Activation\CoreActivation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
@@ -79,5 +80,10 @@ class DdHouse extends Model
     public function kpiTarget(): HasMany
     {
         return $this->hasMany(KpiTarget::class);
+    }
+
+    public function user(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class);
     }
 }

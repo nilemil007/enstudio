@@ -14,7 +14,6 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         User::create([
-            'dd_house' => 0,
             'name' => 'Emil Sadekin Islam',
             'username' => 'neelemil',
             'phone' => '01732547755',

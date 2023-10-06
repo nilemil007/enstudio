@@ -56,7 +56,10 @@ class UserController extends Controller
             $user['image'] = $name;
         }
 
-        User::create($user);
+        // dd($user['dd_house']);
+
+        User::create($user)->attach($user['dd_house']);
+        // $createdUser->ddHouse()->attach($user['dd_house']);
 
         toastr('New user created successfully.','success','Success');
 
