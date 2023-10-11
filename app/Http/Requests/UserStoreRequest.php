@@ -27,44 +27,14 @@ class UserStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'dd_house' => ['required'],
-            'name' => [
-                'required',
-                'min:3',
-                'max:100',
-            ],
-            'username' => [
-                'required',
-                'min:3',
-                'max:30',
-                'unique:users,username',
-            ],
-            'phone' => [
-                'required',
-                'numeric',
-                'digits:11',
-                'starts_with:01',
-                'unique:users,phone',
-            ],
-            'email' => [
-                'required',
-                'email',
-                'unique:users,email',
-            ],
-            'role' => ['required'],
-            'password' => [
-                'required',
-                Password::min(8)
-                    ->mixedCase()
-                    ->numbers()
-                    ->symbols()
-                    ->uncompromised(),
-            ],
-            'image' => [
-                'sometimes',
-                'mimes:jpg,png,jpeg',
-            ],
-            'status' => ['nullable'],
+            'name'      => ['required', 'min:3', 'max:100',],
+            'username'  => ['required', 'min:3', 'max:30', 'unique:users,username',],
+            'phone'     => ['required', 'numeric', 'digits:11', 'starts_with:01', 'unique:users,phone',],
+            'email'     => ['required', 'email', 'unique:users,email',],
+            'role'      => ['required'],
+            'password'  => ['required', Password::min(8)->mixedCase()->numbers()->symbols()->uncompromised(),],
+            'image'     => ['sometimes', 'mimes:jpg,png,jpeg',],
+            'status'    => ['nullable'],
         ];
     }
 }

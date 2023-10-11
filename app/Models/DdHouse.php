@@ -82,7 +82,7 @@ class DdHouse extends Model
         return $this->hasMany(KpiTarget::class);
     }
 
-    public function user(): BelongsToMany
+    public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class);
     }

@@ -9,7 +9,7 @@
                 <h4 class="card-title">All Users</h4>
                 <span>
                     <a href="{{ route('user.create') }}" class="btn btn-sm btn-primary">Add New</a>
-                    @if(count($users) > 1)
+                    @if($users->count() > 1)
                         <a id="deleteAllUsers" href="{{ route('user.delete.all') }}" class="btn btn-sm btn-danger">Delete all</a>
                     @endif
                 </span>
@@ -42,11 +42,9 @@
                             <td>{{ $user->phone }}</td>
                             <td>{{ $user->email }}</td>
                             <td>
-                                @if($user->dd_house == 0)
-                                    <span>ALL</span>
-                                @else
-                                    {{ \App\Models\DdHouse::firstWhere('id', $user->dd_house)->code }}
-                                @endif
+                                @foreach($user->ddHouse as $house)
+                                    <p>{{ $house->code }}</p>
+                                @endforeach
                             </td>
                             <td>{{ $user->role }}</td>
                             <td>
@@ -80,6 +78,12 @@
             new DataTable('#userTbl');
 
             $(document).ready(function(){
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
                 // Single delete
                 $(document).on('click','#deleteUser',function(e){
                     e.preventDefault();

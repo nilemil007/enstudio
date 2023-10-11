@@ -27,45 +27,14 @@ class UserUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'dd_house' => ['required'],
-            'name' => [
-                'required',
-                'min:3',
-                'max:100',
-            ],
-            'username' => [
-                'required',
-                'min:3',
-                'max:30',
-                'unique:users,username,'.request()->segment(2),
-            ],
-            'phone' => [
-                'required',
-                'numeric',
-                'digits:11',
-                'starts_with:01',
-                'unique:users,phone,'.request()->segment(2),
-            ],
-            'email' => [
-                'required',
-                'email',
-                'unique:users,email,'.request()->segment(2),
-            ],
-            'role' => ['required'],
-            'password' => [
-                'nullable',
-                Password::min(8)
-                    ->mixedCase()
-                    ->numbers()
-                    ->symbols()
-                    ->uncompromised(),
-            ],
-            'image' => [
-                'sometimes',
-                'image',
-                'mimes:jpg,png,jpeg',
-            ],
-            'status' => ['nullable'],
+            'name'      => ['required', 'min:3', 'max:100',],
+            'username'  => ['required', 'min:3', 'max:30', 'unique:users,username,'.request()->segment(2),],
+            'phone'     => ['required', 'numeric', 'digits:11', 'starts_with:01', 'unique:users,phone,'.request()->segment(2),],
+            'email'     => ['required', 'email', 'unique:users,email,'.request()->segment(2),],
+            'role'      => ['required'],
+            'password'  => ['nullable', Password::min(8)->mixedCase()->numbers()->symbols()->uncompromised(),],
+            'image'     => ['sometimes', 'image', 'mimes:jpg,png,jpeg',],
+            'status'    => ['nullable'],
         ];
     }
 }

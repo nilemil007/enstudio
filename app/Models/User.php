@@ -24,6 +24,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @method static whereIn(string $string, $userId)
  * @method static whereNotIn(string $string, $userId)
  * @method static orderBy(string $string, string $string1)
+ * @method static findOrFail($id)
  * @property mixed $image
  */
 class User extends Authenticatable
@@ -36,7 +37,6 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'dd_house',
         'name',
         'username',
         'phone',
@@ -162,7 +162,7 @@ class User extends Authenticatable
     }
 
     /**
-     * User belongs to many dd house.
+     * User has one bp.
      *
      * @return BelongsToMany
      */

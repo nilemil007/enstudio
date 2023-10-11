@@ -89,11 +89,17 @@
                         <div class="row mb-3">
                             <label for="dd_house" class="col-sm-3 col-form-label">DD House</label>
                             <div class="col-sm-9">
-                                <select name="dd_house" class="form-select @error('dd_house') is-invalid @enderror" id="dd_house" required>
-                                    <option selected value="">--Select DD House--</option>
-                                    <option @selected(auth()->user()->role == 'superadmin') value="0">All Houses</option>
+                                <select name="dd_house[]" class="select-2 form-select @error('dd_house') is-invalid @enderror" id="dd_house" required multiple>
+                                    <option value="">--Select DD House--</option>
                                     @foreach($houses as $house)
-                                        <option @selected( $user->dd_house == $house->id) value="{{ $house->id }}">{{ $house->code.' - '.$house->name }}</option>
+
+                                        <option
+                                            @foreach($user->ddHouse as $dd)
+                                                @selected( $dd->id == $house->id)
+                                            @endforeach
+                                            value="{{ $house->id }}">
+                                            {{ $house->code.' - '.$house->name }}
+                                        </option>
                                     @endforeach
                                 </select>
                                 @error('dd_house') <span class="text-danger">{{ $message }}</span> @enderror

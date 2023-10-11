@@ -30,7 +30,7 @@ class UserController extends Controller
      */
     public function index(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $users = User::orderBy('dd_house', 'ASC')->get();
+        $users = User::latest()->get();
         return view('modules.user.index', compact('users'));
     }
 
@@ -56,10 +56,9 @@ class UserController extends Controller
             $user['image'] = $name;
         }
 
-        // dd($user['dd_house']);
-
-        User::create($user)->attach($user['dd_house']);
-        // $createdUser->ddHouse()->attach($user['dd_house']);
+        $id = User::create($user)->id;
+        $newUser = User::findOrFail($id);
+        $newUser->ddHouse()->attach($request->input('dd_house'));
 
         toastr('New user created successfully.','success','Success');
 
@@ -102,7 +101,9 @@ class UserController extends Controller
             $information['image'] = $name;
         }
 
+
         $user->update($information);
+        $user->ddHouse()->sync($request->input('dd_house'));
 
         toastr('User updated successfully.','success','Success!');
 
