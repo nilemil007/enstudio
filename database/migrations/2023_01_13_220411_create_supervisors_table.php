@@ -36,6 +36,7 @@ return new class extends Migration
             $table->timestamp('joining_date')->nullable();
             $table->timestamp('resigning_date')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

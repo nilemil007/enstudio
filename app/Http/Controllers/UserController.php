@@ -31,7 +31,8 @@ class UserController extends Controller
     public function index(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
         $users = User::latest()->get();
-        return view('modules.user.index', compact('users'));
+        $trashed = User::onlyTrashed()->latest()->get();
+        return view('modules.user.index', compact('users','trashed'));
     }
 
     /**
@@ -179,5 +180,14 @@ class UserController extends Controller
     public function sampleFileDownload(): BinaryFileResponse
     {
         return Response::download(public_path('download/sample/Users.xlsx'));
+    }
+
+    /**
+     * Trash users.
+     */
+    public function trash(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
+    {
+        $trashedUser = User::onlyTrashed()->latest()->paginate(10);
+        return view('modules.user.trash', compact('trashedUser'));
     }
 }

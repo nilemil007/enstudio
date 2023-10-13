@@ -30,6 +30,7 @@ return new class extends Migration
             $table->date('four_g_on_air_date')->nullable();
             $table->string('urban_rural')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

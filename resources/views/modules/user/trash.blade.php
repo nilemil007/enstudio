@@ -1,26 +1,21 @@
 <x-app-layout>
 
     <!-- Title -->
-    <x-slot:title>All Users</x-slot:title>
+    <x-slot:title>Trash Users</x-slot:title>
 
     <div class="card">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <div class="d-flex align-items-center">
-                    <h4 class="card-title mb-0">All Users</h4>
-                    @if(count($trashed) > 0)
-                        <a href="{{ route('user.trash') }}" class="text-danger" style="margin-left: 5px;">Trash ({{ $trashed->count() }})</a>
-                    @endif
-                </div>
+                <h4 class="card-title mb-0">Trash Users</h4>
                 <span>
-                    <a href="{{ route('user.create') }}" class="btn btn-sm btn-primary">Add New</a>
-                    @if($users->count() > 1)
-                        <a id="deleteAllUsers" href="{{ route('user.delete.all') }}" class="btn btn-sm btn-danger">Delete all</a>
+                    <a href="{{ route('user.index') }}" class="btn btn-sm btn-primary">All Users</a>
+                    @if($trashedUser->count() > 1)
+                        <a id="deleteAllUsers" href="{{ route('user.delete.all') }}" class="btn btn-sm btn-danger">Delete All Permanently</a>
                     @endif
                 </span>
             </div>
             <div class="table-responsive">
-                <table id="userTbl" class="table table-sm table-bordered table-hover card-table table-vcenter text-nowrap mt-3 mb-3">
+                <table class="table table-sm table-bordered table-hover card-table table-vcenter text-nowrap mt-3 mb-3">
                     <thead>
                     <tr>
                         <th class="w-1">No.</th>
@@ -36,7 +31,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach( $users as $sl => $user )
+                    @foreach( $trashedUser as $sl => $user )
                         <tr>
                             <td><span class="text-muted">{{ ++$sl }}</span></td>
                             <td class="py-1">
@@ -65,10 +60,10 @@
                             </td>
                             <td>
                                 <!-- Edit -->
-                                <a href="{{ route('user.edit', $user->id) }}" class="btn btn-sm btn-primary">Edit</a>
+                                <a href="{{ route('user.edit', $user->id) }}" class="btn btn-sm btn-primary">Restore</a>
 
                                 <!-- Delete -->
-                                <a href="{{ route('user.destroy', $user->id) }}" id="deleteUser" class="btn btn-sm btn-danger">Delete</a>
+                                <a href="{{ route('user.destroy', $user->id) }}" id="deleteUser" class="btn btn-sm btn-danger">Delete Permanently</a>
                             </td>
                         </tr>
                     @endforeach
@@ -80,8 +75,6 @@
 
     @push('scripts')
         <script>
-            new DataTable('#userTbl');
-
             $(document).ready(function(){
 
                 // Single delete

@@ -35,6 +35,7 @@ return new class extends Migration
             $table->date('lifting_date')->nullable();
             $table->boolean('status')->default(1);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

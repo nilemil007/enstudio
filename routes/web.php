@@ -47,6 +47,8 @@ Route::middleware(['auth'])->group(function (){
         Route::post('/import','import')->name('import');
         // Download sample file
         Route::get('/sample-file-download','sampleFileDownload')->name('sample.file.download');
+        // Trash
+        Route::get('/trash','trash')->name('trash');
     });
 
     // DD House Additional Routes

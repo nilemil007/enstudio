@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('group');
             $table->string('status')->default(1);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
