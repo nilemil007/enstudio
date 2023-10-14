@@ -61,16 +61,18 @@
                 </div>
 
                 <!-- Route -->
-                    {{ dd($rso->route) }}
                 <div class="row mb-3">
                     <label for="getRoutes" class="col-sm-3 col-form-label">Route</label>
                     <div class="col-sm-9">
-                        <select name="routes[]" class="form-select @error('routes') is-invalid @enderror" id="getRoutes" multiple>
+                        <select name="routes[]" class="select-2 form-select @error('routes') is-invalid @enderror" id="getRoutes" multiple>
                             <option value="">-- Select Route --</option>
                             @foreach($routes as $route)
                                 <option
+                                    @foreach($rso->route as $r)
+                                        @selected($r->id == $route->id)
+                                    @endforeach
                                     value="{{ $route->id }}">
-                                    {{ $route->code }}
+                                    {{ $route->code .' - '. $route->name }}
                                 </option>
                             @endforeach
                         </select>

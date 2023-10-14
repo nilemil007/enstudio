@@ -27,7 +27,6 @@ class RsoUpdateRequest extends FormRequest
             'user_id'           => ['required'],
             'supervisor_id'     => ['required'],
             'dd_house_id'       => ['required'],
-            'routes'            => ['sometimes'],
             'rso_code'          => ['required', 'max:10', 'unique:rsos,rso_code,'.request()->segment(2)],
             'itop_number'       => ['required', 'numeric', 'digits: 11', 'unique:rsos,itop_number,'.request()->segment(2)],
             'pool_number'       => ['required', 'numeric', 'digits: 11', 'unique:rsos,pool_number,'.request()->segment(2)],

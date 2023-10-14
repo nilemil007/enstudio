@@ -86,15 +86,10 @@ class RsoController extends Controller
      */
     public function update(RsoUpdateRequest $request, Rso $rso): RedirectResponse
     {
-        try {
-
-            $rso->update($request->validated());
-            toastr('Rso updated successfully.','success','Success');
-            return to_route('rso.index');
-
-        }catch(\Exception $exception) {
-            dd($exception);
-        }
+        $rso->update($request->validated());
+        $rso->route()->sync($request->input('routes'));
+        toastr('Rso updated successfully.','success','Success');
+        return to_route('rso.index');
     }
 
     /**
