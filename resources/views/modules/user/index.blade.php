@@ -63,12 +63,15 @@
                                         @break
                                 @endswitch
                             </td>
-                            <td>
+                            <td class="d-flex align-items-center">
                                 <!-- Edit -->
                                 <a href="{{ route('user.edit', $user->id) }}" class="btn btn-sm btn-primary">Edit</a>
 
-                                <!-- Delete -->
-                                <a href="{{ route('user.destroy', $user->id) }}" id="deleteUser" class="btn btn-sm btn-danger">Delete</a>
+                                <!-- Move to trash -->
+                                <form style="margin-left: 5px;" action="{{ route('user.destroy', $user->id) }}" method="POST">
+                                    @csrf @method('DELETE')
+                                    <button onclick="return confirm('Are you sure you want to delete this user?');" type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
                             </td>
                         </tr>
                     @endforeach
@@ -85,62 +88,62 @@
             $(document).ready(function(){
 
                 // Single delete
-                $(document).on('click','#deleteUser',function(e){
-                    e.preventDefault();
-
-                    Swal.fire({
-                        title: 'Are you sure?',
-                        text: "Delete This User?",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonText: 'Yes, delete it!'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            $.ajax({
-                                url: $(this).attr('href'),
-                                type: 'DELETE',
-                                success: function (response){
-                                    Swal.fire(
-                                        'Deleted!',
-                                        response.success,
-                                        'success',
-                                    ).then((result) => {
-                                        location.reload();
-                                    });
-                                },
-                            });
-                        }
-                    });
-                });
+                // $(document).on('click','#deleteUser',function(e){
+                //     e.preventDefault();
+                //
+                //     Swal.fire({
+                //         title: 'Are you sure?',
+                //         text: "Delete This User?",
+                //         icon: 'warning',
+                //         showCancelButton: true,
+                //         confirmButtonText: 'Yes, delete it!'
+                //     }).then((result) => {
+                //         if (result.isConfirmed) {
+                //             $.ajax({
+                //                 url: $(this).attr('href'),
+                //                 type: 'DELETE',
+                //                 success: function (response){
+                //                     Swal.fire(
+                //                         'Deleted!',
+                //                         response.success,
+                //                         'success',
+                //                     ).then((result) => {
+                //                         location.reload();
+                //                     });
+                //                 },
+                //             });
+                //         }
+                //     });
+                // });
 
                 // Delete all
-                $(document).on('click','#deleteAllUsers',function(e){
-                    e.preventDefault();
-
-                    Swal.fire({
-                        title: 'Are you sure?',
-                        text: "Delete All Users?",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonText: 'Yes, delete it!'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            $.ajax({
-                                url: $(this).attr('href'),
-                                type: 'POST',
-                                success: function (response){
-                                    Swal.fire(
-                                        'Deleted!',
-                                        response.success,
-                                        'success',
-                                    ).then((result) => {
-                                        location.reload();
-                                    });
-                                },
-                            });
-                        }
-                    });
-                });
+                // $(document).on('click','#deleteAllUsers',function(e){
+                //     e.preventDefault();
+                //
+                //     Swal.fire({
+                //         title: 'Are you sure?',
+                //         text: "Delete All Users?",
+                //         icon: 'warning',
+                //         showCancelButton: true,
+                //         confirmButtonText: 'Yes, delete it!'
+                //     }).then((result) => {
+                //         if (result.isConfirmed) {
+                //             $.ajax({
+                //                 url: $(this).attr('href'),
+                //                 type: 'POST',
+                //                 success: function (response){
+                //                     Swal.fire(
+                //                         'Deleted!',
+                //                         response.success,
+                //                         'success',
+                //                     ).then((result) => {
+                //                         location.reload();
+                //                     });
+                //                 },
+                //             });
+                //         }
+                //     });
+                // });
             });
         </script>
     @endpush

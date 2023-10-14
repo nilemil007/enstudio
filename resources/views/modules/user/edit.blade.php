@@ -77,7 +77,7 @@
                                     <option {{ $user->role == 'supervisor' ? 'selected' : '' }} value="supervisor">Supervisor</option>
                                     <option {{ $user->role == 'rso' ? 'selected' : '' }} value="rso">Rso</option>
                                     <option {{ $user->role == 'bp' ? 'selected' : '' }} value="bp">Bp</option>
-                                    <option {{ $user->role == 'merchandiser' ? 'selected' : '' }} value="merchandiser">Merchandiser</option>
+                                    <option {{ $user->role == 'cm' ? 'selected' : '' }} value="cm">CM</option>
                                     <option {{ $user->role == 'retailer' ? 'selected' : '' }} value="retailer">Retailer</option>
                                     <option {{ $user->role == 'accountant' ? 'selected' : '' }} value="accountant">Accountant</option>
                                 </select>
@@ -89,7 +89,7 @@
                         <div class="row mb-3">
                             <label for="dd_house" class="col-sm-3 col-form-label">DD House</label>
                             <div class="col-sm-9">
-                                <select name="dd_house[]" class="select-2 form-select @error('dd_house') is-invalid @enderror" id="dd_house" required multiple>
+                                <select name="dd_house[]" class="select-2 form-select @error('dd_house') is-invalid @enderror" id="dd_house" multiple>
                                     <option value="">--Select DD House--</option>
                                     @foreach($houses as $house)
 
@@ -238,7 +238,6 @@
                 // Validation
                 $('.userUpdateForm').validate({
                     rules: {
-                        dd_house: {required: true},
                         name: {
                             required: true,
                             maxlength: 100,

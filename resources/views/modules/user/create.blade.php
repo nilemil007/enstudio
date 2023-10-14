@@ -82,7 +82,6 @@
                             <div class="col-sm-9">
                                 <select name="dd_house[]" class="form-select select-2 @error('dd_house') is-invalid @enderror" id="dd_house" required multiple>
                                     <option value="">--Select DD House--</option>
-                                    <option value="0">All House</option>
                                     @foreach($houses as $house)
                                         <option value="{{ $house->id }}">{{ $house->code.' - '.$house->name }}</option>
                                     @endforeach
