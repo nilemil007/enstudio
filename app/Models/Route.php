@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @method static latest()
@@ -17,7 +19,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Route extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'dd_house_id',
@@ -35,6 +37,11 @@ class Route extends Model
     public function ddHouse(): BelongsTo
     {
         return $this->belongsTo(DdHouse::class);
+    }
+
+    public function rso(): BelongsToMany
+    {
+        return $this->belongsToMany(Rso::class);
     }
 
     /**

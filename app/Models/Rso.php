@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Activation\CoreActivation;
@@ -21,10 +22,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static orderBy(string $string, string $string1)
  * @method static truncate()
  * @method static when(mixed $findByHouse, \Closure $param)
+ * @method static findOrFail($id)
  */
 class Rso extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'user_id',

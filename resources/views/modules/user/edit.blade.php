@@ -92,7 +92,6 @@
                                 <select name="dd_house[]" class="select-2 form-select @error('dd_house') is-invalid @enderror" id="dd_house" multiple>
                                     <option value="">--Select DD House--</option>
                                     @foreach($houses as $house)
-
                                         <option
                                             @foreach($user->ddHouse as $dd)
                                                 @selected( $dd->id == $house->id)

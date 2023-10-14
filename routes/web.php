@@ -81,8 +81,8 @@ Route::middleware(['auth'])->group(function (){
         Route::post('/import','import')->name('import');
         // Download sample file
         Route::get('/sample-file-download','sampleFileDownload')->name('sample.file.download');
-        // Get Supervisor and User
-        Route::post('/get_supervisor_and_user/{houseId?}', 'getSupervisorAndUser')->name('get.supervisor.and.user');
+        // Get Users, Supervisors, Routes
+        Route::post('/get_users_supervisors_routes/{houseId?}', 'getUsersSupervisorsRoutes')->name('get.users.supervisors.routes.by.dd.house');
     });
 
     // BP Additional Routes

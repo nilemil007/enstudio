@@ -43,10 +43,8 @@ class RsoController extends Controller
         $houses = DdHouse::all();
         $userId = Rso::whereNotNull('user_id')->pluck('user_id');
         $users = User::where('role','rso')->whereNotIn('id', $userId)->orderBy('name','asc')->get();
-        $supervisors = Supervisor::all();
-        $routeId = DB::table('route_rso')->whereNotNull('route_id')->pluck('route_id');
-        dd($routeId);
-        return view('modules.rso.create', compact('houses','users','supervisors'));
+
+        return view('modules.rso.create', compact('houses','users'));
     }
 
     /**
@@ -54,14 +52,11 @@ class RsoController extends Controller
      */
     public function store(RsoStoreRequest $request): RedirectResponse
     {
-        try {
-            Rso::create($request->validated());
-            toastr('Rso created successfully.','success','Success');
-            return to_route('rso.index');
-
-        }catch(\Exception $exception) {
-            dd($exception);
-        }
+        $id = Rso::create($request->validated())->id;
+        $newRso = Rso::findOrFail($id);
+        $newRso->route()->attach($request->input('routes'));
+        toastr('Rso created successfully.','success','Success');
+        return to_route('rso.index');
     }
 
     /**
@@ -78,7 +73,9 @@ class RsoController extends Controller
     public function edit(Rso $rso): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
         $houses = DdHouse::all();
-        $users = User::where('role','rso')->where('dd_house', $rso->dd_house_id)->orderBy('name','asc')->get();
+        $users = User::where('role','rso')->whereHas('ddHouse', function ($query) use ($rso){
+            $query->where('dd_house_id', $rso->dd_house_id);
+        })->orderBy('name','asc')->get();
         $supervisors = Supervisor::all();
         $routes = Route::all();
         return view('modules.rso.edit', compact('rso','houses','users','supervisors','routes'));
@@ -87,7 +84,7 @@ class RsoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(RsoUpdateRequest $request, Rso $rso): JsonResponse
+    public function update(RsoUpdateRequest $request, Rso $rso): RedirectResponse
     {
         try {
 
@@ -150,13 +147,16 @@ class RsoController extends Controller
     }
 
     /**
-     * Get supervisor and user by dd house.
+     * Get users, supervisors, routes by dd house.
      */
-    public function getSupervisorAndUser($houseId): JsonResponse
+    public function getUsersSupervisorsRoutes($houseId): JsonResponse
     {
         return Response::json([
             'supervisor' => Supervisor::with('user')->where('dd_house_id', $houseId)->where('status', 1)->get(),
-            'user' => User::where('dd_house', $houseId)->where('status', 1)->where('role','rso')->get(),
+            'user' => User::whereHas('ddHouse', function ($query) use ($houseId){
+                $query->where('dd_house_id', $houseId);
+            })->where('role', 'rso')->where('status', 1)->get(),
+            'route' => Route::where('dd_house_id', $houseId)->where('status', 1)->get(),
         ]);
     }
 }

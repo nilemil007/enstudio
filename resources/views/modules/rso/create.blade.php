@@ -15,9 +15,9 @@
 
                         <!-- Distribution House -->
                         <div class="row mb-3">
-                            <label for="dd_house" class="col-sm-3 col-form-label">Distribution House ({{ count($houses) }})</label>
+                            <label for="dd_house_id" class="col-sm-3 col-form-label">Distribution House</label>
                             <div class="col-sm-9">
-                                <select name="dd_house_id" class="form-select @error('dd_house') is-invalid @enderror" id="dd_house">
+                                <select name="dd_house_id" class="select-2 form-select @error('dd_house') is-invalid @enderror" id="dd_house_id">
                                     <option value="">-- Select Distribution House --</option>
                                     @if(count($houses) > 0)
                                         @foreach($houses as $house)
@@ -31,15 +31,10 @@
 
                         <!-- Supervisor -->
                         <div class="row mb-3">
-                            <label for="supervisor" class="col-sm-3 col-form-label">Supervisor ({{ count($supervisors) }})</label>
+                            <label for="get_supervisor" class="col-sm-3 col-form-label">Supervisor</label>
                             <div class="col-sm-9">
-                                <select name="supervisor_id" class="form-select @error('supervisor') is-invalid @enderror" id="supervisor">
+                                <select name="supervisor_id" class="select-2 form-select @error('supervisor') is-invalid @enderror" id="get_supervisor">
                                     <option value="">-- Select Supervisor --</option>
-                                    @if(count($supervisors) > 0)
-                                        @foreach($supervisors as $supervisor)
-                                            <option value="{{ $supervisor->id }}">{{ $supervisor->pool_number .' - '. \App\Models\User::firstWhere('id', $supervisor->user_id)->name }}</option>
-                                        @endforeach
-                                    @endif
                                 </select>
                                 @error('supervisor') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
@@ -47,35 +42,23 @@
 
                         <!-- User -->
                         <div class="row mb-3">
-                            <label for="user_id" class="col-sm-3 col-form-label">User</label>
+                            <label for="get_user" class="col-sm-3 col-form-label">User</label>
                             <div class="col-sm-9">
-                                <select name="user_id" class="form-select @error('user_id') is-invalid @enderror" id="user_id">
+                                <select name="user_id" class="select-2 form-select @error('user_id') is-invalid @enderror" id="get_user">
                                     <option value="">-- Select User --</option>
-                                    @if(count($users) > 0)
-                                        @foreach($users as $user)
-                                            <option value="{{ $user->id }}">{{ $user->phone .' - '. $user->name }}</option>
-                                        @endforeach
-                                    @endif
                                 </select>
                                 @error('user_id') <span class="text-danger">{{ $message }}</span> @enderror
-                                <small class="text-muted">User Left: <strong class="{{ count($users) < 1 ? 'text-danger' : 'text-success'}}">{{ count($users) }}</strong></small>
                             </div>
                         </div>
 
                         <!-- Route -->
                         <div class="row mb-3">
-                            <label for="routes" class="col-sm-3 col-form-label">Route</label>
+                            <label for="get_routes" class="col-sm-3 col-form-label">Route</label>
                             <div class="col-sm-9">
-                                <select name="routes[]" class="select-2 form-select @error('routes') is-invalid @enderror" id="routes" multiple>
+                                <select name="routes[]" class="select-2 form-select @error('routes') is-invalid @enderror" id="get_routes" multiple>
                                     <option value="">-- Select Route --</option>
-{{--                                    @if(count($routes) > 0)--}}
-{{--                                        @foreach($routes as $route)--}}
-{{--                                            <option value="{{ $route->code }}">{{ $route->code .' - '. $route->name }}</option>--}}
-{{--                                        @endforeach--}}
-{{--                                    @endif--}}
                                 </select>
                                 @error('routes') <span class="text-danger">{{ $message }}</span> @enderror
-                                <small class="text-muted">Route Left: <strong class="{{ count($routes) < 1 ? 'text-danger' : 'text-success'}}">{{ count($routes) }}</strong></small>
                             </div>
                         </div>
 
@@ -408,5 +391,112 @@
             <a href="{{ route('rso.sample.file.download') }}" class="nav-link text-muted">Download sample file.</a>
         </div>
     </div>
+
+    @push('scripts')
+        <script>
+            $(document).ready(function() {
+                $(document).on('change','#dd_house_id',function (){
+                    const houseId = $(this).val();
+
+                    if (houseId === '')
+                    {
+                        $('#get_supervisor').html('<option value="">-- Select Supervisor --</option>');
+                        $('#get_user').html('<option value="">-- Select User --</option>');
+                        $('#get_routes').html('<option value="">-- Select Routes --</option>');
+                    }
+
+                    // Get user, supervisors, route by dd house
+                    $.ajax({
+                        url: "{{ route('rso.get.users.supervisors.routes.by.dd.house') }}/" + houseId,
+                        type: 'POST',
+                        dataType: 'JSON',
+                        success: function (response){
+                            $('#get_user').find('option:not(:first)').remove();
+                            $('#get_supervisor').find('option:not(:first)').remove();
+                            $('#get_routes').find('option:not(:first)').remove();
+
+                            $.each(response.user, function (key, value){
+                                $('#get_user').append('<option value="'+ value.id +'">' + value.phone + ' - ' + value.name + '</option>')
+                            });
+
+                            $.each(response.supervisor, function (key, value){
+                                $('#get_supervisor').append('<option value="'+ value.id +'">' + value.pool_number + ' - ' + value.user.name + '</option>')
+                            });
+
+                            $.each(response.route, function (key, value){
+                                $('#get_routes').append('<option value="'+ value.id +'">' + value.code + ' - ' + value.name + '</option>')
+                            });
+                        }
+                    });
+                });
+
+                // Validation
+                $('.userForm').validate({
+                    rules: {
+                        name: {
+                            required: true,
+                            maxlength: 100,
+                            minlength: 3,
+                        },
+                        username: {
+                            required: true,
+                            maxlength: 30,
+                            minlength: 3,
+                        },
+                        phone: {
+                            required: true,
+                            number: true,
+                            maxlength: 11,
+                            minlength: 11,
+                        },
+                        email: {
+                            required: true,
+                            email: true,
+                        },
+                        role: {
+                            required: true,
+                        },
+                        password: {
+                            required: true,
+                            minlength: 8,
+                        },
+                        image: {
+                            accept: "image/*",
+                        },
+                    },
+                    messages: {
+
+                    },
+                    errorPlacement: function(error, element){
+                        error.addClass('invalid-feedback');
+
+                        if (element.parent('.input-group').length) {
+                            error.insertAfter(element.parent());
+                        }
+                        else if (element.prop('type') === 'radio' && element.parent('.radio-inline').length) {
+                            error.insertAfter(element.parent().parent());
+                        }
+                        else if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
+                            error.appendTo(element.parent().parent());
+                        }
+                        else {
+                            error.insertAfter(element);
+                        }
+                    },
+                    highlight: function(element, errorClass){
+                        if ($(element).prop('type') != 'checkbox' && $(element).prop('type') != 'radio') {
+                            $( element ).addClass( "is-invalid" );
+                        }
+                    },
+                    unhighlight: function(element, errorClass){
+                        if ($(element).prop('type') != 'checkbox' && $(element).prop('type') != 'radio') {
+                            $( element ).removeClass( "is-invalid" );
+                        }
+                    },
+                });
+
+            });
+        </script>
+    @endpush
 
 </x-app-layout>

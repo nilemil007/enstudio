@@ -28,7 +28,6 @@ class RsoStoreRequest extends FormRequest
             'user_id'           => ['required'],
             'supervisor_id'     => ['required'],
             'dd_house_id'       => ['required'],
-            'routes'            => ['required'],
             'rso_code'          => ['required','max:10','unique:rsos,rso_code'],
             'itop_number'       => ['required','numeric','digits: 11','unique:rsos,itop_number'],
             'pool_number'       => ['required','numeric','digits: 11','unique:rsos,pool_number'],

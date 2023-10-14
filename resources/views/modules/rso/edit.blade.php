@@ -57,28 +57,22 @@
                             @endif
                         </select>
                         @error('user_id') <span class="text-danger">{{ $message }}</span> @enderror
-                        <small class="text-muted">User Left: <strong class="{{ count($users) < 1 ? 'text-danger' : 'text-success'}}">{{ count($users) }}</strong></small>
                     </div>
                 </div>
 
                 <!-- Route -->
+                    {{ dd($rso->route) }}
                 <div class="row mb-3">
-                    <label for="routes" class="col-sm-3 col-form-label">Route</label>
+                    <label for="getRoutes" class="col-sm-3 col-form-label">Route</label>
                     <div class="col-sm-9">
-                        <select name="routes[]" class="select-2 form-select @error('routes') is-invalid @enderror" id="routes" multiple>
+                        <select name="routes[]" class="form-select @error('routes') is-invalid @enderror" id="getRoutes" multiple>
                             <option value="">-- Select Route --</option>
-                            @if(count($routes) > 0)
-                                @foreach($routes as $route)
-                                    <option
-                                        @if(!empty($rso->routes))
-                                            @foreach ($rso->routes as $rsoRoute)
-                                                @selected($rsoRoute == $route->code)
-                                            @endforeach
-                                        @endif
-                                        value="{{ $route->code }}">{{ $route->code .' - '. $route->name }}
-                                    </option>
-                                @endforeach
-                            @endif
+                            @foreach($routes as $route)
+                                <option
+                                    value="{{ $route->id }}">
+                                    {{ $route->code }}
+                                </option>
+                            @endforeach
                         </select>
                         @error('routes') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
@@ -417,16 +411,18 @@
                     {
                         $('#getSupervisor').html('<option value="">-- Select Supervisor --</option>');
                         $('#getUser').html('<option value="">-- Select User --</option>');
+                        $('#getRoutes').html('<option value="">-- Select Routes --</option>');
                     }
 
-                    // Get supervisor and user by dd house
+                    // Get user, supervisors, route by dd house
                     $.ajax({
-                        url: "{{ route('rso.get.supervisor.and.user') }}/" + id,
+                        url: "{{ route('rso.get.users.supervisors.routes.by.dd.house') }}/" + id,
                         type: 'POST',
                         dataType: 'JSON',
                         success: function (response){
                             $('#getSupervisor').find('option:not(:first)').remove();
                             $('#getUser').find('option:not(:first)').remove();
+                            $('#getRoutes').find('option:not(:first)').remove();
 
                             $.each(response.supervisor, function (key, value){
                                 console.log(value);
@@ -435,6 +431,10 @@
 
                             $.each(response.user, function (key, value){
                                 $('#getUser').append('<option value="'+ value.id +'">' + value.username + ' - ' + value.name + '</option>')
+                            });
+
+                            $.each(response.route, function (key, value){
+                                $('#getRoutes').append('<option value="'+ value.id +'">' + value.code + ' - ' + value.name + '</option>')
                             });
                         }
                     });
