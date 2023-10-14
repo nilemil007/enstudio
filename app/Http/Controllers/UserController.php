@@ -206,8 +206,6 @@ class UserController extends Controller
             File::delete( public_path('assets/images/users/'.basename( $user->image ) ) );
         }
 
-//        File::cleanDirectory(public_path('assets/images/users'));
-
         // Notification [permanently deleted users.]
         toastr('This user has been permanently deleted.','success','Success');
 

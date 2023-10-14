@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Activation\CoreActivation;
@@ -30,7 +31,6 @@ class Rso extends Model
         'nominee_id',
         'supervisor_id',
         'dd_house_id',
-        'routes',
         'rso_code',
         'itop_number',
         'pool_number',
@@ -128,6 +128,11 @@ class Rso extends Model
     public function supervisor(): BelongsTo
     {
         return $this->belongsTo( Supervisor::class );
+    }
+
+    public function route(): BelongsToMany
+    {
+        return $this->belongsToMany( Route::class );
     }
 
     /**

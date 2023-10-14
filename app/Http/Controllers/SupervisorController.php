@@ -116,7 +116,9 @@ class SupervisorController extends Controller
     {
         $userId = Supervisor::whereNotNull('user_id')->pluck('user_id');
         return Response::json(['users' => User::whereNotIn('id', $userId)
-            ->where('dd_house',$house_id)
+            ->whereHas('ddHouse', function ($query) use ($house_id){
+                $query->where();
+            })
             ->where('role', 'supervisor')
             ->where('status', 1)
             ->get()

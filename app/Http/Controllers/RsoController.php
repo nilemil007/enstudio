@@ -44,10 +44,9 @@ class RsoController extends Controller
         $userId = Rso::whereNotNull('user_id')->pluck('user_id');
         $users = User::where('role','rso')->whereNotIn('id', $userId)->orderBy('name','asc')->get();
         $supervisors = Supervisor::all();
-        $getRoutes = Rso::whereNotNull('routes')->pluck('routes');
-        $routeCode = explode(',', implode(',', $getRoutes->toArray()));
-        $routes = Route::whereNotIn('code', $routeCode)->get();
-        return view('modules.rso.create', compact('houses','users','supervisors','routes'));
+        $routeId = DB::table('route_rso')->whereNotNull('route_id')->pluck('route_id');
+        dd($routeId);
+        return view('modules.rso.create', compact('houses','users','supervisors'));
     }
 
     /**

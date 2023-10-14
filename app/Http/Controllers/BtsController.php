@@ -119,7 +119,7 @@ class BtsController extends Controller
         try {
             Excel::import(new BtsImport, $request->file('import_bts'));
             toastr('BTS imported successfully.','success','Success');
-            return to_route('btn.index');
+            return to_route('bts.index');
 
         } catch (ValidationException $e) {
             toastr('BTS imported failed.','error','Error!');

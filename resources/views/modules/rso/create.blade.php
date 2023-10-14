@@ -68,11 +68,11 @@
                             <div class="col-sm-9">
                                 <select name="routes[]" class="select-2 form-select @error('routes') is-invalid @enderror" id="routes" multiple>
                                     <option value="">-- Select Route --</option>
-                                    @if(count($routes) > 0)
-                                        @foreach($routes as $route)
-                                            <option value="{{ $route->code }}">{{ $route->code .' - '. $route->name }}</option>
-                                        @endforeach
-                                    @endif
+{{--                                    @if(count($routes) > 0)--}}
+{{--                                        @foreach($routes as $route)--}}
+{{--                                            <option value="{{ $route->code }}">{{ $route->code .' - '. $route->name }}</option>--}}
+{{--                                        @endforeach--}}
+{{--                                    @endif--}}
                                 </select>
                                 @error('routes') <span class="text-danger">{{ $message }}</span> @enderror
                                 <small class="text-muted">Route Left: <strong class="{{ count($routes) < 1 ? 'text-danger' : 'text-success'}}">{{ count($routes) }}</strong></small>
