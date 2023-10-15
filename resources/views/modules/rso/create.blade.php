@@ -365,7 +365,7 @@
                         <div class="card-header">
                             <div class="alert alert-danger">
                                 <p>Rso: <strong>{{ $failure->values()['itop_number'] }}</strong></p>
-                                <p>Error type: <strong>{{ \Illuminate\Support\Str::title($failure->attribute()) }}</strong></p>
+                                <p>Error type: <strong>{{ \Illuminate\Support\Str::title(implode(' ', explode('_', $failure->attribute()))) }}</strong></p>
                                 <p>Error msg: {{ $failure->errors()[0] }} </p>
                                 <p>Row number : {{ $failure->row() }}</p>
                             </div>

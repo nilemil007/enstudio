@@ -60,7 +60,7 @@ class RsoImport implements ToModel, WithHeadingRow, WithValidation
     /**
      * @return array
      */
-    #[Pure] public function rules(): array
+     public function rules(): array
     {
         return [
             'dd_code'           => ['required'],

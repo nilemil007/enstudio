@@ -29,10 +29,9 @@ class Rso extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'user_id',
-        'nominee_id',
-        'supervisor_id',
         'dd_house_id',
+        'user_id',
+        'supervisor_id',
         'rso_code',
         'itop_number',
         'pool_number',
@@ -135,20 +134,6 @@ class Rso extends Model
     public function route(): BelongsToMany
     {
         return $this->belongsToMany( Route::class );
-    }
-
-    /**
-     * Set string data into route.
-     * Get array data.
-     *
-     * @return Attribute
-     */
-    protected function routes(): Attribute
-    {
-        return Attribute::make(
-            get: fn($route) => explode(',', $route),
-            set: fn($route) => implode(',', $route),
-        );
     }
 
     /**
