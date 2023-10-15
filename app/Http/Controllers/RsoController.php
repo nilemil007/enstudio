@@ -32,7 +32,8 @@ class RsoController extends Controller
     public function index(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
         $rsos = Rso::latest()->get();
-        return view('modules.rso.index', compact('rsos'));
+        $trashed = Rso::onlyTrashed()->latest()->get();
+        return view('modules.rso.index', compact('rsos','trashed'));
     }
 
     /**
@@ -95,14 +96,20 @@ class RsoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Rso $rso): JsonResponse
+    public function destroy(Rso $rso): RedirectResponse
     {
-        try {
-            $rso->delete();
-            return response()->json(['success' => 'The rso has been deleted successfully.']);
-        }catch (\Exception $exception){
-            dd($exception);
-        }
+        $rso->delete();
+        toastr('This rso has been temporarily deleted.','success','Success');
+        return to_route('rso.index');
+    }
+
+    /**
+     * Trash users.
+     */
+    public function trash(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
+    {
+        $trashedRso = Rso::onlyTrashed()->latest()->paginate(10);
+        return view('modules.rso.trash', compact('trashedRso'));
     }
 
     /**

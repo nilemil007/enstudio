@@ -50,7 +50,7 @@ Route::middleware(['auth'])->group(function (){
         // Move To Trash
         Route::get('/trash','trash')->name('trash');
         // Restore
-        Route::get('/restore/{id}','restoreUser')->name('restore');
+        Route::get('/restore/{id}','restore')->name('restore');
         // Permanently Delete
         Route::delete('/permanently-delete/{id}','permanentlyDelete')->name('permanently.delete');
     });
@@ -83,6 +83,12 @@ Route::middleware(['auth'])->group(function (){
         Route::get('/sample-file-download','sampleFileDownload')->name('sample.file.download');
         // Get Users, Supervisors, Routes
         Route::post('/get_users_supervisors_routes/{houseId?}', 'getUsersSupervisorsRoutes')->name('get.users.supervisors.routes.by.dd.house');
+        // Move To Trash
+        Route::get('/trash','trash')->name('trash');
+        // Restore
+        Route::get('/restore/{id}','restore')->name('restore');
+        // Permanently Delete
+        Route::delete('/permanently-delete/{id}','permanentlyDelete')->name('permanently.delete');
     });
 
     // BP Additional Routes

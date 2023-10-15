@@ -63,7 +63,6 @@
                                 <a href="{{ route('user.restore', $user->id) }}" class="btn btn-sm btn-primary">Restore</a>
 
                                 <!-- Permanently Delete -->
-{{--                                <a href="{{ route('user.permanently.delete', $user->id) }}" class="btn btn-sm btn-danger">Delete Permanently</a>--}}
                                 <form style="margin-left: 5px;" action="{{ route('user.permanently.delete', $user->id) }}" method="POST">
                                     @csrf @method('DELETE')
                                     <button onclick="return confirm('Are you sure you want to Permanently delete this user?');" type="submit" class="btn btn-sm btn-danger">Delete Permanently</button>

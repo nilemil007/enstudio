@@ -176,7 +176,7 @@ class UserController extends Controller
     /**
      * Restore users.
      */
-    public function restoreUser($id): RedirectResponse
+    public function restore($id): RedirectResponse
     {
         User::withTrashed()->findOrFail($id)->restore();
         toastr('User restored successfully.','success','Success');

@@ -6,7 +6,12 @@
     <div class="card">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <h4 class="card-title">All Rso</h4>
+                <div class="d-flex align-items-center">
+                    <h4 class="card-title mb-0">All Rso</h4>
+                    @if(count($trashed) > 0)
+                        <a href="{{ route('rso.trash') }}" class="text-danger" style="margin-left: 5px;">Trash ({{ $trashed->count() }})</a>
+                    @endif
+                </div>
                 <span>
                     <a href="{{ route('rso.create') }}" class="btn btn-sm btn-primary">Add New</a>
                     @if(count($rsos) > 1)
@@ -58,12 +63,15 @@
                                         @break
                                 @endswitch
                             </td>
-                            <td>
+                            <td class="d-flex align-items-center">
                                 <!-- Edit -->
                                 <a href="{{ route('rso.edit', $rso->id) }}" class="btn btn-sm btn-primary">Edit</a>
 
-                                <!-- Delete -->
-                                <a href="{{ route('rso.destroy', $rso->id) }}" id="deleteRso" class="btn btn-sm btn-danger">Delete</a>
+                                <!-- Move to trash -->
+                                <form style="margin-left: 5px;" action="{{ route('rso.destroy', $rso->id) }}" method="POST">
+                                    @csrf @method('DELETE')
+                                    <button onclick="return confirm('Are you sure you want to delete this user?');" type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
                             </td>
                         </tr>
                     @endforeach
@@ -79,62 +87,62 @@
 
             $(document).ready(function(){
                 // Single delete
-                $(document).on('click','#deleteRso',function(e){
-                    e.preventDefault();
-
-                    Swal.fire({
-                        title: 'Are you sure?',
-                        text: "Delete This Rso?",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonText: 'Yes, delete it!'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            $.ajax({
-                                url: $(this).attr('href'),
-                                type: 'DELETE',
-                                success: function (response){
-                                    Swal.fire(
-                                        'Deleted!',
-                                        response.success,
-                                        'success',
-                                    ).then((result) => {
-                                        location.reload();
-                                    });
-                                },
-                            });
-                        }
-                    });
-                });
+                // $(document).on('click','#deleteRso',function(e){
+                //     e.preventDefault();
+                //
+                //     Swal.fire({
+                //         title: 'Are you sure?',
+                //         text: "Delete This Rso?",
+                //         icon: 'warning',
+                //         showCancelButton: true,
+                //         confirmButtonText: 'Yes, delete it!'
+                //     }).then((result) => {
+                //         if (result.isConfirmed) {
+                //             $.ajax({
+                //                 url: $(this).attr('href'),
+                //                 type: 'DELETE',
+                //                 success: function (response){
+                //                     Swal.fire(
+                //                         'Deleted!',
+                //                         response.success,
+                //                         'success',
+                //                     ).then((result) => {
+                //                         location.reload();
+                //                     });
+                //                 },
+                //             });
+                //         }
+                //     });
+                // });
 
                 // Delete all
-                $(document).on('click','#deleteAllRso',function(e){
-                    e.preventDefault();
-
-                    Swal.fire({
-                        title: 'Are you sure?',
-                        text: "Delete All Rso?",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonText: 'Yes, delete it !'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            $.ajax({
-                                url: $(this).attr('href'),
-                                type: 'POST',
-                                success: function (response){
-                                    Swal.fire(
-                                        'Deleted!',
-                                        response.success,
-                                        'success',
-                                    ).then((result) => {
-                                        location.reload();
-                                    });
-                                },
-                            });
-                        }
-                    });
-                });
+                // $(document).on('click','#deleteAllRso',function(e){
+                //     e.preventDefault();
+                //
+                //     Swal.fire({
+                //         title: 'Are you sure?',
+                //         text: "Delete All Rso?",
+                //         icon: 'warning',
+                //         showCancelButton: true,
+                //         confirmButtonText: 'Yes, delete it !'
+                //     }).then((result) => {
+                //         if (result.isConfirmed) {
+                //             $.ajax({
+                //                 url: $(this).attr('href'),
+                //                 type: 'POST',
+                //                 success: function (response){
+                //                     Swal.fire(
+                //                         'Deleted!',
+                //                         response.success,
+                //                         'success',
+                //                     ).then((result) => {
+                //                         location.reload();
+                //                     });
+                //                 },
+                //             });
+                //         }
+                //     });
+                // });
             });
         </script>
     @endpush
