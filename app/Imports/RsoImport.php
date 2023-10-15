@@ -8,14 +8,14 @@ use Carbon\Carbon;
 use App\Models\Rso;
 use App\Models\Supervisor;
 use Illuminate\Database\Eloquent\Model;
+use JetBrains\PhpStorm\Pure;
 use Maatwebsite\Excel\Concerns\ToModel;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
-use Maatwebsite\Excel\Concerns\WithChunkReading;
 
-class RsoImport implements ToModel, WithHeadingRow, WithValidation, WithChunkReading
+class RsoImport implements ToModel, WithHeadingRow, WithValidation
 {
     use Importable;
 
@@ -29,7 +29,6 @@ class RsoImport implements ToModel, WithHeadingRow, WithValidation, WithChunkRea
         return new Rso([
             'dd_house_id'       => DdHouse::firstWhere('code', $row['dd_code'])->id,
             'supervisor_id'     => Supervisor::firstWhere('pool_number', $row['supervisor'])->id,
-            'routes'            => explode(',', $row['routes']),
             'rso_code'          => $row['rso_code'],
             'itop_number'       => $row['itop_number'],
             'pool_number'       => $row['pool_number'],
@@ -58,23 +57,16 @@ class RsoImport implements ToModel, WithHeadingRow, WithValidation, WithChunkRea
         ]);
     }
 
-    public function chunkSize(): int
-    {
-        return 1000;
-    }
-
     /**
      * @return array
      */
-    public function rules(): array
+    #[Pure] public function rules(): array
     {
         return [
             'dd_code'           => ['required'],
             '*.dd_code'         => ['required'],
             'supervisor'        => ['required'],
             '*.supervisor'      => ['required'],
-            'routes'            => ['required'],
-            '*.routes'          => ['required'],
             'rso_code'          => ['required', 'max:10', 'unique:rsos,rso_code'],
             '*.rso_code'        => ['required', 'max:10', 'unique:rsos,rso_code'],
             'itop_number'       => ['required', 'numeric', 'digits: 11', 'unique:rsos,itop_number'],

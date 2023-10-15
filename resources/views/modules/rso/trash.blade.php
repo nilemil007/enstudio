@@ -20,11 +20,11 @@
                     <tr>
                         <th class="w-1">No.</th>
                         <th>DD House</th>
+                        <th>Rso name</th>
                         <th>Supervisor</th>
                         <th>Routes</th>
                         <th>Rso Code</th>
                         <th>Rso Itop</th>
-                        <th>Rso name</th>
                         <th>Pool Number</th>
                         <th>Joining Date</th>
                         <th>status</th>

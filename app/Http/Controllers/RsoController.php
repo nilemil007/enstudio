@@ -104,7 +104,7 @@ class RsoController extends Controller
     }
 
     /**
-     * Trash users.
+     * Trash rso.
      */
     public function trash(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
@@ -113,16 +113,37 @@ class RsoController extends Controller
     }
 
     /**
-     * Delete all rso.
+     * Restore rso.
      */
-    public function deleteAll(): JsonResponse
+    public function restore($id): RedirectResponse
     {
-        try {
-            Rso::truncate();
-            return response()->json(['success' => 'All rso has been deleted successfully.']);
-        }catch (\Exception $exception){
-            dd($exception);
+        Rso::withTrashed()->findOrFail($id)->restore();
+        toastr('Rso restored successfully.','success','Success');
+        return to_route('rso.index');
+    }
+
+    /**
+     * Permanently Delete.
+     */
+    public function permanentlyDelete($id): RedirectResponse
+    {
+        // Find a rso to detach from the route.
+        $rso = rso::with('route')->withTrashed()->findOrFail($id);
+
+        // All routes associated with the rso are being detached.
+        foreach ($rso->route as $route)
+        {
+            $rso->route()->detach($route->id);
         }
+
+        // Find and permanently delete trashed rso.
+        Rso::onlyTrashed()->findOrFail($id)->forceDelete();
+
+        // Notification [permanently deleted rso.]
+        toastr('This rso has been permanently deleted.','success','Success');
+
+        // Back to all users page.
+        return to_route('rso.index');
     }
 
     /**

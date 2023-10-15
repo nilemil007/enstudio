@@ -25,11 +25,11 @@
                     <tr>
                         <th class="w-1">No.</th>
                         <th>DD House</th>
+                        <th>Rso name</th>
                         <th>Supervisor</th>
                         <th>Routes</th>
                         <th>Rso Code</th>
                         <th>Rso Itop</th>
-                        <th>Rso name</th>
                         <th>Pool Number</th>
                         <th>Joining Date</th>
                         <th>status</th>
@@ -70,7 +70,7 @@
                                 <!-- Move to trash -->
                                 <form style="margin-left: 5px;" action="{{ route('rso.destroy', $rso->id) }}" method="POST">
                                     @csrf @method('DELETE')
-                                    <button onclick="return confirm('Are you sure you want to delete this user?');" type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                    <button onclick="return confirm('Are you sure you want to delete this rso?');" type="submit" class="btn btn-sm btn-danger">Delete</button>
                                 </form>
                             </td>
                         </tr>
