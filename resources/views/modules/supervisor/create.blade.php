@@ -17,7 +17,7 @@
                         <div class="row mb-3">
                             <label for="dd_house_id" class="col-sm-3 col-form-label">Distribution House</label>
                             <div class="col-sm-9">
-                                <select name="dd_house_id" class="form-select @error('dd_house_id') is-invalid @enderror" id="dd_house_id">
+                                <select name="dd_house_id" class="select-2 form-select @error('dd_house_id') is-invalid @enderror" id="dd_house_id">
                                     <option value="">-- Select Distribution House --</option>
                                     @if(count($houses) > 0)
                                         @foreach($houses as $house)
@@ -31,9 +31,9 @@
 
                         <!-- Assign User -->
                         <div class="row mb-3">
-                            <label for="get_user" class="col-sm-3 col-form-label">Assign User</label>
+                            <label for="set_user" class="col-sm-3 col-form-label">Assign User</label>
                             <div class="col-sm-9">
-                                <select name="user_id" class="form-select @error('user_id') is-invalid @enderror" id="get_user">
+                                <select name="user_id" class="select-2 form-select @error('user_id') is-invalid @enderror" id="set_user">
                                     <option value="">-- Select Supervisor --</option>
                                 </select>
                                 @error('user_id') <span class="text-danger">{{ $message }}</span> @enderror
@@ -199,7 +199,7 @@
 
                     if (houseId === '')
                     {
-                        $('#get_user').html('<option value="">-- Select User --</option>');
+                        $('#set_user').html('<option value="">-- Select User --</option>');
                     }
 
                     // Get user by dd house
@@ -208,10 +208,10 @@
                         type: 'POST',
                         dataType: 'JSON',
                         success: function (response){
-                            $('#get_user').find('option:not(:first)').remove();
+                            $('#set_user').find('option:not(:first)').remove();
 
                             $.each(response.users, function (key, value){
-                                $('#get_user').append('<option value="'+ value.id +'">' + value.phone + ' - ' + value.name + '</option>')
+                                $('#set_user').append('<option value="'+ value.id +'">' + value.phone + ' - ' + value.name + '</option>')
                             });
                         }
                     });
@@ -281,10 +281,6 @@
                         }
                     },
                 });
-
-                $.validator.addMethod("password", function(value, element) {
-                    return this.optional(element) || /^(?=.*\d)(?=.*[A-Z])(?=.*\W).*$/i.test(value);
-                }, 'Password must contain one capital letter,one numerical and one special character');
             });
         </script>
     @endpush

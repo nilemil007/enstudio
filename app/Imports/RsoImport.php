@@ -8,14 +8,13 @@ use Carbon\Carbon;
 use App\Models\Rso;
 use App\Models\Supervisor;
 use Illuminate\Database\Eloquent\Model;
-use JetBrains\PhpStorm\Pure;
 use Maatwebsite\Excel\Concerns\ToModel;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
 
-class RsoImport implements ToModel, WithHeadingRow, WithValidation
+class RsoImport implements ToModel, WithHeadingRow
 {
     use Importable;
 
@@ -26,6 +25,7 @@ class RsoImport implements ToModel, WithHeadingRow, WithValidation
      */
     public function model(array $row): Model|Rso|null
     {
+        dd($row);
         return new Rso([
             'dd_house_id'       => DdHouse::firstWhere('code', $row['dd_code'])->id,
             'supervisor_id'     => Supervisor::firstWhere('pool_number', $row['supervisor'])->id,
@@ -60,63 +60,63 @@ class RsoImport implements ToModel, WithHeadingRow, WithValidation
     /**
      * @return array
      */
-     public function rules(): array
-    {
-        return [
-            'dd_code'           => ['required'],
-            '*.dd_code'         => ['required'],
-            'supervisor'        => ['required'],
-            '*.supervisor'      => ['required'],
-            'rso_code'          => ['required', 'max:10', 'unique:rsos,rso_code'],
-            '*.rso_code'        => ['required', 'max:10', 'unique:rsos,rso_code'],
-            'itop_number'       => ['required', 'numeric', 'digits: 11', 'unique:rsos,itop_number'],
-            '*.itop_number'     => ['required', 'numeric', 'digits: 11', 'unique:rsos,itop_number'],
-            'pool_number'       => ['required', 'numeric', 'digits: 11', 'unique:rsos,pool_number'],
-            '*.pool_number'     => ['required', 'numeric', 'digits: 11', 'unique:rsos,pool_number'],
-            'personal_number'   => ['required', 'numeric', 'digits: 11', 'unique:rsos,personal_number'],
-            '*.personal_number' => ['required', 'numeric', 'digits: 11', 'unique:rsos,personal_number'],
-            'rid'               => ['required', 'unique:rsos,rid'],
-            '*.rid'             => ['required', 'unique:rsos,rid'],
-            'sr_no'             => ['required', 'max:8', 'unique:rsos,sr_no'],
-            '*.sr_no'           => ['required', 'max:8', 'unique:rsos,sr_no'],
-            'father_name'       => ['required', 'min: 3', 'max: 50', 'string'],
-            '*.father_name'     => ['required', 'min: 3', 'max: 50', 'string'],
-            'mother_name'       => ['required', 'min: 3', 'max: 50', 'string'],
-            '*.mother_name'     => ['required', 'min: 3', 'max: 50', 'string'],
-            'division'          => ['required'],
-            '*.division'        => ['required'],
-            'district'          => ['required'],
-            '*.district'        => ['required'],
-            'thana'             => ['required'],
-            '*.thana'           => ['required'],
-            'address'           => ['required', 'max: 200'],
-            '*.address'         => ['required', 'max: 200'],
-            'blood_group'       => ['required'],
-            '*.blood_group'     => ['required'],
-            'account_number'    => ['required', 'unique:rsos,account_number'],
-            '*.account_number'  => ['required', 'unique:rsos,account_number'],
-            'bank_name'         => ['required'],
-            '*.bank_name'       => ['required'],
-            'brunch_name'       => ['required'],
-            '*.brunch_name'     => ['required'],
-            'routing_number'    => ['required', 'numeric'],
-            '*.routing_number'  => ['required', 'numeric'],
-            'salary'            => ['required', 'numeric'],
-            '*.salary'          => ['required', 'numeric'],
-            'education'         => ['required'],
-            '*.education'       => ['required'],
-            'marital_status'    => ['required'],
-            '*.marital_status'  => ['required'],
-            'gender'            => ['required'],
-            '*.gender'          => ['required'],
-            'date_of_birth'     => ['required'],
-            '*.date_of_birth'   => ['required'],
-            'nid'               => ['required', 'numeric', new Nid, 'unique:rsos,nid',],
-            '*.nid'             => ['required', 'numeric', new Nid, 'unique:rsos,nid',],
-            'residential_rso'   => ['required'],
-            '*.residential_rso' => ['required'],
-            'joining_date'      => ['required'],
-            '*.joining_date'    => ['required'],
-        ];
-    }
+//     public function rules(): array
+//    {
+//        return [
+//            'dd_code'           => ['required'],
+//            '*.dd_code'         => ['required'],
+//            'supervisor'        => ['required'],
+//            '*.supervisor'      => ['required'],
+//            'rso_code'          => ['required', 'max:10', 'unique:rsos,rso_code'],
+//            '*.rso_code'        => ['required', 'max:10', 'unique:rsos,rso_code'],
+//            'itop_number'       => ['required', 'digits: 11', 'unique:rsos,itop_number'],
+//            '*.itop_number'     => ['required', 'digits: 11', 'unique:rsos,itop_number'],
+//            'pool_number'       => ['required', 'digits: 11', 'unique:rsos,pool_number'],
+//            '*.pool_number'     => ['required', 'digits: 11', 'unique:rsos,pool_number'],
+//            'personal_number'   => ['required', 'digits: 11', 'unique:rsos,personal_number'],
+//            '*.personal_number' => ['required', 'digits: 11', 'unique:rsos,personal_number'],
+//            'rid'               => ['required', 'unique:rsos,rid'],
+//            '*.rid'             => ['required', 'unique:rsos,rid'],
+//            'sr_no'             => ['required', 'max:8', 'unique:rsos,sr_no'],
+//            '*.sr_no'           => ['required', 'max:8', 'unique:rsos,sr_no'],
+//            'father_name'       => ['required', 'min: 3', 'max: 50', 'string'],
+//            '*.father_name'     => ['required', 'min: 3', 'max: 50', 'string'],
+//            'mother_name'       => ['required', 'min: 3', 'max: 50', 'string'],
+//            '*.mother_name'     => ['required', 'min: 3', 'max: 50', 'string'],
+//            'division'          => ['required'],
+//            '*.division'        => ['required'],
+//            'district'          => ['required'],
+//            '*.district'        => ['required'],
+//            'thana'             => ['required'],
+//            '*.thana'           => ['required'],
+//            'address'           => ['required', 'max: 200'],
+//            '*.address'         => ['required', 'max: 200'],
+//            'blood_group'       => ['required'],
+//            '*.blood_group'     => ['required'],
+//            'account_number'    => ['required', 'unique:rsos,account_number'],
+//            '*.account_number'  => ['required', 'unique:rsos,account_number'],
+//            'bank_name'         => ['required'],
+//            '*.bank_name'       => ['required'],
+//            'brunch_name'       => ['required'],
+//            '*.brunch_name'     => ['required'],
+//            'routing_number'    => ['required'],
+//            '*.routing_number'  => ['required'],
+//            'salary'            => ['required'],
+//            '*.salary'          => ['required'],
+//            'education'         => ['required'],
+//            '*.education'       => ['required'],
+//            'marital_status'    => ['required'],
+//            '*.marital_status'  => ['required'],
+//            'gender'            => ['required'],
+//            '*.gender'          => ['required'],
+//            'date_of_birth'     => ['required'],
+//            '*.date_of_birth'   => ['required'],
+//            'nid'               => ['required', new Nid, 'unique:rsos,nid',],
+//            '*.nid'             => ['required', new Nid, 'unique:rsos,nid',],
+//            'residential_rso'   => ['required'],
+//            '*.residential_rso' => ['required'],
+//            'joining_date'      => ['required'],
+//            '*.joining_date'    => ['required'],
+//        ];
+//    }
 }
