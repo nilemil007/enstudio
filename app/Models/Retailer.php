@@ -28,8 +28,8 @@ class Retailer extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
         'dd_house_id',
+        'user_id',
         'rso_id',
         'supervisor_id',
         'bts_id',
@@ -39,6 +39,7 @@ class Retailer extends Model
         'tmp_name',
         'type',
         'tmp_type',
+        'category',
         'enabled',
         'sim_seller',
         'tmp_sim_seller',

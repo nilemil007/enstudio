@@ -14,9 +14,6 @@
                 </div>
                 <span>
                     <a href="{{ route('rso.create') }}" class="btn btn-sm btn-primary">Add New</a>
-                    @if(count($rsos) > 1)
-                        <a id="deleteAllRso" href="{{ route('rso.delete.all') }}" class="btn btn-sm btn-danger">Delete All</a>
-                    @endif
                 </span>
             </div>
             <div class="table-responsive">
@@ -27,7 +24,6 @@
                         <th>DD House</th>
                         <th>Rso name</th>
                         <th>Supervisor</th>
-                        <th>Routes</th>
                         <th>Rso Code</th>
                         <th>Rso Itop</th>
                         <th>Pool Number</th>
@@ -41,15 +37,10 @@
                         <tr>
                             <td><span class="text-muted">{{ ++$sl }}</span></td>
                             <td>{{ $rso->ddHouse->code }}</td>
+                            <td>{{ optional($rso->user)->name }}</td>
                             <td>{{ $rso->supervisor->user->name }}</td>
-                            <td>
-                                @foreach($rso->route as $route)
-                                    <p>{{ $route->code .' - '. $route->name }}</p>
-                                @endforeach
-                            </td>
                             <td>{{ $rso->rso_code }}</td>
                             <td>{{ $rso->itop_number }}</td>
-                            <td>{{ optional($rso->user)->name }}</td>
                             <td>{{ $rso->pool_number }}</td>
                             <td>{{ $rso->joining_date->toFormattedDateString() }}</td>
                             <td>

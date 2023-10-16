@@ -60,6 +60,7 @@
     @push('scripts')
         <script>
             $(document).ready(function() {
+
                 // Create Trade Campaign Retailer Code
                 $(document).on('submit','.tcrcForm', function (e){
                     e.preventDefault();

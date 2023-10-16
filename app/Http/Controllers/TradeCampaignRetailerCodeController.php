@@ -29,7 +29,7 @@ class TradeCampaignRetailerCodeController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
+    public function create()
     {
         $tcrcId = TradeCampaignRetailerCode::whereNotNull('retailer_id')->pluck('retailer_id');
         $retailers = Retailer::whereNotIn('id', $tcrcId)->get();

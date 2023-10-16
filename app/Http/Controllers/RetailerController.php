@@ -156,6 +156,6 @@ class RetailerController extends Controller
      */
     public function sampleFileDownload(): BinaryFileResponse
     {
-        return Response::download(public_path('download/sample/Retailer List.xlsx'));
+        return Response::download(public_path('download/sample/Retailer_List_Report.xlsx'));
     }
 }
