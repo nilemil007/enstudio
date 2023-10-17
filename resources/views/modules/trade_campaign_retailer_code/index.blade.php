@@ -36,7 +36,7 @@
                 <div class="d-flex align-items-center">
                     <h4 class="card-title mb-0">Trade Campaign Retailer Code(s)</h4>
                     @if(count($trashed) > 0)
-                        <a href="{{ route('tcrc.trash') }}" class="text-danger" style="margin-left: 5px;">Trash ({{ $trashed->count() }})</a>
+                        <a href="{{ route('tcrc.trash') }}" class="text-danger" style="font-weight:bold;margin-left: 5px;">Trash ({{ $trashed->count() }})</a>
                     @endif
                 </div>
                 <span>
@@ -50,6 +50,7 @@
                         <th class="w-1">No.</th>
                         <th>DD Code</th>
                         <th>Retailer Code</th>
+                        <th>Name</th>
                         <th>Flag</th>
                         <th>Remarks</th>
                         <th>Created At</th>
@@ -60,12 +61,9 @@
                     @foreach( $tcrc as $sl => $tc )
                         <tr>
                             <td>{{ ++$sl }}</td>
-                            <td>
-                                {{ App\Models\DdHouse::firstWhere('id', App\Models\Retailer::firstWhere('code', $tc->retailer_code)->dd_house_id)->code }}
-                            </td>
-                            <td>
-                                {{ $tc->retailer_code }}
-                            </td>
+                            <td>{{ App\Models\DdHouse::firstWhere('id', App\Models\Retailer::firstWhere('code', $tc->retailer_code)->dd_house_id)->code }}</td>
+                            <td>{{ $tc->retailer_code }}</td>
+                            <td>{{ $tc->user->name }}</td>
                             <td>{{ Str::upper($tc->flag) }}</td>
                             <td>{{ $tc->remarks }}</td>
                             <td>
@@ -136,5 +134,5 @@
             });
         </script>
     @endpush
-    
+
 </x-app-layout>

@@ -22,16 +22,6 @@ class TradeCampaignRetailerCode extends Model
     protected $fillable = ['user_id','retailer_code','flag','remarks'];
 
     /**
-     * TCRC belongs to a retailer.
-     *
-     * @return BelongsTo
-     */
-    public function retailer(): BelongsTo
-    {
-        return $this->belongsTo( Retailer::class );
-    }
-
-    /**
      * TCRC belongs to a user.
      *
      * @return BelongsTo

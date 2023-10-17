@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bp;
 use App\Models\TradeCampaignRetailerCode;
 use App\Models\User;
 use Illuminate\Contracts\View\Factory;
@@ -36,7 +37,8 @@ class TradeCampaignRetailerCodeController extends Controller
             ['role','!=','zm'],
             ['role','!=','accountant'],
         ])->orderBy('role', 'ASC')->get();
-        return view('modules.trade_campaign_retailer_code.create', compact('users'));
+        $bps = Bp::all();
+        return view('modules.trade_campaign_retailer_code.create', compact('users','bps'));
     }
 
     /**
@@ -46,13 +48,14 @@ class TradeCampaignRetailerCodeController extends Controller
     {
         $tcrc = $this->validate($request,[
             'user_id'       => ['required'],
-            'retailer_code' => ['required','unique:trade_campaign_retailer_codes,retailer_code'],
+            'retailer_code' => ['required','unique:trade_campaign_retailer_codes,retailer_code','exists:retailers,code'],
             'flag'          => ['required'],
             'remarks'       => ['nullable'],
         ],[
             'user_id.required'          => 'আপনাকে অবশ্যই একজন :attribute নির্বাচন করতে হবে।',
             'retailer_code.required'    => 'আপনাকে অবশ্যই একটি :attribute প্রদান করতে হবে।',
             'retailer_code.unique'      => 'এই :attributeটি পূর্বে প্রদান করা হয়েছে। দয়াকরে এটি পরিবর্তন করুন।',
+            'retailer_code.exists'      => 'এই :attributeটি ডাটাবেসে নেই।',
             'flag.required'             => 'আপনাকে অবশ্যই একটি :attribute প্রদান করতে হবে।',
         ],[
             'user_id'       => 'ব্যাবহারকারী',

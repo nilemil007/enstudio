@@ -59,9 +59,9 @@ class UserController extends Controller
         $newUser = User::findOrFail($id);
         $newUser->ddHouse()->attach($request->input('dd_house'));
 
-        toastr('New user created successfully.','success','Success');
+        // toastr('New user created successfully.','success','Success');
 
-        return to_route('user.index');
+        return to_route('user.index')->with('success','New user created successfully.');
     }
 
     /**
@@ -104,9 +104,9 @@ class UserController extends Controller
         $user->update($information);
         $user->ddHouse()->sync($request->input('dd_house'));
 
-        toastr('User updated successfully.','success','Success!');
+        // toastr('User updated successfully.','success','Success!');
 
-        return to_route('user.index');
+        return to_route('user.index')->with('success','User updated successfully.');
     }
 
     /**
@@ -128,14 +128,16 @@ class UserController extends Controller
     {
         $password = $request->validated();
 
-        if($user->update($password))
-        {
-            toastr('User password updated successfully.','success','Success');
-        }else{
-            toastr('User password not updated.','error','Error!');
-        }
+        $user->update($password);
 
-        return to_route('user.index');
+        // if($user->update($password))
+        // {
+        //     toastr('User password updated successfully.','success','Success');
+        // }else{
+        //     toastr('User password not updated.','error','Error!');
+        // }
+
+        return to_route('user.index')->with('success','User password updated successfully.');
     }
 
     /**
@@ -145,12 +147,12 @@ class UserController extends Controller
     {
         try {
             Excel::import(new UsersImport, $request->file('import_users'));
-            toastr('Users imported successfully.','success','Success');
-            return to_route('user.index');
+            // toastr('Users imported successfully.','success','Success');
+            return to_route('user.index')->with('success','Users imported successfully.');
 
         } catch (ValidationException $e) {
-            toastr('Users not imported.','error','Error!');
-            return to_route('user.create')->with('import_errors', $e->failures());
+            // toastr('Users not imported.','error','Error!');
+            return to_route('user.create')->with('import_errors', $e->failures())->with('error','Users not imported.');
         }
     }
 
@@ -177,8 +179,8 @@ class UserController extends Controller
     public function restore($id): RedirectResponse
     {
         User::withTrashed()->findOrFail($id)->restore();
-        toastr('User restored successfully.','success','Success');
-        return to_route('user.index');
+        // toastr('User restored successfully.','success','Success');
+        return to_route('user.index')->with('success','User restored successfully.');
     }
 
     /**

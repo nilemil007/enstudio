@@ -21,6 +21,7 @@
                         <th class="w-1">No.</th>
                         <th>DD Code</th>
                         <th>Retailer Code</th>
+                        <th>Name</th>
                         <th>Flag</th>
                         <th>Remarks</th>
                         <th>Created At</th>
@@ -32,12 +33,9 @@
                     @foreach( $trashed as $sl => $tc )
                         <tr>
                             <td>{{ ++$sl }}</td>
-                            <td>
-                                {{ App\Models\DdHouse::firstWhere('id', App\Models\Retailer::firstWhere('code', $tc->retailer_code)->dd_house_id)->code }}
-                            </td>
-                            <td>
-                                {{ $tc->retailer_code }}
-                            </td>
+                            <td>{{ App\Models\DdHouse::firstWhere('id', App\Models\Retailer::firstWhere('code', $tc->retailer_code)->dd_house_id)->code }}</td>
+                            <td>{{ $tc->retailer_code }}</td>
+                            <td>{{ $tc->user->name }}</td>
                             <td>{{ Str::upper($tc->flag) }}</td>
                             <td>{{ $tc->remarks }}</td>
                             <td>

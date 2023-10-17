@@ -13,9 +13,8 @@
                 <div class="row mb-3">
                     <label for="retailer_code" class="col-sm-3 col-form-label">Retailer Code</label>
                     <div class="col-sm-9">
-                        <input id="retailer_code" name="retailer_code" value="{{ old('retailer_code') }}" class="form-control" type="text" placeholder="Type retailer code...">
-                        <small class="text-muted">একটি রিটেইলার কোড প্রদান করুন।</small>
-                        @error('retailer_code') <p class="text-danger">{{ $message }}</p> @enderror
+                        <input id="retailer_code" name="retailer_code" value="{{ old('retailer_code') }}" class="form-control" type="text" placeholder="রিটেইলার কোড টাইপ করুন...">
+                        @error('retailer_code') <small class="text-danger">{{ $message }}</small> @else <small class="text-muted">একটি রিটেইলার কোড প্রদান করুন।</small> @enderror
                     </div>
                 </div>
 
@@ -24,14 +23,13 @@
                     <label for="flag" class="col-sm-3 col-form-label">Flag</label>
                     <div class="col-sm-9">
                         <select name="flag" class="form-select" id="flag">
-                            <option value="">-- Select Flag --</option>
-                            <option value="rso">RS0</option>
-                            <option value="bp">BP</option>
-                            <option value="cm">CM</option>
-                            <option value="drc">DRC</option>
+                            <option value="">-- ফ্লাগ নির্বাচন --</option>
+                            <option value="rso">আর এস ও</option>
+                            <option value="bp">বিপি</option>
+                            <option value="cm">সি এম</option>
+                            <option value="drc">ডি আর সি</option>
                         </select>
-                        <small class="text-muted">একটি ফ্ল্যাগ নির্বাচন করুন।</small>
-                        @error('flag') <p class="text-danger">{{ $message }}</p> @enderror
+                        @error('flag') <small class="text-danger">{{ $message }}</small> @else <small class="text-muted">একটি ফ্ল্যাগ নির্বাচন করুন।</small> @enderror
                     </div>
                 </div>
 
@@ -40,13 +38,16 @@
                     <label for="user_id" class="col-sm-3 col-form-label">User</label>
                     <div class="col-sm-9">
                         <select name="user_id" class="select-2 form-select" id="user_id">
-                            <option value="">-- Select User --</option>
+                            <option value="">-- ব্যাবহারকারী নির্বাচন --</option>
                             @foreach ($users as $user)
-                            <option value="{{ $user->id }}">{{ Str::upper($user->role) .' - '. $user->name }}</option>
+                            <option value="{{ $user->id }}">
+                                {{ Str::upper($user->role) .' - ' }}
+                                {{ optional(\App\Models\Bp::firstWhere('user_id', $user->id))->pool_number }}
+                                {{ $user->name }}
+                            </option>
                             @endforeach
                         </select>
-                        <small class="text-muted">একজন ব্যাবহারকারী নির্বাচন করুন।</small>
-                        @error('user_id') <p class="text-danger">{{ $message }}</p> @enderror
+                        @error('user_id') <small class="text-danger">{{ $message }}</small> @else <small class="text-muted">একজন ব্যাবহারকারী নির্বাচন করুন।</small> @enderror
                     </div>
                 </div>
 
@@ -54,9 +55,8 @@
                 <div class="row mb-3">
                     <label for="remarks" class="col-sm-3 col-form-label">Remarks</label>
                     <div class="col-sm-9">
-                        <input id="remarks" name="remarks" value="{{ old('remarks') }}" class="form-control" type="text" placeholder="Type remarks...">
-                        <small class="text-muted">কোন অতিরিক্ত তথ্য থাকলে সেটি প্রদান করুন।</small>
-                        @error('remarks') <p class="text-danger">{{ $message }}</p> @enderror
+                        <input id="remarks" name="remarks" value="{{ old('remarks') }}" class="form-control" type="text" placeholder="মন্তব্য...">
+                        @error('remarks') <small class="text-danger">{{ $message }}</small> @else <small class="text-muted">কোন অতিরিক্ত তথ্য থাকলে সেটি প্রদান করুন।</small> @enderror
                     </div>
                 </div>
 
