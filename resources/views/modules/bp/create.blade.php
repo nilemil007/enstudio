@@ -17,7 +17,7 @@
                         <div class="row mb-3">
                             <label for="dd_house_id" class="col-sm-3 col-form-label">Distribution House ({{ count($houses) }})</label>
                             <div class="col-sm-9">
-                                <select name="dd_house_id" class="select-2 form-select @error('dd_house_id') is-invalid @enderror" id="dd_house_id">
+                                <select name="dd_house_id" class="select-2 form-select" id="dd_house_id">
                                     <option value="">-- Select Distribution House --</option>
                                     @if(count($houses) > 0)
                                         @foreach($houses as $house)
@@ -33,7 +33,7 @@
                         <div class="row mb-3">
                             <label for="get_supervisor" class="col-sm-3 col-form-label">Supervisor</label>
                             <div class="col-sm-9">
-                                <select name="supervisor_id" class="select-2 form-select @error('supervisor_id') is-invalid @enderror" id="get_supervisor">
+                                <select name="supervisor_id" class="select-2 form-select" id="get_supervisor">
                                     <option value="">-- Select Supervisor --</option>
                                 </select>
                                 @error('supervisor_id') <span class="text-danger">{{ $message }}</span> @enderror
@@ -44,7 +44,7 @@
                         <div class="row mb-3">
                             <label for="get_user" class="col-sm-3 col-form-label">User</label>
                             <div class="col-sm-9">
-                                <select name="user_id" class="select-2 form-select @error('user_id') is-invalid @enderror" id="get_user">
+                                <select name="user_id" class="select-2 form-select" id="get_user">
                                     <option value="">-- Select User --</option>
                                 </select>
                                 @error('user_id') <span class="text-danger">{{ $message }}</span> @enderror
@@ -346,214 +346,39 @@
                         $('#get_user').html('<option value="">-- Select User --</option>');
                     }
 
-                    // Get supervisor by dd house
+                    // Get supervisor and user by dd house
                     $.ajax({
-                        url: "{{ route('bp.get.supervisors.by.dd.house') }}/" + houseId,
+                        url: "{{ route('bp.get.supervisors.users') }}/" + houseId,
                         type: 'POST',
                         dataType: 'JSON',
-                        success: function (response){
+                        beforeSend: function (){
                             $('#get_supervisor').find('option:not(:first)').remove();
-
+                            $('#get_user').find('option:not(:first)').remove();
+                        },
+                        success: function (response){
                             $.each(response.supervisors, function (key, value){
                                 $('#get_supervisor').append('<option value="'+ value.id +'">' + value.pool_number+' - '+value.user.name + '</option>')
                             });
-                        }
-                    });
 
-                    // Get user by dd house
-                    $.ajax({
-                        url: "{{ route('bp.get.user.by.dd.house') }}/" + houseId,
-                        type: 'POST',
-                        dataType: 'JSON',
-                        success: function (response){
-                            $('#get_user').find('option:not(:first)').remove();
-
-                            $.each(response.user, function (key, value){
-                                $('#get_user').append('<option value="'+ value.id +'">' + value.phone + ' - ' + value.name + '</option>')
+                            $.each(response.users, function (key, value){
+                                $('#get_user').append('<option value="'+ value.id +'">' + value.phone+' - '+value.name + '</option>')
                             });
                         }
                     });
                 });
 
-                // Create BP
-                $(document).on('submit','#bpForm',function (e){
-                    e.preventDefault();
+                $("#retailerForm").validate({
 
-                    $.ajax({
-                        url: $(this).attr('action'),
-                        type: $(this).attr('method'),
-                        data: new FormData(this),
-                        processData: false,
-                        contentType: false,
-                        beforeSend: function (){
-                            $('#bpErrMsg').addClass('d-none').find('li').remove();
-                            $('.btn-submit').prop('disabled', true).text('Creating...').append('<img src="{{ url('public/assets/images/gif/DzUd.gif') }}" alt="" width="18px">');
+                    rules: {
+                        cluster_name: {
+                            required: true,
+                            maxlength: 30,
                         },
-                        success: function (response){
-                            $('.btn-submit').prop('disabled', false).text('Create New BP');
-                            Swal.fire(
-                                'Success!',
-                                response.success,
-                                'success',
-                            ).then((result) => {
-                                window.location.href = "{{ route('bp.index') }}";
-                            });
-                        },
-                        error: function (e){
-                            const err = JSON.parse(e.responseText);
+                    },
+                    messages: {
 
-                            $.each(err.errors,function (key,value){
-                                $('.err-msg').removeClass('d-none').append('<li>' + value + '</li>');
-                            });
-
-                            $('.btn-submit').prop('disabled', false).text('Create New BP');
-                        },
-                    });
+                    },
                 });
-
-                // Import Bp
-                // $(document).on('submit','.import-bp',function (e){
-                //     e.preventDefault();
-
-                //     $.ajax({
-                //         url: $(this).attr('action'),
-                //         type: $(this).attr('method'),
-                //         data: new FormData(this),
-                //         processData: false,
-                //         contentType: false,
-                //         beforeSend: function (){
-                //             $('.btn-import-bp').prop('disabled', true).text('Importing...').append('<img src="{{ url('public/assets/images/gif/DzUd.gif') }}" alt="" width="18px">');
-                //         },
-                //         success: function (response){
-                //             $('.btn-import-bp').prop('disabled', false).text('Import BP');
-                //             Swal.fire(
-                //                 'Success!',
-                //                 response.success,
-                //                 'success',
-                //             ).then((result) => {
-                //                 window.location.href = "{{ route('bp.index') }}";
-                //             });
-                //         },
-                //         error: function (e){
-                //             const err = JSON.parse(e.responseText);
-
-                //             $.each(err.errors,function (key,value){
-                //                 $('.err-msg').removeClass('d-none').append('<li>' + value + '</li>');
-                //             });
-
-                //             $('.btn-import-bp').prop('disabled', false).text('Import BP');
-                //         },
-                //     });
-                // });
-
-                // $("#retailerForm").validate({
-                //
-                //     rules: {
-                //         cluster_name: {
-                //             required: true,
-                //             maxlength: 30,
-                //         },
-                //         region: {
-                //             required: true,
-                //             maxlength: 20,
-                //         },
-                //         code: {
-                //             required: true,
-                //             maxlength: 10,
-                //         },
-                //         name: {
-                //             required: true,
-                //             maxlength: 100,
-                //             minlength: 3,
-                //         },
-                //         email: {
-                //             required: true,
-                //             email: true,
-                //         },
-                //         district: {
-                //             required: true,
-                //             maxlength: 20,
-                //         },
-                //         address: {
-                //             required: true,
-                //             maxlength: 150,
-                //         },
-                //         proprietor_name: {
-                //             required: true,
-                //             maxlength: 100,
-                //             minlength: 3,
-                //         },
-                //         proprietor_number: {
-                //             required: true,
-                //             number: true,
-                //             maxlength: 11,
-                //             minlength: 11,
-                //         },
-                //         poc_name: {
-                //             required: true,
-                //             maxlength: 100,
-                //             minlength: 3,
-                //         },
-                //         poc_number: {
-                //             required: true,
-                //             number: true,
-                //             maxlength: 11,
-                //             minlength: 11,
-                //         },
-                //         tin_number: {
-                //             required: true,
-                //         },
-                //         bin_number: {
-                //             required: true,
-                //         },
-                //         latitude: {
-                //             pattern: /^[-]?(([0-8]?[0-9])\.(\d+))|(90(\.0+)?)$/
-                //         },
-                //         longitude: {
-                //             pattern: /^[-]?((((1[0-7][0-9])|([0-9]?[0-9]))\.(\d+))|180(\.0+)?)$/
-                //         },
-                //         bts_code: {
-                //             required: true,
-                //             minlength: 7,
-                //         },
-                //         lifting_date: {
-                //             required: true,
-                //         },
-                //     },
-                //     messages: {
-                //
-                //     },
-                //     errorPlacement: function(error, element){
-                //         error.addClass('invalid-feedback');
-                //
-                //         if (element.parent('.input-group').length) {
-                //             error.insertAfter(element.parent());
-                //         }
-                //         else if (element.prop('type') === 'radio' && element.parent('.radio-inline').length) {
-                //             error.insertAfter(element.parent().parent());
-                //         }
-                //         else if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
-                //             error.appendTo(element.parent().parent());
-                //         }
-                //         else {
-                //             error.insertAfter(element);
-                //         }
-                //     },
-                //     highlight: function(element, errorClass){
-                //         if ($(element).prop('type') != 'checkbox' && $(element).prop('type') != 'radio') {
-                //             $( element ).addClass( "is-invalid" );
-                //         }
-                //     },
-                //     unhighlight: function(element, errorClass){
-                //         if ($(element).prop('type') != 'checkbox' && $(element).prop('type') != 'radio') {
-                //             $( element ).removeClass( "is-invalid" );
-                //         }
-                //     },
-                //     submitHandler: function(form) {
-                //         form.submit();
-                //     },
-                // });
-
             });
         </script>
     @endpush

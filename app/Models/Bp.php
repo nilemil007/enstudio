@@ -24,6 +24,7 @@ class Bp extends Model
         'supervisor_id',
         'response_id',
         'type',
+        'name',
         'pool_number',
         'personal_number',
         'tmp_personal_number',

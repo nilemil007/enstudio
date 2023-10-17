@@ -99,10 +99,8 @@ Route::middleware(['auth'])->group(function (){
         Route::post('/import','import')->name('import');
         // Download sample file
         Route::get('/sample-file-download','sampleFileDownload')->name('sample.file.download');
-        // Get supervisors by dd house
-        Route::post('/get_supervisors_by_dd_house/{house_id?}', 'getSupervisorsByDdHouse')->name('get.supervisors.by.dd.house');
-        // Get user by dd house
-        Route::post('/get_user_by_dd_house/{house_id?}', 'getUserByDdHouse')->name('get.user.by.dd.house');
+        // Get supervisors and users by dd house
+        Route::post('/get_supervisors_users/{house_id?}', 'getSupervisorsAndUsers')->name('get.supervisors.users');
     });
 
     // Route Additional Routes

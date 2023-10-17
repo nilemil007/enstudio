@@ -45,7 +45,7 @@ class BpController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(BpStoreRequest $request): JsonResponse
+    public function store(BpStoreRequest $request): RedirectResponse
     {
         $data = $request->validated();
 
@@ -58,7 +58,7 @@ class BpController extends Controller
         }
 
         Bp::create($data);
-        return Response::json(['success' => 'New BP created successfully.']);
+        return to_route('bp.index')->with('success','New BP created successfully.');
     }
 
     /**
@@ -76,14 +76,15 @@ class BpController extends Controller
     {
         $houses = DdHouse::all();
         $supervisors = Supervisor::where('id', $bp->supervisor_id)->get();
-        $users = User::where('role', 'bp')->get();
+        $userId = Bp::whereNotNull('user_id')->pluck('user_id');
+        $users = User::where('role', 'bp')->whereNotIn('id', $userId)->get();
         return view('modules.bp.edit', compact('houses','supervisors','users','bp'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(BpUpdateRequest $request, Bp $bp): JsonResponse
+    public function update(BpUpdateRequest $request, Bp $bp): RedirectResponse
     {
         $brandPromoter = $request->validated();
 
@@ -101,7 +102,7 @@ class BpController extends Controller
         }
 
         $bp->update($brandPromoter);
-        return Response::json(['success' => 'BP updated successfully.']);
+        return to_route('bp.index')->with('success','BP updated successfully.');
     }
 
     /**
@@ -143,7 +144,7 @@ class BpController extends Controller
             return to_route('bp.index')->with('success','BP imported successfully.');
 
         } catch (ValidationException $e) {
-            toastr('BP imported failed.','error','Error!');
+//            toastr('BP imported failed.','error','Error!');
             return to_route('bp.create')->with('import_errors', $e->failures())->with('error','BP imported failed.');
         }
     }
@@ -151,26 +152,23 @@ class BpController extends Controller
     /**
      * Get supervisors by dd house
      */
-    public function getSupervisorsByDdHouse($house_id): JsonResponse
-    {
-        return Response::json(['supervisors' => Supervisor::with('user')
-            ->where('dd_house_id',$house_id)
-            ->where('status', 1)
-            ->get()
-        ]);
-    }
-
-    /**
-     * Get user by dd house
-     */
-    public function getUserByDdHouse($house_id): JsonResponse
+    public function getSupervisorsAndUsers($house_id): JsonResponse
     {
         $userId = Bp::whereNotNull('user_id')->pluck('user_id');
-        return Response::json(['user' => User::whereNotIn('id', $userId)
-            ->where('dd_house',$house_id)
-            ->where('role', 'bp')
+
+        return Response::json([
+            'supervisors' => Supervisor::with('user')
+            ->where('dd_house_id',$house_id)
             ->where('status', 1)
-            ->get()
+            ->get(),
+
+            'users' => User::whereNotIn('id', $userId)
+                ->whereHas('ddHouse', function ($query) use ($house_id){
+                    $query->where('dd_house_id', $house_id);
+                })
+                ->where('role', 'bp')
+                ->where('status', 1)
+                ->get(),
         ]);
     }
 }
