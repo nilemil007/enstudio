@@ -33,23 +33,25 @@
     <div class="card">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <h4 class="card-title">Trade Campaign Retailer Code(s)</h4>
-                <span>
-                    <a href="{{ route('tcrc.create') }}" class="btn btn-sm btn-primary">Add new</a>
-                    @if(count($tcrc) > 1)
-                        <a id="deleteAllTcrc" href="{{ route('tcrc.delete.all') }}" class="btn btn-sm btn-danger">Delete all</a>
+                <div class="d-flex align-items-center">
+                    <h4 class="card-title mb-0">Trade Campaign Retailer Code(s)</h4>
+                    @if(count($trashed) > 0)
+                        <a href="{{ route('tcrc.trash') }}" class="text-danger" style="margin-left: 5px;">Trash ({{ $trashed->count() }})</a>
                     @endif
+                </div>
+                <span>
+                    <a href="{{ route('tcrc.create') }}" class="btn btn-sm btn-primary">Add New</a>
                 </span>
             </div>
             <div class="table-responsive">
-                <table id="tcrcTbl" class="table table-sm table-bordered table-hover card-table table-vcenter text-nowrap mt-3 mb-3">
+                <table id="tcrcTbl" class="table table-sm table-bordered table-hover card-table table-vcenter text-center text-nowrap mt-3 mb-3">
                     <thead>
                     <tr>
                         <th class="w-1">No.</th>
                         <th>DD Code</th>
                         <th>Retailer Code</th>
                         <th>Flag</th>
-                        <th>Status</th>
+                        <th>Remarks</th>
                         <th>Created At</th>
                         <th>Action</th>
                     </tr>
@@ -58,13 +60,14 @@
                     @foreach( $tcrc as $sl => $tc )
                         <tr>
                             <td>{{ ++$sl }}</td>
-                            <td>{{ $tc->retailer->ddHouse->code }}</td>
                             <td>
-                                {{ $tc->retailer->code }}
-                                <div class="text-muted">{{ $tc->retailer->itop_number }}</div>
+                                {{ App\Models\DdHouse::firstWhere('id', App\Models\Retailer::firstWhere('code', $tc->retailer_code)->dd_house_id)->code }}
                             </td>
-                            <td>{{ $tc->flag }}</td>
-                            <td>{{ $tc->status }}</td>
+                            <td>
+                                {{ $tc->retailer_code }}
+                            </td>
+                            <td>{{ Str::upper($tc->flag) }}</td>
+                            <td>{{ $tc->remarks }}</td>
                             <td>
                                 {{ $tc->created_at->diffForHumans() }}
                                 <div class="text-muted">{{ $tc->created_at->toDayDateTimeString() }}</div>
@@ -73,9 +76,21 @@
                                 <!-- Edit -->
                                 <a href="{{ route('tcrc.edit', $tc->id) }}" class="btn btn-sm btn-primary">Edit</a>
 
+                                <!-- Move to trash -->
+                                <a href="{{ route('tcrc.destroy', $tc->id) }}" id="deleteTcrc" class="btn btn-sm btn-danger">Delete</a>
+                                {{-- <form style="margin-left: 5px;" action="{{ route('tcrc.destroy', $tc->id) }}" method="POST">
+                                    @csrf @method('DELETE')
+                                    <button onclick="return confirm('Are you sure you want to delete this user?');" type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form> --}}
+                            </td>
+
+                            {{-- <td>
+                                <!-- Edit -->
+                                <a href="{{ route('tcrc.edit', $tc->id) }}" class="btn btn-sm btn-primary">Edit</a>
+
                                 <!-- Delete -->
                                 <a href="{{ route('tcrc.destroy', $tc->id) }}" id="deleteTcrc" class="btn btn-sm btn-danger">Delete</a>
-                            </td>
+                            </td> --}}
                         </tr>
                     @endforeach
                     </tbody>
@@ -89,11 +104,6 @@
             new DataTable('#tcrcTbl');
 
             $(document).ready(function(){
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
-                    }
-                });
 
                 // Single delete
                 $(document).on('click','#deleteTcrc',function(e){
@@ -123,36 +133,8 @@
                         }
                     });
                 });
-
-                // Delete all
-                $(document).on('click','#deleteAllTcrc',function(e){
-                    e.preventDefault();
-
-                    Swal.fire({
-                        title: 'Are you sure?',
-                        text: "Delete All TCRC?",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonText: 'Yes, delete it!'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            $.ajax({
-                                url: $(this).attr('href'),
-                                type: 'POST',
-                                success: function (response){
-                                    Swal.fire(
-                                        'Deleted!',
-                                        response.success,
-                                        'success',
-                                    ).then((result) => {
-                                        location.reload();
-                                    });
-                                },
-                            });
-                        }
-                    });
-                });
             });
         </script>
     @endpush
+    
 </x-app-layout>

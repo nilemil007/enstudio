@@ -7,7 +7,6 @@ use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Imports\UsersImport;
 use App\Models\DdHouse;
-use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -20,7 +19,6 @@ use Illuminate\Support\Facades\Response;
 use Intervention\Image\Facades\Image;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Validators\ValidationException;
-use RealRashid\SweetAlert\Facades\Alert;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class UserController extends Controller
@@ -165,7 +163,7 @@ class UserController extends Controller
     }
 
     /**
-     * Trash users.
+     * Trash.
      */
     public function trash(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
@@ -174,7 +172,7 @@ class UserController extends Controller
     }
 
     /**
-     * Restore users.
+     * Restore.
      */
     public function restore($id): RedirectResponse
     {

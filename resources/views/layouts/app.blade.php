@@ -57,6 +57,29 @@
 
         <!-- partial:_content -->
         <div class="page-content">
+
+            <!-- Sessions notifications -->
+            @switch(session())
+                @case('success')
+                    <p>{{ session()->get('success') }}</p>
+                @break
+
+                @case('warning')
+                    <p>{{ session()->get('warning') }}</p>
+                @break
+
+                @case('danger')
+                    <p>{{ session()->get('danger') }}</p>
+                @break
+
+                @case('info')
+                    <p>{{ session()->get('info') }}</p>
+                @break
+
+                @default
+
+            @endswitch
+
             {{ $slot }}
         </div>
 

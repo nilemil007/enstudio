@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @method static create(array $only)
@@ -16,9 +17,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class TradeCampaignRetailerCode extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
-    protected $fillable = ['user_id','retailer_id','flag','status'];
+    protected $fillable = ['user_id','retailer_code','flag','remarks'];
 
     /**
      * TCRC belongs to a retailer.

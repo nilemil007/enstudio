@@ -8,7 +8,6 @@ use App\Models\User;
 use App\Models\Route;
 use App\Models\DdHouse;
 use App\Models\Supervisor;
-use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -17,10 +16,8 @@ use App\Http\Requests\RsoStoreRequest;
 use App\Http\Requests\RsoUpdateRequest;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 use Maatwebsite\Excel\Facades\Excel;
-use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
@@ -31,8 +28,8 @@ class RsoController extends Controller
      */
     public function index(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $rsos = Rso::latest()->get();
-        $trashed = Rso::onlyTrashed()->latest()->get();
+        $rsos       = Rso::latest()->get();
+        $trashed    = Rso::onlyTrashed()->latest()->get();
         return view('modules.rso.index', compact('rsos','trashed'));
     }
 
@@ -43,7 +40,7 @@ class RsoController extends Controller
     {
         $houses = DdHouse::all();
         $userId = Rso::whereNotNull('user_id')->pluck('user_id');
-        $users = User::where('role','rso')->whereNotIn('id', $userId)->orderBy('name','asc')->get();
+        $users  = User::where('role','rso')->whereNotIn('id', $userId)->orderBy('name','asc')->get();
 
         return view('modules.rso.create', compact('houses','users'));
     }
@@ -53,7 +50,7 @@ class RsoController extends Controller
      */
     public function store(RsoStoreRequest $request): RedirectResponse
     {
-        $id = Rso::create($request->validated())->id;
+        $id     = Rso::create($request->validated())->id;
         $newRso = Rso::findOrFail($id);
         $newRso->route()->attach($request->input('routes'));
         toastr('Rso created successfully.','success','Success');
@@ -166,7 +163,7 @@ class RsoController extends Controller
      */
     public function sampleFileDownload(): BinaryFileResponse
     {
-        return Response::download(public_path('download/sample/Rso List.xlsx'));
+        return Response::download(public_path('download/sample/Rso.xlsx'));
     }
 
     /**

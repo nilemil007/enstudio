@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Retailer;
 use App\Models\TradeCampaignRetailerCode;
 use App\Models\User;
 use Illuminate\Contracts\View\Factory;
@@ -11,9 +10,8 @@ use Illuminate\Foundation\Application;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\Validator;
-use RealRashid\SweetAlert\Facades\Alert;
 
 class TradeCampaignRetailerCodeController extends Controller
 {
@@ -22,8 +20,9 @@ class TradeCampaignRetailerCodeController extends Controller
      */
     public function index(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
+        $trashed = TradeCampaignRetailerCode::onlyTrashed()->latest()->get();
         $tcrc = TradeCampaignRetailerCode::latest()->get();
-        return view('modules.trade_campaign_retailer_code.index', compact('tcrc'));
+        return view('modules.trade_campaign_retailer_code.index', compact('tcrc','trashed'));
     }
 
     /**
@@ -31,34 +30,39 @@ class TradeCampaignRetailerCodeController extends Controller
      */
     public function create()
     {
-        $tcrcId = TradeCampaignRetailerCode::whereNotNull('retailer_id')->pluck('retailer_id');
-        $retailers = Retailer::whereNotIn('id', $tcrcId)->get();
-        return view('modules.trade_campaign_retailer_code.create', compact('retailers'));
+        $users = User::where([
+            ['role','!=','superadmin'],
+            ['role','!=','manager'],
+            ['role','!=','zm'],
+            ['role','!=','accountant'],
+        ])->orderBy('role', 'ASC')->get();
+        return view('modules.trade_campaign_retailer_code.create', compact('users'));
     }
 
     /**
      * Store a newly created resource in storage.
-     * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): JsonResponse
+    public function store(Request $request)
     {
         $tcrc = $this->validate($request,[
             'user_id'       => ['required'],
-            'retailer_id'   => ['required','unique:trade_campaign_retailer_codes,retailer_id'],
+            'retailer_code' => ['required','unique:trade_campaign_retailer_codes,retailer_code'],
             'flag'          => ['required'],
+            'remarks'       => ['nullable'],
         ],[
-            'user_id.required'      => 'You must select a :attribute.',
-            'retailer_id.required'  => 'You must select a :attribute.',
-            'retailer_id.unique'    => 'This :attribute already exist.',
-            'flag.required'         => 'You must select a :attribute.',
+            'user_id.required'          => 'আপনাকে অবশ্যই একজন :attribute নির্বাচন করতে হবে।',
+            'retailer_code.required'    => 'আপনাকে অবশ্যই একটি :attribute প্রদান করতে হবে।',
+            'retailer_code.unique'      => 'এই :attributeটি পূর্বে প্রদান করা হয়েছে। দয়াকরে এটি পরিবর্তন করুন।',
+            'flag.required'             => 'আপনাকে অবশ্যই একটি :attribute প্রদান করতে হবে।',
         ],[
-            'user_id'       => 'user',
-            'retailer_id'   => 'retailer code',
+            'user_id'       => 'ব্যাবহারকারী',
+            'retailer_code' => 'রিটেইলার কোড',
+            'flag'          => 'ফ্ল্যাগ',
         ]);
 
         TradeCampaignRetailerCode::create($tcrc);
 
-        return Response::json(['success' => 'TCRC created successfully.']);
+        return to_route('tcrc.create')->with('success', 'New TCRC code selected successfully.');
     }
 
     /**
@@ -74,52 +78,89 @@ class TradeCampaignRetailerCodeController extends Controller
      */
     public function edit(TradeCampaignRetailerCode $tcrc): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $retailers = Retailer::all();
-        return view('modules.trade_campaign_retailer_code.edit', compact('tcrc','retailers'));
+        $users = User::where([
+            ['role','!=','superadmin'],
+            ['role','!=','manager'],
+            ['role','!=','zm'],
+            ['role','!=','accountant'],
+        ])->orderBy('role', 'ASC')->get();
+        return view('modules.trade_campaign_retailer_code.edit', compact('tcrc','users'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, TradeCampaignRetailerCode $tcrc): JsonResponse
+    public function update(Request $request, TradeCampaignRetailerCode $tcrc)
     {
-        $data = $request->validate([
-            'retailer_id'   => ['required'],
+        $data = $this->validate($request,[
+            'user_id'       => ['required'],
+            'retailer_code' => ['required','unique:trade_campaign_retailer_codes,retailer_code,'. request()->segment(2)],
             'flag'          => ['required'],
+            'remarks'       => ['nullable'],
+        ],[
+            'user_id.required'          => 'আপনাকে অবশ্যই একজন :attribute নির্বাচন করতে হবে।',
+            'retailer_code.required'    => 'আপনাকে অবশ্যই একটি :attribute প্রদান করতে হবে।',
+            'retailer_code.unique'      => 'এই :attributeটি পূর্বে প্রদান করা হয়েছে। দয়াকরে এটি পরিবর্তন করুন।',
+            'flag.required'             => 'আপনাকে অবশ্যই একটি :attribute প্রদান করতে হবে।',
+        ],[
+            'user_id'       => 'ব্যাবহারকারী',
+            'retailer_code' => 'রিটেইলার কোড',
+            'flag'          => 'ফ্ল্যাগ',
         ]);
 
         $tcrc->update($data);
-        return Response::json(['success' => 'TCRC updated successfully.']);
+
+        return to_route('tcrc.index')->with('success', 'Record updated successfully.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(TradeCampaignRetailerCode $tcrc): JsonResponse
+    public function destroy(TradeCampaignRetailerCode $tcrc)
     {
         try {
             $tcrc->delete();
-            return response()->json(['success' => 'TCRC has been deleted successfully.']);
+            return Response::json(['success' => 'This record has been temporarily deleted.']);
         }catch (\Exception $exception){
             dd($exception);
+            return to_route('tcrc.index')->with('danger','Record not delete.');
         }
     }
 
     /**
-     * Delete all tcrc.
+     * Trash.
      */
-    public function deleteAll(): JsonResponse
+    public function trash(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        try {
-            TradeCampaignRetailerCode::truncate();
-            return response()->json(['success' => 'All TCRC has been deleted successfully.']);
-        }catch (\Exception $exception){
-            dd($exception);
-        }
+        $trashed = TradeCampaignRetailerCode::onlyTrashed()->latest()->paginate(10);
+        return view('modules.trade_campaign_retailer_code.trash', compact('trashed'));
     }
 
-    public function getUsersByFlag($flag): JsonResponse
+    /**
+     * Restore.
+     */
+    public function restore($id): RedirectResponse
     {
-        return Response::json(['users' => User::with('rso')->where('role', $flag)->where('status', 1)->get()]);
+        TradeCampaignRetailerCode::withTrashed()->findOrFail($id)->restore();
+        return to_route('tcrc.index')->with('success','Record restored successfully.');
+    }
+
+    /**
+     * Permanently Delete.
+     */
+    public function permanentlyDelete($id)
+    {
+        try {
+            // Find and permanently delete trashed user.
+            TradeCampaignRetailerCode::onlyTrashed()->findOrFail($id)->forceDelete();
+
+            // Back to index page.
+            return Response::json(['success' => 'This record has been permanently deleted.']);
+        }catch (\Exception $exception){
+            dd($exception);
+            return to_route('tcrc.index')->with('danger','Record not delete.');
+        }
+
+
     }
 }

@@ -118,19 +118,6 @@ class RetailerController extends Controller
     }
 
     /**
-     * Delete all retailer.
-     */
-    public function deleteAll(): JsonResponse
-    {
-        try {
-            Retailer::query()->delete();
-            return response()->json(['success' => 'All retailer has been deleted successfully.']);
-        }catch (\Exception $exception){
-            dd($exception);
-        }
-    }
-
-    /**
      * Import retailer.
      */
     public function import(Request $request): JsonResponse|RedirectResponse
@@ -138,7 +125,7 @@ class RetailerController extends Controller
         try {
             if (Rso::all()->count() < 1)
             {
-                Alert::warning('Warning', 'No RS0 found. Create rso before import retailers.');
+                toastr('No RS0 found. Create rso before import retailers.','warning','Warning');
                 return to_route('retailer.create');
             }
 
@@ -147,6 +134,7 @@ class RetailerController extends Controller
             return to_route('retailer.index')->with(['success' => 'Retailer imported successfully.']);
 
         } catch (ValidationException $e) {
+            toastr('No RS0 imported.','error','Error');
             return to_route('retailer.create')->with('import_errors', $e->failures());
         }
     }

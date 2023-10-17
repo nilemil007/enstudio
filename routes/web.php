@@ -151,10 +151,14 @@ Route::middleware(['auth'])->group(function (){
 
     // Trade Campaign Retailer Code Additional Routes
     Route::controller( TradeCampaignRetailerCodeController::class )->prefix('/tcrc')->name('tcrc.')->group(function (){
-        // Delete all
-        Route::post('/delete/all','deleteAll')->name('delete.all');
         // Get users by flag
         Route::post('/users/{flag?}','getUsersByFlag')->name('get.users');
+        // Move To Trash
+        Route::get('/trash','trash')->name('trash');
+        // Restore
+        Route::get('/restore/{id}','restore')->name('restore');
+        // Permanently Delete
+        Route::delete('/permanently-delete/{id}','permanentlyDelete')->name('permanently.delete');
     });
 
     // Scratch Card Serial Additional Routes

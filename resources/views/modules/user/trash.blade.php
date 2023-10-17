@@ -74,6 +74,9 @@
                 </table>
             </div>
         </div>
+        <div class="card-footer">
+            {{ $trashedUser->links('pagination::bootstrap-5') }}
+        </div>
     </div>
 
 </x-app-layout>
