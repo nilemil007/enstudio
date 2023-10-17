@@ -163,7 +163,5 @@ class TradeCampaignRetailerCodeController extends Controller
             dd($exception);
             return to_route('tcrc.index')->with('danger','Record not delete.');
         }
-
-
     }
 }

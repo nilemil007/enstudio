@@ -23,30 +23,30 @@ class BpStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id'           => ['required'],
-            'supervisor_id'     => ['required'],
+            'user_id'           => ['nullable'],
+            'supervisor_id'     => ['nullable'],
             'dd_house_id'       => ['required'],
-            'response_id'       => ['required','unique:bps'],
+            'response_id'       => ['nullable','unique:bps,response_id'],
             'type'              => ['required'],
-            'pool_number'       => ['required','numeric','digits: 11','unique:bps'],
-            'personal_number'   => ['required','numeric','digits: 11','unique:bps'],
-            'father_name'       => ['required','min: 3','max: 50','string'],
-            'mother_name'       => ['required','min: 3','max: 50','string'],
-            'division'          => ['required'],
-            'district'          => ['required'],
-            'thana'             => ['required'],
-            'address'           => ['required','max: 200'],
-            'blood_group'       => ['required'],
-            'account_number'    => ['required','unique:bps'],
-            'bank_name'         => ['required'],
-            'brunch_name'       => ['required'],
-            'salary'            => ['required','numeric'],
-            'education'         => ['required'],
-            'gender'            => ['required'],
-            'dob'               => ['required','date'],
-            'nid'               => ['required','numeric',new Nid,'unique:bps'],
-            'documents'         => ['required','mimes:pdf'],
-            'joining_date'      => ['required','date'],
+            'pool_number'       => ['required','digits: 11','unique:bps,pool_number'],
+            'personal_number'   => ['nullable','digits: 11','unique:bps,personal_number'],
+            'father_name'       => ['nullable','min: 3','max: 50','string'],
+            'mother_name'       => ['nullable','min: 3','max: 50','string'],
+            'division'          => ['nullable'],
+            'district'          => ['nullable'],
+            'thana'             => ['nullable'],
+            'address'           => ['nullable','max: 200'],
+            'blood_group'       => ['nullable'],
+            'account_number'    => ['nullable','unique:bps,account_number'],
+            'bank_name'         => ['nullable'],
+            'brunch_name'       => ['nullable'],
+            'salary'            => ['nullable','numeric'],
+            'education'         => ['nullable'],
+            'gender'            => ['nullable'],
+            'dob'               => ['nullable','date'],
+            'nid'               => ['nullable',new Nid,'unique:bps,nid'],
+            'documents'         => ['nullable','mimes:pdf'],
+            'joining_date'      => ['nullable','date'],
         ];
     }
 
@@ -58,7 +58,7 @@ class BpStoreRequest extends FormRequest
      public function messages(): array
      {
          return [
-             'user_id.required' => 'The rso field is required.',
+             'user_id.required' => 'The user field is required.',
          ];
      }
 

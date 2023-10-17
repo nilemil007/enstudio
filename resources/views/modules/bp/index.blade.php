@@ -32,7 +32,7 @@
                         <tr>
                             <td><span class="text-muted">{{ ++$sl }}</span></td>
                             <td>{{ $bp->ddHouse->code }}</td>
-                            <td>{{ $bp->user->name }}</td>
+                            <td>{{ empty($bp->user->name) ? null : $bp->user->name }}</td>
                             <td>{{ $bp->pool_number }}</td>
                             <td>{{ $bp->joining_date->toFormattedDateString() }}</td>
                             <td>

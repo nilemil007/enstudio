@@ -2,19 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\BpStoreRequest;
-use App\Http\Requests\BpUpdateRequest;
 use App\Models\Bp;
-use App\Models\DdHouse;
-use App\Models\Supervisor;
 use App\Models\User;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
-use Illuminate\Foundation\Application;
-use Illuminate\Http\JsonResponse;
+use App\Models\DdHouse;
+use App\Imports\BpImport;
+use App\Models\Supervisor;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\File;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Http\Requests\BpStoreRequest;
+use Illuminate\Http\RedirectResponse;
+use App\Http\Requests\BpUpdateRequest;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Validation\ValidationException;
 
 class BpController extends Controller
 {
@@ -83,8 +87,6 @@ class BpController extends Controller
     {
         $brandPromoter = $request->validated();
 
-//        dd();
-
         if ($request->hasFile('documents')) {
 
             if ( File::exists( public_path('assets/documents/bp/'.basename( $bp->documents ))))
@@ -127,6 +129,22 @@ class BpController extends Controller
             return response()->json(['success' => 'All bp has been deleted successfully.']);
         }catch (\Exception $exception){
             dd($exception);
+        }
+    }
+
+    /**
+     * Import bp.
+     */
+    public function import(Request $request): RedirectResponse
+    {
+        try {
+            Excel::import(new BpImport, $request->file('import_bp'));
+            // toastr('BP imported successfully.','success','Success');
+            return to_route('bp.index')->with('success','BP imported successfully.');
+
+        } catch (ValidationException $e) {
+            toastr('BP imported failed.','error','Error!');
+            return to_route('bp.create')->with('import_errors', $e->failures())->with('error','BP imported failed.');
         }
     }
 

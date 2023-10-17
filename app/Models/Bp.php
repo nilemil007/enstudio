@@ -70,6 +70,7 @@ class Bp extends Model
     protected $casts = [
         'joining_date'      => 'datetime',
         'resigning_date'    => 'datetime',
+        'dob'               => 'datetime',
     ];
 
     public function ddHouse(): BelongsTo

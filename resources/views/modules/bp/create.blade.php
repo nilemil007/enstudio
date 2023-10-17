@@ -299,38 +299,38 @@
             </div>
         </div>
 
-{{--        <div class="col-md-4">--}}
-{{--            <div class="card mb-3">--}}
-{{--                @if(session()->has('import_errors'))--}}
-{{--                    @foreach(session()->get('import_errors') as $failure)--}}
-{{--                        <div class="card-header">--}}
-{{--                            <div class="alert alert-danger">--}}
-{{--                                <p>BP: <strong>{{ $failure->values()['pool_number'] }}</strong></p>--}}
-{{--                                <p>Error type: <strong>{{ \Illuminate\Support\Str::title($failure->attribute()) }}</strong></p>--}}
-{{--                                <p>Error msg: {{ $failure->errors()[0] }} </p>--}}
-{{--                                <p>Row number : {{ $failure->row() }}</p>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    @endforeach--}}
-{{--                @endif--}}
+       <div class="col-md-4">
+           <div class="card mb-3">
+               @if(session()->has('import_errors'))
+                   @foreach(session()->get('import_errors') as $failure)
+                       <div class="card-header">
+                           <div class="alert alert-danger">
+                               <p>BP: <strong>{{ $failure->values()['pool_number'] }}</strong></p>
+                               <p>Error type: <strong>{{ \Illuminate\Support\Str::title($failure->attribute()) }}</strong></p>
+                               <p>Error msg: {{ $failure->errors()[0] }} </p>
+                               <p>Row number : {{ $failure->row() }}</p>
+                           </div>
+                       </div>
+                   @endforeach
+               @endif
 
-{{--                <div class="card-body">--}}
-{{--                    <h6 class="card-title">Import BP</h6>--}}
-{{--                    <form class="row gy-2 gx-3 align-items-center import-bp" action="{{ route('bp.import') }}" method="post" enctype="multipart/form-data">--}}
-{{--                        @csrf--}}
+               <div class="card-body">
+                   <h6 class="card-title">Import BP</h6>
+                   <form class="row gy-2 gx-3 align-items-center import-bp" action="{{ route('bp.import') }}" method="post" enctype="multipart/form-data">
+                       @csrf
 
-{{--                        <div class="col-12">--}}
-{{--                            <label class="visually-hidden" for="autoSizingInput">Name</label>--}}
-{{--                            <input name="import_bp" type="file" class="form-control" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" required>--}}
-{{--                        </div>--}}
-{{--                        <div class="col-12">--}}
-{{--                            <button type="submit" class="btn btn-sm btn-primary w-100 mt-2 btn-import-bp">Import BP</button>--}}
-{{--                        </div>--}}
-{{--                    </form>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--            <a href="{{ route('bp.sample.file.download') }}" class="nav-link text-muted">Download sample file.</a>--}}
-{{--        </div>--}}
+                       <div class="col-12">
+                           <label class="visually-hidden" for="autoSizingInput">Name</label>
+                           <input name="import_bp" type="file" class="form-control" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" required>
+                       </div>
+                       <div class="col-12">
+                           <button type="submit" class="btn btn-sm btn-primary w-100 mt-2 btn-import-bp">Import BP</button>
+                       </div>
+                   </form>
+               </div>
+           </div>
+           <a href="{{ route('bp.sample.file.download') }}" class="nav-link text-muted">Download sample file.</a>
+       </div>
     </div>
 
     @push('scripts')
@@ -412,39 +412,39 @@
                 });
 
                 // Import Bp
-                {{--$(document).on('submit','.import-bp',function (e){--}}
-                {{--    e.preventDefault();--}}
+                // $(document).on('submit','.import-bp',function (e){
+                //     e.preventDefault();
 
-                {{--    $.ajax({--}}
-                {{--        url: $(this).attr('action'),--}}
-                {{--        type: $(this).attr('method'),--}}
-                {{--        data: new FormData(this),--}}
-                {{--        processData: false,--}}
-                {{--        contentType: false,--}}
-                {{--        beforeSend: function (){--}}
-                {{--            $('.btn-import-bp').prop('disabled', true).text('Importing...').append('<img src="{{ url('public/assets/images/gif/DzUd.gif') }}" alt="" width="18px">');--}}
-                {{--        },--}}
-                {{--        success: function (response){--}}
-                {{--            $('.btn-import-bp').prop('disabled', false).text('Import BP');--}}
-                {{--            Swal.fire(--}}
-                {{--                'Success!',--}}
-                {{--                response.success,--}}
-                {{--                'success',--}}
-                {{--            ).then((result) => {--}}
-                {{--                window.location.href = "{{ route('bp.index') }}";--}}
-                {{--            });--}}
-                {{--        },--}}
-                {{--        error: function (e){--}}
-                {{--            const err = JSON.parse(e.responseText);--}}
+                //     $.ajax({
+                //         url: $(this).attr('action'),
+                //         type: $(this).attr('method'),
+                //         data: new FormData(this),
+                //         processData: false,
+                //         contentType: false,
+                //         beforeSend: function (){
+                //             $('.btn-import-bp').prop('disabled', true).text('Importing...').append('<img src="{{ url('public/assets/images/gif/DzUd.gif') }}" alt="" width="18px">');
+                //         },
+                //         success: function (response){
+                //             $('.btn-import-bp').prop('disabled', false).text('Import BP');
+                //             Swal.fire(
+                //                 'Success!',
+                //                 response.success,
+                //                 'success',
+                //             ).then((result) => {
+                //                 window.location.href = "{{ route('bp.index') }}";
+                //             });
+                //         },
+                //         error: function (e){
+                //             const err = JSON.parse(e.responseText);
 
-                {{--            $.each(err.errors,function (key,value){--}}
-                {{--                $('.err-msg').removeClass('d-none').append('<li>' + value + '</li>');--}}
-                {{--            });--}}
+                //             $.each(err.errors,function (key,value){
+                //                 $('.err-msg').removeClass('d-none').append('<li>' + value + '</li>');
+                //             });
 
-                {{--            $('.btn-import-bp').prop('disabled', false).text('Import BP');--}}
-                {{--        },--}}
-                {{--    });--}}
-                {{--});--}}
+                //             $('.btn-import-bp').prop('disabled', false).text('Import BP');
+                //         },
+                //     });
+                // });
 
                 // $("#retailerForm").validate({
                 //
