@@ -26,7 +26,7 @@ class BpUpdateRequest extends FormRequest
             'user_id'           => ['required'],
             'supervisor_id'     => ['required'],
             'dd_house_id'       => ['required'],
-            'response_id'       => ['required','unique:bps,response_id,'.request()->segment(2)],
+            'response_id'       => ['nullable','unique:bps,response_id,'.request()->segment(2)],
             'type'              => ['required'],
             'pool_number'       => ['required','numeric','digits: 11','unique:bps,pool_number,'.request()->segment(2)],
             'personal_number'   => ['nullable','numeric','digits: 11','unique:bps,personal_number,'.request()->segment(2)],
@@ -48,6 +48,20 @@ class BpUpdateRequest extends FormRequest
             'documents'         => ['sometimes','mimes:pdf'],
             'joining_date'      => ['nullable','date'],
             'resigning_date'    => ['nullable','date'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            //
+        ];
+    }
+
+    public function attributes(): array
+    {
+        return [
+            //
         ];
     }
 }

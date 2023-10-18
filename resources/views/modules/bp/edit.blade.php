@@ -57,7 +57,6 @@
                                 @endif
                             </select>
                             @error('user_id') <span class="text-danger">{{ $message }}</span> @enderror
-                            <small class="text-muted">User Left: <strong class="{{ count($users) < 1 ? 'text-danger' : 'text-success'}}">{{ count($users) }}</strong></small>
                         </div>
                     </div>
 

@@ -16,7 +16,7 @@
                 <div class="row mb-3">
                     <label for="dd_house_id" class="col-sm-3 col-form-label">Distribution House</label>
                     <div class="col-sm-9">
-                        <select name="dd_house_id" class="form-select @error('dd_house_id') is-invalid @enderror" id="dd_house_id">
+                        <select name="dd_house_id" class="select-2 form-select @error('dd_house_id') is-invalid @enderror" id="dd_house_id">
                             <option value="">-- Select Distribution House --</option>
                             @if(count($houses) > 0)
                                 @foreach($houses as $house)
@@ -32,7 +32,7 @@
                 <div class="row mb-3">
                     <label for="getSupervisor" class="col-sm-3 col-form-label">Supervisor</label>
                     <div class="col-sm-9">
-                        <select name="supervisor_id" class="form-select @error('supervisor_id') is-invalid @enderror" id="getSupervisor">
+                        <select name="supervisor_id" class="select-2 form-select @error('supervisor_id') is-invalid @enderror" id="getSupervisor">
                             <option value="">-- Select Supervisor --</option>
                             @if(count($supervisors) > 0)
                                 @foreach($supervisors as $supervisor)
@@ -48,7 +48,7 @@
                 <div class="row mb-3">
                     <label for="getUser" class="col-sm-3 col-form-label">User</label>
                     <div class="col-sm-9">
-                        <select name="user_id" class="form-select @error('user_id') is-invalid @enderror" id="getUser">
+                        <select name="user_id" class="select-2 form-select @error('user_id') is-invalid @enderror" id="getUser">
                             <option value="">-- Select User --</option>
                             @if(count($users) > 0)
                                 @foreach($users as $user)

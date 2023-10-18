@@ -25,7 +25,7 @@ class RsoStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id'           => ['required'],
+            'user_id'           => ['required','unique:rsos,user_id'],
             'supervisor_id'     => ['required'],
             'dd_house_id'       => ['required'],
             'rso_code'          => ['required','max:10','unique:rsos,rso_code'],

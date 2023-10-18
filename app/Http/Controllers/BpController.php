@@ -27,8 +27,9 @@ class BpController extends Controller
      */
     public function index(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $bps = Bp::orderBy('dd_house_id', 'ASC')->get();
-        return view('modules.bp.index', compact('bps'));
+        $trashed = Bp::onlyTrashed()->latest()->get();
+        $bps = Bp::latest()->get();
+        return view('modules.bp.index', compact('bps','trashed'));
     }
 
     /**
@@ -37,8 +38,7 @@ class BpController extends Controller
     public function create(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
         $houses = DdHouse::all();
-        $userId = Bp::whereNotNull('user_id')->pluck('user_id');
-        $users = User::where('role', 'bp')->whereNotIn('id', $userId)->get();
+        $users = User::where('role', 'bp')->get();
         return view('modules.bp.create', compact('houses','users'));
     }
 
@@ -76,8 +76,7 @@ class BpController extends Controller
     {
         $houses = DdHouse::all();
         $supervisors = Supervisor::where('id', $bp->supervisor_id)->get();
-        $userId = Bp::whereNotNull('user_id')->pluck('user_id');
-        $users = User::where('role', 'bp')->whereNotIn('id', $userId)->get();
+        $users = User::where('role', 'bp')->get();
         return view('modules.bp.edit', compact('houses','supervisors','users','bp'));
     }
 
@@ -110,13 +109,8 @@ class BpController extends Controller
      */
     public function destroy(Bp $bp): JsonResponse
     {
-        if ( File::exists( public_path('assets/documents/bp/'.basename( $bp->documents ))))
-        {
-            File::delete( public_path('assets/documents/bp/'.basename( $bp->documents )));
-        }
-
         $bp->delete();
-        return Response::json(['success' => 'BP deleted successfully.']);
+        return Response::json(['success' => 'This BP has been temporarily deleted.']);
     }
 
     /**
@@ -150,20 +144,57 @@ class BpController extends Controller
     }
 
     /**
+     * Trash.
+     */
+    public function trash(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
+    {
+        $trashed = Bp::onlyTrashed()->latest()->paginate(10);
+        return view('modules.bp.trash', compact('trashed'));
+    }
+
+    /**
+     * Restore.
+     */
+    public function restore($id): RedirectResponse
+    {
+        Bp::withTrashed()->findOrFail($id)->restore();
+        // toastr('User restored successfully.','success','Success');
+        return to_route('bp.index')->with('success','BP restored successfully.');
+    }
+
+    /**
+     * Permanently Delete.
+     */
+    public function permanentlyDelete($id): JsonResponse
+    {
+        // Find and permanently delete trashed user.
+        $bp = Bp::onlyTrashed()->findOrFail($id)->forceDelete();
+
+        // If the bp has a document, that document will be deleted.
+        if ( File::exists( public_path('assets/documents/bp/'.basename( $bp->documents ))))
+        {
+            File::delete( public_path('assets/documents/bp/'.basename( $bp->documents )));
+        }
+
+        // Notification [permanently deleted users.]
+//        toastr('This BP has been permanently deleted.','success','Success');
+
+        // Back to all users page.
+        return Response::json(['success' => 'This BP has been permanently deleted.']);
+    }
+
+    /**
      * Get supervisors by dd house
      */
     public function getSupervisorsAndUsers($house_id): JsonResponse
     {
-        $userId = Bp::whereNotNull('user_id')->pluck('user_id');
-
         return Response::json([
             'supervisors' => Supervisor::with('user')
             ->where('dd_house_id',$house_id)
             ->where('status', 1)
             ->get(),
 
-            'users' => User::whereNotIn('id', $userId)
-                ->whereHas('ddHouse', function ($query) use ($house_id){
+            'users' => User::whereHas('ddHouse', function ($query) use ($house_id){
                     $query->where('dd_house_id', $house_id);
                 })
                 ->where('role', 'bp')

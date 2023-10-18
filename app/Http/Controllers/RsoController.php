@@ -53,8 +53,8 @@ class RsoController extends Controller
         $id     = Rso::create($request->validated())->id;
         $newRso = Rso::findOrFail($id);
         $newRso->route()->attach($request->input('routes'));
-        toastr('Rso created successfully.','success','Success');
-        return to_route('rso.index');
+//        toastr('Rso created successfully.','success','Success');
+        return to_route('rso.index')->with('success','Rso created successfully.');
     }
 
     /**
@@ -86,8 +86,8 @@ class RsoController extends Controller
     {
         $rso->update($request->validated());
         $rso->route()->sync($request->input('routes'));
-        toastr('Rso updated successfully.','success','Success');
-        return to_route('rso.index');
+//        toastr('Rso updated successfully.','success','Success');
+        return to_route('rso.index')->with('success','Rso updated successfully.');
     }
 
     /**
@@ -96,8 +96,8 @@ class RsoController extends Controller
     public function destroy(Rso $rso): RedirectResponse
     {
         $rso->delete();
-        toastr('This rso has been temporarily deleted.','success','Success');
-        return to_route('rso.index');
+//        toastr('This rso has been temporarily deleted.','success','Success');
+        return to_route('rso.index')->with('success','This rso has been temporarily deleted.');
     }
 
     /**
@@ -115,8 +115,8 @@ class RsoController extends Controller
     public function restore($id): RedirectResponse
     {
         Rso::withTrashed()->findOrFail($id)->restore();
-        toastr('Rso restored successfully.','success','Success');
-        return to_route('rso.index');
+//        toastr('Rso restored successfully.','success','Success');
+        return to_route('rso.index')->with('success','Rso restored successfully.');
     }
 
     /**
@@ -137,10 +137,10 @@ class RsoController extends Controller
         Rso::onlyTrashed()->findOrFail($id)->forceDelete();
 
         // Notification [permanently deleted rso.]
-        toastr('This rso has been permanently deleted.','success','Success');
+//        toastr('This rso has been permanently deleted.','success','Success');
 
         // Back to all users page.
-        return to_route('rso.index');
+        return to_route('rso.index')->with('success','This rso has been permanently deleted.');
     }
 
     /**
@@ -150,11 +150,11 @@ class RsoController extends Controller
     {
         try {
             Excel::import(new RsoImport, $request->file('import_rso'));
-            toastr('Rso imported successfully.','success','Success');
-            return to_route('rso.index');
+//            toastr('Rso imported successfully.','success','Success');
+            return to_route('rso.index')->with('success','Rso imported successfully.');
         } catch (ValidationException $e) {
-            toastr('Rso imported failed.','error','Error!');
-            return to_route('rso.create')->with('import_errors', $e->failures());
+//            toastr('Rso imported failed.','error','Error!');
+            return to_route('rso.create')->with('import_errors', $e->failures())->with('error','Rso imported failed.');
         }
     }
 

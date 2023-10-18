@@ -130,13 +130,6 @@ class UserController extends Controller
 
         $user->update($password);
 
-        // if($user->update($password))
-        // {
-        //     toastr('User password updated successfully.','success','Success');
-        // }else{
-        //     toastr('User password not updated.','error','Error!');
-        // }
-
         return to_route('user.index')->with('success','User password updated successfully.');
     }
 

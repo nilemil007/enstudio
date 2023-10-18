@@ -24,7 +24,7 @@ class RsoUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id'           => ['required'],
+            'user_id'           => ['required','unique:rsos,user_id,'.request()->segment(2)],
             'supervisor_id'     => ['required'],
             'dd_house_id'       => ['required'],
             'rso_code'          => ['required', 'max:10', 'unique:rsos,rso_code,'.request()->segment(2)],
@@ -55,6 +55,30 @@ class RsoUpdateRequest extends FormRequest
             'joining_date'      => ['required', 'date'],
             'resigning_date'    => ['nullable', 'date'],
             'status'            => ['nullable'],
+        ];
+    }
+
+    /**
+     * Get the validation messages that apply to the request.
+     *
+     * @return string[]
+     */
+    public function messages(): array
+    {
+        return [
+            //
+        ];
+    }
+
+    /**
+     * Get the validation messages that apply to the request.
+     *
+     * @return string[]
+     */
+    public function attributes(): array
+    {
+        return [
+            'user_id' => 'user',
         ];
     }
 }

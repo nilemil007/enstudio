@@ -101,6 +101,12 @@ Route::middleware(['auth'])->group(function (){
         Route::get('/sample-file-download','sampleFileDownload')->name('sample.file.download');
         // Get supervisors and users by dd house
         Route::post('/get_supervisors_users/{house_id?}', 'getSupervisorsAndUsers')->name('get.supervisors.users');
+        // Move To Trash
+        Route::get('/trash','trash')->name('trash');
+        // Restore
+        Route::get('/restore/{id}','restore')->name('restore');
+        // Permanently Delete
+        Route::delete('/permanently-delete/{id}','permanentlyDelete')->name('permanently.delete');
     });
 
     // Route Additional Routes
