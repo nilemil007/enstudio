@@ -8,7 +8,7 @@
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h4 class="card-title mb-0">Trash BP</h4>
                 <span>
-                    <a href="{{ route('bp.index') }}" class="btn btn-sm btn-primary">All BP</a>
+                    <a href="{{ route('bp.index') }}" class="btn btn-sm btn-primary">ALL BP</a>
                     @if($trashed->count() > 1)
                         <a href="{{ route('bp.delete.all') }}" class="btn btn-sm btn-danger">Delete All Permanently</a>
                     @endif
@@ -46,11 +46,16 @@
                                     @break
                                 @endswitch
                             </td>
-                            <td>
+                            <td class="d-flex align-items-center">
                                 <!-- Restore -->
                                 <a href="{{ route('bp.restore', $bp->id) }}" class="btn btn-sm btn-primary">Restore</a>
 
                                 <!-- Permanently Delete -->
+{{--                                <form style="margin-left: 5px;" action="{{ route('bp.permanently.delete', $bp->id) }}" method="POST">--}}
+{{--                                    @csrf @method('DELETE')--}}
+{{--                                    <button onclick="return confirm('Are you sure you want to permanently delete this BP?');" type="submit" class="btn btn-sm btn-danger">Delete Permanently</button>--}}
+{{--                                </form>--}}
+
                                 <a href="{{ route('bp.permanently.delete', $bp->id) }}" id="permanentlyDeleteBp" class="btn btn-sm btn-danger">Delete Permanently</a>
                             </td>
                         </tr>

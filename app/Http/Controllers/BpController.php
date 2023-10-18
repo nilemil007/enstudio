@@ -167,17 +167,14 @@ class BpController extends Controller
      */
     public function permanentlyDelete($id): JsonResponse
     {
-        // Find and permanently delete trashed user.
-        $bp = Bp::onlyTrashed()->findOrFail($id)->forceDelete();
-
         // If the bp has a document, that document will be deleted.
-        if ( File::exists( public_path('assets/documents/bp/'.basename( $bp->documents ))))
+        if ( File::exists( public_path('assets/documents/bp/'.Bp::onlyTrashed()->firstWhere('id', $id)->documents)) )
         {
-            File::delete( public_path('assets/documents/bp/'.basename( $bp->documents )));
+            File::delete( public_path('assets/documents/bp/'.Bp::onlyTrashed()->firstWhere('id', $id)->documents));
         }
-
-        // Notification [permanently deleted users.]
-//        toastr('This BP has been permanently deleted.','success','Success');
+        
+        // Find and permanently delete trashed bp.
+        Bp::onlyTrashed()->findOrFail($id)->forceDelete();
 
         // Back to all users page.
         return Response::json(['success' => 'This BP has been permanently deleted.']);

@@ -65,7 +65,7 @@
                                 <!-- Permanently Delete -->
                                 <form style="margin-left: 5px;" action="{{ route('rso.permanently.delete', $rso->id) }}" method="POST">
                                     @csrf @method('DELETE')
-                                    <button onclick="return confirm('Are you sure you want to Permanently delete this rso?');" type="submit" class="btn btn-sm btn-danger">Delete Permanently</button>
+                                    <button onclick="return confirm('Are you sure you want to permanently delete this RS0?');" type="submit" class="btn btn-sm btn-danger">Delete Permanently</button>
                                 </form>
                             </td>
                         </tr>

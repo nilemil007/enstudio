@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static whereNotNull(string $string)
  * @method static truncate()
  * @method static orderBy(string $string, string $string1)
+ * @method static firstWhere(string $string, $id)
  * @property mixed documents
  */
 class Bp extends Model
