@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static latest()
  * @method static truncate()
  * @method static whereBetween(string $string, array $array)
+ * @method static firstWhere(string $string, $id)
  */
 class TradeCampaignRetailerCode extends Model
 {

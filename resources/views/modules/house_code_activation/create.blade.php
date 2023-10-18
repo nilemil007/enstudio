@@ -15,15 +15,15 @@
                         @csrf
 
                         @if(auth()->user()->role == 'superadmin' || auth()->user()->role == 'supervisor')
-                        <!-- User Name -->
+                        <!-- User -->
                         <div class="row mb-3">
-                            <label for="user_id" class="col-sm-3 col-form-label">User Name</label>
+                            <label for="user_id" class="col-sm-3 col-form-label">User</label>
                             <div class="col-sm-9">
-                                <select name="user_id" class="form-select" id="user_id">
+                                <select name="user_id" class="select-2 form-select" id="user_id">
                                     <option value="">-- Select User --</option>
                                     @if(count($users) > 0)
                                         @foreach($users as $user)
-                                            <option value="{{ $user->id }}">{{ \App\Models\DdHouse::firstWhere('id', $user->dd_house)->code .'-'. optional(\App\Models\Rso::firstWhere('user_id', $user->id))->itop_number . '-' .  \Illuminate\Support\Str::upper($user->role) .' - '. $user->name }}</option>
+                                            <option value="{{ $user->id }}">{{ \Illuminate\Support\Str::upper($user->role) .' - '.  optional(\App\Models\Rso::firstWhere('user_id', $user->id))->itop_number . optional(\App\Models\Bp::firstWhere('user_id', $user->id))->pool_number . ' - ' . $user->name }}</option>
                                         @endforeach
                                     @endif
                                 </select>

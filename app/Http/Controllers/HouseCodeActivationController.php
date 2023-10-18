@@ -74,9 +74,19 @@ class HouseCodeActivationController extends Controller
             break;
 
             default;
-                $retId = TradeCampaignRetailerCode::whereBetween('created_at', [$startDate, $endDate])->whereNotNull('retailer_id')->pluck('retailer_id');
-                $retailers = Retailer::whereIn('id', $retId)->get();
-                $users = User::where('role', '!=', 'superadmin')->where('role', '!=', 'md')->where('role', '!=', 'manager')->get();
+                $retCode = TradeCampaignRetailerCode::whereBetween('created_at', [$startDate, $endDate])->whereNotNull('retailer_code')->pluck('retailer_code');
+                $userId = TradeCampaignRetailerCode::whereBetween('created_at', [$startDate, $endDate])->whereNotNull('user_id')->pluck('user_id');
+                $retailers = Retailer::whereIn('code', $retCode)->get();
+                $users = User::with('rso')->where('role', '!=', 'zm')
+                    ->where('role', '!=', 'manager')
+                    ->where('role', '!=', 'md')
+                    ->where('role', '!=', 'supervisor')
+                    ->where('role', '!=', 'retailer')
+                    ->where('role', '!=', 'accountant')
+                    ->where('role', '!=', 'superadmin')
+                    ->whereIn('id', $userId)
+                    ->get();
+//                dd($users);
         }
 
         return view('modules.house_code_activation.create', compact('retailers','users'));
