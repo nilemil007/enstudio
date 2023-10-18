@@ -7,9 +7,9 @@
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <div class="d-flex align-items-center">
-                    <h4 class="card-title mb-0">All BP</h4>
+                    <h4 class="card-title mb-0">all bp ({{ $bps->count() }})</h4>
                     @if(count($trashed) > 0)
-                        <a href="{{ route('bp.trash') }}" class="text-danger" style="margin-left: 5px;">Trash ({{ $trashed->count() }})</a>
+                       <span style="margin: 0px 10px 0px 10px">|</span> <a href="{{ route('bp.trash') }}" class="text-danger" style="font-weight: bold;">Trash ({{ $trashed->count() }})</a>
                     @endif
                 </div>
                 <span>
@@ -17,7 +17,7 @@
                 </span>
             </div>
             <div class="table-responsive">
-                <table id="bpTbl" class="table table-sm table-bordered table-hover card-table table-vcenter text-nowrap mt-3 mb-3 text-center">
+                <table id="bpTbl" class="table table-sm table-bordered table-hover table-vcenter text-nowrap mt-3 mb-3 text-center">
                     <thead>
                     <tr>
                         <th class="w-1">No.</th>
@@ -25,6 +25,7 @@
                         <th>BP Name</th>
                         <th>Pool Number</th>
                         <th>Joining Date</th>
+                        <th>Documents</th>
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
@@ -38,13 +39,20 @@
                             <td>{{ $bp->pool_number }}</td>
                             <td>{{ empty($bp->joining_date) ? null : $bp->joining_date->toFormattedDateString() }}</td>
                             <td>
+                                @if($bp->documents)
+                                    <span style="font-weight: bold" class="text-success">Submitted</span>
+                                @else
+                                    <span style="font-weight: bold" class="text-danger">Not Submitted</span>
+                                @endif
+                            </td>
+                            <td>
                                 @switch( $bp->status )
                                     @case(1)
-                                        <p class="text-success">Active</p>
+                                        <p style="font-weight: bold" class="text-success">Active</p>
                                     @break
 
                                     @case(0)
-                                        <p class="text-danger">Inactive</p>
+                                        <p style="font-weight: bold" class="text-danger">Inactive</p>
                                         @break
                                 @endswitch
                             </td>

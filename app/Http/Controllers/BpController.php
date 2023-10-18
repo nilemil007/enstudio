@@ -19,6 +19,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class BpController extends Controller
 {
@@ -114,20 +115,6 @@ class BpController extends Controller
     }
 
     /**
-     * Delete all bp.
-     */
-    public function deleteAll(): JsonResponse
-    {
-        try {
-            File::cleanDirectory(public_path('assets/documents/bp'));
-            Bp::truncate();
-            return response()->json(['success' => 'All bp has been deleted successfully.']);
-        }catch (\Exception $exception){
-            dd($exception);
-        }
-    }
-
-    /**
      * Import bp.
      */
     public function import(Request $request): RedirectResponse
@@ -172,12 +159,27 @@ class BpController extends Controller
         {
             File::delete( public_path('assets/documents/bp/'.Bp::onlyTrashed()->firstWhere('id', $id)->documents));
         }
-        
+
         // Find and permanently delete trashed bp.
         Bp::onlyTrashed()->findOrFail($id)->forceDelete();
 
         // Back to all users page.
         return Response::json(['success' => 'This BP has been permanently deleted.']);
+    }
+
+    /**
+     * Permanently Delete All BP.
+     */
+    public function permanentlyDeleteAll(): JsonResponse
+    {
+        try {
+            File::cleanDirectory(public_path('assets/documents/bp'));
+            Bp::onlyTrashed()->forceDelete();
+            return response()->json(['success' => 'All BP has been permanently deleted successfully.']);
+        }catch (\Exception $exception){
+            return response()->json(['error' => 'All BP not deleted.']);
+            dd($exception);
+        }
     }
 
     /**
@@ -198,5 +200,13 @@ class BpController extends Controller
                 ->where('status', 1)
                 ->get(),
         ]);
+    }
+
+    /**
+     * Sample file download.
+     */
+    public function sampleFileDownload(): BinaryFileResponse
+    {
+        return Response::download(public_path('download/sample/BP.xlsx'));
     }
 }

@@ -93,8 +93,6 @@ Route::middleware(['auth'])->group(function (){
 
     // BP Additional Routes
     Route::controller(BpController::class )->prefix('/bp')->name('bp.')->group(function (){
-        // Delete all
-        Route::post('/delete/all','deleteAll')->name('delete.all');
         // Import
         Route::post('/import','import')->name('import');
         // Download sample file
@@ -107,6 +105,8 @@ Route::middleware(['auth'])->group(function (){
         Route::get('/restore/{id}','restore')->name('restore');
         // Permanently Delete
         Route::delete('/permanently-delete/{id}','permanentlyDelete')->name('permanently.delete');
+        // Permanently Delete All
+        Route::delete('/delete/all','permanentlyDeleteAll')->name('permanently.delete.all');
     });
 
     // Route Additional Routes

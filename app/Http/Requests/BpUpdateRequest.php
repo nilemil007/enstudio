@@ -23,7 +23,7 @@ class BpUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id'           => ['required'],
+            'user_id'           => ['nullable'],
             'supervisor_id'     => ['required'],
             'dd_house_id'       => ['required'],
             'response_id'       => ['nullable','unique:bps,response_id,'.request()->segment(2)],

@@ -6,12 +6,14 @@
     <div class="card">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <h4 class="card-title mb-0">Trash BP</h4>
+                <div class="d-flex align-items-center">
+                    <h4 class="card-title mb-0">Trash BP</h4>
+                    <a href="{{ route('bp.permanently.delete.all') }}" id="permanentlyDeleteAllBp" class="text-secondary" style="font-weight: bold;">
+                        <span style="margin: 0px 10px 0px 10px">|</span> Empty Trash Now ({{ $trashed->count() }})
+                    </a>
+                </div>
                 <span>
                     <a href="{{ route('bp.index') }}" class="btn btn-sm btn-primary">ALL BP</a>
-                    @if($trashed->count() > 1)
-                        <a href="{{ route('bp.delete.all') }}" class="btn btn-sm btn-danger">Delete All Permanently</a>
-                    @endif
                 </span>
             </div>
             <div class="table-responsive">
@@ -23,6 +25,7 @@
                         <th>BP Name</th>
                         <th>Pool Number</th>
                         <th>Joining Date</th>
+                        <th>Documents</th>
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
@@ -36,26 +39,28 @@
                             <td>{{ $bp->pool_number }}</td>
                             <td>{{ empty($bp->joining_date) ? null : $bp->joining_date->toFormattedDateString() }}</td>
                             <td>
+                                @if($bp->documents)
+                                    <span style="font-weight: bold" class="text-success">Submitted</span>
+                                @else
+                                    <span style="font-weight: bold" class="text-danger">Not Submitted</span>
+                                @endif
+                            </td>
+                            <td>
                                 @switch( $bp->status )
                                     @case(1)
-                                    <p class="text-success">Active</p>
+                                    <p style="font-weight: bold" class="text-success">Active</p>
                                     @break
 
                                     @case(0)
-                                    <p class="text-danger">Inactive</p>
+                                    <p style="font-weight: bold" class="text-danger">Inactive</p>
                                     @break
                                 @endswitch
                             </td>
-                            <td class="d-flex align-items-center">
+                            <td>
                                 <!-- Restore -->
                                 <a href="{{ route('bp.restore', $bp->id) }}" class="btn btn-sm btn-primary">Restore</a>
 
                                 <!-- Permanently Delete -->
-{{--                                <form style="margin-left: 5px;" action="{{ route('bp.permanently.delete', $bp->id) }}" method="POST">--}}
-{{--                                    @csrf @method('DELETE')--}}
-{{--                                    <button onclick="return confirm('Are you sure you want to permanently delete this BP?');" type="submit" class="btn btn-sm btn-danger">Delete Permanently</button>--}}
-{{--                                </form>--}}
-
                                 <a href="{{ route('bp.permanently.delete', $bp->id) }}" id="permanentlyDeleteBp" class="btn btn-sm btn-danger">Delete Permanently</a>
                             </td>
                         </tr>
@@ -104,34 +109,34 @@
                     });
                 });
 
-                // Delete all
-                // $(document).on('click','#deleteAllBp',function(e){
-                //     e.preventDefault();
-                //
-                //     Swal.fire({
-                //         title: 'Are you sure?',
-                //         text: "Delete All Bp?",
-                //         icon: 'warning',
-                //         showCancelButton: true,
-                //         confirmButtonText: 'Yes, delete it !'
-                //     }).then((result) => {
-                //         if (result.isConfirmed) {
-                //             $.ajax({
-                //                 url: $(this).attr('href'),
-                //                 type: 'POST',
-                //                 success: function (response){
-                //                     Swal.fire(
-                //                         'Deleted!',
-                //                         response.success,
-                //                         'success',
-                //                     ).then((result) => {
-                //                         location.reload();
-                //                     });
-                //                 },
-                //             });
-                //         }
-                //     });
-                // });
+                // Permanently Delete All
+                $(document).on('click','#permanentlyDeleteAllBp',function(e){
+                    e.preventDefault();
+
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "Permanently Delete All BP?",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, delete it !'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                url: $(this).attr('href'),
+                                type: 'DELETE',
+                                success: function (response){
+                                    Swal.fire(
+                                        'Deleted!',
+                                        response.success,
+                                        'success',
+                                    ).then((result) => {
+                                        location.reload();
+                                    });
+                                },
+                            });
+                        }
+                    });
+                });
             });
         </script>
     @endpush
