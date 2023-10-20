@@ -3,8 +3,6 @@
     <!-- Title -->
     <x-slot:title>Create New Supervisor</x-slot:title>
 
-    <div id="supervisorErrMsg" class="alert alert-danger err-msg d-none"></div>
-
     <div class="row">
         <div class="col-md-8">
             <div class="card">
@@ -218,7 +216,7 @@
                 });
 
                 // Validation
-                $('.userForm').validate({
+                $('#supervisorForm').validate({
                     rules: {
                         name: {
                             required: true,

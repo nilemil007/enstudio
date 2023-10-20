@@ -29,14 +29,15 @@ class TradeCampaignRetailerCodeController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $users = User::where([
-            ['role','!=','superadmin'],
-            ['role','!=','manager'],
-            ['role','!=','zm'],
-            ['role','!=','accountant'],
-        ])->orderBy('role', 'ASC')->get();
+        $users = User::where('role','!=','superadmin')
+            ->where('role','!=','manager')
+            ->where('role','!=','zm')
+            ->where('role','!=','accountant')
+            ->where('role','!=','supervisor')
+            ->orderBy('role', 'ASC')
+            ->get();
         $bps = Bp::all();
         return view('modules.trade_campaign_retailer_code.create', compact('users','bps'));
     }

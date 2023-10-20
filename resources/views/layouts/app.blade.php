@@ -42,6 +42,16 @@
         .swal2-popup {
             font-size: .875rem !important;
         }
+
+        label.error{
+            color: red;
+        }
+        input.error, textarea.error, select.error{
+            border: 1px solid red;
+        }
+        /*input.valid, textarea.valid{*/
+        /*    border: 1px solid limegreen;*/
+        /*}*/
     </style>
 </head>
 <body>

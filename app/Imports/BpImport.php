@@ -14,7 +14,7 @@ use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 
-class BpImport implements ToModel, WithHeadingRow, WithChunkReading
+class BpImport implements ToModel, WithHeadingRow, WithChunkReading, WithValidation
 {
     use Importable;
 

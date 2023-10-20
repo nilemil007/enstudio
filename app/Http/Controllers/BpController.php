@@ -115,22 +115,6 @@ class BpController extends Controller
     }
 
     /**
-     * Import bp.
-     */
-    public function import(Request $request): RedirectResponse
-    {
-        try {
-            Excel::import(new BpImport, $request->file('import_bp'));
-            // toastr('BP imported successfully.','success','Success');
-            return to_route('bp.index')->with('success','BP imported successfully.');
-
-        } catch (ValidationException $e) {
-//            toastr('BP imported failed.','error','Error!');
-            return to_route('bp.create')->with('import_errors', $e->failures())->with('error','BP imported failed.');
-        }
-    }
-
-    /**
      * Trash.
      */
     public function trash(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
@@ -183,7 +167,23 @@ class BpController extends Controller
     }
 
     /**
-     * Get supervisors by dd house
+     * Import bp.
+     */
+    public function import(Request $request): RedirectResponse
+    {
+        try {
+            Excel::import(new BpImport, $request->file('import_bp'));
+            // toastr('BP imported successfully.','success','Success');
+            return to_route('bp.index')->with('success','BP imported successfully.');
+
+        } catch (ValidationException $e) {
+//            toastr('BP imported failed.','error','Error!');
+            return to_route('bp.create')->with('import_errors', $e->failures())->with('error','BP imported failed.');
+        }
+    }
+
+    /**
+     * Get supervisors and users by dd house
      */
     public function getSupervisorsAndUsers($house_id): JsonResponse
     {

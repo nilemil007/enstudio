@@ -21,9 +21,9 @@
                             <div class="col-sm-9">
                                 <select name="user_id" class="select-2 form-select" id="user_id">
                                     <option value="">-- Select User --</option>
-                                    @if(count($users) > 0)
-                                        @foreach($users as $user)
-                                            <option value="{{ $user->id }}">{{ \Illuminate\Support\Str::upper($user->role) .' - '.  optional(\App\Models\Rso::firstWhere('user_id', $user->id))->itop_number . optional(\App\Models\Bp::firstWhere('user_id', $user->id))->pool_number . ' - ' . $user->name }}</option>
+                                    @if(count($tradeCampaignRetailerCode) > 0)
+                                        @foreach($tradeCampaignRetailerCode as $tcrc)
+                                            <option value="">{{ \Illuminate\Support\Str::upper($tcrc->user->role) .' - '. optional($tcrc->user->bp)->pool_number . optional($tcrc->user->rso)->itop_number .' - '. $tcrc->user->name . ' (' . $tcrc->remarks . ')'  }}</option>
                                         @endforeach
                                     @endif
                                 </select>
@@ -35,15 +35,15 @@
 
                         <!-- Retailer Code -->
                         <div class="row mb-3">
-                            <label for="retailer_code" class="col-sm-3 col-form-label">Retailer Code <strong>({{ count($retailers) }})</strong></label>
+                            <label for="retailer_code" class="col-sm-3 col-form-label">Retailer Code <strong>()</strong></label>
                             <div class="col-sm-9">
                                 <select name="retailer_code" class="select-2 form-select" id="retailer_code">
                                     <option value="">-- Select Retailer Code --</option>
-                                    @if(count($retailers) > 0)
-                                        @foreach($retailers as $retailer)
-                                            <option value="{{ $retailer->code }}">{{ $retailer->code . ' - ' . $retailer->itop_number }}</option>
-                                        @endforeach
-                                    @endif
+{{--                                    @if(count($retailers) > 0)--}}
+{{--                                        @foreach($retailers as $retailer)--}}
+{{--                                            <option value="{{ $retailer->code }}">{{ $retailer->code . ' - ' . $retailer->itop_number }}</option>--}}
+{{--                                        @endforeach--}}
+{{--                                    @endif--}}
                                 </select>
                             </div>
                         </div>

@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
- * @method static where(column $column, oparetor $oparetor, mixed $mixed)
+ * @method static where(string $column, string $operator, mixed $mixed)
  * @method static latest()
  * @method static create(mixed $user)
  * @method static truncate()
@@ -160,6 +160,16 @@ class User extends Authenticatable
     public function bp(): HasOne
     {
         return $this->hasOne( Bp::class );
+    }
+
+    /**
+     * User has one cm.
+     *
+     * @return HasOne
+     */
+    public function cm(): HasOne
+    {
+        return $this->hasOne( Cm::class );
     }
 
     /**

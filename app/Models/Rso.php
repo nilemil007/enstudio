@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 /**
  * @method static latest()
  * @method static create(mixed $validated)
- * @method static firstWhere()
+ * @method static firstWhere(string $column, mixed $value)
  * @method static whereNotNull()
  * @method static where(string $string)
  * @method static orderBy(string $string, string $string1)

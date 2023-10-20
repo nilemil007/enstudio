@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BpController;
 use App\Http\Controllers\BtsController;
+use App\Http\Controllers\CmController;
 use App\Http\Controllers\CoreActivationController;
 use App\Http\Controllers\DdHouseController;
 use App\Http\Controllers\HouseCodeActivationController;
@@ -99,6 +100,24 @@ Route::middleware(['auth'])->group(function (){
         Route::get('/sample-file-download','sampleFileDownload')->name('sample.file.download');
         // Get supervisors and users by dd house
         Route::post('/get_supervisors_users/{house_id?}', 'getSupervisorsAndUsers')->name('get.supervisors.users');
+        // Move To Trash
+        Route::get('/trash','trash')->name('trash');
+        // Restore
+        Route::get('/restore/{id}','restore')->name('restore');
+        // Permanently Delete
+        Route::delete('/permanently-delete/{id}','permanentlyDelete')->name('permanently.delete');
+        // Permanently Delete All
+        Route::delete('/delete/all','permanentlyDeleteAll')->name('permanently.delete.all');
+    });
+
+    // CM Additional Routes
+    Route::controller(CmController::class )->prefix('/cm')->name('cm.')->group(function (){
+        // Import
+        Route::post('/import','import')->name('import');
+        // Download sample file
+        Route::get('/sample-file-download','sampleFileDownload')->name('sample.file.download');
+        // Get users by dd house
+        Route::post('/get_users/{house_id?}', 'getUsers')->name('get.users');
         // Move To Trash
         Route::get('/trash','trash')->name('trash');
         // Restore
@@ -222,6 +241,7 @@ Route::middleware(['auth'])->group(function (){
         'dd-house'      => DdHouseController::class,
         'supervisor'    => SupervisorController::class,
         'rso'           => RsoController::class,
+        'cm'            => CmController::class,
         'bp'            => BpController::class,
         'route'         => RouteController::class,
         'retailer'      => RetailerController::class,
