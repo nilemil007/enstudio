@@ -45,7 +45,7 @@ class TradeCampaignRetailerCodeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $tcrc = $this->validate($request,[
             'user_id'       => ['required'],
@@ -82,19 +82,19 @@ class TradeCampaignRetailerCodeController extends Controller
      */
     public function edit(TradeCampaignRetailerCode $tcrc): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $users = User::where([
-            ['role','!=','superadmin'],
-            ['role','!=','manager'],
-            ['role','!=','zm'],
-            ['role','!=','accountant'],
-        ])->orderBy('role', 'ASC')->get();
+        $users = User::where('role','!=','superadmin')
+            ->where('role','!=','supervisor')
+            ->where('role','!=','manager')
+            ->where('role','!=','zm')
+            ->where('role','!=','accountant')
+            ->orderBy('role', 'ASC')->get();
         return view('modules.trade_campaign_retailer_code.edit', compact('tcrc','users'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, TradeCampaignRetailerCode $tcrc)
+    public function update(Request $request, TradeCampaignRetailerCode $tcrc): RedirectResponse
     {
         $data = $this->validate($request,[
             'user_id'       => ['required'],

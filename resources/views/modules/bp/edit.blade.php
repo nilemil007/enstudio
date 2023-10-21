@@ -20,7 +20,9 @@
                                 <option value="">-- Select Distribution House --</option>
                                 @if(count($houses) > 0)
                                     @foreach($houses as $house)
-                                        <option @selected($bp->dd_house_id == $house->id) value="{{ $house->id }}">{{ $house->code .' - '. $house->name }}</option>
+                                        <option @selected($bp->dd_house_id == $house->id) value="{{ $house->id }}">
+                                            {{ $house->code .' - '. $house->name }}
+                                        </option>
                                     @endforeach
                                 @endif
                             </select>
@@ -36,7 +38,9 @@
                                 <option value="">-- Select Supervisor --</option>
                                 @if(count($supervisors) > 0)
                                     @foreach($supervisors as $supervisor)
-                                        <option @selected($bp->supervisor_id == $supervisor->id) value="{{ $supervisor->id }}">{{ $supervisor->pool_number .' - '. \App\Models\User::firstWhere('id', $supervisor->user_id)->name }}</option>
+                                        <option @selected($bp->supervisor_id == $supervisor->id) value="{{ $supervisor->id }}">
+                                            {{ $supervisor->pool_number .' - '. \App\Models\User::firstWhere('id', $supervisor->user_id)->name }}
+                                        </option>
                                     @endforeach
                                 @endif
                             </select>

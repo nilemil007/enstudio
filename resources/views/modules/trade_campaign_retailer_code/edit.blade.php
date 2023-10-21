@@ -45,7 +45,9 @@
                         <select name="user_id" class="select-2 form-select" id="user_id">
                             <option value="">-- Select User --</option>
                             @foreach ($users as $user)
-                            <option @selected($tcrc->user_id == $user->id) value="{{ $user->id }}">{{ Str::upper($user->role) .' - '. $user->name }}</option>
+                            <option @selected($tcrc->user_id == $user->id) value="{{ $user->id }}">
+                                {{ Str::upper($user->role) .' - '. optional(\App\Models\Rso::firstWhere('user_id', $user->id))->itop_number . optional(\App\Models\Cm::firstWhere('user_id', $user->id))->pool_number . optional(\App\Models\Bp::firstWhere('user_id', $user->id))->pool_number .' - '. $user->name }}
+                            </option>
                             @endforeach
                         </select>
                         <small class="text-muted">একজন ব্যাবহারকারী নির্বাচন করুন।</small>

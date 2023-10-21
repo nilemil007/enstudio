@@ -100,7 +100,6 @@ class UserController extends Controller
             $information['image'] = $name;
         }
 
-
         $user->update($information);
         $user->ddHouse()->sync($request->input('dd_house'));
 
@@ -112,13 +111,78 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user): RedirectResponse
+    public function destroy(User $user): JsonResponse
     {
         $user->delete();
+        return Response::json(['success' => 'This user has been temporarily deleted.']);
+    }
 
-        toastr('This user has been temporarily deleted.','success','Success');
+    /**
+     * Trash.
+     */
+    public function trash(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
+    {
+        $trashed = User::onlyTrashed()->latest()->paginate(10);
+        return view('modules.user.trash', compact('trashed'));
+    }
 
-        return to_route('user.index');
+    /**
+     * Restore.
+     */
+    public function restore($id): RedirectResponse
+    {
+        User::withTrashed()->findOrFail($id)->restore();
+        // toastr('User restored successfully.','success','Success');
+        return to_route('user.index')->with('success','User restored successfully.');
+    }
+
+    /**
+     * Permanently Delete.
+     */
+    public function permanentlyDelete($id): JsonResponse
+    {
+        // Find a user to detach from the dd house.
+        $user = User::with('ddHouse')->withTrashed()->findOrFail($id);
+
+        // All houses associated with the user are being detached.
+        foreach ($user->ddHouse as $house)
+        {
+            $user->ddHouse()->detach($house->id);
+        }
+
+        // Find and permanently delete trashed user.
+        User::onlyTrashed()->findOrFail($id)->forceDelete();
+
+        // If the user has a photo, that photo will be deleted.
+        if ( File::exists( public_path('assets/images/users/'.basename( $user->image ) ) ) )
+        {
+            File::delete( public_path('assets/images/users/'.basename( $user->image ) ) );
+        }
+
+        // Back to all users page.
+        return Response::json(['success' => 'This user has been permanently deleted.']);
+    }
+
+    /**
+     * Permanently Delete All Users.
+     */
+    public function permanentlyDeleteAll(): JsonResponse
+    {
+        try {
+            // Find a user to detach from the dd house.
+            $user = User::with('ddHouse')->withTrashed();
+
+            // All houses associated with the user are being detached.
+            foreach ($user->ddHouse as $house)
+            {
+                $user->ddHouse()->detach($house->id);
+            }
+            File::cleanDirectory(public_path('assets/documents/user'));
+            User::onlyTrashed()->forceDelete();
+            return Response::json(['success' => 'All Users has been permanently deleted successfully.']);
+        }catch (\Exception $exception){
+            dd($exception);
+        }
     }
 
     /**
@@ -155,54 +219,5 @@ class UserController extends Controller
     public function sampleFileDownload(): BinaryFileResponse
     {
         return Response::download(public_path('download/sample/Users.xlsx'));
-    }
-
-    /**
-     * Trash.
-     */
-    public function trash(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
-    {
-        $trashedUser = User::onlyTrashed()->latest()->paginate(10);
-        return view('modules.user.trash', compact('trashedUser'));
-    }
-
-    /**
-     * Restore.
-     */
-    public function restore($id): RedirectResponse
-    {
-        User::withTrashed()->findOrFail($id)->restore();
-        // toastr('User restored successfully.','success','Success');
-        return to_route('user.index')->with('success','User restored successfully.');
-    }
-
-    /**
-     * Permanently Delete.
-     */
-    public function permanentlyDelete($id): RedirectResponse
-    {
-        // Find a user to detach from the dd house.
-        $user = User::with('ddHouse')->withTrashed()->findOrFail($id);
-
-        // All houses associated with the user are being detached.
-        foreach ($user->ddHouse as $house)
-        {
-            $user->ddHouse()->detach($house->id);
-        }
-
-        // Find and permanently delete trashed user.
-        User::onlyTrashed()->findOrFail($id)->forceDelete();
-
-        // If the user has a photo, that photo will be deleted.
-        if ( File::exists( public_path('assets/images/users/'.basename( $user->image ) ) ) )
-        {
-            File::delete( public_path('assets/images/users/'.basename( $user->image ) ) );
-        }
-
-        // Notification [permanently deleted users.]
-        toastr('This user has been permanently deleted.','success','Success');
-
-        // Back to all users page.
-        return to_route('user.index');
     }
 }

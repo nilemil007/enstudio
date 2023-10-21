@@ -9,14 +9,11 @@
                 <div class="d-flex align-items-center">
                     <h4 class="card-title mb-0">All Users</h4>
                     @if(count($trashed) > 0)
-                        <a href="{{ route('user.trash') }}" class="text-danger" style="margin-left: 5px;">Trash ({{ $trashed->count() }})</a>
+                        <a href="{{ route('user.trash') }}" class="text-danger" style="font-weight: bold;"><span style="margin: 0px 10px 0px 10px">|</span> Trash ({{ $trashed->count() }})</a>
                     @endif
                 </div>
                 <span>
                     <a href="{{ route('user.create') }}" class="btn btn-sm btn-primary">Add New</a>
-                    @if($users->count() > 1)
-                        <a id="deleteAllUsers" href="{{ route('user.delete.all') }}" class="btn btn-sm btn-danger">Delete all</a>
-                    @endif
                 </span>
             </div>
             <div class="table-responsive">
@@ -63,15 +60,16 @@
                                         @break
                                 @endswitch
                             </td>
-                            <td class="d-flex align-items-center">
+                            <td>
                                 <!-- Edit -->
                                 <a href="{{ route('user.edit', $user->id) }}" class="btn btn-sm btn-primary">Edit</a>
 
                                 <!-- Move to trash -->
-                                <form style="margin-left: 5px;" action="{{ route('user.destroy', $user->id) }}" method="POST">
-                                    @csrf @method('DELETE')
-                                    <button onclick="return confirm('Are you sure you want to delete this user?');" type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                </form>
+                                <a href="{{ route('user.destroy', $user->id) }}" id="deleteUser" class="btn btn-sm btn-danger">Delete</a>
+{{--                                <form style="margin-left: 5px;" action="{{ route('user.destroy', $user->id) }}" method="POST">--}}
+{{--                                    @csrf @method('DELETE')--}}
+{{--                                    <button onclick="return confirm('Are you sure you want to delete this user?');" type="submit" class="btn btn-sm btn-danger">Delete</button>--}}
+{{--                                </form>--}}
                             </td>
                         </tr>
                     @endforeach
@@ -88,33 +86,33 @@
             $(document).ready(function(){
 
                 // Single delete
-                // $(document).on('click','#deleteUser',function(e){
-                //     e.preventDefault();
-                //
-                //     Swal.fire({
-                //         title: 'Are you sure?',
-                //         text: "Delete This User?",
-                //         icon: 'warning',
-                //         showCancelButton: true,
-                //         confirmButtonText: 'Yes, delete it!'
-                //     }).then((result) => {
-                //         if (result.isConfirmed) {
-                //             $.ajax({
-                //                 url: $(this).attr('href'),
-                //                 type: 'DELETE',
-                //                 success: function (response){
-                //                     Swal.fire(
-                //                         'Deleted!',
-                //                         response.success,
-                //                         'success',
-                //                     ).then((result) => {
-                //                         location.reload();
-                //                     });
-                //                 },
-                //             });
-                //         }
-                //     });
-                // });
+                $(document).on('click','#deleteUser',function(e){
+                    e.preventDefault();
+
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "Delete This User?",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                url: $(this).attr('href'),
+                                type: 'DELETE',
+                                success: function (response){
+                                    Swal.fire(
+                                        'Deleted!',
+                                        response.success,
+                                        'success',
+                                    ).then((result) => {
+                                        location.reload();
+                                    });
+                                },
+                            });
+                        }
+                    });
+                });
 
                 // Delete all
                 // $(document).on('click','#deleteAllUsers',function(e){

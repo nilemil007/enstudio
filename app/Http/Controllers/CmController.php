@@ -165,13 +165,13 @@ class CmController extends Controller
     }
 
     /**
-     * Import bp.
+     * Import cm.
      */
     public function import(Request $request): RedirectResponse
     {
         try {
             Excel::import(new CmImport(), $request->file('import_cm'));
-            // toastr('BP imported successfully.','success','Success');
+            // toastr('CM imported successfully.','success','Success');
             return to_route('cm.index')->with('success','CM imported successfully.');
 
         } catch (ValidationException $e) {
@@ -194,8 +194,7 @@ class CmController extends Controller
     public function getUsers($house_id): JsonResponse
     {
         return Response::json([
-            'users' => User::with('cm')
-                ->whereHas('ddHouse', function ($query) use ($house_id){
+            'users' => User::whereHas('ddHouse', function ($query) use ($house_id){
                 $query->where('dd_house_id', $house_id);})
                 ->where('role', 'cm')
                 ->where('status', 1)

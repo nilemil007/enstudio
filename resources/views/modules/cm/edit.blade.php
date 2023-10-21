@@ -31,10 +31,12 @@
                         <label for="set_user" class="col-sm-3 col-form-label">User</label>
                         <div class="col-sm-9">
                             <select name="user_id" class="form-select" id="set_user">
-                                <option >-- Select User --</option>
+                                <option value="">-- Select User --</option>
                                 @if($users->count() > 0)
                                     @foreach($users as $user)
-                                        <option @selected($cm->user_id == $user->id) value="{{ $user->id }}">{{ $cm->pool_number .' - '. $cm->name }}</option>
+                                        <option @selected($cm->user_id == $user->id) value="{{ $user->id }}">
+                                            {{ $user->name }}
+                                        </option>
                                     @endforeach
                                 @endif
                             </select>
@@ -365,7 +367,7 @@
                         },
                         success: function (response){
                             $.each(response.users, function (key, value){
-                                $('#set_user').append('<option value="'+ value.id +'">' + value.cm.pool_number +' - '+ value.name + '</option>')
+                                $('#set_user').append('<option value="'+ value.id +'">' + value.name + '</option>')
                             });
                         }
                     });

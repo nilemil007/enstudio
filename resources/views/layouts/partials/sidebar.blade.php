@@ -201,11 +201,11 @@
                     </ul>
                 </div>
             </li>
-            <!-- TMO -->
+            <!-- CM -->
             <li class="nav-item  {{ request()->routeIs('cm.*') ? 'active' : '' }}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#tmo" role="button" aria-expanded="false" aria-controls="tmo">
                     <i class="link-icon" data-feather="info"></i>
-                    <span class="link-title">TMO</span>
+                    <span class="link-title">CM</span>
                     <i class="link-arrow" data-feather="chevron-down"></i>
                 </a>
                 <div class="collapse  {{ request()->routeIs('cm.*') ? 'show' : '' }}" id="tmo">

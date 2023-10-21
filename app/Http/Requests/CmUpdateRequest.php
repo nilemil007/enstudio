@@ -39,7 +39,7 @@ class CmUpdateRequest extends FormRequest
             'address'               => ['nullable','max: 200'],
             'bank_account_name'     => ['nullable'],
             'bank_name'             => ['nullable'],
-            'blood_group'           => ['nullable'],
+            'blood_group'           => ['required'],
             'salary'                => ['nullable','numeric'],
             'account_number'        => ['nullable','unique:cms,account_number,'.request()->segment(2)],
             'account_type'          => ['nullable'],

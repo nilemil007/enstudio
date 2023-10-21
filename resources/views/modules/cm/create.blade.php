@@ -368,7 +368,7 @@
                         },
                         success: function (response){
                             $.each(response.users, function (key, value){
-                                $('#get_user').append('<option value="'+ value.id +'">' + value.cm.pool_number +' - '+ value.name + '</option>')
+                                $('#get_user').append('<option value="'+ value.id +'">' + value.name + '</option>')
                             });
                         }
                     });

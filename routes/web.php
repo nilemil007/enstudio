@@ -40,8 +40,6 @@ Route::middleware(['auth'])->group(function (){
 
     // User Additional Routes
     Route::prefix('/user')->controller( UserController::class )->name('user.')->group(function (){
-        // Delete all
-        Route::post('/delete/all','deleteAll')->name('delete.all');
         // Update password
         Route::patch('/password/update/{user}','passwordUpdate')->name('password.update');
         // Import
@@ -54,6 +52,8 @@ Route::middleware(['auth'])->group(function (){
         Route::get('/restore/{id}','restore')->name('restore');
         // Permanently Delete
         Route::delete('/permanently-delete/{id}','permanentlyDelete')->name('permanently.delete');
+        // Permanently Delete all
+        Route::delete('/permanently/delete/all','permanentlyDeleteAll')->name('permanently.delete.all');
     });
 
     // DD House Additional Routes
