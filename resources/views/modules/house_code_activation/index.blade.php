@@ -24,11 +24,12 @@
                     <thead>
                     <tr>
                         <th class="w-1">No.</th>
-                        <th>DD House</th>
                         <th>Name</th>
                         <th>Retailer Code</th>
                         <th>Activation</th>
                         <th>Price</th>
+                        <th>Flag</th>
+                        <th>Remarks</th>
                         <th>Date</th>
                         <th>Action</th>
                     </tr>
@@ -37,11 +38,19 @@
                     @foreach( $houseCodeAct as $sl => $hca )
                         <tr>
                             <td><span class="text-muted">{{ ++$sl }}</span></td>
-                            <td>{{ \App\Models\DdHouse::firstWhere('id', $hca->dd_house)->code }}</td>
-                            <td>{{ $hca->user->name.' - '.\Illuminate\Support\Str::upper($hca->user->role) }}</td>
+                            <td>
+                                {{ $hca->user->name.' ('.\Illuminate\Support\Str::upper($hca->user->role).')' }}
+                                <div class="text-muted">
+                                    {{ optional(\App\Models\Rso::firstWhere('user_id', $hca->user->id))->itop_number }}
+                                    {{ optional(\App\Models\Bp::firstWhere('user_id', $hca->user->id))->pool_number }}
+                                    {{ optional(\App\Models\Cm::firstWhere('user_id', $hca->user->id))->pool_number }}
+                                </div>
+                            </td>
                             <td>{{ $hca->retailer_code }}</td>
                             <td>{{ $hca->activation }}</td>
                             <td>{{ $hca->price }}</td>
+                            <td>{{ \Illuminate\Support\Str::upper($hca->flag) }}</td>
+                            <td>{{ \Illuminate\Support\Str::title($hca->remarks) }}</td>
                             <td>{{ $hca->activation_date->toFormattedDateString() }}</td>
                             <td>
                                 <!-- Edit -->

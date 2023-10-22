@@ -23,7 +23,7 @@ class HouseCodeActivation extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['dd_house','user_id','retailer_code','activation','price','activation_date'];
+    protected $fillable = ['user_id','retailer_code','activation','price','activation_date','flag','remarks'];
 
     /**
      * The attributes that should be cast.

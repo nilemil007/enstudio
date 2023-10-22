@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static truncate()
  * @method static whereBetween(string $string, array $array)
  * @method static firstWhere(string $string, $id)
+ * @method static where(string $column, string $operator, mixed $value)
  */
 class TradeCampaignRetailerCode extends Model
 {

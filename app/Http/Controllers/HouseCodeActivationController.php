@@ -99,13 +99,12 @@ class HouseCodeActivationController extends Controller
     public function store(HCAStoreRequest $request): JsonResponse
     {
         $data = $request->validated();
+        $data['flag']       = TradeCampaignRetailerCode::firstWhere('user_id', $data['user_id'])->flag;
+        $data['remarks']    = TradeCampaignRetailerCode::firstWhere('user_id', $data['user_id'])->remarks;
 
         try {
-
-            $data['dd_house'] = Retailer::firstWhere('code', $request->retailer_code)->dd_house_id;
             HouseCodeActivation::create($data);
             return Response::json(['success' => 'New record created successfully.']);
-
         }catch(\Exception $exception) {
             dd($exception);
         }
@@ -209,5 +208,16 @@ class HouseCodeActivationController extends Controller
     public function exportLastMonth(): BinaryFileResponse
     {
         return Excel::download(new HouseCodeActivationLastMonthExport(), 'House Code Activation.xlsx');
+    }
+
+    /**
+     * Get retailer code by user id.
+     */
+    public function getRetailerCode($user_id): JsonResponse
+    {
+        $startDate = Carbon::now()->startOfMonth()->toDateString();
+        $endDate = Carbon::now()->endOfMonth()->toDateString();
+
+        return Response::json(['tcrc' => TradeCampaignRetailerCode::whereBetween('created_at', [$startDate, $endDate])->where('user_id', $user_id)->get()]);
     }
 }
