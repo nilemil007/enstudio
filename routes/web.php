@@ -164,12 +164,14 @@ Route::middleware(['auth'])->group(function (){
         Route::post('/delete/all','deleteAll')->name('delete.all');
         // Summary
         Route::get('/summary','summary')->name('summary');
-        // Export
+        // Export [Current Month Data]
         Route::get('/export','export')->name('export');
         // Export [Last Month Data]
         Route::get('/export-last-month','exportLastMonth')->name('export.last.month');
         // LMTD
         Route::get('/lmtd', 'lmtd')->name('lmtd');
+        // Get retailer code by user
+        Route::post('/get_retailer_code/{user_id?}', 'getRetailerCode')->name('get.retailer.code');
     });
 
     // Trade Campaign Retailer Code Additional Routes

@@ -63,7 +63,14 @@
                             <td>{{ ++$sl }}</td>
                             <td>{{ App\Models\DdHouse::firstWhere('id', App\Models\Retailer::firstWhere('code', $tc->retailer_code)->dd_house_id)->code }}</td>
                             <td>{{ $tc->retailer_code }}</td>
-                            <td>{{ $tc->user->name }}</td>
+                            <td>
+                                {{ $tc->user->name }}
+                                <div class="text-muted">
+                                    {{ optional(\App\Models\Rso::firstWhere('user_id', $tc->user->id))->itop_number }}
+                                    {{ optional(\App\Models\Bp::firstWhere('user_id', $tc->user->id))->pool_number }}
+                                    {{ optional(\App\Models\Cm::firstWhere('user_id', $tc->user->id))->pool_number }}
+                                </div>
+                            </td>
                             <td>{{ Str::upper($tc->flag) }}</td>
                             <td>{{ $tc->remarks }}</td>
                             <td>

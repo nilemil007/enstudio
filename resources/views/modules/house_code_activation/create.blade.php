@@ -23,7 +23,7 @@
                                     <option value="">-- Select User --</option>
                                     @if(count($tradeCampaignRetailerCode) > 0)
                                         @foreach($tradeCampaignRetailerCode as $tcrc)
-                                            <option value="">{{ \Illuminate\Support\Str::upper($tcrc->user->role) .' - '. optional($tcrc->user->bp)->pool_number . optional($tcrc->user->rso)->itop_number .' - '. $tcrc->user->name . ' (' . $tcrc->remarks . ')'  }}</option>
+                                            <option value="{{ $tcrc->user_id }}">{{ \Illuminate\Support\Str::upper($tcrc->user->role) .' - '. optional($tcrc->user->bp)->pool_number . optional($tcrc->user->rso)->itop_number .' - '. $tcrc->user->name . ' (' . $tcrc->remarks . ')'  }}</option>
                                         @endforeach
                                     @endif
                                 </select>
@@ -35,9 +35,9 @@
 
                         <!-- Retailer Code -->
                         <div class="row mb-3">
-                            <label for="retailer_code" class="col-sm-3 col-form-label">Retailer Code <strong>()</strong></label>
+                            <label for="set_retailer_code" class="col-sm-3 col-form-label">Retailer Code <strong>()</strong></label>
                             <div class="col-sm-9">
-                                <select name="retailer_code" class="select-2 form-select" id="retailer_code">
+                                <select name="retailer_code" class="select-2 form-select" id="set_retailer_code">
                                     <option value="">-- Select Retailer Code --</option>
 {{--                                    @if(count($retailers) > 0)--}}
 {{--                                        @foreach($retailers as $retailer)--}}
@@ -92,6 +92,31 @@
     @push('scripts')
         <script>
             $(document).ready(function() {
+                // Get retailer code by user
+                $(document).on('change','#user_id',function (){
+                    const userId = $(this).val();
+
+                    if (userId === '')
+                    {
+                        $('#set_retailer_code').html('<option value="">-- Select Retailer Code --</option>');
+                    }
+
+                    // Get user by dd house
+                    $.ajax({
+                        url: "{{ route('hca.get.retailer.code') }}/" + userId,
+                        type: 'POST',
+                        dataType: 'JSON',
+                        beforeSend: function (){
+                            $('#set_retailer_code').find('option:not(:first)').remove();
+                        },
+                        success: function (response){
+                            $.each(response.users, function (key, value){
+                                $('#get_user').append('<option value="'+ value.id +'">' + value.name + '</option>')
+                            });
+                        }
+                    });
+                });
+
                 // Create HCA Entry
                 $(document).on('submit','#hcaForm',function (e){
                     e.preventDefault();
