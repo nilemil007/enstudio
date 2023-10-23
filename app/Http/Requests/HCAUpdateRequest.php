@@ -27,11 +27,12 @@ class HCAUpdateRequest extends FormRequest
     {
         return [
             'user_id'           => ['required'],
-            'dd_house'          => ['nullable'],
             'retailer_code'     => ['required'],
             'activation'        => ['required'],
             'price'             => ['required'],
             'activation_date'   => ['required'],
+            'flag'              => ['nullable'],
+            'remarks'           => ['nullable'],
         ];
     }
 }

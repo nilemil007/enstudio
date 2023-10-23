@@ -39,7 +39,7 @@
                         <tr>
                             <td><span class="text-muted">{{ ++$sl }}</span></td>
                             <td>
-                                {{ $hca->user->name.' ('.\Illuminate\Support\Str::upper($hca->user->role).')' }}
+                                {{ $hca->user->name }}
                                 <div class="text-muted">
                                     {{ optional(\App\Models\Rso::firstWhere('user_id', $hca->user->id))->itop_number }}
                                     {{ optional(\App\Models\Bp::firstWhere('user_id', $hca->user->id))->pool_number }}

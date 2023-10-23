@@ -40,7 +40,8 @@
                         <select name="user_id" class="select-2 form-select" id="user_id">
                             <option value="">-- ব্যাবহারকারী নির্বাচন --</option>
                             @foreach ($users as $user)
-                            <option value="{{ $user->id }}">{{ \Illuminate\Support\Str::upper($user->role) .' - ' . optional(\App\Models\Bp::firstWhere('user_id', $user->id))->pool_number . optional(\App\Models\Rso::firstWhere('user_id', $user->id))->itop_number .' - '. $user->name }}</option>
+                            <option value="{{ $user->id }}">
+                                {{ \Illuminate\Support\Str::upper($user->role) .' - ' . optional(\App\Models\Bp::firstWhere('user_id', $user->id))->pool_number . optional(\App\Models\Cm::firstWhere('user_id', $user->id))->pool_number . optional(\App\Models\Rso::firstWhere('user_id', $user->id))->itop_number .' - '. $user->name }}</option>
                             @endforeach
                         </select>
                         @error('user_id') <small class="text-danger">{{ $message }}</small> @else <small class="text-muted">একজন ব্যাবহারকারী নির্বাচন করুন।</small> @enderror

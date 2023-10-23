@@ -16,11 +16,13 @@
                     <div class="row mb-3">
                         <label for="user_id" class="col-sm-3 col-form-label">User Name</label>
                         <div class="col-sm-9">
-                            <select name="user_id" class="form-select @error('user_id') is-invalid @enderror" id="user_id">
+                            <select name="user_id" class="select-2 form-select @error('user_id') is-invalid @enderror" id="user_id">
                                 <option value="">-- Select User --</option>
-                                @if(count($users) > 0)
-                                    @foreach($users as $user)
-                                        <option @selected( $hca->user_id == $user->id ) value="{{ $user->id }}">{{ $user->phone .' - '. \Illuminate\Support\Str::upper($user->role) .' - '. $user->name }}</option>
+                                @if(count($tradeCampaignRetailerCode) > 0)
+                                    @foreach($tradeCampaignRetailerCode as $tcrc)
+                                        <option @selected($tcrc->user_id == $hca->user_id) value="{{ $tcrc->user_id }}">
+                                            {{ \Illuminate\Support\Str::upper($tcrc->user->role) .' - '. optional($tcrc->user->bp)->pool_number . optional($tcrc->user->cm)->pool_number . optional($tcrc->user->rso)->itop_number .' - '. $tcrc->user->name . ' (' . $tcrc->remarks . ')'  }}
+                                        </option>
                                     @endforeach
                                 @endif
                             </select>
@@ -32,13 +34,13 @@
                     <div class="row mb-3">
                         <label for="retailer_code" class="col-sm-3 col-form-label">Retailer Code</label>
                         <div class="col-sm-9">
-                            <select name="retailer_code" class="select-2 form-select @error('retailer_code') is-invalid @enderror" id="retailer_code">
+                            <select name="retailer_code" class="form-select @error('retailer_code') is-invalid @enderror" id="retailer_code">
                                 <option value="">-- Select Retailer Code --</option>
-                                @if(count($retailers) > 0)
-                                    @foreach($retailers as $retailer)
-                                        <option @selected($hca->retailer_code == $retailer->code) value="{{ $retailer->code }}">{{ $retailer->code .' - '. $retailer->itop_number }}</option>
-                                    @endforeach
-                                @endif
+
+                                @foreach($tcrcRetailerCode as $retCode)
+                                    <option @selected($hca->retailer_code == $retCode->retailer_code) value="{{ $retCode->retailer_code }}">{{ $retCode->retailer_code }}</option>
+                                @endforeach
+
                             </select>
                             @error('retailer_code') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>

@@ -75,19 +75,6 @@ class HouseCodeActivationController extends Controller
 
             default;
                 $tradeCampaignRetailerCode = TradeCampaignRetailerCode::whereBetween('created_at', [$startDate, $endDate])->get();
-//                $retCode = TradeCampaignRetailerCode::whereBetween('created_at', [$startDate, $endDate])->whereNotNull('retailer_code')->pluck('retailer_code');
-//                $userId = TradeCampaignRetailerCode::whereBetween('created_at', [$startDate, $endDate])->whereNotNull('user_id')->pluck('user_id');
-//                $retailers = Retailer::whereIn('code', $retCode)->get();
-//                $users = User::with('rso')->where('role', '!=', 'zm')
-//                    ->where('role', '!=', 'manager')
-//                    ->where('role', '!=', 'md')
-//                    ->where('role', '!=', 'supervisor')
-//                    ->where('role', '!=', 'retailer')
-//                    ->where('role', '!=', 'accountant')
-//                    ->where('role', '!=', 'superadmin')
-//                    ->whereIn('id', $userId)
-//                    ->get();
-//                dd($tradeCampaignRetailerCode);
         }
 
         return view('modules.house_code_activation.create', compact('tradeCampaignRetailerCode'));
@@ -99,12 +86,14 @@ class HouseCodeActivationController extends Controller
     public function store(HCAStoreRequest $request): JsonResponse
     {
         $data = $request->validated();
-        $data['flag']       = TradeCampaignRetailerCode::firstWhere('user_id', $data['user_id'])->flag;
-        $data['remarks']    = TradeCampaignRetailerCode::firstWhere('user_id', $data['user_id'])->remarks;
 
         try {
+
+            $data['flag']       = TradeCampaignRetailerCode::firstWhere('user_id', $data['user_id'])->flag;
+            $data['remarks']    = TradeCampaignRetailerCode::firstWhere('user_id', $data['user_id'])->remarks;
             HouseCodeActivation::create($data);
             return Response::json(['success' => 'New record created successfully.']);
+
         }catch(\Exception $exception) {
             dd($exception);
         }
@@ -123,9 +112,31 @@ class HouseCodeActivationController extends Controller
      */
     public function edit(HouseCodeActivation $hca): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $users = User::all();
-        $retailers = Retailer::all();
-        return view('modules.house_code_activation.edit', compact('hca','users','retailers'));
+        $startDate = Carbon::now()->startOfMonth()->toDateString();
+        $endDate = Carbon::now()->endOfMonth()->toDateString();
+
+        switch ( Auth::user()->role )
+        {
+            case('supervisor');
+                $poolNumber = Supervisor::firstWhere('user_id', Auth::id())->pool_number;
+                $retId = TradeCampaignRetailerCode::whereNotNull('retailer_id')->pluck('retailer_id');
+                $retailers = Retailer::where('supervisor', $poolNumber)->whereIn('id', $retId)->get();
+                $users = User::where('dd_house', Auth::user()->dd_house)->get();
+            break;
+
+            case('rso');
+                $rsoId = Rso::firstWhere('user_id', Auth::id())->id;
+                $retId = TradeCampaignRetailerCode::whereNotNull('retailer_id')->pluck('retailer_id');
+                $retailers = Retailer::where('rso_id', $rsoId)->whereIn('id', $retId)->get();
+                $users = User::where('dd_house', Auth::user()->dd_house)->get();
+            break;
+
+            default;
+                $tradeCampaignRetailerCode = TradeCampaignRetailerCode::whereBetween('created_at', [$startDate, $endDate])->get();
+                $tcrcRetailerCode = TradeCampaignRetailerCode::whereBetween('created_at', [$startDate, $endDate])->where('user_id', $hca->user_id)->get();
+        }
+
+        return view('modules.house_code_activation.edit', compact('hca','tradeCampaignRetailerCode','tcrcRetailerCode'));
     }
 
     /**
@@ -137,7 +148,8 @@ class HouseCodeActivationController extends Controller
 
         try {
 
-            $data['dd_house'] = Retailer::firstWhere('code', $request->retailer_code)->dd_house_id;
+            $data['flag']       = TradeCampaignRetailerCode::firstWhere('user_id', $data['user_id'])->flag;
+            $data['remarks']    = TradeCampaignRetailerCode::firstWhere('user_id', $data['user_id'])->remarks;
             $hca->update($data);
             return Response::json(['success' => 'Record updated successfully.']);
 
