@@ -19,7 +19,7 @@
                         <div class="row mb-3">
                             <label for="user_id" class="col-sm-3 col-form-label">User</label>
                             <div class="col-sm-9">
-                                <select name="user_id" class="select-2 form-select" id="user_id">
+                                <select name="user_id" class="select-2 form-select" id="user_id" autofocus>
                                     <option value="">-- Select User --</option>
                                     @if(count($tradeCampaignRetailerCode) > 0)
                                         @foreach($tradeCampaignRetailerCode as $tcrc)
