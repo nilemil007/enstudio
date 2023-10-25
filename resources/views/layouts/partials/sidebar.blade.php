@@ -91,6 +91,44 @@
             </li>
 
 
+            <li class="nav-item nav-category">sales & stock</li>
+                <!-- Define Product And Type -->
+                <li class="nav-item {{ request()->routeIs('productType.*') ? 'active' : '' }}">
+                    <a class="nav-link" data-bs-toggle="collapse" href="#productType" role="button" aria-expanded="false" aria-controls="productType">
+                        <i class="link-icon" data-feather="info"></i>
+                        <span class="link-title">Define</span>
+                        <i class="link-arrow" data-feather="chevron-down"></i>
+                    </a>
+                    <div class="collapse {{ request()->routeIs('productType.*') ? 'show' : '' }}" id="productType">
+                        <ul class="nav sub-menu">
+                            <li class="nav-item">
+                                <a href="{{ route('productType.index') }}" class="nav-link {{ request()->routeIs('productType.index') ? 'active' : '' }}">Product And Type</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <!-- Lifting -->
+                <li class="nav-item {{ request()->routeIs('lifting.*') ? 'active' : '' }}">
+                    <a class="nav-link" data-bs-toggle="collapse" href="#lifting" role="button" aria-expanded="false" aria-controls="lifting">
+                        <i class="link-icon" data-feather="info"></i>
+                        <span class="link-title">Lifting</span>
+                        <i class="link-arrow" data-feather="chevron-down"></i>
+                    </a>
+                    <div class="collapse {{ request()->routeIs('lifting.*') ? 'show' : '' }}" id="lifting">
+                        <ul class="nav sub-menu">
+                            <li class="nav-item">
+                                <a href="{{ route('lifting.create') }}" class="nav-link {{ request()->routeIs('lifting.create') ? 'active' : '' }}">Add New</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('lifting.index') }}" class="nav-link {{ request()->routeIs('lifting.index') ? 'active' : '' }}">ALL Lifting's</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+
+
+
             <li class="nav-item nav-category">import</li>
             <!-- Core Activation -->
             <li class="nav-item {{ request()->routeIs('core.*') ? 'active' : '' }}">

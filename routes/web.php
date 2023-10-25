@@ -8,6 +8,8 @@ use App\Http\Controllers\DdHouseController;
 use App\Http\Controllers\HouseCodeActivationController;
 use App\Http\Controllers\ItopReplaceController;
 use App\Http\Controllers\KpiTargetController;
+use App\Http\Controllers\LiftingController;
+use App\Http\Controllers\ProductAndTypeController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RetailerController;
 use App\Http\Controllers\RouteController;
@@ -236,6 +238,18 @@ Route::middleware(['auth'])->group(function (){
         Route::post('/shera-partner','sheraPartner')->name('shera.partner');
     });
 
+    // Lifting Additional Routes
+    Route::controller(LiftingController::class )->prefix('/lifting')->name('lifting.')->group(function (){
+        // Move To Trash
+        Route::get('/trash','trash')->name('trash');
+        // Restore
+        Route::get('/restore/{id}','restore')->name('restore');
+        // Permanently Delete
+        Route::delete('/permanently-delete/{id}','permanentlyDelete')->name('permanently.delete');
+        // Permanently Delete All
+        Route::delete('/delete/all','permanentlyDeleteAll')->name('permanently.delete.all');
+    });
+
     // Resource Routes
     Route::resources([
         'itop-replace'  => ItopReplaceController::class,
@@ -252,6 +266,8 @@ Route::middleware(['auth'])->group(function (){
         'tcrc'          => TradeCampaignRetailerCodeController::class,
         'sc-serial'     => ScratchCardSerialController::class,
         'kpi-target'    => KpiTargetController::class,
+        'productType'   => ProductAndTypeController::class,
+        'lifting'       => LiftingController::class,
     ]);
 
 });
