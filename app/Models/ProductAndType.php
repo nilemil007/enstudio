@@ -9,17 +9,19 @@ use Illuminate\Support\Str;
 
 /**
  * @method static create(array $data)
+ * @method static latest()
+ * @method static select(string $string)
+ * @method static where(string $string, $type)
  */
 class ProductAndType extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['product_type','product'];
+    protected $fillable = ['product_type','product','lifting_price','retailer_price'];
 
     public function productType(): Attribute
     {
         return Attribute::make(
-            get: fn($type) => Str::upper($type),
             set: fn($type) => Str::lower($type),
         );
     }
@@ -27,7 +29,6 @@ class ProductAndType extends Model
     public function product(): Attribute
     {
         return Attribute::make(
-            get: fn($product) => Str::upper($product),
             set: fn($product) => Str::lower($product),
         );
     }

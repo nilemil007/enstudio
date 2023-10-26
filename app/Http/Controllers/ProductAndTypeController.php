@@ -6,7 +6,10 @@ use App\Models\ProductAndType;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 
 class ProductAndTypeController extends Controller
 {
@@ -16,7 +19,7 @@ class ProductAndTypeController extends Controller
     public function index(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
         return view('modules.sales_stock.product_and_type.index',[
-            'productTypes' => ProductAndType::all(),
+            'productTypes' => ProductAndType::latest()->get(),
         ]);
     }
 
@@ -32,17 +35,23 @@ class ProductAndTypeController extends Controller
      * Store a newly created resource in storage.
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $data = $this->validate($request,[
-            'product_type'  => ['required'],
-            'product'       => ['required'],
+            'product_type'      => ['required'],
+            'product'           => ['required'],
+            'lifting_price'     => ['required'],
+            'retailer_price'    => ['required'],
         ],[
-            'product_type.required' => 'আপনাকে অবশ্যই :attribute দিতে হবে।',
-            'product.required'      => 'আপনাকে অবশ্যই একটি :attribute দিতে হবে।',
+            'product_type.required'     => 'আপনাকে অবশ্যই :attribute দিতে হবে।',
+            'product.required'          => 'আপনাকে অবশ্যই একটি :attribute দিতে হবে।',
+            'lifting_price.required'    => 'আপনাকে অবশ্যই একটি :attribute দিতে হবে।',
+            'retailer_price.required'   => 'আপনাকে অবশ্যই একটি :attribute দিতে হবে।',
         ],[
-            'product_type'  => 'প্রোডাক্ট টাইপ',
-            'product'       => 'প্রোডাক্ট',
+            'product_type'      => 'প্রোডাক্ট টাইপ',
+            'product'           => 'প্রোডাক্ট',
+            'lifting_price'     => 'লিফটিং মূল্য',
+            'retailer_price'    => 'রিটেইলার মূল্য',
         ]);
 
         ProductAndType::create($data);
@@ -53,7 +62,7 @@ class ProductAndTypeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(ProductAndType $productAndType)
+    public function show(ProductAndType $productType)
     {
         //
     }
@@ -61,24 +70,45 @@ class ProductAndTypeController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(ProductAndType $productAndType)
+    public function edit(ProductAndType $productType): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        //
+        return view('modules.sales_stock.product_and_type.edit', compact('productType'));
     }
 
     /**
      * Update the specified resource in storage.
+     * @throws \Illuminate\Validation\ValidationException
      */
-    public function update(Request $request, ProductAndType $productAndType)
+    public function update(Request $request, ProductAndType $productType): RedirectResponse
     {
-        //
+        $data = $this->validate($request,[
+            'product_type'      => ['required'],
+            'product'           => ['required'],
+            'lifting_price'     => ['required'],
+            'retailer_price'    => ['required'],
+        ],[
+            'product_type.required'     => 'আপনাকে অবশ্যই :attribute দিতে হবে।',
+            'product.required'          => 'আপনাকে অবশ্যই একটি :attribute দিতে হবে।',
+            'lifting_price.required'    => 'আপনাকে অবশ্যই একটি :attribute দিতে হবে।',
+            'retailer_price.required'   => 'আপনাকে অবশ্যই একটি :attribute দিতে হবে।',
+        ],[
+            'product_type'      => 'প্রোডাক্ট টাইপ',
+            'product'           => 'প্রোডাক্ট',
+            'lifting_price'     => 'লিফটিং মূল্য',
+            'retailer_price'    => 'রিটেইলার মূল্য',
+        ]);
+
+        $productType->update($data);
+
+        return to_route('productType.index')->with('success','Record updated successfully.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ProductAndType $productAndType)
+    public function destroy(ProductAndType $productType): JsonResponse
     {
-        //
+        $productType->delete();
+        return Response::json(['success' => 'Record deleted successfully.']);
     }
 }

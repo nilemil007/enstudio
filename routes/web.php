@@ -248,6 +248,8 @@ Route::middleware(['auth'])->group(function (){
         Route::delete('/permanently-delete/{id}','permanentlyDelete')->name('permanently.delete');
         // Permanently Delete All
         Route::delete('/delete/all','permanentlyDeleteAll')->name('permanently.delete.all');
+        // Get product by type
+        Route::get('/get_product_by_type/{type?}', 'getProductByType')->name('get.product.by.type');
     });
 
     // Resource Routes

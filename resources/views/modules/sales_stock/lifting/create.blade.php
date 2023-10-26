@@ -26,17 +26,16 @@
                                 @error('dd_house_id') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         </div>
-
+{{--{{ dd($productAndType) }}--}}
                         <!-- Product Type -->
                         <div class="row mb-3">
                             <label for="product_type" class="col-sm-3 col-form-label">Product Type</label>
                             <div class="col-sm-9">
                                 <select name="product_type" class="form-select" id="product_type">
                                     <option value="">-- Select Product Type --</option>
-                                    <option value="sim">SIM</option>
-                                    <option value="sc">Scratch Card</option>
-                                    <option value="device">Device</option>
-                                    <option value="itopup">I'top-up</option>
+                                    @foreach($productAndType as $pat)
+                                        <option value="{{ $pat->product_type }}">{{ \Illuminate\Support\Str::upper($pat->product_type) }}</option>
+                                    @endforeach
                                 </select>
                                 @error('product_type') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
@@ -46,23 +45,15 @@
                         <div class="row mb-3">
                             <label for="product" class="col-sm-3 col-form-label">Product</label>
                             <div class="col-sm-9">
-                                <select name="product" class="form-select" id="product">
+                                <select name="product" class="form-select product" id="product">
                                     <option value="">-- Select Product --</option>
-                                    <option value="mmst">MMST (STD)</option>
-                                    <option value="mmsts">MMSTS (Duplicate Dial)</option>
-                                    <option value="simswap">SIM SWAP (RBSP)</option>
-                                    <option value="simswapev">SIM SWAP EV</option>
-                                    <option value="router">Router</option>
-                                    <option value="scv14">SCV-14Tk</option>
-                                    <option value="scd14">SCD-14Tk</option>
-                                    <option value="itopup">I'top-up</option>
                                 </select>
                                 @error('product') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         </div>
 
                         <!-- Quantity -->
-                        <div class="row mb-3">
+                        <div class="row mb-3 d-none" id="liftingQuantity">
                             <label for="qty" class="col-sm-3 col-form-label">Quantity</label>
                             <div class="col-sm-9">
                                 <input name="qty" id="qty" type="number" class="form-control" value="{{ old('qty') }}"
@@ -72,7 +63,7 @@
                         </div>
 
                         <!-- Price -->
-                        <div class="row mb-3">
+                        <div class="row mb-3 d-none" id="liftingPrice">
                             <label for="price" class="col-sm-3 col-form-label">Price</label>
                             <div class="col-sm-9">
                                 <input name="price" id="price" type="number" class="form-control" value="{{ old('price') }}" placeholder="Enter Price">
@@ -81,7 +72,7 @@
                         </div>
 
                         <!-- Itop Up -->
-                        <div class="row mb-3">
+                        <div class="row mb-3 d-none" id="liftingItopup">
                             <label for="itopup" class="col-sm-3 col-form-label">I'top-Up</label>
                             <div class="col-sm-9">
                                 <input name="itopup" id="itopup" type="number" class="form-control" value="{{ old('itopup') }}"
@@ -91,7 +82,7 @@
                         </div>
 
                         <!-- Total Amount -->
-                        <div class="row mb-3">
+                        <div class="row mb-3 d-none" id="liftingTotalAmount">
                             <label for="total_amount" class="col-sm-3 col-form-label">Total Amount</label>
                             <div class="col-sm-9">
                                 <input name="total_amount" id="total_amount" type="number" class="form-control" value="{{ old('total_amount') }}"
@@ -125,17 +116,45 @@
         <script>
             $(document).ready(function() {
 
-                $("#cmForm").validate({
+                // Get product by type
+                $(document).on('change','#product_type',function (){
+                    const type = $(this).val();
 
-                    rules: {
-                        dd_house_id: 'required',
-                        name: 'required',
-                        pool_number: 'required',
-                    },
-                    messages: {
+                    if (type === '')
+                    {
+                        $('.product').html('<option value="">-- Select Product --</option>');
+                        $('#liftingQuantity, #liftingPrice').addClass('d-none');
+                    }else if (type !== 'itopup'){
+                        $('#liftingQuantity, #liftingPrice').removeClass('d-none');
+                    }
 
-                    },
+                    $.ajax({
+                        url: "{{ route('lifting.get.product.by.type') }}/" + type,
+                        type: 'GET',
+                        dataType: 'JSON',
+                        beforeSend: function (){
+                            $('.product').find('option:not(:first)').remove();
+                        },
+                        success: function(response){
+                            if(response.products.length > 0)
+                            {
+                                $('.product').append(response.products);
+                            }
+                        },
+                    });
                 });
+
+                // $("#cmForm").validate({
+                //
+                //     rules: {
+                //         dd_house_id: 'required',
+                //         name: 'required',
+                //         pool_number: 'required',
+                //     },
+                //     messages: {
+                //
+                //     },
+                // });
             });
         </script>
     @endpush

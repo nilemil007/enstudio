@@ -4,10 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\DdHouse;
 use App\Models\Lifting;
+use App\Models\ProductAndType;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Str;
 
 class LiftingController extends Controller
 {
@@ -25,7 +29,8 @@ class LiftingController extends Controller
     public function create(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
         return view('modules.sales_stock.lifting.create', [
-            'houses' => DdHouse::all(),
+            'houses'            => DdHouse::all(),
+            'productAndType'    => ProductAndType::select('product_type')->groupBy('product_type')->orderBy('product_type','ASC')->get(),
         ]);
     }
 
@@ -34,7 +39,7 @@ class LiftingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request->all());
     }
 
     /**
@@ -99,5 +104,21 @@ class LiftingController extends Controller
     public function permanentlyDeleteAll()
     {
         //
+    }
+
+    /**
+     * Get product's by type
+     */
+    public function getProductByType($type = null): JsonResponse
+    {
+        $data = '';
+        $products = ProductAndType::where('product_type', $type)->orderBy('product','ASC')->get();
+
+        foreach ($products as $product)
+        {
+            $data.= '<option>'. Str::upper($product->product) .'</option>';
+        }
+
+        return Response::json(['products' => $data]);
     }
 }

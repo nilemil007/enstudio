@@ -21,6 +21,8 @@
                             <th class="w-1">No.</th>
                             <th>product type</th>
                             <th>product</th>
+                            <th>lifting price</th>
+                            <th>retailer price</th>
                             <th>action</th>
                         </tr>
                     </thead>
@@ -28,16 +30,17 @@
                     @foreach( $productTypes as $sl => $data )
                         <tr>
                             <td><span class="text-muted">{{ ++$sl }}</span></td>
-{{--                            <td>{{ $cm->ddHouse->code }}</td>--}}
-{{--                            <td>{{ $cm->name }}</td>--}}
-{{--                            <td>{{ $cm->pool_number }}</td>--}}
-{{--                            <td>--}}
-{{--                                <!-- Edit -->--}}
-{{--                                <a href="{{ route('productType.edit', $cm->id) }}" class="btn btn-sm btn-primary">Edit</a>--}}
+                            <td>{{ $data->product_type }}</td>
+                            <td>{{ $data->product }}</td>
+                            <td>{{ $data->lifting_price }}</td>
+                            <td>{{ $data->retailer_price }}</td>
+                            <td>
+                                <!-- Edit -->
+                                <a href="{{ route('productType.edit', $data->id) }}" class="btn btn-sm btn-primary">Edit</a>
 
-{{--                                <!-- Move to trash -->--}}
-{{--                                <a href="{{ route('productType.destroy', $cm->id) }}" id="deleteProductType" class="btn btn-sm btn-danger">Delete</a>--}}
-{{--                            </td>--}}
+                                <!-- Move to trash -->
+                                <a href="{{ route('productType.destroy', $data->id) }}" id="deleteProductType" class="btn btn-sm btn-danger">Delete</a>
+                            </td>
                         </tr>
                     @endforeach
                     </tbody>
@@ -58,7 +61,7 @@
 
                     Swal.fire({
                         title: 'Are you sure?',
-                        text: "Delete This CM?",
+                        text: "Delete This Record?",
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonText: 'Yes, delete it!'
