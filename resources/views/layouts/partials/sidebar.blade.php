@@ -385,9 +385,6 @@
                         <li class="nav-item">
                             <a href="{{ route('settings.shera.partner') }}" class="nav-link {{ request()->routeIs('settings.shera.partner') ? 'active' : '' }}">Shera Partner</a>
                         </li>
-                        <li class="nav-item">
-                            <a href="{{ route('settings.product.price') }}" class="nav-link {{ request()->routeIs('settings.product.price') ? 'active' : '' }}">Product Price</a>
-                        </li>
                     </ul>
                 </div>
                 </li>

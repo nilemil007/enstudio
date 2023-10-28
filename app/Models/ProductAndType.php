@@ -12,6 +12,7 @@ use Illuminate\Support\Str;
  * @method static latest()
  * @method static select(string $string)
  * @method static where(string $string, $type)
+ * @method static firstWhere(string $string, mixed $product)
  */
 class ProductAndType extends Model
 {

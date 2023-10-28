@@ -9,6 +9,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Str;
@@ -36,10 +37,24 @@ class LiftingController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
-        dd($request->all());
+        $lifting = $this->validate($request,[
+            'dd_house_id'   => ['required'],
+            'product_type'  => ['required'],
+            'product'       => ['nullable'],
+            'qty'           => ['nullable'],
+            'price'         => ['nullable'],
+            'itopup'        => ['nullable'],
+            'total_amount'  => ['nullable'],
+            'lifting_date'  => ['required'],
+        ]);
+
+        Lifting::create($lifting);
+
+        return to_route('lifting.create')->with('success','Lifting created successfully.');
     }
 
     /**
@@ -111,14 +126,22 @@ class LiftingController extends Controller
      */
     public function getProductByType($type = null): JsonResponse
     {
-//        $data = '';
-//        $products = ProductAndType::where('product_type', $type)->orderBy('product','ASC')->get();
+        if ($type != 'itopup')
+        {
+            return Response::json(['products' => ProductAndType::where('product_type', $type)->orderBy('product','ASC')->get()]);
+        }
 
-//        foreach ($products as $product)
-//        {
-//            $data.= '<option>'. Str::upper($product->product) .'</option>';
-//        }
+//        return Response::json(['products' => ProductAndType::where('product_type', $type)->orderBy('product','ASC')->get()]);
+    }
 
-        return Response::json(['products' => ProductAndType::where('product_type', $type)->orderBy('product','ASC')->get()]);
+    /**
+     * Get price by product
+     */
+    public function getPriceByProduct($product = null): JsonResponse
+    {
+        return Response::json([
+            'liftingPrice'  => ProductAndType::firstWhere('product', $product)->lifting_price,
+            'faceValue'     => preg_replace('/\D/', '', $product),
+            ]);
     }
 }

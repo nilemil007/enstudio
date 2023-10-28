@@ -63,17 +63,10 @@
                         </div>
 
                         <!-- Price -->
-                        <input name="price" id="price" type="hidden" class="form-control">
+                        <input name="price" id="price" type="hidden">
 
                         <!-- Itop Up -->
-                        <div class="row mb-3 d-none" id="liftingItopup">
-                            <label for="itopup" class="col-sm-3 col-form-label">I'top-Up</label>
-                            <div class="col-sm-9">
-                                <input name="itopup" id="itopup" type="number" class="form-control" value="{{ old('itopup') }}"
-                                       placeholder="Enter I'top-Up">
-                                @error('itopup') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                        </div>
+                        <input name="itopup" id="itopup" type="hidden">
 
                         <!-- Total Amount -->
                         <div class="row mb-3 d-none" id="liftingTotalAmount">
@@ -81,7 +74,7 @@
                             <div class="col-sm-9">
                                 <input name="total_amount" id="total_amount" type="number" class="form-control" value="{{ old('total_amount') }}"
                                        placeholder="Enter Total Amount">
-                                @error('total_amount') <span class="text-danger">{{ $message }}</span> @enderror
+                                @error('total_amount') <span class="text-danger">{{ $message }}</span> @else <small class="text-success" id="showItopUp" style="font-weight: bold"></small> @enderror
                             </div>
                         </div>
 
@@ -118,33 +111,39 @@
     @push('scripts')
         <script>
             $(document).ready(function() {
-                var liftingPrice = '';
+                let liftingPrice = '';
+                let faceValue = '';
 
                 $(document).on('change','.product',function (){
                     const product = $(this).val();
-                    if(product === 'MMST')
-                    {
-                        liftingPrice = 241;
-                    }else if(product === 'MMSTS'){
-                        liftingPrice = 241;
-                    }else if(product === 'SIM SWAP'){
-                        liftingPrice = 223;
-                    }else if(product === 'SIM SWAP EV'){
-                        liftingPrice = 100;
-                    }
+                    $('#qty').val('');
+                    $('#showPrice').text('');
+
+                    $.ajax({
+                        url: "{{ route('lifting.get.price.by.product') }}/" + product,
+                        type: 'GET',
+                        dataType: 'JSON',
+                        success: function(response){
+                            liftingPrice = response.liftingPrice;
+                            faceValue = response.faceValue;
+                        },
+                    });
                 });
 
                 // Get price from quantity
                 $(document).on('keyup','#qty',function (){
                     const qty = $(this).val();
-                    const price = qty*liftingPrice;
+                    const faceValue = qty*faceValue;
+                    const liftingValue = qty*liftingPrice;
                     $('#price').val(price);
-                    $('#showPrice').text('Price: '+price);
+                    $('#showPrice').text('Face Value: '+faceValue+' | '+'Lifting Value: '+liftingValue+' | '+'Lifting Price: '+liftingPrice);
                 });
 
                 // Get product by type
                 $(document).on('change','#product_type',function (){
                     const type = $(this).val();
+                    $('#qty').val('');
+                    $('#showPrice').text('');
 
                     if (type === '')
                     {

@@ -238,10 +238,6 @@ Route::middleware(['auth'])->group(function (){
         Route::get('/shera-partner','sheraPartner')->name('shera.partner');
         // Shera Partner Update
         Route::post('/shera-partner','sheraPartnerUpdate')->name('shera.partner.update');
-        // Product Price
-        Route::get('/product-price','productPrice')->name('product.price');
-        // Product Price Update
-        Route::post('/product-price','productPriceUpdate')->name('product.price.update');
     });
 
     // Lifting Additional Routes
@@ -256,6 +252,8 @@ Route::middleware(['auth'])->group(function (){
         Route::delete('/delete/all','permanentlyDeleteAll')->name('permanently.delete.all');
         // Get product by type
         Route::get('/get_product_by_type/{type?}', 'getProductByType')->name('get.product.by.type');
+        // Get price by product
+        Route::get('/get_price_by_product/{product?}', 'getPriceByProduct')->name('get.price.by.product');
     });
 
     // Resource Routes
