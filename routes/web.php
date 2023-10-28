@@ -230,12 +230,18 @@ Route::middleware(['auth'])->group(function (){
 
     // Settings Additional Routes
     Route::controller(SettingController::class )->prefix('/settings')->name('settings.')->group(function (){
-        // Index
-        Route::get('/index','index')->name('index');
-        // General
-        Route::post('/general','general')->name('general');
+        // General View
+        Route::get('/general','general')->name('general');
+        // General Update
+        Route::post('/general','generalUpdate')->name('general.update');
         // Shera Partner
-        Route::post('/shera-partner','sheraPartner')->name('shera.partner');
+        Route::get('/shera-partner','sheraPartner')->name('shera.partner');
+        // Shera Partner Update
+        Route::post('/shera-partner','sheraPartnerUpdate')->name('shera.partner.update');
+        // Product Price
+        Route::get('/product-price','productPrice')->name('product.price');
+        // Product Price Update
+        Route::post('/product-price','productPriceUpdate')->name('product.price.update');
     });
 
     // Lifting Additional Routes

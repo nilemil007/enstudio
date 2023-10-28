@@ -13,15 +13,15 @@ use Illuminate\Support\Facades\Auth;
 
 class SettingController extends Controller
 {
-    public function index(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
+    public function general(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        return view('modules.setting.index', [
+        return view('modules.setting.general', [
             'setting'   => Setting::firstWhere('user_id', Auth::id()),
             'ddHouses'  => DdHouse::get(),
         ]);
     }
 
-    public function general(Request $request): RedirectResponse
+    public function generalUpdate(Request $request): RedirectResponse
     {
         Setting::updateOrCreate(['user_id' => Auth::id()],[
             'drc_code'              => $request->input('drc_code'),
@@ -34,7 +34,15 @@ class SettingController extends Controller
         return redirect()->back();
     }
 
-    public function sheraPartner(Request $request): RedirectResponse
+    public function sheraPartner(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
+    {
+        return view('modules.setting.shera-partner', [
+            'setting'   => Setting::firstWhere('user_id', Auth::id()),
+            'ddHouses'  => DdHouse::get(),
+        ]);
+    }
+
+    public function sheraPartnerUpdate(Request $request): RedirectResponse
     {
         Setting::updateOrCreate(['user_id' => Auth::id()],[
             'shera_partner_day'         => $request->input('shera_partner_day'),

@@ -370,13 +370,26 @@
             </li>
 
             <li class="nav-item nav-category">Settings</li>
-
             <!-- Setting -->
             <li class="nav-item {{ request()->routeIs('settings.*') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('settings.index') }}" >
-                        <i class="link-icon" data-feather="settings"></i>
-                        <span class="link-title">Setting</span>
-                    </a>
+                <a class="nav-link" data-bs-toggle="collapse" href="#settings" role="button" aria-expanded="false" aria-controls="settings">
+                    <i class="link-icon" data-feather="settings"></i>
+                    <span class="link-title">Setting</span>
+                    <i class="link-arrow" data-feather="chevron-down"></i>
+                </a>
+                <div class="collapse {{ request()->routeIs('settings.*') ? 'show' : '' }}" id="settings">
+                    <ul class="nav sub-menu">
+                        <li class="nav-item">
+                            <a href="{{ route('settings.general') }}" class="nav-link {{ request()->routeIs('settings.general') ? 'active' : '' }}">General</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('settings.shera.partner') }}" class="nav-link {{ request()->routeIs('settings.shera.partner') ? 'active' : '' }}">Shera Partner</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('settings.product.price') }}" class="nav-link {{ request()->routeIs('settings.product.price') ? 'active' : '' }}">Product Price</a>
+                        </li>
+                    </ul>
+                </div>
                 </li>
             @endif
         </ul>
