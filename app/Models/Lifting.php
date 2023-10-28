@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 
 /**
  * @method static create(array $lifting)
+ * @method static where(string $string, string $string1, string $string2)
  */
 class Lifting extends Model
 {

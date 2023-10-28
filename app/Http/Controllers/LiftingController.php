@@ -124,7 +124,7 @@ class LiftingController extends Controller
     /**
      * Get product's by type
      */
-    public function getProductByType($type = null): JsonResponse
+    public function getProductByType($type = null)
     {
         if ($type != 'itopup')
         {
@@ -143,5 +143,21 @@ class LiftingController extends Controller
             'liftingPrice'  => ProductAndType::firstWhere('product', $product)->lifting_price,
             'faceValue'     => preg_replace('/\D/', '', $product),
             ]);
+    }
+
+    /**
+     * Get itop amount
+     */
+    public function getItopAmount($total_amount, $ddId): JsonResponse
+    {
+        $othersAmount = Lifting::where('product_type', '!=', 'itopup')
+            ->whereDate('lifting_date', now())
+            ->where('dd_house_id', $ddId)
+            ->sum('price');
+
+        $remainingAmount = $total_amount - $othersAmount;
+        $itopAmount = $remainingAmount / 0.9625;
+
+        return Response::json(['itopup'  => round($itopAmount)]);
     }
 }

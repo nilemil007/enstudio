@@ -11,7 +11,7 @@
                     <form id="productTypeForm" action="{{ route('productType.store') }}" method="POST">
                     @csrf
 
-                    <!-- Product Type -->
+                        <!-- Product Type -->
                         <div class="row mb-3">
                             <label for="product_type" class="col-sm-3 col-form-label">Product Type</label>
                             <div class="col-sm-9">

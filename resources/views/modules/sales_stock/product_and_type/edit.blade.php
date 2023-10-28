@@ -34,7 +34,7 @@
                         <div class="row mb-3">
                             <label for="lifting_price" class="col-sm-3 col-form-label">Lifting Price</label>
                             <div class="col-sm-9">
-                                <input name="lifting_price" id="lifting_price" type="number" class="form-control" value="{{ old('lifting_price', $productType->lifting_price) }}" placeholder="Enter Lifting Price">
+                                <input name="lifting_price" id="lifting_price" step="any" type="number" class="form-control" value="{{ old('lifting_price', $productType->lifting_price) }}" placeholder="Enter Lifting Price">
                                 @error('lifting_price') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         </div>
@@ -43,7 +43,7 @@
                         <div class="row mb-3">
                             <label for="retailer_price" class="col-sm-3 col-form-label">Retailer Price</label>
                             <div class="col-sm-9">
-                                <input name="retailer_price" id="retailer_price" type="number" class="form-control" value="{{ old('retailer_price', $productType->retailer_price) }}" placeholder="Enter Retailer Price">
+                                <input name="retailer_price" id="retailer_price" step="any" type="number" class="form-control" value="{{ old('retailer_price', $productType->retailer_price) }}" placeholder="Enter Retailer Price">
                                 @error('retailer_price') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         </div>

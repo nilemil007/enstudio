@@ -125,7 +125,23 @@
                         dataType: 'JSON',
                         success: function(response){
                             liftingPrice = response.liftingPrice;
-                            faceValue = response.faceValue;
+                            // faceValue = response.faceValue;
+                        },
+                    });
+                });
+
+                // Calculate itop-up amount
+                $(document).on('keyup','#total_amount',function (){
+                    const totAmount = $(this).val();
+                    const ddId = $('#dd_house_id').val();
+
+                    $.ajax({
+                        url: "{{ route('lifting.get.itop.amount') }}/" + totAmount + '/' + ddId,
+                        type: 'GET',
+                        dataType: 'JSON',
+                        success: function(response){
+                            $('#itopup').val(response.itopup);
+                            $('#showItopUp').text('I\'top-up: ' + response.itopup);
                         },
                     });
                 });
@@ -133,10 +149,10 @@
                 // Get price from quantity
                 $(document).on('keyup','#qty',function (){
                     const qty = $(this).val();
-                    const faceValue = qty*faceValue;
+                    // const fValue = qty*faceValue;
                     const liftingValue = qty*liftingPrice;
-                    $('#price').val(price);
-                    $('#showPrice').text('Face Value: '+faceValue+' | '+'Lifting Value: '+liftingValue+' | '+'Lifting Price: '+liftingPrice);
+                    $('#price').val(liftingValue);
+                    $('#showPrice').text('Lifting Value: '+liftingValue+' | '+'Lifting Price: '+liftingPrice);
                 });
 
                 // Get product by type
