@@ -4,7 +4,7 @@
     <x-slot:title>Create New Lifting</x-slot:title>
 
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-6">
             <div class="card">
                 <div class="card-body">
                     <h6 class="card-title">Create New Lifting</h6>
@@ -26,7 +26,7 @@
                                 @error('dd_house_id') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         </div>
-{{--{{ dd($productAndType) }}--}}
+
                         <!-- Product Type -->
                         <div class="row mb-3">
                             <label for="product_type" class="col-sm-3 col-form-label">Product Type</label>
@@ -36,13 +36,14 @@
                                     @foreach($productAndType as $pat)
                                         <option value="{{ $pat->product_type }}">{{ \Illuminate\Support\Str::upper($pat->product_type) }}</option>
                                     @endforeach
+                                    <option value="itopup">I'top-up</option>
                                 </select>
                                 @error('product_type') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         </div>
 
                         <!-- Product -->
-                        <div class="row mb-3">
+                        <div class="row mb-3" id="liftingProduct">
                             <label for="product" class="col-sm-3 col-form-label">Product</label>
                             <div class="col-sm-9">
                                 <select name="product" class="form-select product" id="product">
@@ -56,20 +57,13 @@
                         <div class="row mb-3 d-none" id="liftingQuantity">
                             <label for="qty" class="col-sm-3 col-form-label">Quantity</label>
                             <div class="col-sm-9">
-                                <input name="qty" id="qty" type="number" class="form-control" value="{{ old('qty') }}"
-                                       placeholder="Enter Quantity">
-                                @error('qty') <span class="text-danger">{{ $message }}</span> @enderror
+                                <input name="qty" id="qty" type="number" class="form-control" value="{{ old('qty') }}" placeholder="Enter Quantity">
+                                @error('qty') <span class="text-danger">{{ $message }}</span> @else <small class="text-success" id="showPrice" style="font-weight: bold"></small> @enderror
                             </div>
                         </div>
 
                         <!-- Price -->
-                        <div class="row mb-3 d-none" id="liftingPrice">
-                            <label for="price" class="col-sm-3 col-form-label">Price</label>
-                            <div class="col-sm-9">
-                                <input name="price" id="price" type="number" class="form-control" value="{{ old('price') }}" placeholder="Enter Price">
-                                @error('price') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                        </div>
+                        <input name="price" id="price" type="hidden" class="form-control">
 
                         <!-- Itop Up -->
                         <div class="row mb-3 d-none" id="liftingItopup">
@@ -110,11 +104,43 @@
                 </div>
             </div>
         </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Lifting Detail's</h6>
+
+                </div>
+            </div>
+        </div>
     </div>
 
     @push('scripts')
         <script>
             $(document).ready(function() {
+                var liftingPrice = '';
+
+                $(document).on('change','.product',function (){
+                    const product = $(this).val();
+                    if(product === 'MMST')
+                    {
+                        liftingPrice = 241;
+                    }else if(product === 'MMSTS'){
+                        liftingPrice = 241;
+                    }else if(product === 'SIM SWAP'){
+                        liftingPrice = 223;
+                    }else if(product === 'SIM SWAP EV'){
+                        liftingPrice = 100;
+                    }
+                });
+
+                // Get price from quantity
+                $(document).on('keyup','#qty',function (){
+                    const qty = $(this).val();
+                    const price = qty*liftingPrice;
+                    $('#price').val(price);
+                    $('#showPrice').text('Price: '+price);
+                });
 
                 // Get product by type
                 $(document).on('change','#product_type',function (){
@@ -125,7 +151,11 @@
                         $('.product').html('<option value="">-- Select Product --</option>');
                         $('#liftingQuantity, #liftingPrice').addClass('d-none');
                     }else if (type !== 'itopup'){
-                        $('#liftingQuantity, #liftingPrice').removeClass('d-none');
+                        $('#liftingItopup, #liftingTotalAmount').addClass('d-none');
+                        $('#liftingQuantity, #liftingPrice, #liftingProduct').removeClass('d-none');
+                    }else{
+                        $('#liftingQuantity, #liftingPrice, #liftingProduct').addClass('d-none');
+                        $('#liftingItopup, #liftingTotalAmount').removeClass('d-none');
                     }
 
                     $.ajax({
@@ -136,25 +166,15 @@
                             $('.product').find('option:not(:first)').remove();
                         },
                         success: function(response){
-                            if(response.products.length > 0)
+                            if(response.products.length)
                             {
-                                $('.product').append(response.products);
+                                $.each(response.products, function (key, value){
+                                    $('.product').append('<option value="'+ value.product +'">' + value.product + '</option>')
+                                });
                             }
                         },
                     });
                 });
-
-                // $("#cmForm").validate({
-                //
-                //     rules: {
-                //         dd_house_id: 'required',
-                //         name: 'required',
-                //         pool_number: 'required',
-                //     },
-                //     messages: {
-                //
-                //     },
-                // });
             });
         </script>
     @endpush

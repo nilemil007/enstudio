@@ -29,6 +29,7 @@ class ProductAndType extends Model
     public function product(): Attribute
     {
         return Attribute::make(
+            get: fn($product) => Str::upper($product),
             set: fn($product) => Str::lower($product),
         );
     }

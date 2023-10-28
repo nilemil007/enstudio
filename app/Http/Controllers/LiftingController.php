@@ -111,14 +111,14 @@ class LiftingController extends Controller
      */
     public function getProductByType($type = null): JsonResponse
     {
-        $data = '';
-        $products = ProductAndType::where('product_type', $type)->orderBy('product','ASC')->get();
+//        $data = '';
+//        $products = ProductAndType::where('product_type', $type)->orderBy('product','ASC')->get();
 
-        foreach ($products as $product)
-        {
-            $data.= '<option>'. Str::upper($product->product) .'</option>';
-        }
+//        foreach ($products as $product)
+//        {
+//            $data.= '<option>'. Str::upper($product->product) .'</option>';
+//        }
 
-        return Response::json(['products' => $data]);
+        return Response::json(['products' => ProductAndType::where('product_type', $type)->orderBy('product','ASC')->get()]);
     }
 }
