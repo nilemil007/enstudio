@@ -114,7 +114,31 @@
             <div class="card">
                 <div class="card-body">
                     <h6 class="card-title">Lifting Detail's</h6>
-
+                    <div class="row">
+                        @foreach($liftings as $lifting)
+{{--                            {{ dd($lifting) }}--}}
+                        <div class="col-md-6 p-0">
+                            <div class="card m-2">
+                                <div class="card-body">
+                                    <p>{{ $lifting->ddHouse->name }}</p>
+                                    <p>{{ $lifting->ddHouse->code }}</p>
+                                    <p>{{ date('d/m/Y', strtotime($lifting->lifting_date)) }}</p>
+                                    <p>Lifting itop: {{ $lifting->itopup }} ({{ $lifting->remarks }})</p>
+                                    <p>14tk sc min: 0</p>
+                                    <p>14tk mb: 0</p>
+                                    <p>10tk sc: 0</p>
+                                    <p>19tk min: 0</p>
+                                    <p>19tk mb: 0</p>
+                                    <p>20tk sc: 0</p>
+                                    <p>29tk sc: 0</p>
+                                    <p>RBSP swap sim: 0</p>
+                                    <p>Prepaid sim: 0 (Cash)</p>
+                                    <p>itop swap. 0 (Cash)</p>
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
                 </div>
             </div>
         </div>

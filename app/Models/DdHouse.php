@@ -47,6 +47,11 @@ class DdHouse extends Model
         return $this->hasMany(Route::class);
     }
 
+    public function lifting(): HasMany
+    {
+        return $this->hasMany(Lifting::class);
+    }
+
     public function bp(): HasMany
     {
         return $this->hasMany(Bp::class);

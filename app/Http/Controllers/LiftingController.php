@@ -33,9 +33,10 @@ class LiftingController extends Controller
     public function create(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
 //        $data = DB::table('dd_house_user')->where('user_id', Auth::id())->pluck('dd_house_id');
-//        dd($data);
+//        dd(Lifting::whereDate('lifting_date', date('Y-m-d', strtotime('2023-10-01')))->whereIn('dd_house_id',[1])->get());
 
         return view('modules.sales_stock.lifting.create', [
+            'liftings'          => Lifting::whereDate('lifting_date', date('Y-m-d', strtotime('2023-10-01')))->whereIn('dd_house_id',[1,2])->groupBy('product')->get(),
             'houses'            => DdHouse::all(),
             'productAndType'    => ProductAndType::select('product_type')->groupBy('product_type')->orderBy('product_type','ASC')->get(),
         ]);
