@@ -5,12 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\DdHouse;
 use App\Models\Lifting;
 use App\Models\ProductAndType;
+use App\Models\User;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Str;
 
@@ -29,6 +32,9 @@ class LiftingController extends Controller
      */
     public function create(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
+//        $data = DB::table('dd_house_user')->where('user_id', Auth::id())->pluck('dd_house_id');
+//        dd($data);
+
         return view('modules.sales_stock.lifting.create', [
             'houses'            => DdHouse::all(),
             'productAndType'    => ProductAndType::select('product_type')->groupBy('product_type')->orderBy('product_type','ASC')->get(),
@@ -50,7 +56,13 @@ class LiftingController extends Controller
             'itopup'        => ['nullable'],
             'total_amount'  => ['nullable'],
             'lifting_date'  => ['required'],
+            'remarks'       => ['required'],
         ]);
+
+        if ($lifting['product_type'] == 'itopup')
+        {
+            $lifting['product'] = 'itopup';
+        }
 
         Lifting::create($lifting);
 
@@ -148,10 +160,10 @@ class LiftingController extends Controller
     /**
      * Get itop amount
      */
-    public function getItopAmount($total_amount, $ddId): JsonResponse
+    public function getItopAmount($total_amount, $ddId, $date): JsonResponse
     {
         $othersAmount = Lifting::where('product_type', '!=', 'itopup')
-            ->whereDate('lifting_date', now())
+            ->whereDate('lifting_date', $date)
             ->where('dd_house_id', $ddId)
             ->sum('price');
 

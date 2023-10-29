@@ -25,6 +25,7 @@ class Lifting extends Model
         'itopup',
         'total_amount',
         'lifting_date',
+        'remarks',
     ];
 
     public function product(): Attribute

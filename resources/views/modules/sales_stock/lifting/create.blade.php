@@ -11,6 +11,19 @@
                     <form id="cmForm" action="{{ route('lifting.store') }}" method="POST">
                     @csrf
 
+                        <!-- Lifting Date -->
+                        <div class="row mb-3">
+                            <label for="lifting_date" class="col-sm-3 col-form-label">Lifting Date</label>
+                            <div class="col-sm-9">
+                                <div class="input-group">
+                                    <input name="lifting_date" id="lifting_date" type="text" value="{{ now() }}" class="flatpickr form-control" placeholder="Select date">
+                                    <span class="input-group-text input-group-addon" data-toggle>
+                                        <i data-feather="calendar"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Distribution House -->
                         <div class="row mb-3">
                             <label for="dd_house_id" class="col-sm-3 col-form-label">Distribution House ({{ count($houses) }})</label>
@@ -78,16 +91,15 @@
                             </div>
                         </div>
 
-                        <!-- Lifting Date -->
+                        <!-- Cash/Credit -->
                         <div class="row mb-3">
-                            <label for="lifting_date" class="col-sm-3 col-form-label">Lifting Date</label>
+                            <label for="remarks" class="col-sm-3 col-form-label">Cash/Credit</label>
                             <div class="col-sm-9">
-                                <div class="input-group">
-                                    <input name="lifting_date" id="lifting_date" type="text" value="{{ now() }}" class="flatpickr form-control" placeholder="Select date">
-                                    <span class="input-group-text input-group-addon" data-toggle>
-                                        <i data-feather="calendar"></i>
-                                    </span>
-                                </div>
+                                <select name="remarks" class="form-select" id="remarks">
+                                    <option value="cash" selected>Cash</option>
+                                    <option value="credit" >Credit</option>
+                                </select>
+                                @error('remarks') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         </div>
 
@@ -134,9 +146,10 @@
                 $(document).on('keyup','#total_amount',function (){
                     const totAmount = $(this).val();
                     const ddId = $('#dd_house_id').val();
+                    const date = $('#lifting_date').val();
 
                     $.ajax({
-                        url: "{{ route('lifting.get.itop.amount') }}/" + totAmount + '/' + ddId,
+                        url: "{{ route('lifting.get.itop.amount') }}/" + totAmount + '/' + ddId + '/' + date,
                         type: 'GET',
                         dataType: 'JSON',
                         success: function(response){

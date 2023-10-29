@@ -255,7 +255,7 @@ Route::middleware(['auth'])->group(function (){
         // Get price by product
         Route::get('/get_price_by_product/{product?}', 'getPriceByProduct')->name('get.price.by.product');
         // Get itop amount
-        Route::get('/get_itop_amount/{total_amount?}/{dd_id?}', 'getItopAmount')->name('get.itop.amount');
+        Route::get('/get_itop_amount/{total_amount?}/{dd_id?}/{date?}', 'getItopAmount')->name('get.itop.amount');
     });
 
     // Resource Routes

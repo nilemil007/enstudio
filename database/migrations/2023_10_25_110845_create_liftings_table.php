@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('itopup')->nullable();
             $table->string('total_amount')->nullable();
             $table->date('lifting_date');
+            $table->string('remarks')->default('cash');
             $table->timestamps();
             $table->softDeletes();
         });
