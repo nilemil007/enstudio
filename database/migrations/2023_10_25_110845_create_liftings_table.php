@@ -14,14 +14,8 @@ return new class extends Migration
         Schema::create('liftings', function (Blueprint $table) {
             $table->id();
             $table->foreignId('dd_house_id')->constrained();
-            $table->string('product_type');
-            $table->string('product');
-            $table->string('qty')->nullable();
-            $table->string('price')->nullable();
-            $table->string('itopup')->nullable();
-            $table->string('total_amount')->nullable();
+            $table->json('details');
             $table->date('lifting_date');
-            $table->string('remarks')->default('cash');
             $table->timestamps();
             $table->softDeletes();
         });

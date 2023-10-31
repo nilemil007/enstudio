@@ -22,14 +22,8 @@ class Lifting extends Model
 
     protected $fillable = [
         'dd_house_id',
-        'product_type',
-        'product',
-        'qty',
-        'price',
-        'itopup',
-        'total_amount',
+        'details',
         'lifting_date',
-        'remarks',
     ];
 
     /**
@@ -39,6 +33,7 @@ class Lifting extends Model
      */
     protected $casts = [
         'lifting_date' => 'datetime',
+        'details' => 'array',
     ];
 
     public function ddHouse(): BelongsTo
