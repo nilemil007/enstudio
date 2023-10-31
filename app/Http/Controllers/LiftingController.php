@@ -32,9 +32,12 @@ class LiftingController extends Controller
      */
     public function create(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
+//        $type = ProductAndType::select('product_type')->groupBy('product_type')->get();
+//        dd($type);
         return view('modules.sales_stock.lifting.create', [
-            'houses'            => DdHouse::all(),
-            'productAndType'    => ProductAndType::select('product_type')->groupBy('product_type')->orderBy('product_type','ASC')->get(),
+            'houses'        => DdHouse::all(),
+            'productType'   => ProductAndType::select('product_type')->groupBy('product_type')->orderBy('product_type','DESC')->get(),
+            'product'       => ProductAndType::select('product')->groupBy('product')->orderBy('product','DESC')->get(),
         ]);
     }
 

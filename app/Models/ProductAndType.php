@@ -34,4 +34,9 @@ class ProductAndType extends Model
             set: fn($product) => Str::lower($product),
         );
     }
+
+    public static function getProduct($type)
+    {
+        return ProductAndType::select('product','lifting_price','retailer_price')->groupBy('product')->where('product_type', $type)->get();
+    }
 }

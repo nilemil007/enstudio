@@ -49,344 +49,73 @@
                             </div>
                         </div>
 
-                        <hr class="mt-4 mb-4">
+                        @foreach($productType as $type)
+{{--                            <hr class="mt-4 mb-4">--}}
+                            <div class="row">
+                                <div class="text-center mb-3 mt-3 text-secondary">
+                                    <h2>
+                                        {{ \Illuminate\Support\Str::upper(implode(' ', explode('_', $type->product_type))) }}
+                                    </h2>
+                                </div>
 
-                        <!-- SIM -->
+                                @foreach(\App\Models\ProductAndType::getProduct($type->product_type) as $product)
+                                    <div class="col-md-12 col-lg-6 mb-2">
+                                        <div class="card">
+                                        <div class="card-body">
+                                            <div class="mb-3">
+                                                <h6 class="card-title mb-0">{{ \Illuminate\Support\Str::upper(implode(' ', explode('_', $product->product))) }}</h6>
+                                                <p class="text-success" style="font-weight: bold">Lifting Price: 241</p>
+                                                <p class="text-success" style="font-weight: bold">Lifting Value: 241000</p>
+                                            </div>
+
+                                            <div class="row mb-3">
+                                                <label for="{{ \Illuminate\Support\Str::lower($product->product) }}" class="col-sm-3 col-form-label">Quantity</label>
+                                                <div class="col-sm-9">
+                                                    <input name="details[{{ \Illuminate\Support\Str::lower($product->product) }}]" id="{{ \Illuminate\Support\Str::lower($product->product) }}" type="number" class="form-control" value="{{ old(\Illuminate\Support\Str::lower($product->product)) }}" placeholder="Enter Quantity">
+                                                    <input name="details[{{ \Illuminate\Support\Str::lower($product->product) . '_lifting_price' }}]" type="hidden" id="{{ \Illuminate\Support\Str::lower($product->product) . '_lifting_price' }}">
+                                                    <input name="details[{{ \Illuminate\Support\Str::lower($product->product) . '_value' }}]" type="hidden" id="{{ \Illuminate\Support\Str::lower($product->product) . '_value' }}">
+
+                                                    @if($type->product_type == 'scratch_card')
+                                                    <input name="details[{{ \Illuminate\Support\Str::lower($product->product) . '_lifting_value' }}]" type="hidden" id="{{ \Illuminate\Support\Str::lower($product->product) . '_lifting_value' }}">
+                                                    @endif
+                                                </div>
+                                            </div>
+
+                                            <!-- Cash/Credit -->
+                                            <div class="row mb-3">
+                                                <label for="{{ \Illuminate\Support\Str::lower($product->product) . '_remarks' }}" class="col-sm-3 col-form-label">Cash/Credit</label>
+                                                <div class="col-sm-9">
+                                                    <select name="details[{{ \Illuminate\Support\Str::lower($product->product) . '_remarks' }}]" class="form-select" id="{{ \Illuminate\Support\Str::lower($product->product) . '_remarks' }}">
+                                                        <option value="cash" selected>Cash</option>
+                                                        <option value="credit" >Credit</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                @endforeach
+
+                                <input name="details[total_sim_value]" type="hidden" id="total_sim_value">
+                            </div>
+                        @endforeach
+
+                        <!-- I'top-up Lifting -->
                         <div class="row">
-                            <div class="text-center"><h2>SIM</h2></div>
-                            <!-- MMST (STD) -->
-                            <div class="col-md-12 col-lg-6 mb-2">
+                            <div class="text-center mb-3 mt-3 text-secondary"><h2>Total Amount</h2></div>
+
+                            <div class="col-sm-12 mb-2">
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="mb-3">
-                                            <h6 class="card-title mb-0">MMST (STD)</h6>
-                                            <p class="text-success" style="font-weight: bold">Lifting Price: 241</p>
-                                            <p class="text-success" style="font-weight: bold">Lifting Value: 241000</p>
+                                            <h6 class="card-title mb-0">Total Amount</h6>
+                                            <p class="text-success" style="font-weight: bold">I'top-up: 1038961</p>
                                         </div>
-                                        <!-- MMST Quantity -->
                                         <div class="row mb-3">
-                                            <label for="mmst_qty" class="col-sm-3 col-form-label">Quantity</label>
+                                            <label for="itopup" class="col-sm-3 col-form-label">Total Amount</label>
                                             <div class="col-sm-9">
-                                                <input name="details[mmst_qty]" id="mmst_qty" type="number" class="form-control" value="{{ old('mmst_qty') }}" placeholder="Enter Quantity">
-                                                <input name="details[mmst_lifting_price]" type="hidden" id="mmst_lifting_price">
-                                                <input name="details[mmst_value]" type="hidden" id="mmst_value">
-                                            </div>
-                                        </div>
-
-                                        <!-- Cash/Credit -->
-                                        <div class="row mb-3">
-                                            <label for="mmst_remarks" class="col-sm-3 col-form-label">Cash/Credit</label>
-                                            <div class="col-sm-6">
-                                                <select name="details[mmst_remarks]" class="form-select" id="mmst_remarks">
-                                                    <option value="cash" selected>Cash</option>
-                                                    <option value="credit" >Credit</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- MMSTS (Duplicate Dail) -->
-                            <div class="col-md-12 col-lg-6 mb-2">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="mb-3">
-                                            <h6 class="card-title mb-0">MMSTS (Duplicate Dail)</h6>
-                                            <p class="text-success" style="font-weight: bold">Lifting Price: 241</p>
-                                            <p class="text-success" style="font-weight: bold">Lifting Value: 241000</p>
-                                        </div>
-                                        <!-- MMSTS Quantity -->
-                                        <div class="row mb-3">
-                                            <label for="mmsts_qty" class="col-sm-3 col-form-label">Quantity</label>
-                                            <div class="col-sm-9">
-                                                <input name="details[mmsts_qty]" id="mmsts_qty" type="number" class="form-control" value="{{ old('mmsts_qty') }}" placeholder="Enter Quantity">
-                                                <input name="details[mmsts_lifting_price]" type="hidden" id="mmsts_lifting_price">
-                                                <input name="details[mmsts_value]" type="hidden" id="mmsts_value">
-                                            </div>
-                                        </div>
-
-                                        <!-- Cash/Credit -->
-                                        <div class="row mb-3">
-                                            <label for="mmsts_remarks" class="col-sm-3 col-form-label">Cash/Credit</label>
-                                            <div class="col-sm-9">
-                                                <select name="details[mmsts_remarks]" class="form-select" id="mmsts_remarks">
-                                                    <option value="cash" selected>Cash</option>
-                                                    <option value="credit" >Credit</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- SIM SWAP (RBSP) -->
-                            <div class="col-md-12 col-lg-6 mb-2">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="mb-3">
-                                            <h6 class="card-title mb-0">SIM SWAP (RBSP)</h6>
-                                            <p class="text-success" style="font-weight: bold">Lifting Price: 241</p>
-                                            <p class="text-success" style="font-weight: bold">Lifting Value: 241000</p>
-                                        </div>
-                                        <!-- SIM SWAP Quantity -->
-                                        <div class="row mb-3">
-                                            <label for="sim_swap_qty" class="col-sm-3 col-form-label">Quantity</label>
-                                            <div class="col-sm-9">
-                                                <input name="details[sim_swap_qty]" id="sim_swap_qty" type="number" class="form-control" value="{{ old('sim_swap_qty') }}" placeholder="Enter Quantity">
-                                                <input name="details[sim_swap_lifting_price]" type="hidden" id="sim_swap_lifting_price">
-                                                <input name="details[sim_swap_value]" type="hidden" id="sim_swap_value">
-                                            </div>
-                                        </div>
-
-                                        <!-- Cash/Credit -->
-                                        <div class="row mb-3">
-                                            <label for="sim_swap_remarks" class="col-sm-3 col-form-label">Cash/Credit</label>
-                                            <div class="col-sm-9">
-                                                <select name="details[sim_swap_remarks]" class="form-select" id="sim_swap_remarks">
-                                                    <option value="cash" selected>Cash</option>
-                                                    <option value="credit" >Credit</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- SIM SWAP EV -->
-                            <div class="col-md-12 col-lg-6 mb-2">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="mb-3">
-                                            <h6 class="card-title mb-0">SIM SWAP EV</h6>
-                                            <p class="text-success" style="font-weight: bold">Lifting Price: 241</p>
-                                            <p class="text-success" style="font-weight: bold">Lifting Value: 241000</p>
-                                        </div>
-                                        <!-- SIM SWAP EV Quantity -->
-                                        <div class="row mb-3">
-                                            <label for="sim_swap_ev_qty" class="col-sm-3 col-form-label">Quantity</label>
-                                            <div class="col-sm-9">
-                                                <input name="details[sim_swap_ev_qty]" id="sim_swap_ev_qty" type="number" class="form-control" value="{{ old('sim_swap_ev_qty') }}" placeholder="Enter Quantity">
-                                                <input name="details[sim_swap_ev_lifting_price]" type="hidden" id="sim_swap_ev_lifting_price">
-                                                <input name="details[sim_swap_ev_value]" type="hidden" id="sim_swap_ev_value">
-                                            </div>
-                                        </div>
-
-                                        <!-- Cash/Credit -->
-                                        <div class="row mb-3">
-                                            <label for="sim_swap_ev_remarks" class="col-sm-3 col-form-label">Cash/Credit</label>
-                                            <div class="col-sm-9">
-                                                <select name="details[sim_swap_ev_remarks]" class="form-select" id="sim_swap_ev_remarks">
-                                                    <option value="cash" selected>Cash</option>
-                                                    <option value="credit" >Credit</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <hr class="mt-4 mb-4">
-
-                        <!-- Scratch Card -->
-                        <div class="row">
-                            <div class="text-center"><h2>Scratch Card</h2></div>
-                            <!-- SC 10Tk -->
-                            <div class="col-md-4 mb-2">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h6 class="card-title">SC 10Tk</h6>
-                                        <!-- SC 10Tk Quantity -->
-                                        <div class="row mb-3">
-                                            <label for="sc10_qty" class="col-sm-3 col-form-label">Quantity</label>
-                                            <div class="col-sm-9">
-                                                <input name="details[sc10_qty]" id="sc10_qty" type="number" class="form-control" value="{{ old('sc10_qty') }}" placeholder="Enter Quantity">
-                                                <input name="details[sc10_lifting_price]" type="hidden" id="sc10_lifting_price">
-                                                <input name="details[sc10_lifting_value]" type="hidden" id="sc10_lifting_value">
-                                                <input name="details[sc10_face_value]" type="hidden" id="sc10_face_value">
-                                            </div>
-                                        </div>
-
-                                        <!-- Cash/Credit -->
-                                        <div class="row mb-3">
-                                            <label for="sc10_remarks" class="col-sm-3 col-form-label">Cash/Credit</label>
-                                            <div class="col-sm-9">
-                                                <select name="details[sc10_remarks]" class="form-select" id="sc10_remarks">
-                                                    <option value="cash" selected>Cash</option>
-                                                    <option value="credit" >Credit</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- SCV 14Tk -->
-                            <div class="col-md-4 mb-2">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h6 class="card-title">SCV 14Tk</h6>
-                                        <!-- SCV 14Tk Quantity -->
-                                        <div class="row mb-3">
-                                            <label for="scv14_qty" class="col-sm-3 col-form-label">Quantity</label>
-                                            <div class="col-sm-9">
-                                                <input name="details[scv14_qty]" id="scv14_qty" type="number" class="form-control" value="{{ old('scv14_qty') }}" placeholder="Enter Quantity">
-                                                <input name="details[scv14_lifting_price]" type="hidden" id="scv14_lifting_price">
-                                                <input name="details[scv14_lifting_value]" type="hidden" id="scv14_lifting_value">
-                                                <input name="details[scv14_face_value]" type="hidden" id="scv14_face_value">
-                                            </div>
-                                        </div>
-
-                                        <!-- Cash/Credit -->
-                                        <div class="row mb-3">
-                                            <label for="scv14_remarks" class="col-sm-3 col-form-label">Cash/Credit</label>
-                                            <div class="col-sm-9">
-                                                <select name="details[scv14_remarks]" class="form-select" id="scv14_remarks">
-                                                    <option value="cash" selected>Cash</option>
-                                                    <option value="credit" >Credit</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- SCD 14Tk -->
-                            <div class="col-md-4 mb-2">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h6 class="card-title">SCD 14Tk</h6>
-                                        <!-- SCV 14Tk Quantity -->
-                                        <div class="row mb-3">
-                                            <label for="scd14_qty" class="col-sm-3 col-form-label">Quantity</label>
-                                            <div class="col-sm-9">
-                                                <input name="details[scd14_qty]" id="scd14_qty" type="number" class="form-control" value="{{ old('scd14_qty') }}" placeholder="Enter Quantity">
-                                                <input name="details[scd14_lifting_price]" type="hidden" id="scd14_lifting_price">
-                                                <input name="details[scd14_lifting_value]" type="hidden" id="scd14_lifting_value">
-                                                <input name="details[scd14_face_value]" type="hidden" id="scd14_face_value">
-                                            </div>
-                                        </div>
-
-                                        <!-- Cash/Credit -->
-                                        <div class="row mb-3">
-                                            <label for="scd14_remarks" class="col-sm-3 col-form-label">Cash/Credit</label>
-                                            <div class="col-sm-9">
-                                                <select name="details[scd14_remarks]" class="form-select" id="scd14_remarks">
-                                                    <option value="cash" selected>Cash</option>
-                                                    <option value="credit" >Credit</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- SCV 19Tk -->
-                            <div class="col-md-4 mb-2">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h6 class="card-title">SCV 19Tk</h6>
-                                        <!-- SCV 19Tk Quantity -->
-                                        <div class="row mb-3">
-                                            <label for="scv19_qty" class="col-sm-3 col-form-label">Quantity</label>
-                                            <div class="col-sm-9">
-                                                <input name="details[scv19_qty]" id="scv19_qty" type="number" class="form-control" value="{{ old('scv19_qty') }}" placeholder="Enter Quantity">
-                                                <input name="details[scv19_lifting_price]" type="hidden" id="scv19_lifting_price">
-                                                <input name="details[scv19_lifting_value]" type="hidden" id="scv19_lifting_value">
-                                                <input name="details[scv19_face_value]" type="hidden" id="scv19_face_value">
-                                            </div>
-                                        </div>
-
-                                        <!-- Cash/Credit -->
-                                        <div class="row mb-3">
-                                            <label for="scv19_remarks" class="col-sm-3 col-form-label">Cash/Credit</label>
-                                            <div class="col-sm-9">
-                                                <select name="details[scv19_remarks]" class="form-select" id="scv19_remarks">
-                                                    <option value="cash" selected>Cash</option>
-                                                    <option value="credit" >Credit</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- SCD 19Tk -->
-                            <div class="col-md-4 mb-2">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h6 class="card-title">SCD 19Tk</h6>
-                                        <!-- SCV 19Tk Quantity -->
-                                        <div class="row mb-3">
-                                            <label for="scd19_qty" class="col-sm-3 col-form-label">Quantity</label>
-                                            <div class="col-sm-9">
-                                                <input name="details[scd19_qty]" id="scd19_qty" type="number" class="form-control" value="{{ old('scd19_qty') }}" placeholder="Enter Quantity">
-                                                <input name="details[scd19_lifting_price]" type="hidden" id="scd19_lifting_price">
-                                                <input name="details[scd19_lifting_value]" type="hidden" id="scd19_lifting_value">
-                                                <input name="details[scd19_face_value]" type="hidden" id="scd19_face_value">
-                                            </div>
-                                        </div>
-
-                                        <!-- Cash/Credit -->
-                                        <div class="row mb-3">
-                                            <label for="scd19_remarks" class="col-sm-3 col-form-label">Cash/Credit</label>
-                                            <div class="col-sm-9">
-                                                <select name="details[scd19_remarks]" class="form-select" id="scd19_remarks">
-                                                    <option value="cash" selected>Cash</option>
-                                                    <option value="credit" >Credit</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- SC 20Tk -->
-                            <div class="col-md-4 mb-2">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h6 class="card-title">SC 20Tk</h6>
-                                        <!-- SC 20Tk Quantity -->
-                                        <div class="row mb-3">
-                                            <label for="sc20_qty" class="col-sm-3 col-form-label">Quantity</label>
-                                            <div class="col-sm-9">
-                                                <input name="details[sc20_qty]" id="sc20_qty" type="number" class="form-control" value="{{ old('sc20_qty') }}" placeholder="Enter Quantity">
-                                                <input name="details[sc20_lifting_price]" type="hidden" id="sc20_lifting_price">
-                                                <input name="details[sc20_lifting_value]" type="hidden" id="sc20_lifting_value">
-                                                <input name="details[sc20_face_value]" type="hidden" id="sc20_face_value">
-                                            </div>
-                                        </div>
-
-                                        <!-- Cash/Credit -->
-                                        <div class="row mb-3">
-                                            <label for="sc20_remarks" class="col-sm-3 col-form-label">Cash/Credit</label>
-                                            <div class="col-sm-9">
-                                                <select name="details[sc20_remarks]" class="form-select" id="sc20_remarks">
-                                                    <option value="cash" selected>Cash</option>
-                                                    <option value="credit" >Credit</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- SC 29Tk -->
-                            <div class="col-md-4 mb-2">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h6 class="card-title">SC 29Tk</h6>
-                                        <!-- SC 29Tk Quantity -->
-                                        <div class="row mb-3">
-                                            <label for="sc29_qty" class="col-sm-3 col-form-label">Quantity</label>
-                                            <div class="col-sm-9">
-                                                <input name="details[sc29_qty]" id="sc29_qty" type="number" class="form-control" value="{{ old('sc29_qty') }}" placeholder="Enter Quantity">
-                                                <input name="details[sc29_lifting_price]" type="hidden" id="sc29_lifting_price">
-                                                <input name="details[sc29_lifting_value]" type="hidden" id="sc29_lifting_value">
-                                                <input name="details[sc29_face_value]" type="hidden" id="sc29_face_value">
-                                            </div>
-                                        </div>
-
-                                        <!-- Cash/Credit -->
-                                        <div class="row mb-3">
-                                            <label for="sc29_remarks" class="col-sm-3 col-form-label">Cash/Credit</label>
-                                            <div class="col-sm-9">
-                                                <select name="details[sc29_remarks]" class="form-select" id="sc29_remarks">
-                                                    <option value="cash" selected>Cash</option>
-                                                    <option value="credit" >Credit</option>
-                                                </select>
+                                                <input name="details[itopup]" id="itopup" class="form-control" type="text" placeholder="Total Amount">
+                                                @error('itopup') <span class="text-danger">{{ $message }}</span> @enderror
                                             </div>
                                         </div>
                                     </div>
