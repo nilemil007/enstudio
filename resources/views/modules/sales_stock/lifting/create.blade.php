@@ -71,7 +71,7 @@
                                             <div class="row mb-3">
                                                 <label for="{{ \Illuminate\Support\Str::lower($product->product) }}" class="col-sm-3 col-form-label">Quantity</label>
                                                 <div class="col-sm-9">
-                                                    <input name="details[{{ \Illuminate\Support\Str::lower($product->product) }}]" id="{{ \Illuminate\Support\Str::lower($product->product) }}" type="number" class="form-control" value="{{ old(\Illuminate\Support\Str::lower($product->product)) }}" placeholder="Enter Quantity">
+                                                    <input name="details[{{ \Illuminate\Support\Str::lower($product->product) }}]" id="{{ \Illuminate\Support\Str::lower($product->product) }}" type="number" class="form-control qty" value="{{ old(\Illuminate\Support\Str::lower($product->product)) }}" placeholder="Enter Quantity">
                                                     <input name="details[{{ \Illuminate\Support\Str::lower($product->product) . '_lifting_price' }}]" type="hidden" id="{{ \Illuminate\Support\Str::lower($product->product) . '_lifting_price' }}">
                                                     <input name="details[{{ \Illuminate\Support\Str::lower($product->product) . '_value' }}]" type="hidden" id="{{ \Illuminate\Support\Str::lower($product->product) . '_value' }}">
 
@@ -112,10 +112,11 @@
                                             <p class="text-success" style="font-weight: bold">I'top-up: 1038961</p>
                                         </div>
                                         <div class="row mb-3">
-                                            <label for="itopup" class="col-sm-3 col-form-label">Total Amount</label>
+                                            <label for="total_amount" class="col-sm-3 col-form-label">Total Amount</label>
                                             <div class="col-sm-9">
-                                                <input name="details[itopup]" id="itopup" class="form-control" type="text" placeholder="Total Amount">
-                                                @error('itopup') <span class="text-danger">{{ $message }}</span> @enderror
+                                                <input name="details[itopup]" id="itopup" type="hidden">
+                                                <input name="details[total_amount]" id="total_amount" class="form-control" type="number" placeholder="Total Amount">
+                                                @error('total_amount') <span class="text-danger">{{ $message }}</span> @enderror
                                             </div>
                                         </div>
                                     </div>
@@ -134,6 +135,16 @@
 
     @push('scripts')
         <script>
+            $(document).ready(function (){
+                $(document).on('keyup','.qty',function (){
+                    var quantity = $(this).attr('id');
+                    console.log(id);
+                });
+            });
+
+
+
+
 
             {{--$(document).ready(function() {--}}
             {{--    let liftingPrice = '';--}}

@@ -32,8 +32,6 @@ class LiftingController extends Controller
      */
     public function create(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-//        $type = ProductAndType::select('product_type')->groupBy('product_type')->get();
-//        dd($type);
         return view('modules.sales_stock.lifting.create', [
             'houses'        => DdHouse::all(),
             'productType'   => ProductAndType::select('product_type')->groupBy('product_type')->orderBy('product_type','DESC')->get(),
@@ -47,14 +45,15 @@ class LiftingController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $lifting = $this->validate($request,[
+        $liftings = $this->validate($request,[
             'dd_house_id'   => ['required'],
             'details'       => ['required'],
             'lifting_date'  => ['required'],
         ]);
+        dd($liftings);
 
 
-        Lifting::create($lifting);
+        Lifting::create($liftings);
 
         return to_route('lifting.create')->with('success','Lifting created successfully.');
     }
