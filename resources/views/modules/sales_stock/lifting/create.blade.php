@@ -64,8 +64,8 @@
                                         <div class="card-body">
                                             <div class="mb-3">
                                                 <h6 class="card-title mb-0">{{ \Illuminate\Support\Str::upper(implode(' ', explode('_', $product->product))) }}</h6>
-                                                <p class="text-success" style="font-weight: bold">Lifting Price: 241</p>
-                                                <p class="text-success" style="font-weight: bold">Lifting Value: 241000</p>
+                                                <p id="{{ \Illuminate\Support\Str::lower($product->product) . 'LiftingPriceShow' }}" class="text-success d-none" style="font-weight: bold"></p>
+                                                <p id="{{ \Illuminate\Support\Str::lower($product->product) . 'LiftingValueShow' }}" class="text-success d-none" style="font-weight: bold"></p>
                                             </div>
 
                                             <div class="row mb-3">
@@ -103,7 +103,6 @@
                         <!-- I'top-up Lifting -->
                         <div class="row">
                             <div class="text-center mb-3 mt-3 text-secondary"><h2>Total Amount</h2></div>
-
                             <div class="col-sm-12 mb-2">
                                 <div class="card">
                                     <div class="card-body">
@@ -136,9 +135,28 @@
     @push('scripts')
         <script>
             $(document).ready(function (){
-                $(document).on('keyup','.qty',function (){
-                    var quantity = $(this).attr('id');
-                    console.log(id);
+                $(document).on('blur','.qty',function (){
+                    var product = $(this).attr('id');
+                    var value = $(this).val();
+                    // console.log(value.length);
+
+                    $.ajax({
+                        url: "{{ route('lifting.get.lifting.data') }}/" + product,
+                        type: 'GET',
+                        dataType: 'JSON',
+                        success: function(response){
+                            var liftingPriceShow = response.data.lifting_price;
+                            var liftingValueShow = liftingPriceShow * value;
+                            if(value.length < 1)
+                            {
+                                $('#'+product+'LiftingPriceShow').addClass('d-none').text('');
+                                $('#'+product+'LiftingValueShow').addClass('d-none').text('');
+                            }else{
+                                $('#'+product+'LiftingPriceShow').removeClass('d-none').text('Lifting Price: ' + liftingPriceShow);
+                                $('#'+product+'LiftingValueShow').removeClass('d-none').text('Lifting Value: ' + liftingValueShow);
+                            }
+                        },
+                    });
                 });
             });
 
@@ -155,16 +173,16 @@
             {{--        $('#qty').val('');--}}
             {{--        $('#showPrice').text('');--}}
 
-            {{--        $.ajax({--}}
-            {{--            url: "{{ route('lifting.get.price.by.product') }}/" + product,--}}
-            {{--            type: 'GET',--}}
-            {{--            dataType: 'JSON',--}}
-            {{--            success: function(response){--}}
-            {{--                liftingPrice = response.liftingPrice;--}}
-            {{--                // faceValue = response.faceValue;--}}
-            {{--            },--}}
-            {{--        });--}}
-            {{--    });--}}
+                {{--    $.ajax({--}}
+                {{--        url: "{{ route('lifting.get.price.by.product') }}/" + product,--}}
+                {{--        type: 'GET',--}}
+                {{--        dataType: 'JSON',--}}
+                {{--        success: function(response){--}}
+                {{--            liftingPrice = response.liftingPrice;--}}
+                {{--            // faceValue = response.faceValue;--}}
+                {{--        },--}}
+                {{--    });--}}
+                {{--});--}}
 
             {{--    // Calculate itop-up amount--}}
             {{--    $(document).on('keyup','#total_amount',function (){--}}

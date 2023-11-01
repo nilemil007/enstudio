@@ -251,11 +251,11 @@ Route::middleware(['auth'])->group(function (){
         // Permanently Delete All
         Route::delete('/delete/all','permanentlyDeleteAll')->name('permanently.delete.all');
         // Get product by type
-        Route::get('/get_product_by_type/{type?}', 'getProductByType')->name('get.product.by.type');
+        Route::get('/get_lifting_data/{product?}', 'getLiftingData')->name('get.lifting.data');
         // Get price by product
-        Route::get('/get_price_by_product/{product?}', 'getPriceByProduct')->name('get.price.by.product');
+//        Route::get('/get_price_by_product/{product?}', 'getPriceByProduct')->name('get.price.by.product');
         // Get itop amount
-        Route::get('/get_itop_amount/{total_amount?}/{dd_id?}/{date?}', 'getItopAmount')->name('get.itop.amount');
+//        Route::get('/get_itop_amount/{total_amount?}/{dd_id?}/{date?}', 'getItopAmount')->name('get.itop.amount');
     });
 
     // Resource Routes
