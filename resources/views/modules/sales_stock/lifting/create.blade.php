@@ -64,19 +64,23 @@
                                         <div class="card-body">
                                             <div class="mb-3">
                                                 <h6 class="card-title mb-0">{{ \Illuminate\Support\Str::upper(implode(' ', explode('_', $product->product))) }}</h6>
-                                                <p id="{{ \Illuminate\Support\Str::lower($product->product) . 'LiftingPriceShow' }}" class="text-success d-none" style="font-weight: bold"></p>
-                                                <p id="{{ \Illuminate\Support\Str::lower($product->product) . 'LiftingValueShow' }}" class="text-success d-none" style="font-weight: bold"></p>
+                                                <p id="{{ \Illuminate\Support\Str::lower($product->product) . \App\Constants::LIFTING_PRICE_VIEW }}" class="text-success d-none" style="font-weight: bold"></p>
+                                                <p id="{{ \Illuminate\Support\Str::lower($product->product) . 'Value' }}" class="text-success d-none" style="font-weight: bold"></p>
+
+                                                @if( $type->product_type == 'scratch_card' )
+                                                    <p id="{{ \Illuminate\Support\Str::lower($product->product) . 'LiftingValue' }}" class="text-success" style="font-weight: bold"></p>
+                                                @endif
                                             </div>
 
                                             <div class="row mb-3">
                                                 <label for="{{ \Illuminate\Support\Str::lower($product->product) }}" class="col-sm-3 col-form-label">Quantity</label>
                                                 <div class="col-sm-9">
-                                                    <input name="details[{{ \Illuminate\Support\Str::lower($product->product) }}]" id="{{ \Illuminate\Support\Str::lower($product->product) }}" type="number" class="form-control qty" value="{{ old(\Illuminate\Support\Str::lower($product->product)) }}" placeholder="Enter Quantity">
+                                                    <input name="details[{{ \Illuminate\Support\Str::lower($product->product) }}]" id="{{ \Illuminate\Support\Str::lower($product->product) }}" type="number" class="form-control qty" placeholder="Enter Quantity">
                                                     <input name="details[{{ \Illuminate\Support\Str::lower($product->product) . '_lifting_price' }}]" type="hidden" id="{{ \Illuminate\Support\Str::lower($product->product) . '_lifting_price' }}">
                                                     <input name="details[{{ \Illuminate\Support\Str::lower($product->product) . '_value' }}]" type="hidden" id="{{ \Illuminate\Support\Str::lower($product->product) . '_value' }}">
 
                                                     @if($type->product_type == 'scratch_card')
-                                                    <input name="details[{{ \Illuminate\Support\Str::lower($product->product) . '_lifting_value' }}]" type="hidden" id="{{ \Illuminate\Support\Str::lower($product->product) . '_lifting_value' }}">
+                                                        <input name="details[{{ \Illuminate\Support\Str::lower($product->product) . '_lifting_value' }}]" type="hidden" id="{{ \Illuminate\Support\Str::lower($product->product) . '_lifting_value' }}">
                                                     @endif
                                                 </div>
                                             </div>
@@ -137,7 +141,7 @@
             $(document).ready(function (){
                 $(document).on('blur','.qty',function (){
                     var product = $(this).attr('id');
-                    var value = $(this).val();
+                    var quantity = $(this).val();
                     // console.log(value.length);
 
                     $.ajax({
@@ -145,15 +149,28 @@
                         type: 'GET',
                         dataType: 'JSON',
                         success: function(response){
-                            var liftingPriceShow = response.data.lifting_price;
-                            var liftingValueShow = liftingPriceShow * value;
-                            if(value.length < 1)
+                            const liftingPrice = response.data.lifting_price;
+                            const productType = response.data.product_type;
+                            var value = liftingPrice * quantity;
+
+                            if(quantity.length < 1)
                             {
-                                $('#'+product+'LiftingPriceShow').addClass('d-none').text('');
-                                $('#'+product+'LiftingValueShow').addClass('d-none').text('');
+                                $('#'+product+'LiftingPrice').addClass('d-none').text('');
+                                $('#'+product+'Value').addClass('d-none').text('');
+                                $('#'+product+'LiftingValue').text('');
+                                $('#'+product+'_lifting_price').removeAttr('value');
+                                $('#'+product+'_value').removeAttr('value');
                             }else{
-                                $('#'+product+'LiftingPriceShow').removeClass('d-none').text('Lifting Price: ' + liftingPriceShow);
-                                $('#'+product+'LiftingValueShow').removeClass('d-none').text('Lifting Value: ' + liftingValueShow);
+                                $('#'+product+'LiftingPrice').removeClass('d-none').text('Lifting Price: ' + liftingPrice);
+                                $('#'+product+'Value').removeClass('d-none').text('Value: ' + value);
+                                $('#'+product+'LiftingValue').text('Lifting Value: ' + value);
+                                $('#'+product+'_lifting_price').val(liftingPrice);
+                                $('#'+product+'_value').val(value);
+
+                                // if(response.data.product_type == 'scratch_card')
+                                // {
+                                //
+                                // }
                             }
                         },
                     });
