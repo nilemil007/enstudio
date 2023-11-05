@@ -29,6 +29,15 @@
                             </div>
                         </div>
 
+                        <!-- Face Value -->
+                        <div class="row mb-3">
+                            <label for="face_value" class="col-sm-3 col-form-label">Face Value</label>
+                            <div class="col-sm-9">
+                                <input name="face_value" id="face_value" type="number" step="any" class="form-control" value="{{ old('face_value') }}" placeholder="Enter Face Value">
+                                @error('face_value') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+
                         <!-- Lifting Price -->
                         <div class="row mb-3">
                             <label for="lifting_price" class="col-sm-3 col-form-label">Lifting Price</label>

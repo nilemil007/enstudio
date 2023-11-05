@@ -32,10 +32,12 @@ class LiftingController extends Controller
      */
     public function create(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
+        $house = DB::table('dd_house_user')->where('user_id', Auth::id())->pluck('dd_house_id');
+
         return view('modules.sales_stock.lifting.create', [
-            'houses'        => DdHouse::all(),
-            'productType'   => ProductAndType::select('product_type')->groupBy('product_type')->orderBy('product_type','DESC')->get(),
-            'product'       => ProductAndType::select('product')->groupBy('product')->orderBy('product','DESC')->get(),
+            'liftingHouse'      => Lifting::groupBy('dd_house_id')->whereDate('lifting_date', now())->whereIn('dd_house_id', $house)->get(),
+            'houses'            => DdHouse::all(),
+            'productAndType'    => ProductAndType::select('product_type')->groupBy('product_type')->orderBy('product_type','ASC')->get(),
         ]);
     }
 
@@ -45,15 +47,24 @@ class LiftingController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $liftings = $this->validate($request,[
+        $lifting = $this->validate($request,[
             'dd_house_id'   => ['required'],
-            'details'       => ['required'],
+            'product_type'  => ['required'],
+            'product'       => ['nullable'],
+            'qty'           => ['nullable'],
+            'price'         => ['nullable'],
+            'itopup'        => ['nullable'],
+            'total_amount'  => ['nullable'],
             'lifting_date'  => ['required'],
+            'remarks'       => ['required'],
         ]);
-        dd($liftings);
 
+        if ($lifting['product_type'] == 'itopup')
+        {
+            $lifting['product'] = 'itopup';
+        }
 
-        Lifting::create($liftings);
+        Lifting::create($lifting);
 
         return to_route('lifting.create')->with('success','Lifting created successfully.');
     }
@@ -125,35 +136,40 @@ class LiftingController extends Controller
     /**
      * Get product's by type
      */
-    public function getLiftingData($product = null): JsonResponse
+    public function getProductByType($type = null): JsonResponse
     {
-        return Response::json(['data' => ProductAndType::firstWhere('product', $product)]);
+        if ($type != 'itopup')
+        {
+            return Response::json(['products' => ProductAndType::where('product_type', $type)->orderBy('product','ASC')->get()]);
+        }
+
+//        return Response::json(['products' => ProductAndType::where('product_type', $type)->orderBy('product','ASC')->get()]);
     }
 
     /**
      * Get price by product
      */
-//    public function getPriceByProduct($product = null): JsonResponse
-//    {
-//        return Response::json([
-//            'liftingPrice'  => ProductAndType::firstWhere('product', $product)->lifting_price,
-//            'faceValue'     => preg_replace('/\D/', '', $product),
-//            ]);
-//    }
+    public function getPriceByProduct($product = null): JsonResponse
+    {
+        return Response::json([
+            'liftingPrice'  => ProductAndType::firstWhere('product', $product)->lifting_price,
+            'faceValue'     => preg_replace('/\D/', '', $product),
+            ]);
+    }
 
     /**
      * Get itop amount
      */
-//    public function getItopAmount($total_amount, $ddId, $date): JsonResponse
-//    {
-//        $othersAmount = Lifting::where('product_type', '!=', 'itopup')
-//            ->whereDate('lifting_date', $date)
-//            ->where('dd_house_id', $ddId)
-//            ->sum('price');
-//
-//        $remainingAmount = $total_amount - $othersAmount;
-//        $itopAmount = $remainingAmount / 0.9625;
-//
-//        return Response::json(['itopup'  => round($itopAmount)]);
-//    }
+    public function getItopAmount($total_amount, $ddId, $date): JsonResponse
+    {
+        $othersAmount = Lifting::where('product_type', '!=', 'itopup')
+            ->whereDate('lifting_date', $date)
+            ->where('dd_house_id', $ddId)
+            ->sum('price');
+
+        $remainingAmount = $total_amount - $othersAmount;
+        $itopAmount = $remainingAmount / 0.9625;
+
+        return Response::json(['itopup'  => round($itopAmount)]);
+    }
 }

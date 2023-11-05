@@ -8,12 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
+use Termwind\Components\Dd;
 
 /**
  * @method static create(array $lifting)
  * @method static where(string $string, string $string1, string $string2)
  * @method static whereDate(string $string, \Illuminate\Support\Carbon $now)
  * @method static groupBy(string $string)
+ * @method static select(string $string)
+ * @method static firstWhere(string $string, $dd_house_id)
  */
 class Lifting extends Model
 {
@@ -21,8 +24,14 @@ class Lifting extends Model
 
     protected $fillable = [
         'dd_house_id',
-        'details',
+        'product_type',
+        'product',
+        'qty',
+        'price',
+        'itopup',
+        'total_amount',
         'lifting_date',
+        'remarks',
     ];
 
     /**
@@ -32,7 +41,6 @@ class Lifting extends Model
      */
     protected $casts = [
         'lifting_date' => 'datetime',
-        'details' => 'array',
     ];
 
     public function ddHouse(): BelongsTo
@@ -45,5 +53,10 @@ class Lifting extends Model
         return Attribute::make(
             set: fn ($product) => Str::lower($product),
         );
+    }
+
+    public static function getLiftingData($house, $product)
+    {
+        return Lifting::where(['dd_house_id' => $house, 'product' => $product])->whereDate('lifting_date', now())->first();
     }
 }

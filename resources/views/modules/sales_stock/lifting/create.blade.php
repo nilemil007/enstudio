@@ -4,265 +4,230 @@
     <x-slot:title>Create New Lifting</x-slot:title>
 
     <div class="row">
-        <div class="col-md-12">
-            <form id="cmForm" action="{{ route('lifting.store') }}" method="POST">
-                @csrf
-                <div class="card">
-                    <div class="card-header">
-                        <h6 class="card-title">Create Liftings</h6>
-                    </div>
-                    <div class="card-body">
-                        <!-- DD House/Lifting Date -->
-                        <div class="row">
-                            <div class="col-sm-12 mb-2">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h6 class="card-title">DD House / Date</h6>
-                                        <div class="row mb-3">
-                                            <label for="dd_house_id" class="col-sm-3 col-form-label">DD House</label>
-                                            <div class="col-sm-9">
-                                                <select name="dd_house_id" class="form-select" id="dd_house_id">
-                                                    <option value="">Select House</option>
-                                                    @foreach($houses as $house)
-                                                        <option value="{{ $house->id }}">{{ $house->code.' - '.$house->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                                @error('dd_house_id') <span class="text-danger">{{ $message }}</span> @enderror
-                                            </div>
-                                        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Create New Lifting</h6>
+                    <form id="cmForm" action="{{ route('lifting.store') }}" method="POST">
+                    @csrf
 
-                                        <!-- Lifting Date -->
-                                        <div class="row mb-3">
-                                            <label for="lifting_date" class="col-sm-3 col-form-label">Lifting Date</label>
-                                            <div class="col-sm-9">
-                                                <div class="input-group">
-                                                    <input name="lifting_date" id="lifting_date" type="text" class="flatpickr form-control" placeholder="Select date">
-                                                    <span class="input-group-text input-group-addon" data-toggle>
-                                                        <i data-feather="calendar"></i>
-                                                    </span>
-                                                </div>
-                                                @error('lifting_date') <span class="text-danger">{{ $message }}</span> @enderror
-                                            </div>
-                                        </div>
-                                    </div>
+                        <!-- Lifting Date -->
+                        <div class="row mb-3">
+                            <label for="lifting_date" class="col-sm-3 col-form-label">Lifting Date</label>
+                            <div class="col-sm-9">
+                                <div class="input-group">
+                                    <input name="lifting_date" id="lifting_date" type="text" value="{{ now() }}" class="flatpickr form-control" placeholder="Select date">
+                                    <span class="input-group-text input-group-addon" data-toggle>
+                                        <i data-feather="calendar"></i>
+                                    </span>
                                 </div>
                             </div>
                         </div>
 
-                        @foreach($productType as $type)
-{{--                            <hr class="mt-4 mb-4">--}}
-                            <div class="row">
-                                <div class="text-center mb-3 mt-3 text-secondary">
-                                    <h2>
-                                        {{ \Illuminate\Support\Str::upper(implode(' ', explode('_', $type->product_type))) }}
-                                    </h2>
-                                </div>
-
-                                @foreach(\App\Models\ProductAndType::getProduct($type->product_type) as $product)
-                                    <div class="col-md-12 col-lg-6 mb-2">
-                                        <div class="card">
-                                        <div class="card-body">
-                                            <div class="mb-3">
-                                                <h6 class="card-title mb-0">{{ \Illuminate\Support\Str::upper(implode(' ', explode('_', $product->product))) }}</h6>
-                                                <p id="{{ \Illuminate\Support\Str::lower($product->product) . \App\Constants::LIFTING_PRICE_VIEW }}" class="text-success d-none" style="font-weight: bold"></p>
-                                                <p id="{{ \Illuminate\Support\Str::lower($product->product) . 'Value' }}" class="text-success d-none" style="font-weight: bold"></p>
-
-                                                @if( $type->product_type == 'scratch_card' )
-                                                    <p id="{{ \Illuminate\Support\Str::lower($product->product) . 'LiftingValue' }}" class="text-success" style="font-weight: bold"></p>
-                                                @endif
-                                            </div>
-
-                                            <div class="row mb-3">
-                                                <label for="{{ \Illuminate\Support\Str::lower($product->product) }}" class="col-sm-3 col-form-label">Quantity</label>
-                                                <div class="col-sm-9">
-                                                    <input name="details[{{ \Illuminate\Support\Str::lower($product->product) }}]" id="{{ \Illuminate\Support\Str::lower($product->product) }}" type="number" class="form-control qty" placeholder="Enter Quantity">
-                                                    <input name="details[{{ \Illuminate\Support\Str::lower($product->product) . '_lifting_price' }}]" type="hidden" id="{{ \Illuminate\Support\Str::lower($product->product) . '_lifting_price' }}">
-                                                    <input name="details[{{ \Illuminate\Support\Str::lower($product->product) . '_value' }}]" type="hidden" id="{{ \Illuminate\Support\Str::lower($product->product) . '_value' }}">
-
-                                                    @if($type->product_type == 'scratch_card')
-                                                        <input name="details[{{ \Illuminate\Support\Str::lower($product->product) . '_lifting_value' }}]" type="hidden" id="{{ \Illuminate\Support\Str::lower($product->product) . '_lifting_value' }}">
-                                                    @endif
-                                                </div>
-                                            </div>
-
-                                            <!-- Cash/Credit -->
-                                            <div class="row mb-3">
-                                                <label for="{{ \Illuminate\Support\Str::lower($product->product) . '_remarks' }}" class="col-sm-3 col-form-label">Cash/Credit</label>
-                                                <div class="col-sm-9">
-                                                    <select name="details[{{ \Illuminate\Support\Str::lower($product->product) . '_remarks' }}]" class="form-select" id="{{ \Illuminate\Support\Str::lower($product->product) . '_remarks' }}">
-                                                        <option value="cash" selected>Cash</option>
-                                                        <option value="credit" >Credit</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    </div>
-                                @endforeach
-
-                                <input name="details[total_sim_value]" type="hidden" id="total_sim_value">
-                            </div>
-                        @endforeach
-
-                        <!-- I'top-up Lifting -->
-                        <div class="row">
-                            <div class="text-center mb-3 mt-3 text-secondary"><h2>Total Amount</h2></div>
-                            <div class="col-sm-12 mb-2">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="mb-3">
-                                            <h6 class="card-title mb-0">Total Amount</h6>
-                                            <p class="text-success" style="font-weight: bold">I'top-up: 1038961</p>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <label for="total_amount" class="col-sm-3 col-form-label">Total Amount</label>
-                                            <div class="col-sm-9">
-                                                <input name="details[itopup]" id="itopup" type="hidden">
-                                                <input name="details[total_amount]" id="total_amount" class="form-control" type="number" placeholder="Total Amount">
-                                                @error('total_amount') <span class="text-danger">{{ $message }}</span> @enderror
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                        <!-- Distribution House -->
+                        <div class="row mb-3">
+                            <label for="dd_house_id" class="col-sm-3 col-form-label">Distribution House ({{ count($houses) }})</label>
+                            <div class="col-sm-9">
+                                <select name="dd_house_id" class="form-select" id="dd_house_id">
+                                    <option value="">-- Select Distribution House --</option>
+                                    @if(count($houses) > 0)
+                                        @foreach($houses as $house)
+                                            <option value="{{ $house->id }}">{{ $house->code .' - '. $house->name }}</option>
+                                        @endforeach
+                                    @endif
+                                </select>
+                                @error('dd_house_id') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         </div>
-                    </div>
-                    <div class="card-footer">
+
+                        <!-- Product Type -->
+                        <div class="row mb-3">
+                            <label for="product_type" class="col-sm-3 col-form-label">Product Type</label>
+                            <div class="col-sm-9">
+                                <select name="product_type" class="form-select" id="product_type">
+                                    <option value="">-- Select Product Type --</option>
+                                    @foreach($productAndType as $pat)
+                                        <option value="{{ $pat->product_type }}">{{ \Illuminate\Support\Str::upper($pat->product_type) }}</option>
+                                    @endforeach
+                                    <option value="itopup">I'top-up</option>
+                                </select>
+                                @error('product_type') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+
+                        <!-- Product -->
+                        <div class="row mb-3" id="liftingProduct">
+                            <label for="product" class="col-sm-3 col-form-label">Product</label>
+                            <div class="col-sm-9">
+                                <select name="product" class="form-select product" id="product">
+                                    <option value="">-- Select Product --</option>
+                                </select>
+                                @error('product') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+
+                        <!-- Quantity -->
+                        <div class="row mb-3 d-none" id="liftingQuantity">
+                            <label for="qty" class="col-sm-3 col-form-label">Quantity</label>
+                            <div class="col-sm-9">
+                                <input name="qty" id="qty" type="number" class="form-control" value="{{ old('qty') }}" placeholder="Enter Quantity">
+                                @error('qty') <span class="text-danger">{{ $message }}</span> @else <small class="text-success" id="showPrice" style="font-weight: bold"></small> @enderror
+                            </div>
+                        </div>
+
+                        <!-- Price -->
+                        <input name="price" id="price" type="hidden">
+
+                        <!-- Itop Up -->
+                        <input name="itopup" id="itopup" type="hidden">
+
+                        <!-- Total Amount -->
+                        <div class="row mb-3 d-none" id="liftingTotalAmount">
+                            <label for="total_amount" class="col-sm-3 col-form-label">Total Amount</label>
+                            <div class="col-sm-9">
+                                <input name="total_amount" id="total_amount" type="number" class="form-control" value="{{ old('total_amount') }}"
+                                       placeholder="Enter Total Amount">
+                                @error('total_amount') <span class="text-danger">{{ $message }}</span> @else <small class="text-success" id="showItopUp" style="font-weight: bold"></small> @enderror
+                            </div>
+                        </div>
+
+                        <!-- Cash/Credit -->
+                        <div class="row mb-3">
+                            <label for="remarks" class="col-sm-3 col-form-label">Cash/Credit</label>
+                            <div class="col-sm-9">
+                                <select name="remarks" class="form-select" id="remarks">
+                                    <option value="cash" selected>Cash</option>
+                                    <option value="credit" >Credit</option>
+                                </select>
+                                @error('remarks') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+
                         <button type="submit" class="btn btn-sm btn-primary me-2 btn-submit">Create New Lifting</button>
                         <a href="{{ route('lifting.index') }}" class="btn btn-sm btn-info me-2 text-white">Back</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Lifting Detail's</h6>
+                    <div class="row">
+                        @foreach($liftingHouse as $house)
+                        <div class="col-md-6 p-0">
+                            <div class="card m-2 liftingCard">
+                                <span id="liftingCopyIcon" class="position-absolute bg-primary text-white p-1 rounded-2" style="right: 0px;">
+                                    <i class="link-icon" data-feather="copy"></i>
+                                </span>
+                                <div class="card-body">
+                                    <p>{{ $house->ddHouse->name }}</p>
+                                    <p>{{ $house->ddHouse->code }}</p>
+                                    <p>{{ date('d/m/Y', strtotime($house->lifting_date)) }}</p>
+                                    <p>Lifting Itop: <span class="text-success" style="font-weight: bold">{{ optional(\App\Models\Lifting::getLiftingData($house->dd_house_id, 'itopup'))->itopup ?? 0 }}</span> ({{ optional(\App\Models\Lifting::getLiftingData($house->dd_house_id, 'itopup'))->remarks }})</p>
+                                    <p>10tk SC: <span class="text-danger" style="font-weight: bold">{{ optional(\App\Models\Lifting::getLiftingData($house->dd_house_id, 'sc_10'))->qty ?? 0 }}</span></p>
+                                    <p>14tk Min: <span class="text-danger" style="font-weight: bold">{{ optional(\App\Models\Lifting::getLiftingData($house->dd_house_id, 'scmb_14'))->qty ?? 0}}</span></p>
+                                    <p>14tk Data: <span class="text-danger" style="font-weight: bold">{{ optional(\App\Models\Lifting::getLiftingData($house->dd_house_id, 'scd_14'))->qty ?? 0}}</span></p>
+                                    <p>19tk Min: <span class="text-danger" style="font-weight: bold">{{ optional(\App\Models\Lifting::getLiftingData($house->dd_house_id, 'scv_19'))->qty ?? 0}}</span></p>
+                                    <p>19tk Data: <span class="text-danger" style="font-weight: bold">{{ optional(\App\Models\Lifting::getLiftingData($house->dd_house_id, 'scd_19'))->qty ?? 0}}</span></p>
+                                    <p>20tk SC: <span class="text-danger" style="font-weight: bold">{{ optional(\App\Models\Lifting::getLiftingData($house->dd_house_id, 'sc_20'))->qty ?? 0}}</span></p>
+                                    <p>29tk SC: <span class="text-danger" style="font-weight: bold">{{ optional(\App\Models\Lifting::getLiftingData($house->dd_house_id, 'scd_29'))->qty ?? 0}}</span></p>
+                                    <p>RBSP SWAP Sim: <span class="text-danger" style="font-weight: bold">{{ optional(\App\Models\Lifting::getLiftingData($house->dd_house_id, 'sim_swap'))->qty ?? 0 }} </span></p>
+                                    <p>Prepaid Sim: <span class="text-danger" style="font-weight: bold">{{ optional(\App\Models\Lifting::getLiftingData($house->dd_house_id, 'mmst'))->qty ?? 0 }}</span> ({{ optional(\App\Models\Lifting::getLiftingData($house->dd_house_id, 'mmst'))->remarks }})</p>
+                                    <p>Itop SWAP: <span class="text-danger" style="font-weight: bold">{{ optional(\App\Models\Lifting::getLiftingData($house->dd_house_id, 'sim_swap_ev'))->qty ?? 0 }}</span> ({{ optional(\App\Models\Lifting::getLiftingData($house->dd_house_id, 'sim_swap_ev'))->remarks }})</p>
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
                     </div>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 
     @push('scripts')
         <script>
-            $(document).ready(function (){
-                $(document).on('blur','.qty',function (){
-                    var product = $(this).attr('id');
-                    var quantity = $(this).val();
-                    // console.log(value.length);
+            $(document).ready(function() {
+                let liftingPrice = '';
+                let faceValue = '';
+
+                $(document).on('change','.product',function (){
+                    const product = $(this).val();
+                    $('#qty').val('');
+                    $('#showPrice').text('');
 
                     $.ajax({
-                        url: "{{ route('lifting.get.lifting.data') }}/" + product,
+                        url: "{{ route('lifting.get.price.by.product') }}/" + product,
                         type: 'GET',
                         dataType: 'JSON',
                         success: function(response){
-                            const liftingPrice = response.data.lifting_price;
-                            const productType = response.data.product_type;
-                            var value = liftingPrice * quantity;
+                            liftingPrice = response.liftingPrice;
+                        },
+                    });
+                });
 
-                            if(quantity.length < 1)
+                // Calculate itop-up amount
+                $(document).on('keyup','#total_amount',function (){
+                    const totAmount = $(this).val();
+                    const ddId = $('#dd_house_id').val();
+                    const date = $('#lifting_date').val();
+
+                    $.ajax({
+                        url: "{{ route('lifting.get.itop.amount') }}/" + totAmount + '/' + ddId + '/' + date,
+                        type: 'GET',
+                        dataType: 'JSON',
+                        success: function(response){
+                            $('#itopup').val(response.itopup);
+                            $('#showItopUp').text('I\'top-up: ' + response.itopup);
+                        },
+                    });
+                });
+
+                // Get price from quantity
+                $(document).on('keyup','#qty',function (){
+                    const qty = $(this).val();
+                    const liftingValue = qty*liftingPrice;
+                    $('#price').val(liftingValue);
+                    $('#showPrice').text('Lifting Value: '+liftingValue+' | '+'Lifting Price: '+liftingPrice);
+                });
+
+                // Get product by type
+                $(document).on('change','#product_type',function (){
+                    const type = $(this).val();
+                    $('#qty').val('');
+                    $('#showPrice').text('');
+
+                    if (type === '')
+                    {
+                        $('.product').html('<option value="">-- Select Product --</option>');
+                        $('#liftingQuantity, #liftingPrice').addClass('d-none');
+                    }else if (type !== 'itopup'){
+                        $('#liftingItopup, #liftingTotalAmount').addClass('d-none');
+                        $('#liftingQuantity, #liftingPrice, #liftingProduct').removeClass('d-none');
+                    }else{
+                        $('#liftingQuantity, #liftingPrice, #liftingProduct').addClass('d-none');
+                        $('#liftingItopup, #liftingTotalAmount').removeClass('d-none');
+                    }
+
+                    $.ajax({
+                        url: "{{ route('lifting.get.product.by.type') }}/" + type,
+                        type: 'GET',
+                        dataType: 'JSON',
+                        beforeSend: function (){
+                            $('.product').find('option:not(:first)').remove();
+                        },
+                        success: function(response){
+                            if(response.products.length)
                             {
-                                $('#'+product+'LiftingPrice').addClass('d-none').text('');
-                                $('#'+product+'Value').addClass('d-none').text('');
-                                $('#'+product+'LiftingValue').text('');
-                                $('#'+product+'_lifting_price').removeAttr('value');
-                                $('#'+product+'_value').removeAttr('value');
-                            }else{
-                                $('#'+product+'LiftingPrice').removeClass('d-none').text('Lifting Price: ' + liftingPrice);
-                                $('#'+product+'Value').removeClass('d-none').text('Value: ' + value);
-                                $('#'+product+'LiftingValue').text('Lifting Value: ' + value);
-                                $('#'+product+'_lifting_price').val(liftingPrice);
-                                $('#'+product+'_value').val(value);
-
-                                // if(response.data.product_type == 'scratch_card')
-                                // {
-                                //
-                                // }
+                                $.each(response.products, function (key, value){
+                                    $('.product').append('<option value="'+ value.product +'">' + value.product + '</option>')
+                                });
                             }
                         },
                     });
                 });
             });
-
-
-
-
-
-            {{--$(document).ready(function() {--}}
-            {{--    let liftingPrice = '';--}}
-            {{--    let faceValue = '';--}}
-
-            {{--    $(document).on('change','.product',function (){--}}
-            {{--        const product = $(this).val();--}}
-            {{--        $('#qty').val('');--}}
-            {{--        $('#showPrice').text('');--}}
-
-                {{--    $.ajax({--}}
-                {{--        url: "{{ route('lifting.get.price.by.product') }}/" + product,--}}
-                {{--        type: 'GET',--}}
-                {{--        dataType: 'JSON',--}}
-                {{--        success: function(response){--}}
-                {{--            liftingPrice = response.liftingPrice;--}}
-                {{--            // faceValue = response.faceValue;--}}
-                {{--        },--}}
-                {{--    });--}}
-                {{--});--}}
-
-            {{--    // Calculate itop-up amount--}}
-            {{--    $(document).on('keyup','#total_amount',function (){--}}
-            {{--        const totAmount = $(this).val();--}}
-            {{--        const ddId = $('#dd_house_id').val();--}}
-            {{--        const date = $('#lifting_date').val();--}}
-
-            {{--        $.ajax({--}}
-            {{--            url: "{{ route('lifting.get.itop.amount') }}/" + totAmount + '/' + ddId + '/' + date,--}}
-            {{--            type: 'GET',--}}
-            {{--            dataType: 'JSON',--}}
-            {{--            success: function(response){--}}
-            {{--                $('#itopup').val(response.itopup);--}}
-            {{--                $('#showItopUp').text('I\'top-up: ' + response.itopup);--}}
-            {{--            },--}}
-            {{--        });--}}
-            {{--    });--}}
-
-            {{--    // Get price from quantity--}}
-            {{--    $(document).on('keyup','#qty',function (){--}}
-            {{--        const qty = $(this).val();--}}
-            {{--        // const fValue = qty*faceValue;--}}
-            {{--        const liftingValue = qty*liftingPrice;--}}
-            {{--        $('#price').val(liftingValue);--}}
-            {{--        $('#showPrice').text('Lifting Value: '+liftingValue+' | '+'Lifting Price: '+liftingPrice);--}}
-            {{--    });--}}
-
-            {{--    // Get product by type--}}
-            {{--    $(document).on('change','#product_type',function (){--}}
-            {{--        const type = $(this).val();--}}
-            {{--        $('#qty').val('');--}}
-            {{--        $('#showPrice').text('');--}}
-
-            {{--        if (type === '')--}}
-            {{--        {--}}
-            {{--            $('.product').html('<option value="">-- Select Product --</option>');--}}
-            {{--            $('#liftingQuantity, #liftingPrice').addClass('d-none');--}}
-            {{--        }else if (type !== 'itopup'){--}}
-            {{--            $('#liftingItopup, #liftingTotalAmount').addClass('d-none');--}}
-            {{--            $('#liftingQuantity, #liftingPrice, #liftingProduct').removeClass('d-none');--}}
-            {{--        }else{--}}
-            {{--            $('#liftingQuantity, #liftingPrice, #liftingProduct').addClass('d-none');--}}
-            {{--            $('#liftingItopup, #liftingTotalAmount').removeClass('d-none');--}}
-            {{--        }--}}
-
-            {{--        $.ajax({--}}
-            {{--            url: "{{ route('lifting.get.product.by.type') }}/" + type,--}}
-            {{--            type: 'GET',--}}
-            {{--            dataType: 'JSON',--}}
-            {{--            beforeSend: function (){--}}
-            {{--                $('.product').find('option:not(:first)').remove();--}}
-            {{--            },--}}
-            {{--            success: function(response){--}}
-            {{--                if(response.products.length)--}}
-            {{--                {--}}
-            {{--                    $.each(response.products, function (key, value){--}}
-            {{--                        $('.product').append('<option value="'+ value.product +'">' + value.product + '</option>')--}}
-            {{--                    });--}}
-            {{--                }--}}
-            {{--            },--}}
-            {{--        });--}}
-            {{--    });--}}
-            {{--});--}}
         </script>
     @endpush
 

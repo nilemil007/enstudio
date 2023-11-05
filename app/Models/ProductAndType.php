@@ -18,7 +18,7 @@ class ProductAndType extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['product_type','product','lifting_price','retailer_price'];
+    protected $fillable = ['product_type','product','face_value','lifting_price','retailer_price'];
 
     public function productType(): Attribute
     {
@@ -33,10 +33,5 @@ class ProductAndType extends Model
             get: fn($product) => Str::upper($product),
             set: fn($product) => Str::lower($product),
         );
-    }
-
-    public static function getProduct($type)
-    {
-        return ProductAndType::select('product','lifting_price','retailer_price')->groupBy('product')->where('product_type', $type)->get();
     }
 }

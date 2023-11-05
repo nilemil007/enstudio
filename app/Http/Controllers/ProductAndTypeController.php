@@ -40,16 +40,19 @@ class ProductAndTypeController extends Controller
         $data = $this->validate($request,[
             'product_type'      => ['required'],
             'product'           => ['required'],
+            'face_value'        => ['required'],
             'lifting_price'     => ['required'],
             'retailer_price'    => ['required'],
         ],[
-            'product_type.required'     => 'আপনাকে অবশ্যই :attribute দিতে হবে।',
+            'product_type.required'     => 'আপনাকে অবশ্যই একটি :attribute দিতে হবে।',
             'product.required'          => 'আপনাকে অবশ্যই একটি :attribute দিতে হবে।',
-            'lifting_price.required'    => 'আপনাকে অবশ্যই একটি :attribute দিতে হবে।',
-            'retailer_price.required'   => 'আপনাকে অবশ্যই একটি :attribute দিতে হবে।',
+            'face_value.required'       => 'আপনাকে অবশ্যই :attribute দিতে হবে।',
+            'lifting_price.required'    => 'আপনাকে অবশ্যই :attribute দিতে হবে।',
+            'retailer_price.required'   => 'আপনাকে অবশ্যই :attribute দিতে হবে।',
         ],[
             'product_type'      => 'প্রোডাক্ট টাইপ',
             'product'           => 'প্রোডাক্ট',
+            'face_value'        => 'প্রকৃত মূল্য',
             'lifting_price'     => 'লিফটিং মূল্য',
             'retailer_price'    => 'রিটেইলার মূল্য',
         ]);
@@ -84,16 +87,19 @@ class ProductAndTypeController extends Controller
         $data = $this->validate($request,[
             'product_type'      => ['required'],
             'product'           => ['required'],
+            'face_value'        => ['required'],
             'lifting_price'     => ['required'],
             'retailer_price'    => ['required'],
         ],[
-            'product_type.required'     => 'আপনাকে অবশ্যই :attribute দিতে হবে।',
+            'product_type.required'     => 'আপনাকে অবশ্যই একটি :attribute দিতে হবে।',
             'product.required'          => 'আপনাকে অবশ্যই একটি :attribute দিতে হবে।',
-            'lifting_price.required'    => 'আপনাকে অবশ্যই একটি :attribute দিতে হবে।',
-            'retailer_price.required'   => 'আপনাকে অবশ্যই একটি :attribute দিতে হবে।',
+            'face_value.required'       => 'আপনাকে অবশ্যই :attribute দিতে হবে।',
+            'lifting_price.required'    => 'আপনাকে অবশ্যই :attribute দিতে হবে।',
+            'retailer_price.required'   => 'আপনাকে অবশ্যই :attribute দিতে হবে।',
         ],[
             'product_type'      => 'প্রোডাক্ট টাইপ',
             'product'           => 'প্রোডাক্ট',
+            'face_value'        => 'প্রকৃত মূল্য',
             'lifting_price'     => 'লিফটিং মূল্য',
             'retailer_price'    => 'রিটেইলার মূল্য',
         ]);

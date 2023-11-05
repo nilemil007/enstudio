@@ -21,6 +21,7 @@
                             <th class="w-1">No.</th>
                             <th>product type</th>
                             <th>product</th>
+                            <th>face value</th>
                             <th>lifting price</th>
                             <th>retailer price</th>
                             <th>action</th>
@@ -32,6 +33,7 @@
                             <td><span class="text-muted">{{ ++$sl }}</span></td>
                             <td>{{ $data->product_type }}</td>
                             <td>{{ $data->product }}</td>
+                            <td>{{ $data->face_value }}</td>
                             <td>{{ $data->lifting_price }}</td>
                             <td>{{ $data->retailer_price }}</td>
                             <td>

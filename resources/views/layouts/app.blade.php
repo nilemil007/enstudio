@@ -49,6 +49,13 @@
         input.error, textarea.error, select.error{
             border: 1px solid red;
         }
+        #liftingCopyIcon{
+            display: none;
+            cursor: pointer;
+        }
+        .liftingCard:hover #liftingCopyIcon{
+            display: block;
+        }
         /*input.valid, textarea.valid{*/
         /*    border: 1px solid limegreen;*/
         /*}*/
