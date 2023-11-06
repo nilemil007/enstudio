@@ -186,6 +186,8 @@ Route::middleware(['auth'])->group(function (){
         Route::get('/restore/{id}','restore')->name('restore');
         // Permanently Delete
         Route::delete('/permanently-delete/{id}','permanentlyDelete')->name('permanently.delete');
+        // All codes will be valid this month as well.
+        Route::get('/valid-in-current-month', 'validInCurrentMonth')->name('valid.in.current.month');
     });
 
     // Scratch Card Serial Additional Routes

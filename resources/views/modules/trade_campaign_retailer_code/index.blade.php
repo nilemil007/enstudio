@@ -54,6 +54,7 @@
                         <th>Flag</th>
                         <th>Remarks</th>
                         <th>Created At</th>
+                        <th>Last Update</th>
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -78,6 +79,10 @@
                                 <div class="text-muted">{{ $tc->created_at->toDayDateTimeString() }}</div>
                             </td>
                             <td>
+                                {{ $tc->updated_at->diffForHumans() }}
+                                <div class="text-muted">{{ $tc->updated_at->toDayDateTimeString() }}</div>
+                            </td>
+                            <td>
                                 <!-- Edit -->
                                 <a href="{{ route('tcrc.edit', $tc->id) }}" class="btn btn-sm btn-primary">Edit</a>
 
@@ -88,14 +93,6 @@
                                     <button onclick="return confirm('Are you sure you want to delete this user?');" type="submit" class="btn btn-sm btn-danger">Delete</button>
                                 </form> --}}
                             </td>
-
-                            {{-- <td>
-                                <!-- Edit -->
-                                <a href="{{ route('tcrc.edit', $tc->id) }}" class="btn btn-sm btn-primary">Edit</a>
-
-                                <!-- Delete -->
-                                <a href="{{ route('tcrc.destroy', $tc->id) }}" id="deleteTcrc" class="btn btn-sm btn-danger">Delete</a>
-                            </td> --}}
                         </tr>
                     @endforeach
                     </tbody>
@@ -104,11 +101,42 @@
         </div>
     </div>
 
+    <a href="{{ route('tcrc.valid.in.current.month') }}" id="validInCurrentMonth" class="nav-link mt-2 text-secondary">Valid this month as well.</a>
+
     @push('scripts')
         <script>
             new DataTable('#tcrcTbl');
 
             $(document).ready(function(){
+
+                // Valid In Current Month
+                $(document).on('click','#validInCurrentMonth',function(e){
+                    e.preventDefault();
+
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "All codes will be valid this month as well?",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, do it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                url: $(this).attr('href'),
+                                type: 'GET',
+                                success: function (response){
+                                    Swal.fire(
+                                        'Validated!',
+                                        response.success,
+                                        'success',
+                                    ).then((result) => {
+                                        location.reload();
+                                    });
+                                },
+                            });
+                        }
+                    });
+                });
 
                 // Single delete
                 $(document).on('click','#deleteTcrc',function(e){

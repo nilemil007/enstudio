@@ -74,7 +74,7 @@ class HouseCodeActivationController extends Controller
             break;
 
             default;
-                $tradeCampaignRetailerCode = TradeCampaignRetailerCode::whereBetween('created_at', [$startDate, $endDate])->get();
+                $tradeCampaignRetailerCode = TradeCampaignRetailerCode::whereBetween('updated_at', [$startDate, $endDate])->get();
         }
 
         return view('modules.house_code_activation.create', compact('tradeCampaignRetailerCode'));
@@ -230,6 +230,6 @@ class HouseCodeActivationController extends Controller
         $startDate = Carbon::now()->startOfMonth()->toDateString();
         $endDate = Carbon::now()->endOfMonth()->toDateString();
 
-        return Response::json(['tcrc' => TradeCampaignRetailerCode::whereBetween('created_at', [$startDate, $endDate])->where('user_id', $user_id)->get()]);
+        return Response::json(['tcrc' => TradeCampaignRetailerCode::whereBetween('updated_at', [$startDate, $endDate])->where('user_id', $user_id)->get()]);
     }
 }

@@ -53,6 +53,7 @@ class LiftingController extends Controller
             'product'       => ['nullable'],
             'qty'           => ['nullable'],
             'price'         => ['nullable'],
+            'lifting_price' => ['nullable'],
             'itopup'        => ['nullable'],
             'total_amount'  => ['nullable'],
             'lifting_date'  => ['required'],

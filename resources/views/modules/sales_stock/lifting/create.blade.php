@@ -150,8 +150,9 @@
         <script>
             $(document).ready(function() {
                 let liftingPrice = '';
-                let faceValue = '';
+                let price = '';
 
+                // Get lifting price by product.
                 $(document).on('change','.product',function (){
                     const product = $(this).val();
                     $('#qty').val('');
@@ -188,6 +189,11 @@
                 $(document).on('keyup','#qty',function (){
                     const qty = $(this).val();
                     const liftingValue = qty*liftingPrice;
+                    if(qty.length < 1)
+                    {
+
+                    }
+
                     $('#price').val(liftingValue);
                     $('#showPrice').text('Lifting Value: '+liftingValue+' | '+'Lifting Price: '+liftingPrice);
                 });
