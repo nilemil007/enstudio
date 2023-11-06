@@ -132,8 +132,8 @@ class HouseCodeActivationController extends Controller
             break;
 
             default;
-                $tradeCampaignRetailerCode = TradeCampaignRetailerCode::whereBetween('created_at', [$startDate, $endDate])->get();
-                $tcrcRetailerCode = TradeCampaignRetailerCode::whereBetween('created_at', [$startDate, $endDate])->where('user_id', $hca->user_id)->get();
+                $tradeCampaignRetailerCode = TradeCampaignRetailerCode::whereBetween('updated_at', [$startDate, $endDate])->get();
+                $tcrcRetailerCode = TradeCampaignRetailerCode::whereBetween('updated_at', [$startDate, $endDate])->where('user_id', $hca->user_id)->get();
         }
 
         return view('modules.house_code_activation.edit', compact('hca','tradeCampaignRetailerCode','tcrcRetailerCode'));
