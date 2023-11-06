@@ -191,8 +191,9 @@ class HouseCodeActivationController extends Controller
     {
         $sum = HouseCodeActivation::getSumOfCurrentMonth();
         $prices = HouseCodeActivation::getPriceOfCurrentMonth();
+        $lastUpdate = HouseCodeActivation::select('activation_date')->orderBy('activation_date','DESC')->first()->activation_date;
 
-        return view('modules.house_code_activation.summary', compact('sum','prices'));
+        return view('modules.house_code_activation.summary', compact('sum','prices','lastUpdate'));
     }
 
     /**

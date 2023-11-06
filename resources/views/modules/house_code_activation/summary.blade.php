@@ -41,5 +41,6 @@
             </table>
         </div>
     </div>
+    <p class="mt-2 text-success" style="font-weight: bold">Last Update: {{ $lastUpdate->toFormattedDateString() }}</p>
 
 </x-app-layout>
