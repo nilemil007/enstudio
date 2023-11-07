@@ -17,6 +17,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Maatwebsite\Excel\Facades\Excel;
@@ -27,7 +28,7 @@ class HouseCodeActivationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
+    public function index(Request $request): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
         switch ( Auth::user()->role )
         {
@@ -43,7 +44,8 @@ class HouseCodeActivationController extends Controller
             break;
 
             default;
-                $houseCodeAct = HouseCodeActivation::latest()->paginate(5);
+                $houseCodeAct = HouseCodeActivation::latest()->search($request->search, $request->activation_date)->paginate(5);
+                $houseCodeAct->appends(['search' => $request->search, 'activation_date' => $request->activation_date]);
         }
 
         return view('modules.house_code_activation.index', compact('houseCodeAct'));

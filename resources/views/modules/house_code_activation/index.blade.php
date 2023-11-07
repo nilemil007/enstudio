@@ -4,21 +4,27 @@
     <x-slot:title>House Code Activation</x-slot:title>
 
     <div class="card">
-        <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <div class="d-inline-flex align-items-center">
-                    <h4 class="card-title m-0">House Code Activation</h4>
+        <div class="card-header d-flex align-items-center justify-content-between">
+            <h4 class="card-title m-0">House Code Activation</h4>
+            <form>
+                <div class="input-group">
+                    <input name="search" type="search" class="form-control" value="{{ request()->get('search') }}" placeholder="Find something...">
+                    <input name="activation_date" type="text" class="flatpickr form-control" placeholder="Select date">
+                    <button class="btn btn-outline-primary" type="submit">Search</button>
+                    <a href="{{ route('hca.index') }}" class="btn btn-outline-secondary">Reset</a>
                 </div>
-
-                <span>
-                    <a href="{{ route('hca.create') }}" class="btn btn-sm btn-primary">Add New</a>
-                    @if( auth()->user()->role == 'superadmin' )
-                        @if(count($houseCodeAct) > 1)
-                            <a id="deleteAllHca" href="{{ route('hca.delete.all') }}" class="btn btn-sm btn-danger">Delete all</a>
-                        @endif
+            </form>
+        </div>
+        <div class="card-body">
+            <span class="mb-3">
+                <a href="{{ route('hca.create') }}" class="btn btn-sm btn-primary">Add New</a>
+                @if( auth()->user()->role == 'superadmin' )
+                    @if(count($houseCodeAct) > 1)
+                        <a id="deleteAllHca" href="{{ route('hca.delete.all') }}" class="btn btn-sm btn-danger">Delete all</a>
                     @endif
-                </span>
-            </div>
+                @endif
+            </span>
+
             <div class="table-responsive">
                 <table id="hcaTbl" class="table table-sm table-bordered table-hover card-table table-vcenter text-nowrap mt-3 mb-3 text-center">
                     <thead>
@@ -35,7 +41,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach( $houseCodeAct as $sl => $hca )
+                    @forelse( $houseCodeAct as $sl => $hca )
                         <tr>
                             <td><span class="text-muted">{{ ++$sl }}</span></td>
                             <td>
@@ -62,7 +68,11 @@
                                 @endif
                             </td>
                         </tr>
-                    @endforeach
+                    @empty
+                        <tr>
+                            <td colspan="9">No data found.</td>
+                        </tr>
+                    @endforelse
                     </tbody>
                 </table>
             </div>
