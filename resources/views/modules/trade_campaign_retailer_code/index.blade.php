@@ -3,45 +3,27 @@
     <!-- Title -->
     <x-slot:title>Trade Campaign Retailer Code</x-slot:title>
 
-    @if(auth()->user()->role == 'superadmin')
-    <form class="mb-3 d-flex justify-content-center">
-        <div class="row">
-            <div class="col-md-5">
-                <div class="input-group">
-                    <input name="start_date" id="start_date" value="{{ request()->get('start_date') }}" type="text" class="flatpickr form-control" placeholder="Select date">
-                    <span class="input-group-text input-group-addon" data-toggle>
-                        <i data-feather="calendar"></i>
-                    </span>
-                </div>
-            </div>
-            <div class="col-md-5">
-                <div class="input-group">
-                    <input name="end_date" id="end_date" value="{{ request()->get('end_date') }}" type="text" class="flatpickr form-control" placeholder="Select date">
-                    <span class="input-group-text input-group-addon" data-toggle>
-                        <i data-feather="calendar"></i>
-                    </span>
-                </div>
-            </div>
-
-            <div class="col-md-2">
-                <button type="submit" class="btn btn-primary">Search</button>
-            </div>
-        </div>
-    </form>
-    @endif
-
     <div class="card">
-        <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <div class="d-flex align-items-center">
-                    <h4 class="card-title mb-0">Trade Campaign Retailer Code(s)</h4>
-                    @if(count($trashed) > 0)
-                        <a href="{{ route('tcrc.trash') }}" class="text-danger" style="font-weight:bold;margin-left: 5px;">Trash ({{ $trashed->count() }})</a>
-                    @endif
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+                <h4 class="card-title mb-0">Trade Campaign Retailer Code(s)</h4>
+                @if(count($trashed) > 0)
+                    <a href="{{ route('tcrc.trash') }}" class="text-danger" style="font-weight:bold;margin-left: 5px;">Trash ({{ $trashed->count() }})</a>
+                @endif
+            </div>
+
+            <form>
+                <div class="input-group">
+                    <input name="search" type="search" class="form-control" value="{{ request()->get('search') }}" placeholder="Find something...">
+                    <button class="btn btn-outline-primary" type="submit">Search</button>
+                    <a href="{{ route('tcrc.index') }}" class="btn btn-outline-secondary">Reset</a>
                 </div>
-                <span>
-                    <a href="{{ route('tcrc.create') }}" class="btn btn-sm btn-primary">Add New</a>
-                </span>
+            </form>
+        </div>
+
+        <div class="card-body">
+            <div class="d-flex justify-content-end">
+                <a href="{{ route('tcrc.create') }}" class="btn btn-sm btn-primary">Add New</a>
             </div>
             <div class="table-responsive">
                 <table id="tcrcTbl" class="table table-sm table-bordered table-hover card-table table-vcenter text-center text-nowrap mt-3 mb-3">
@@ -88,10 +70,6 @@
 
                                 <!-- Move to trash -->
                                 <a href="{{ route('tcrc.destroy', $tc->id) }}" id="deleteTcrc" class="btn btn-sm btn-danger">Delete</a>
-                                {{-- <form style="margin-left: 5px;" action="{{ route('tcrc.destroy', $tc->id) }}" method="POST">
-                                    @csrf @method('DELETE')
-                                    <button onclick="return confirm('Are you sure you want to delete this user?');" type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                </form> --}}
                             </td>
                         </tr>
                     @endforeach
@@ -99,13 +77,15 @@
                 </table>
             </div>
         </div>
+        <div class="card-footer">
+            {{ $tcrc->links('pagination::bootstrap-5') }}
+        </div>
     </div>
 
-    <a href="{{ route('tcrc.valid.in.current.month') }}" id="validInCurrentMonth" class="nav-link mt-2 text-secondary">Valid this month as well.</a>
+    <a href="{{ route('tcrc.valid.in.current.month') }}" id="validInCurrentMonth" class="nav-link mt-2 text-success" style="font-weight: bold">Valid this month as well.</a>
 
     @push('scripts')
         <script>
-            new DataTable('#tcrcTbl');
 
             $(document).ready(function(){
 

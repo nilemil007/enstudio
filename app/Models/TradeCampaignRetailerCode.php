@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Searchable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -19,9 +20,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class TradeCampaignRetailerCode extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, Searchable;
 
     protected $fillable = ['user_id','retailer_code','flag','remarks'];
+    protected array $searchable = ['retailer_code','flag','remarks','user.name','user.rso.itop_number','user.bp.pool_number','user.cm.pool_number'];
 
     /**
      * TCRC belongs to a user.

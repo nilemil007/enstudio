@@ -60,6 +60,7 @@ class HouseCodeActivationController extends Controller
     {
         $startDate = Carbon::now()->startOfMonth()->toDateString();
         $endDate = Carbon::now()->endOfMonth()->toDateString();
+        $tradeCampaignRetailerCode = '';
 
         switch ( Auth::user()->role )
         {

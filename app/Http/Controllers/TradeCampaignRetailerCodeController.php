@@ -19,10 +19,13 @@ class TradeCampaignRetailerCodeController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
+    public function index(Request $request): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
+        $search = $request->input('search');
         $trashed = TradeCampaignRetailerCode::onlyTrashed()->latest()->get();
-        $tcrc = TradeCampaignRetailerCode::latest()->get();
+        $tcrc = TradeCampaignRetailerCode::latest()->search($search)->paginate(5);
+        $tcrc->appends(['search' => $search]);
+
         return view('modules.trade_campaign_retailer_code.index', compact('tcrc','trashed'));
     }
 
