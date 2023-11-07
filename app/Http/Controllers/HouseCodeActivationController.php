@@ -30,6 +30,8 @@ class HouseCodeActivationController extends Controller
      */
     public function index(Request $request): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
+        $search = $request->input('search');
+
         switch ( Auth::user()->role )
         {
             case ('supervisor');
@@ -44,8 +46,8 @@ class HouseCodeActivationController extends Controller
             break;
 
             default;
-                $houseCodeAct = HouseCodeActivation::latest()->search($request->search, $request->activation_date)->paginate(5);
-                $houseCodeAct->appends(['search' => $request->search, 'activation_date' => $request->activation_date]);
+                $houseCodeAct = HouseCodeActivation::latest()->search($search)->paginate(5);
+                $houseCodeAct->appends(['search' => $search]);
         }
 
         return view('modules.house_code_activation.index', compact('houseCodeAct'));

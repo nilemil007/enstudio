@@ -26,9 +26,12 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
+    public function index(Request $request): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $users = User::latest()->get();
+        $search = $request->input('search');
+
+        $users = User::latest()->search($search)->paginate(5);
+        $users->appends(['search' => $search]);
         $trashed = User::onlyTrashed()->latest()->get();
         return view('modules.user.index', compact('users','trashed'));
     }
