@@ -125,6 +125,11 @@ class HouseCodeActivationController extends Controller
 
         switch ( Auth::user()->role )
         {
+            case('superadmin');
+                $tradeCampaignRetailerCode = TradeCampaignRetailerCode::whereBetween('updated_at', [$startDate, $endDate])->get();
+                $tcrcRetailerCode = TradeCampaignRetailerCode::whereBetween('updated_at', [$startDate, $endDate])->where('user_id', $hca->user_id)->get();
+            break;
+
             case('supervisor');
                 $poolNumber = Supervisor::firstWhere('user_id', Auth::id())->pool_number;
                 $retId = TradeCampaignRetailerCode::whereNotNull('retailer_id')->pluck('retailer_id');
@@ -138,10 +143,6 @@ class HouseCodeActivationController extends Controller
                 $retailers = Retailer::where('rso_id', $rsoId)->whereIn('id', $retId)->get();
                 $users = User::where('dd_house', Auth::user()->dd_house)->get();
             break;
-
-            default;
-                $tradeCampaignRetailerCode = TradeCampaignRetailerCode::whereBetween('updated_at', [$startDate, $endDate])->get();
-                $tcrcRetailerCode = TradeCampaignRetailerCode::whereBetween('updated_at', [$startDate, $endDate])->where('user_id', $hca->user_id)->get();
         }
 
         return view('modules.house_code_activation.edit', compact('hca','tradeCampaignRetailerCode','tcrcRetailerCode'));

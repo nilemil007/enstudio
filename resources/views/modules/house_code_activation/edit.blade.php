@@ -34,7 +34,7 @@
                     <div class="row mb-3">
                         <label for="retailer_code" class="col-sm-3 col-form-label">Retailer Code</label>
                         <div class="col-sm-9">
-                            <select name="retailer_code" class="form-select @error('retailer_code') is-invalid @enderror" id="retailer_code">
+                            <select name="retailer_code" class="retailer_code form-select @error('retailer_code') is-invalid @enderror" id="retailer_code">
                                 <option value="">-- Select Retailer Code --</option>
 
                                 @foreach($tcrcRetailerCode as $retCode)
@@ -92,6 +92,31 @@
     @push('scripts')
         <script>
             $(document).ready(function() {
+                // Get retailer code by user
+                $(document).on('change','#user_id',function (){
+                    const userId = $(this).val();
+
+                    if (userId === '')
+                    {
+                        $('.retailer_code').html('<option value="">-- Select Retailer Code --</option>');
+                    }
+
+                    // Get user by dd house
+                    $.ajax({
+                        url: "{{ route('hca.get.retailer.code') }}/" + userId,
+                        type: 'POST',
+                        dataType: 'JSON',
+                        beforeSend: function (){
+                            $('.retailer_code').find('option:not(:first)').remove();
+                        },
+                        success: function (response){
+                            $.each(response.tcrc, function (key, value){
+                                $('.retailer_code').append('<option value="'+ value.retailer_code +'">' + value.retailer_code + '</option>');
+                            });
+                        }
+                    });
+                });
+
                 // Create HCA Entry
                 $(document).on('submit','#hcaUpdateForm',function (e){
                     e.preventDefault();
