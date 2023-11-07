@@ -28,6 +28,8 @@ class Lifting extends Model
         'product',
         'qty',
         'price',
+        'lifting_price',
+        'product_lifting_price',
         'itopup',
         'total_amount',
         'lifting_date',

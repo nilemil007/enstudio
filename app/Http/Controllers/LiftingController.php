@@ -48,15 +48,17 @@ class LiftingController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $lifting = $this->validate($request,[
-            'dd_house_id'   => ['required'],
-            'product_type'  => ['required'],
-            'product'       => ['nullable'],
-            'qty'           => ['nullable'],
-            'price'         => ['nullable'],
-            'itopup'        => ['nullable'],
-            'total_amount'  => ['nullable'],
-            'lifting_date'  => ['required'],
-            'remarks'       => ['required'],
+            'dd_house_id'           => ['required'],
+            'product_type'          => ['required'],
+            'product'               => ['nullable'],
+            'qty'                   => ['nullable'],
+            'price'                 => ['nullable'],
+            'lifting_price'         => ['nullable'],
+            'product_lifting_price' => ['nullable'],
+            'itopup'                => ['nullable'],
+            'total_amount'          => ['nullable'],
+            'lifting_date'          => ['required'],
+            'remarks'               => ['required'],
         ]);
 
         if ($lifting['product_type'] == 'itopup')
@@ -153,7 +155,7 @@ class LiftingController extends Controller
     {
         return Response::json([
             'liftingPrice'  => ProductAndType::firstWhere('product', $product)->lifting_price,
-            'faceValue'     => preg_replace('/\D/', '', $product),
+            'faceValue'  => ProductAndType::firstWhere('product', $product)->face_value,
             ]);
     }
 
