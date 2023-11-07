@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Activation\HouseCodeActivation;
+use App\Traits\Searchable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
@@ -30,7 +31,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  */
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes, Searchable;
 
     /**
      * The attributes that are mass assignable.
@@ -46,6 +47,20 @@ class User extends Authenticatable
         'password',
         'image',
         'status',
+    ];
+
+    /**
+     * Searchable column's.
+     *
+     * @var array<int, string>
+     */
+    protected array $searchable = [
+        'name',
+        'username',
+        'phone',
+        'email',
+        'role',
+        'ddHouse.code',
     ];
 
     /**

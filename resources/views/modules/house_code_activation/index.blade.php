@@ -9,21 +9,20 @@
             <form>
                 <div class="input-group">
                     <input name="search" type="search" class="form-control" value="{{ request()->get('search') }}" placeholder="Find something...">
-                    <input name="activation_date" type="text" class="flatpickr form-control" placeholder="Select date">
                     <button class="btn btn-outline-primary" type="submit">Search</button>
                     <a href="{{ route('hca.index') }}" class="btn btn-outline-secondary">Reset</a>
                 </div>
             </form>
         </div>
         <div class="card-body">
-            <span class="mb-3">
+            <div class="d-flex justify-content-end">
                 <a href="{{ route('hca.create') }}" class="btn btn-sm btn-primary">Add New</a>
                 @if( auth()->user()->role == 'superadmin' )
                     @if(count($houseCodeAct) > 1)
-                        <a id="deleteAllHca" href="{{ route('hca.delete.all') }}" class="btn btn-sm btn-danger">Delete all</a>
+                        <a id="deleteAllHca" href="{{ route('hca.delete.all') }}" class="btn btn-sm btn-danger" style="margin-left: 4px;">Delete all</a>
                     @endif
                 @endif
-            </span>
+            </div>
 
             <div class="table-responsive">
                 <table id="hcaTbl" class="table table-sm table-bordered table-hover card-table table-vcenter text-nowrap mt-3 mb-3 text-center">

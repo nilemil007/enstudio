@@ -71,12 +71,14 @@
                             <label for="qty" class="col-sm-3 col-form-label">Quantity</label>
                             <div class="col-sm-9">
                                 <input name="qty" id="qty" type="number" class="form-control" value="{{ old('qty') }}" placeholder="Enter Quantity">
-                                @error('qty') <span class="text-danger">{{ $message }}</span> @else <small class="text-success" id="showPrice" style="font-weight: bold"></small> @enderror
+                                @error('qty') <span class="text-danger">{{ $message }}</span> @else <small id="showPrice" style="font-weight: bold"></small> @enderror
                             </div>
                         </div>
 
                         <!-- Price -->
                         <input name="price" id="price" type="hidden">
+                        <input name="lifting_price" id="liftingPrice" type="hidden">
+                        <input name="product_lifting_price" id="productLiftingPrice" type="hidden">
 
                         <!-- Itop Up -->
                         <input name="itopup" id="itopup" type="hidden">
@@ -164,6 +166,7 @@
                         dataType: 'JSON',
                         success: function(response){
                             liftingPrice = response.liftingPrice;
+                            faceValue = response.faceValue;
                         },
                     });
                 });
@@ -188,14 +191,20 @@
                 // Get price from quantity
                 $(document).on('keyup','#qty',function (){
                     const qty = $(this).val();
-                    const liftingValue = qty*liftingPrice;
+                    const liftingAmount = qty*liftingPrice;
+                    const faceAmount = qty*faceValue;
                     if(qty.length < 1)
                     {
-
+                        $('#showPrice').text('');
+                        $('#price').removeAttr('value');
+                        $('#liftingPrice').removeAttr('value');
+                        $('#productLiftingPrice').removeAttr('value');
+                    }else{
+                        $('#price').val(faceAmount);
+                        $('#liftingPrice').val(liftingAmount);
+                        $('#productLiftingPrice').val(liftingPrice);
+                        $('#showPrice').text('').append('<p class="text-success">' + 'Lifting Price: ' + liftingPrice +'</p>').append('<p class="text-secondary">' + 'Face Value: ' + faceAmount +'</p>').append('<p class="text-secondary">' + 'Lifting Value: ' + liftingAmount +'</p>');
                     }
-
-                    $('#price').val(liftingValue);
-                    $('#showPrice').text('Lifting Value: '+liftingValue+' | '+'Lifting Price: '+liftingPrice);
                 });
 
                 // Get product by type

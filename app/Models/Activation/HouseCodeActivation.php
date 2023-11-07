@@ -3,11 +3,13 @@
 namespace App\Models\Activation;
 
 use App\Models\User;
+use App\Traits\Searchable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Str;
 
 /**
  * @method static latest()
@@ -22,31 +24,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class HouseCodeActivation extends Model
 {
-    use HasFactory;
+    use HasFactory, Searchable;
 
     protected $fillable = ['user_id','retailer_code','activation','price','activation_date','flag','remarks'];
-
-    /**
-     * Search.
-     *
-     * @param $query
-     * @param $term
-     */
-    public function scopeSearch( $query, $term, $date = null )
-    {
-        $term = "%$term%";
-        return $query->where( function ( $query ) use ( $term, $date ){
-            $query->whereDate('activation_date', $date)
-                ->where( 'retailer_code', 'like', $term )
-                ->orWhere( 'activation', 'like', $term )
-                ->orWhere( 'price', 'like', $term )
-                ->orWhere( 'flag', 'like', $term )
-                ->orWhere( 'remarks', 'like', $term )
-                ->orWhereHas('user', function ( $query ) use ( $term ){
-                    $query->where( 'name', 'like', $term );
-                });
-        });
-    }
+    protected array $searchable = ['retailer_code','activation','price','flag','remarks','user.name','user.rso.itop_number','user.bp.pool_number','user.cm.pool_number'];
 
     /**
      * The attributes that should be cast.

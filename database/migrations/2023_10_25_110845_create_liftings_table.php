@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('qty')->nullable();
             $table->string('price')->nullable();
             $table->string('lifting_price')->nullable();
+            $table->string('product_lifting_price')->nullable();
             $table->string('itopup')->nullable();
             $table->string('total_amount')->nullable();
             $table->date('lifting_date');
