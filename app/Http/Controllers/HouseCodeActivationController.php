@@ -30,8 +30,11 @@ class HouseCodeActivationController extends Controller
      */
     public function index(Request $request): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
+        $startDate = Carbon::now()->startOfMonth()->toDateString();
+        $endDate = Carbon::now()->endOfMonth()->toDateString();
         $search = $request->input('search');
 
+        $search = $request->input('search');
         switch ( Auth::user()->role )
         {
             case ('supervisor');
@@ -42,12 +45,12 @@ class HouseCodeActivationController extends Controller
             case ('bp'):
             case ('tmo'):
             case ('rso');
-                $houseCodeAct = HouseCodeActivation::where('user_id', Auth::id())->where('activation_date', Carbon::now()->toDateString())->paginate(5);
+                $houseCodeAct = HouseCodeActivation::where('user_id', Auth::id())->whereDate('activation_date', Carbon::now()->toDateString())->paginate(5);
             break;
 
             default;
-                $houseCodeAct = HouseCodeActivation::latest()->search($search)->paginate(5);
-                $houseCodeAct->appends(['search' => $search]);
+                $houseCodeAct = HouseCodeActivation::latest()->search($request->search, $request->activation_date)->whereBetween('activation_date', [$startDate, $endDate])->paginate(5);
+                $houseCodeAct->appends(['search' => $request->search]);
         }
 
         return view('modules.house_code_activation.index', compact('houseCodeAct'));
