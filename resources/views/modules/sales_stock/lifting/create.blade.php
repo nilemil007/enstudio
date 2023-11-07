@@ -152,7 +152,7 @@
         <script>
             $(document).ready(function() {
                 let liftingPrice = '';
-                let faceValue = '';
+                let price = '';
 
                 // Get lifting price by product.
                 $(document).on('change','.product',function (){

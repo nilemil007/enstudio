@@ -18,12 +18,35 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static whereIn()
  * @method static whereBetween(string $string, array $array)
  * @method static select(string $string)
+ * @method static search(mixed $search)
  */
 class HouseCodeActivation extends Model
 {
     use HasFactory;
 
     protected $fillable = ['user_id','retailer_code','activation','price','activation_date','flag','remarks'];
+
+    /**
+     * Search.
+     *
+     * @param $query
+     * @param $term
+     */
+    public function scopeSearch( $query, $term, $date = null )
+    {
+        $term = "%$term%";
+        return $query->where( function ( $query ) use ( $term, $date ){
+            $query->whereDate('activation_date', $date)
+                ->where( 'retailer_code', 'like', $term )
+                ->orWhere( 'activation', 'like', $term )
+                ->orWhere( 'price', 'like', $term )
+                ->orWhere( 'flag', 'like', $term )
+                ->orWhere( 'remarks', 'like', $term )
+                ->orWhereHas('user', function ( $query ) use ( $term ){
+                    $query->where( 'name', 'like', $term );
+                });
+        });
+    }
 
     /**
      * The attributes that should be cast.

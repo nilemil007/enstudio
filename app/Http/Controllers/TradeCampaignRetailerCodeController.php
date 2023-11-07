@@ -152,7 +152,7 @@ class TradeCampaignRetailerCodeController extends Controller
     /**
      * Permanently Delete.
      */
-    public function permanentlyDelete($id)
+    public function permanentlyDelete($id): JsonResponse|RedirectResponse
     {
         try {
             // Find and permanently delete trashed user.
@@ -161,8 +161,17 @@ class TradeCampaignRetailerCodeController extends Controller
             // Back to index page.
             return Response::json(['success' => 'This record has been permanently deleted.']);
         }catch (\Exception $exception){
-            dd($exception);
             return to_route('tcrc.index')->with('danger','Record not delete.');
         }
+    }
+
+    /**
+     * All codes will be valid this month as well.
+     */
+    public function validInCurrentMonth(): JsonResponse
+    {
+        $ids = TradeCampaignRetailerCode::whereNotNull('user_id')->pluck('user_id');
+        TradeCampaignRetailerCode::whereIn('user_id', $ids)->update(['updated_at' => now()]);
+        return Response::json(['success' => 'All codes will be valid this month as well.']);
     }
 }
