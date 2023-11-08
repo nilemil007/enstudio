@@ -154,8 +154,8 @@ class LiftingController extends Controller
     public function getPriceByProduct($product = null): JsonResponse
     {
         return Response::json([
-            'liftingPrice'  => ProductAndType::firstWhere('product', $product)->lifting_price,
-            'faceValue'  => ProductAndType::firstWhere('product', $product)->face_value,
+            'productLiftingPrice'  => ProductAndType::firstWhere('product', $product)->lifting_price,
+            'price'  => ProductAndType::firstWhere('product', $product)->price,
             ]);
     }
 
@@ -167,7 +167,7 @@ class LiftingController extends Controller
         $othersAmount = Lifting::where('product_type', '!=', 'itopup')
             ->whereDate('lifting_date', $date)
             ->where('dd_house_id', $ddId)
-            ->sum('price');
+            ->sum('lifting_price');
 
         $remainingAmount = $total_amount - $othersAmount;
         $itopAmount = $remainingAmount / 0.9625;

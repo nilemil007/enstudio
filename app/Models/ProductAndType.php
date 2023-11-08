@@ -18,7 +18,7 @@ class ProductAndType extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['product_type','product','face_value','lifting_price','retailer_price'];
+    protected $fillable = ['product_type','product','price','lifting_price','retailer_price'];
 
     public function productType(): Attribute
     {

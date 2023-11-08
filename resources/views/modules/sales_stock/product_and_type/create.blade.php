@@ -15,7 +15,11 @@
                         <div class="row mb-3">
                             <label for="product_type" class="col-sm-3 col-form-label">Product Type</label>
                             <div class="col-sm-9">
-                                <input name="product_type" id="product_type" type="text" class="form-control" value="{{ old('product_type') }}" placeholder="Enter Product Type">
+                                <select name="product_type" id="product_type" class="form-select">
+                                    <option value="">- Select Product Type -</option>
+                                    <option value="sim">Sim</option>
+                                    <option value="scratch_card">Scratch Card</option>
+                                </select>
                                 @error('product_type') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         </div>
@@ -29,12 +33,12 @@
                             </div>
                         </div>
 
-                        <!-- Face Value -->
+                        <!-- Price -->
                         <div class="row mb-3">
-                            <label for="face_value" class="col-sm-3 col-form-label">Face Value</label>
+                            <label for="price" class="col-sm-3 col-form-label">Price</label>
                             <div class="col-sm-9">
-                                <input name="face_value" id="face_value" type="number" step="any" class="form-control" value="{{ old('face_value') }}" placeholder="Enter Face Value">
-                                @error('face_value') <span class="text-danger">{{ $message }}</span> @enderror
+                                <input name="price" id="price" type="number" step="any" class="form-control" value="{{ old('price') }}" placeholder="Enter Price">
+                                @error('price') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         </div>
 
@@ -44,6 +48,12 @@
                             <div class="col-sm-9">
                                 <input name="lifting_price" id="lifting_price" type="number" step="any" class="form-control" value="{{ old('lifting_price') }}" placeholder="Enter Lifting Price">
                                 @error('lifting_price') <span class="text-danger">{{ $message }}</span> @enderror
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="sameAsPrice">
+                                    <label class="form-check-label" for="sameAsPrice">
+                                        Same as price
+                                    </label>
+                                </div>
                             </div>
                         </div>
 
@@ -67,6 +77,12 @@
     @push('scripts')
         <script>
             $(document).ready(function() {
+
+            if($('#sameAsPrice').is(":checked"))
+            {
+                alert('Checked');
+            }
+
                 // Validation
                 // $('#productTypeForm').validate({
                 //     rules: {

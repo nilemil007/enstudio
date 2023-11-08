@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('product_type');
             $table->string('product');
+            $table->string('price');
             $table->string('lifting_price');
-            $table->string('retailer_price');
+            $table->string('retailer_price')->nullable();
             $table->timestamps();
         });
     }

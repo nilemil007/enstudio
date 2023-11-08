@@ -71,7 +71,11 @@
                             <label for="qty" class="col-sm-3 col-form-label">Quantity</label>
                             <div class="col-sm-9">
                                 <input name="qty" id="qty" type="number" class="form-control" value="{{ old('qty') }}" placeholder="Enter Quantity">
-                                @error('qty') <span class="text-danger">{{ $message }}</span> @else <small id="showPrice" style="font-weight: bold"></small> @enderror
+                                @error('qty')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @else
+                                    <small id="showPrice" style="font-weight: bold"></small>
+                                @enderror
                             </div>
                         </div>
 
@@ -98,8 +102,8 @@
                             <label for="remarks" class="col-sm-3 col-form-label">Cash/Credit</label>
                             <div class="col-sm-9">
                                 <select name="remarks" class="form-select" id="remarks">
-                                    <option value="cash" selected>Cash</option>
-                                    <option value="credit" >Credit</option>
+                                    <option value="Cash" selected>Cash</option>
+                                    <option value="Credit" >Credit</option>
                                 </select>
                                 @error('remarks') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
@@ -151,8 +155,8 @@
     @push('scripts')
         <script>
             $(document).ready(function() {
-                let liftingPrice = '';
-                let price = '';
+                var productLiftingPrice = '';
+                var price = '';
 
                 // Get lifting price by product.
                 $(document).on('change','.product',function (){
@@ -165,20 +169,20 @@
                         type: 'GET',
                         dataType: 'JSON',
                         success: function(response){
-                            liftingPrice = response.liftingPrice;
-                            faceValue = response.faceValue;
+                            productLiftingPrice = response.productLiftingPrice;
+                            price = response.price;
                         },
                     });
                 });
 
                 // Calculate itop-up amount
                 $(document).on('keyup','#total_amount',function (){
-                    const totAmount = $(this).val();
-                    const ddId = $('#dd_house_id').val();
-                    const date = $('#lifting_date').val();
+                    var totalAmount = $(this).val();
+                    var ddId = $('#dd_house_id').val();
+                    var date = $('#lifting_date').val();
 
                     $.ajax({
-                        url: "{{ route('lifting.get.itop.amount') }}/" + totAmount + '/' + ddId + '/' + date,
+                        url: "{{ route('lifting.get.itop.amount') }}/" + totalAmount + '/' + ddId + '/' + date,
                         type: 'GET',
                         dataType: 'JSON',
                         success: function(response){
@@ -191,8 +195,6 @@
                 // Get price from quantity
                 $(document).on('keyup','#qty',function (){
                     const qty = $(this).val();
-                    const liftingAmount = qty*liftingPrice;
-                    const faceAmount = qty*faceValue;
                     if(qty.length < 1)
                     {
                         $('#showPrice').text('');
@@ -200,10 +202,10 @@
                         $('#liftingPrice').removeAttr('value');
                         $('#productLiftingPrice').removeAttr('value');
                     }else{
-                        $('#price').val(faceAmount);
-                        $('#liftingPrice').val(liftingAmount);
-                        $('#productLiftingPrice').val(liftingPrice);
-                        $('#showPrice').text('').append('<p class="text-success">' + 'Lifting Price: ' + liftingPrice +'</p>').append('<p class="text-secondary">' + 'Face Value: ' + faceAmount +'</p>').append('<p class="text-secondary">' + 'Lifting Value: ' + liftingAmount +'</p>');
+                        $('#price').val(qty*price);
+                        $('#liftingPrice').val(qty*productLiftingPrice);
+                        $('#productLiftingPrice').val(productLiftingPrice);
+                        $('#showPrice').text('').append('<p class="text-success">' + 'Product Lifting Price: ' + productLiftingPrice +'</p>').append('<p class="text-secondary">' + 'Price: ' + qty*price +'</p>').append('<p class="text-secondary">' + 'Lifting Price: ' + qty*productLiftingPrice +'</p>');
                     }
                 });
 
