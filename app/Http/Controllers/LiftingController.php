@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\DdHouse;
 use App\Models\Lifting;
 use App\Models\ProductAndType;
-use App\Models\User;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
@@ -15,7 +14,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Str;
 
 class LiftingController extends Controller
 {
@@ -24,7 +22,11 @@ class LiftingController extends Controller
      */
     public function index()
     {
-        //
+        $house = DB::table('dd_house_user')->where('user_id', Auth::id())->pluck('dd_house_id');
+
+        return view('modules.sales_stock.lifting.index', [
+            'liftings' => Lifting::groupBy('dd_house_id')->whereDate('lifting_date', now())->whereIn('dd_house_id', $house)->get(),
+        ]);
     }
 
     /**
@@ -56,7 +58,7 @@ class LiftingController extends Controller
             'lifting_price'         => ['nullable'],
             'product_lifting_price' => ['nullable'],
             'itopup'                => ['nullable'],
-            'total_amount'          => ['nullable'],
+            'bank_deposit'          => ['nullable'],
             'lifting_date'          => ['required'],
             'remarks'               => ['required'],
         ]);

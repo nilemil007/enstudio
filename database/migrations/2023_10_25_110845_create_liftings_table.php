@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('lifting_price')->nullable();
             $table->string('product_lifting_price')->nullable();
             $table->string('itopup')->nullable();
-            $table->string('total_amount')->nullable();
+            $table->string('bank_deposit')->nullable();
             $table->date('lifting_date');
             $table->string('remarks')->default('Cash');
             $table->timestamps();

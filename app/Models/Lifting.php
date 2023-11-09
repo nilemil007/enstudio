@@ -30,7 +30,7 @@ class Lifting extends Model
         'lifting_price',
         'product_lifting_price',
         'itopup',
-        'total_amount',
+        'bank_deposit',
         'lifting_date',
         'remarks',
     ];

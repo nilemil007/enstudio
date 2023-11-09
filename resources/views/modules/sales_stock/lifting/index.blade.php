@@ -1,70 +1,69 @@
 <x-app-layout>
 
     <!-- Title -->
-    <x-slot:title>All CM</x-slot:title>
+    <x-slot:title>Liftings</x-slot:title>
 
     <div class="card">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <div class="d-flex align-items-center">
-                    <h4 class="card-title mb-0">all cm ({{ $cms->count() }})</h4>
-                    @if(count($trashed) > 0)
+                    <h4 class="card-title mb-0">lifting(s)</h4>
+                    {{-- @if(count($trashed) > 0)
                        <a href="{{ route('cm.trash') }}" class="text-danger" style="font-weight: bold;"><span style="margin: 0px 10px 0px 10px">|</span> Trash ({{ $trashed->count() }})</a>
-                    @endif
+                    @endif --}}
                 </div>
                 <span>
                     <a href="{{ route('cm.create') }}" class="btn btn-sm btn-primary">Add New</a>
                 </span>
             </div>
             <div class="table-responsive">
-                <table id="cmTbl" class="table table-sm table-bordered table-hover table-vcenter text-nowrap mt-3 mb-3 text-center">
+                <table class="table table-sm table-bordered table-hover table-vcenter text-nowrap mt-3 mb-3 text-center align-middle">
                     <thead>
                         <tr>
                             <th class="w-1">No.</th>
                             <th>dd house</th>
-                            <th>cm name</th>
-                            <th>pool number</th>
-                            <th>joining date</th>
-                            <th>documents</th>
-                            <th>status</th>
-                            <th>action</th>
+                            <th>products</th>
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach( $cms as $sl => $cm )
+                        @forelse ( $liftings as $sl => $lifting )
                         <tr>
-                            <td><span class="text-muted">{{ ++$sl }}</span></td>
-                            <td>{{ $cm->ddHouse->code }}</td>
-                            <td>{{ $cm->name }}</td>
-                            <td>{{ $cm->pool_number }}</td>
-                            <td>{{ empty($cm->joining_date) ? null : $cm->joining_date->toFormattedDateString() }}</td>
+                            <td>{{ ++$sl }}</td>
+                            <td>{{ $lifting->ddHouse->code }}</td>
                             <td>
-                                @if($cm->documents)
-                                    <span style="font-weight: bold" class="text-success">Submitted</span>
-                                @else
-                                    <span style="font-weight: bold" class="text-danger">Not Submitted</span>
-                                @endif
-                            </td>
-                            <td>
-                                @switch( $cm->status )
-                                    @case(1)
-                                        <p style="font-weight: bold" class="text-success">Active</p>
-                                    @break
-
-                                    @case(0)
-                                        <p style="font-weight: bold" class="text-danger">Inactive</p>
-                                        @break
-                                @endswitch
-                            </td>
-                            <td>
-                                <!-- Edit -->
-                                <a href="{{ route('cm.edit', $cm->id) }}" class="btn btn-sm btn-primary">Edit</a>
-
-                                <!-- Move to trash -->
-                                <a href="{{ route('cm.destroy', $cm->id) }}" id="deleteCm" class="btn btn-sm btn-danger">Delete</a>
+                                <table class="table table-sm table-bordered table-hover table-vcenter text-nowrap text-center align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th>Sim</th>
+                                            <th>Scratch Card</th>
+                                            <th>Device</th>
+                                            <th>I'top-up</th>
+                                            <th>Bank Deposit</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <p>MMST: 1500</p>
+                                                <p>SIM SWAP: 500</p>
+                                            </td>
+                                            <td>
+                                                <p>SCD 29: 5000</p>
+                                                <p>SCV 19: 50000</p>
+                                            </td>
+                                            <td>Router: 1</td>
+                                            <td>1038961</td>
+                                            <td>1000000</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </td>
                         </tr>
-                    @endforeach
+                        @empty
+                        <tr>
+                            <td colspan="3">No data found.</td>
+                        </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
@@ -73,7 +72,6 @@
 
     @push('scripts')
         <script>
-            new DataTable('#cmTbl');
 
             $(document).ready(function(){
 
