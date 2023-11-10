@@ -25,7 +25,7 @@ class LiftingController extends Controller
         $house = DB::table('dd_house_user')->where('user_id', Auth::id())->pluck('dd_house_id');
 
         return view('modules.sales_stock.lifting.index', [
-            'liftings' => Lifting::groupBy('dd_house_id')->whereDate('lifting_date', now())->whereIn('dd_house_id', $house)->get(),
+            'liftings' => Lifting::groupBy('lifting_date')->latest()->paginate(2),
         ]);
     }
 
@@ -164,14 +164,14 @@ class LiftingController extends Controller
     /**
      * Get itop amount
      */
-    public function getItopAmount($total_amount, $ddId, $date): JsonResponse
+    public function getItopAmount($bank_deposit, $ddId, $date): JsonResponse
     {
         $othersAmount = Lifting::where('product_type', '!=', 'itopup')
             ->whereDate('lifting_date', $date)
             ->where('dd_house_id', $ddId)
             ->sum('lifting_price');
 
-        $remainingAmount = $total_amount - $othersAmount;
+        $remainingAmount = $bank_deposit - $othersAmount;
         $itopAmount = $remainingAmount / 0.9625;
 
         return Response::json(['itopup'  => round($itopAmount)]);

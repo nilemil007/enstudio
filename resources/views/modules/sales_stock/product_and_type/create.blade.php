@@ -19,6 +19,7 @@
                                     <option value="">- Select Product Type -</option>
                                     <option value="sim">Sim</option>
                                     <option value="scratch_card">Scratch Card</option>
+                                    <option value="device">Device</option>
                                 </select>
                                 @error('product_type') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>

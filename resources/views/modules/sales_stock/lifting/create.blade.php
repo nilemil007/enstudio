@@ -5,7 +5,7 @@
 
     <div class="row">
         <div class="col-md-6">
-            <div class="card">
+            <div class="card bg-secondary bg-gradient">
                 <div class="card-body">
                     <h6 class="card-title">Create New Lifting</h6>
                     <form id="cmForm" action="{{ route('lifting.store') }}" method="POST">
@@ -21,14 +21,15 @@
                                         <i data-feather="calendar"></i>
                                     </span>
                                 </div>
+                                @error('lifting_date') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         </div>
 
                         <!-- Distribution House -->
                         <div class="row mb-3">
-                            <label for="dd_house_id" class="col-sm-3 col-form-label">Distribution House ({{ count($houses) }})</label>
+                            <label for="dd_house_id" class="col-sm-3 col-form-label">DD House</label>
                             <div class="col-sm-9">
-                                <select name="dd_house_id" class="form-select" id="dd_house_id">
+                                <select name="dd_house_id" class="form-select" id="dd_house_id" >
                                     <option value="">-- Select Distribution House --</option>
                                     @if(count($houses) > 0)
                                         @foreach($houses as $house)
@@ -74,7 +75,7 @@
                                 @error('qty')
                                     <span class="text-danger">{{ $message }}</span>
                                 @else
-                                    <small id="showPrice" style="font-weight: bold"></small>
+                                    <small class="text-light" id="showPrice" style="font-weight: bold"></small>
                                 @enderror
                             </div>
                         </div>
@@ -87,13 +88,13 @@
                         <!-- Itop Up -->
                         <input name="itopup" id="itopup" type="hidden">
 
-                        <!-- Total Amount -->
+                        <!-- Bank Deposit -->
                         <div class="row mb-3 d-none" id="liftingTotalAmount">
-                            <label for="total_amount" class="col-sm-3 col-form-label">Total Amount</label>
+                            <label for="bank_deposit" class="col-sm-3 col-form-label">Bank Deposit</label>
                             <div class="col-sm-9">
-                                <input name="total_amount" id="total_amount" type="number" class="form-control" value="{{ old('total_amount') }}"
-                                       placeholder="Enter Total Amount">
-                                @error('total_amount') <span class="text-danger">{{ $message }}</span> @else <small class="text-success" id="showItopUp" style="font-weight: bold"></small> @enderror
+                                <input name="bank_deposit" id="bank_deposit" type="number" class="form-control" value="{{ old('bank_deposit') }}"
+                                       placeholder="Enter Bank Deposit">
+                                @error('bank_deposit') <span class="text-danger">{{ $message }}</span> @else <small class="text-light" id="showItopUp" style="font-weight: bold"></small> @enderror
                             </div>
                         </div>
 
@@ -102,7 +103,8 @@
                             <label for="remarks" class="col-sm-3 col-form-label">Cash/Credit</label>
                             <div class="col-sm-9">
                                 <select name="remarks" class="form-select" id="remarks">
-                                    <option value="Cash" selected>Cash</option>
+                                    <option>- Select Mode -</option>
+                                    <option value="Cash">Cash</option>
                                     <option value="Credit" >Credit</option>
                                 </select>
                                 @error('remarks') <span class="text-danger">{{ $message }}</span> @enderror
@@ -131,17 +133,17 @@
                                     <p>{{ $house->ddHouse->name }}</p>
                                     <p>{{ $house->ddHouse->code }}</p>
                                     <p>{{ date('d/m/Y', strtotime($house->lifting_date)) }}</p>
-                                    <p>Lifting Itop: <span class="text-success" style="font-weight: bold">{{ optional(\App\Models\Lifting::getLiftingData($house->dd_house_id, 'itopup'))->itopup ?? 0 }}</span> ({{ optional(\App\Models\Lifting::getLiftingData($house->dd_house_id, 'itopup'))->remarks }})</p>
-                                    <p>10tk SC: <span class="text-danger" style="font-weight: bold">{{ optional(\App\Models\Lifting::getLiftingData($house->dd_house_id, 'sc_10'))->qty ?? 0 }}</span></p>
-                                    <p>14tk Min: <span class="text-danger" style="font-weight: bold">{{ optional(\App\Models\Lifting::getLiftingData($house->dd_house_id, 'scmb_14'))->qty ?? 0}}</span></p>
-                                    <p>14tk Data: <span class="text-danger" style="font-weight: bold">{{ optional(\App\Models\Lifting::getLiftingData($house->dd_house_id, 'scd_14'))->qty ?? 0}}</span></p>
-                                    <p>19tk Min: <span class="text-danger" style="font-weight: bold">{{ optional(\App\Models\Lifting::getLiftingData($house->dd_house_id, 'scv_19'))->qty ?? 0}}</span></p>
-                                    <p>19tk Data: <span class="text-danger" style="font-weight: bold">{{ optional(\App\Models\Lifting::getLiftingData($house->dd_house_id, 'scd_19'))->qty ?? 0}}</span></p>
-                                    <p>20tk SC: <span class="text-danger" style="font-weight: bold">{{ optional(\App\Models\Lifting::getLiftingData($house->dd_house_id, 'sc_20'))->qty ?? 0}}</span></p>
-                                    <p>29tk SC: <span class="text-danger" style="font-weight: bold">{{ optional(\App\Models\Lifting::getLiftingData($house->dd_house_id, 'scd_29'))->qty ?? 0}}</span></p>
-                                    <p>RBSP SWAP Sim: <span class="text-danger" style="font-weight: bold">{{ optional(\App\Models\Lifting::getLiftingData($house->dd_house_id, 'sim_swap'))->qty ?? 0 }} </span></p>
-                                    <p>Prepaid Sim: <span class="text-danger" style="font-weight: bold">{{ optional(\App\Models\Lifting::getLiftingData($house->dd_house_id, 'mmst'))->qty ?? 0 }}</span> ({{ optional(\App\Models\Lifting::getLiftingData($house->dd_house_id, 'mmst'))->remarks }})</p>
-                                    <p>Itop SWAP: <span class="text-danger" style="font-weight: bold">{{ optional(\App\Models\Lifting::getLiftingData($house->dd_house_id, 'sim_swap_ev'))->qty ?? 0 }}</span> ({{ optional(\App\Models\Lifting::getLiftingData($house->dd_house_id, 'sim_swap_ev'))->remarks }})</p>
+                                    <p>Lifting Itop: <span class="text-success" style="font-weight: bold">{{ optional(\App\Models\Lifting::getTodayLiftingData($house->dd_house_id, 'itopup'))->itopup ?? 0 }}</span> ({{ optional(\App\Models\Lifting::getTodayLiftingData($house->dd_house_id, 'itopup'))->remarks }})</p>
+                                    <p>10tk SC: <span class="text-danger" style="font-weight: bold">{{ optional(\App\Models\Lifting::getTodayLiftingData($house->dd_house_id, 'sc_10'))->qty ?? 0 }}</span></p>
+                                    <p>14tk Min: <span class="text-danger" style="font-weight: bold">{{ optional(\App\Models\Lifting::getTodayLiftingData($house->dd_house_id, 'scmb_14'))->qty ?? 0}}</span></p>
+                                    <p>14tk Data: <span class="text-danger" style="font-weight: bold">{{ optional(\App\Models\Lifting::getTodayLiftingData($house->dd_house_id, 'scd_14'))->qty ?? 0}}</span></p>
+                                    <p>19tk Min: <span class="text-danger" style="font-weight: bold">{{ optional(\App\Models\Lifting::getTodayLiftingData($house->dd_house_id, 'scv_19'))->qty ?? 0}}</span></p>
+                                    <p>19tk Data: <span class="text-danger" style="font-weight: bold">{{ optional(\App\Models\Lifting::getTodayLiftingData($house->dd_house_id, 'scd_19'))->qty ?? 0}}</span></p>
+                                    <p>20tk SC: <span class="text-danger" style="font-weight: bold">{{ optional(\App\Models\Lifting::getTodayLiftingData($house->dd_house_id, 'sc_20'))->qty ?? 0}}</span></p>
+                                    <p>29tk SC: <span class="text-danger" style="font-weight: bold">{{ optional(\App\Models\Lifting::getTodayLiftingData($house->dd_house_id, 'scd_29'))->qty ?? 0}}</span></p>
+                                    <p>RBSP SWAP Sim: <span class="text-danger" style="font-weight: bold">{{ optional(\App\Models\Lifting::getTodayLiftingData($house->dd_house_id, 'sim_swap'))->qty ?? 0 }} </span></p>
+                                    <p>Prepaid Sim: <span class="text-danger" style="font-weight: bold">{{ optional(\App\Models\Lifting::getTodayLiftingData($house->dd_house_id, 'mmst'))->qty ?? 0 }}</span> ({{ optional(\App\Models\Lifting::getTodayLiftingData($house->dd_house_id, 'mmst'))->remarks }})</p>
+                                    <p>Itop SWAP: <span class="text-danger" style="font-weight: bold">{{ optional(\App\Models\Lifting::getTodayLiftingData($house->dd_house_id, 'sim_swap_ev'))->qty ?? 0 }}</span> ({{ optional(\App\Models\Lifting::getTodayLiftingData($house->dd_house_id, 'sim_swap_ev'))->remarks }})</p>
                                 </div>
                             </div>
                         </div>
@@ -176,13 +178,13 @@
                 });
 
                 // Calculate itop-up amount
-                $(document).on('keyup','#total_amount',function (){
-                    var totalAmount = $(this).val();
+                $(document).on('blur','#bank_deposit',function (){
+                    var bankDeposit = $(this).val();
                     var ddId = $('#dd_house_id').val();
                     var date = $('#lifting_date').val();
 
                     $.ajax({
-                        url: "{{ route('lifting.get.itop.amount') }}/" + totalAmount + '/' + ddId + '/' + date,
+                        url: "{{ route('lifting.get.itop.amount') }}/" + bankDeposit + '/' + ddId + '/' + date,
                         type: 'GET',
                         dataType: 'JSON',
                         success: function(response){
@@ -193,7 +195,7 @@
                 });
 
                 // Get price from quantity
-                $(document).on('keyup','#qty',function (){
+                $(document).on('blur','#qty',function (){
                     const qty = $(this).val();
                     if(qty.length < 1)
                     {
@@ -205,7 +207,7 @@
                         $('#price').val(qty*price);
                         $('#liftingPrice').val(qty*productLiftingPrice);
                         $('#productLiftingPrice').val(productLiftingPrice);
-                        $('#showPrice').text('').append('<p class="text-success">' + 'Product Lifting Price: ' + productLiftingPrice +'</p>').append('<p class="text-secondary">' + 'Price: ' + qty*price +'</p>').append('<p class="text-secondary">' + 'Lifting Price: ' + qty*productLiftingPrice +'</p>');
+                        $('#showPrice').text('').append('<p>' + 'Product Lifting Price: ' + productLiftingPrice +'</p>').append('<p>' + 'Price: ' + qty*price +'</p>').append('<p>' + 'Lifting Price: ' + qty*productLiftingPrice +'</p>');
                     }
                 });
 
