@@ -30,6 +30,7 @@
     <!-- inject:css -->
     <link rel="stylesheet" href="{{ url('public/assets/fonts/feather-font/css/iconfont.css') }}">
     <link rel="stylesheet" href="{{ url('public/assets/vendors/flag-icon-css/css/flag-icon.min.css') }}">
+    <script src="https://kit.fontawesome.com/cc2d6331a5.js" crossorigin="anonymous"></script>
     <!-- endinject -->
 
     <!-- Layout styles -->
@@ -39,6 +40,12 @@
     <link rel="shortcut icon" href="{{ url('public/assets/images/favicon.png') }}" />
 
     <style>
+        .liftingItem:hover .liftingEditIcon{
+            display: block;
+        }
+        .liftingEditIcon {
+            display: none;
+        }
         .swal2-popup {
             font-size: .875rem !important;
         }

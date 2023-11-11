@@ -62,9 +62,16 @@
                                                             <p>{{ Str::upper(implode(' ', explode('_', $data->product))) . ': ' . $data->qty }}</p>
                                                         @endforeach
                                                     </td>
-                                                    <td class="text-center">
+                                                    <td class="text-center liftingItem position-relative">
                                                         @foreach (\App\Models\Lifting::getLiftingData($house->dd_house_id, $lifting->lifting_date, 'itopup') as $data)
-                                                            <p>{{ $data->itopup }}</p>
+                                                            <p>
+                                                                {{ $data->itopup }}
+                                                                <span class="position-absolute liftingEditIcon" style="right: 0; top: 0;">
+                                                                    <a href="#" class="nav-link">
+                                                                        <i class="fa-solid fa-pen-to-square"></i>
+                                                                    </a>
+                                                                </span>
+                                                            </p>
                                                         @endforeach
                                                     </td>
                                                     <td class="text-center">

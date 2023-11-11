@@ -126,7 +126,7 @@
                         @foreach($liftingHouse as $house)
                         <div class="col-md-6 p-0">
                             <div class="card m-2 liftingCard">
-                                <span id="liftingCopyIcon" class="position-absolute bg-primary text-white p-1 rounded-2" style="right: 0px;">
+                                <span id="liftingCopyIcon" class="position-absolute bg-primary text-white p-1 rounded-2" style="right: 0;">
                                     <i class="link-icon" data-feather="copy"></i>
                                 </span>
                                 <div class="card-body">
