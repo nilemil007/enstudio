@@ -348,11 +348,12 @@
                         url: "{{ route('bp.get.supervisors.users') }}/" + houseId,
                         type: 'POST',
                         dataType: 'JSON',
-                        beforeSend: function (){
+                        beforeSend: () => {
+                            $('#loading').show();
                             $('#get_supervisor').find('option:not(:first)').remove();
                             $('#get_user').find('option:not(:first)').remove();
                         },
-                        success: function (response){
+                        success: (response) => {
                             $.each(response.supervisors, function (key, value){
                                 $('#get_supervisor').append('<option value="'+ value.id +'">' + value.pool_number+' - '+value.user.name + '</option>')
                             });
@@ -360,6 +361,9 @@
                             $.each(response.users, function (key, value){
                                 $('#get_user').append('<option value="'+ value.id +'">' + value.phone+' - '+value.name + '</option>')
                             });
+                        },
+                        complete: () => {
+                            $('#loading').hide();
                         }
                     });
                 });

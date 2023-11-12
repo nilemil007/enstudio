@@ -362,10 +362,14 @@
                         url: "{{ route('cm.get.users') }}/" + houseId,
                         type: 'POST',
                         dataType: 'JSON',
-                        beforeSend: function (){
+                        beforeSend: () => {
+                            $('#loading').show();
                             $('#set_user').find('option:not(:first)').remove();
                         },
-                        success: function (response){
+                        complete: () => {
+                            $('#loading').hide();
+                        },
+                        success: (response) => {
                             $.each(response.users, function (key, value){
                                 $('#set_user').append('<option value="'+ value.id +'">' + value.name + '</option>')
                             });

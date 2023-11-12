@@ -3,6 +3,8 @@
     <!-- Title -->
     <x-slot:title>Create New Record</x-slot:title>
 
+
+
     <div class="row">
         <div class="col-md-12">
 
@@ -103,13 +105,17 @@
                         url: "{{ route('hca.get.retailer.code') }}/" + userId,
                         type: 'POST',
                         dataType: 'JSON',
-                        beforeSend: function (){
+                        beforeSend: () => {
+                            $('#loading').show();
                             $('#set_retailer_code').find('option:not(:first)').remove();
                         },
-                        success: function (response){
+                        success: (response) => {
                             $.each(response.tcrc, function (key, value){
                                 $('#set_retailer_code').append('<option value="'+ value.retailer_code +'">' + value.retailer_code + '</option>');
                             });
+                        },
+                        complete: () => {
+                            $('#loading').hide();
                         }
                     });
                 });
@@ -124,11 +130,12 @@
                         data: new FormData(this),
                         processData: false,
                         contentType: false,
-                        beforeSend: function (){
+                        beforeSend: () => {
+                            $('#loading').show();
                             $('#hcaErrMsg').addClass('d-none').find('li').remove();
                             $('.btn-submit').prop('disabled', true).text('Creating...').append('<img src="{{ url('public/assets/images/gif/DzUd.gif') }}" alt="" width="18px">');
                         },
-                        success: function (response){
+                        success: (response) => {
                             $('.btn-submit').prop('disabled', false).text('Create');
                             Swal.fire(
                                 'Success!',
@@ -138,7 +145,7 @@
                                 window.location.href = "{{ route('hca.index') }}";
                             });
                         },
-                        error: function (e){
+                        error: (e) => {
                             const err = JSON.parse(e.responseText);
 
                             $.each(err.errors,function (key,value){
@@ -147,117 +154,11 @@
 
                             $('.btn-submit').prop('disabled', false).text('Create');
                         },
+                        complete: () => {
+                            $('#loading').hide();
+                        }
                     });
                 });
-
-                // $("#hcaForm").validate({
-                //
-                //     rules: {
-                //         cluster_name: {
-                //             required: true,
-                //             maxlength: 30,
-                //         },
-                //         region: {
-                //             required: true,
-                //             maxlength: 20,
-                //         },
-                //         code: {
-                //             required: true,
-                //             maxlength: 10,
-                //         },
-                //         name: {
-                //             required: true,
-                //             maxlength: 100,
-                //             minlength: 3,
-                //         },
-                //         email: {
-                //             required: true,
-                //             email: true,
-                //         },
-                //         district: {
-                //             required: true,
-                //             maxlength: 20,
-                //         },
-                //         address: {
-                //             required: true,
-                //             maxlength: 150,
-                //         },
-                //         proprietor_name: {
-                //             required: true,
-                //             maxlength: 100,
-                //             minlength: 3,
-                //         },
-                //         proprietor_number: {
-                //             required: true,
-                //             number: true,
-                //             maxlength: 11,
-                //             minlength: 11,
-                //         },
-                //         poc_name: {
-                //             required: true,
-                //             maxlength: 100,
-                //             minlength: 3,
-                //         },
-                //         poc_number: {
-                //             required: true,
-                //             number: true,
-                //             maxlength: 11,
-                //             minlength: 11,
-                //         },
-                //         tin_number: {
-                //             required: true,
-                //         },
-                //         bin_number: {
-                //             required: true,
-                //         },
-                //         latitude: {
-                //             pattern: /^[-]?(([0-8]?[0-9])\.(\d+))|(90(\.0+)?)$/
-                //         },
-                //         longitude: {
-                //             pattern: /^[-]?((((1[0-7][0-9])|([0-9]?[0-9]))\.(\d+))|180(\.0+)?)$/
-                //         },
-                //         bts_code: {
-                //             required: true,
-                //             minlength: 7,
-                //         },
-                //         lifting_date: {
-                //             required: true,
-                //         },
-                //     },
-                //     messages: {
-                //
-                //     },
-                //     errorPlacement: function(error, element){
-                //         error.addClass('invalid-feedback');
-                //
-                //         if (element.parent('.input-group').length) {
-                //             error.insertAfter(element.parent());
-                //         }
-                //         else if (element.prop('type') === 'radio' && element.parent('.radio-inline').length) {
-                //             error.insertAfter(element.parent().parent());
-                //         }
-                //         else if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
-                //             error.appendTo(element.parent().parent());
-                //         }
-                //         else {
-                //             error.insertAfter(element);
-                //         }
-                //     },
-                //     highlight: function(element, errorClass){
-                //         if ($(element).prop('type') != 'checkbox' && $(element).prop('type') != 'radio') {
-                //             $( element ).addClass( "is-invalid" );
-                //         }
-                //     },
-                //     unhighlight: function(element, errorClass){
-                //         if ($(element).prop('type') != 'checkbox' && $(element).prop('type') != 'radio') {
-                //             $( element ).removeClass( "is-invalid" );
-                //         }
-                //     },
-                //     submitHandler: function(form) {
-                //         form.submit();
-                //     },
-                // });
-
             });
         </script>
     @endpush

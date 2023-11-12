@@ -126,7 +126,13 @@
                        url: "{{ route('daily.report.get.rso') }}/" + id,
                        type: 'POST',
                        dataType: 'JSON',
-                       success: function (response){
+                       beforeSend: () => {
+                            $('#loading').show();
+                        },
+                        complete: () => {
+                            $('#loading').hide();
+                        },
+                       success: (response) => {
                            $('#get_rso').find('option:not(:first)').remove();
 
                            $.each(response.rso, function (key, value){
@@ -154,7 +160,13 @@
                             houseId:houseId,
                             rsoId:rsoId,
                         },
-                        success: function(response){
+                        beforeSend: () => {
+                            $('#loading').show();
+                        },
+                        complete: () => {
+                            $('#loading').hide();
+                        },
+                        success: (response) => {
                             if(response.data.length > 0)
                             {
                                 $('tbody').html(response.data);

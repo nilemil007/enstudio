@@ -170,6 +170,12 @@
                         url: "{{ route('lifting.get.price.by.product') }}/" + product,
                         type: 'GET',
                         dataType: 'JSON',
+                        beforeSend: () => {
+                            $('#loading').show();
+                        },
+                        complete: () => {
+                            $('#loading').hide();
+                        },
                         success: function(response){
                             productLiftingPrice = response.productLiftingPrice;
                             price = response.price;
@@ -187,6 +193,12 @@
                         url: "{{ route('lifting.get.itop.amount') }}/" + bankDeposit + '/' + ddId + '/' + date,
                         type: 'GET',
                         dataType: 'JSON',
+                        beforeSend: () => {
+                            $('#loading').show();
+                        },
+                        complete: () => {
+                            $('#loading').hide();
+                        },
                         success: function(response){
                             $('#itopup').val(response.itopup);
                             $('#showItopUp').text('I\'top-up: ' + response.itopup);
@@ -234,7 +246,11 @@
                         type: 'GET',
                         dataType: 'JSON',
                         beforeSend: function (){
+                            $('#loading').show();
                             $('.product').find('option:not(:first)').remove();
+                        },
+                        complete: () => {
+                            $('#loading').hide();
                         },
                         success: function(response){
                             if(response.products.length)

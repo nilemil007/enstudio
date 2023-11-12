@@ -104,10 +104,14 @@
                         data: data,
                         processData: false,
                         contentType: false,
-                        beforeSend: function (){
+                        beforeSend: () => {
+                            $('#loading').show();
                             $('.btn-submit').prop('disabled', true).text('Creating...');
                         },
-                        success: function (response){
+                        complete: () => {
+                            $('#loading').hide();
+                        },
+                        success: (response) => {
                             $('.btn-submit').prop('disabled', false).text('Create New Replace');
                             Swal.fire(
                                 'Success!',
@@ -117,7 +121,7 @@
                                 window.location.href = redirect;
                             });
                         },
-                        error: function (e){
+                        error: (e) => {
                             const err = JSON.parse(e.responseText);
 
                             $.each(err.errors,function (key,value){

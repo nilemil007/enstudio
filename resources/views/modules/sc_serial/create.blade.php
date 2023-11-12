@@ -108,7 +108,11 @@
                         processData: false,
                         contentType: false,
                         beforeSend: function (){
+                            $('#loading').show();
                             $('.btn-submit').prop('disabled', true).text('Creating...').append('<img src="{{ url('public/assets/images/gif/DzUd.gif') }}" alt="" width="18px">');
+                        },
+                        complete: () => {
+                            $('#loading').hide();
                         },
                         success: function (response){
                             $('.btn-submit').prop('disabled', false).text('Create');

@@ -85,9 +85,13 @@
                 //         processData: false,
                 //         contentType: false,
                 //         beforeSend: function (){
+                            // $('#loading').show();
                 //             $('#tcrcUpdateErrMsg').addClass('d-none').find('li').remove();
                 //             $('.btn-submit').prop('disabled', true).text('Updating...').append('<img src="{{ url('public/assets/images/gif/DzUd.gif') }}" alt="" width="18px">');
                 //         },
+                            // complete: () => {
+                            //     $('#loading').hide();
+                            // },
                 //         success: function (response){
                 //             $('.btn-submit').prop('disabled', false).text('Update');
                 //             Swal.fire(

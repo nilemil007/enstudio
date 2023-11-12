@@ -40,6 +40,18 @@
     <link rel="shortcut icon" href="{{ url('public/assets/images/favicon.png') }}" />
 
     <style>
+        #loading {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 99999;
+            background: url(https://media.tenor.com/wpSo-8CrXqUAAAAi/loading-loading-forever.gif) 50% 50% no-repeat rgb(15 10 10 /59%);
+            /* https://media.tenor.com/wpSo-8CrXqUAAAAi/loading-loading-forever.gif */
+            /* https://media.tenor.com/2hNqKj3ArX8AAAAi/loading.gif */
+        }
+
         .liftingItem:hover .liftingEditIcon{
             display: block;
         }
@@ -70,6 +82,7 @@
 </head>
 <body>
 <div class="main-wrapper">
+    <div style="display: none" id="loading"></div>
 
     <!-- partial:_sidebar -->
     @include('layouts.partials.sidebar')

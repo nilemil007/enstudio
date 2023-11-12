@@ -205,6 +205,12 @@
                         url: "{{ route('supervisor.get.users.by.dd.house') }}/" + houseId,
                         type: 'POST',
                         dataType: 'JSON',
+                        beforeSend: () => {
+                            $('#loading').show();
+                        },
+                        complete: () => {
+                            $('#loading').hide();
+                        },
                         success: function (response){
                             $('#set_user').find('option:not(:first)').remove();
 

@@ -468,11 +468,15 @@
                         data: new FormData(this),
                         processData: false,
                         contentType: false,
-                        beforeSend: function (){
+                        beforeSend: () => {
+                            $('#loading').show();
                             $('#retailerErrMsg').addClass('d-none').find('li').remove();
                             $('.btn-submit').prop('disabled', true).text('Creating...').append('<img src="{{ url('public/assets/images/gif/DzUd.gif') }}" alt="" width="18px">');
                         },
-                        success: function (response){
+                        complete: () => {
+                            $('#loading').hide();
+                        },
+                        success: (response) => {
                             $('.btn-submit').prop('disabled', false).text('Create New Retailer');
                             Swal.fire(
                                 'Success!',
@@ -482,7 +486,7 @@
                                 window.location.href = "{{ route('retailer.index') }}";
                             });
                         },
-                        error: function (e){
+                        error: (e) => {
                             const err = JSON.parse(e.responseText);
 
                             $.each(err.errors,function (key,value){

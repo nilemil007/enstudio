@@ -123,6 +123,12 @@
                             $.ajax({
                                 url: $(this).attr('href'),
                                 type: 'POST',
+                                beforeSend: () => {
+                                    $('#loading').show();
+                                },
+                                complete: () => {
+                                    $('#loading').hide();
+                                },
                                 success: function (response){
                                     Swal.fire(
                                         'Deleted!',

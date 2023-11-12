@@ -63,10 +63,14 @@
                         data: new FormData(this),
                         processData: false,
                         contentType: false,
-                        beforeSend: function (){
+                        beforeSend: () => {
+                            $('#loading').show();
                             $('.btn-import').prop('disabled', true).text('Importing...').append('<img src="{{ url('public/assets/images/gif/DzUd.gif') }}" alt="" width="18px">');
                         },
-                        success: function (response){
+                        complete: () => {
+                            $('#loading').hide();
+                        },
+                        success: (response) => {
                             $('.btn-import').prop('disabled', false).text('Import KPI Target');
                             Swal.fire(
                                 'Success!',
@@ -76,7 +80,7 @@
                                 window.location.href = "{{ route('kpi-target.index') }}";
                             });
                         },
-                        error: function (e){
+                        error: (e) => {
                             console.log(e.responseText);
                             $('.btn-import').prop('disabled', false).text('Import KPI Target');
                         },

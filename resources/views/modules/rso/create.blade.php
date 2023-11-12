@@ -410,7 +410,13 @@
                         url: "{{ route('rso.get.users.supervisors.routes.by.dd.house') }}/" + houseId,
                         type: 'POST',
                         dataType: 'JSON',
-                        success: function (response){
+                        beforeSend: () => {
+                            $('#loading').show();
+                        },
+                        complete: () => {
+                            $('#loading').hide();
+                        },
+                        success: (response) => {
                             $('#get_user').find('option:not(:first)').remove();
                             $('#get_supervisor').find('option:not(:first)').remove();
                             $('#get_routes').find('option:not(:first)').remove();

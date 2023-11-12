@@ -363,7 +363,11 @@
                         type: 'POST',
                         dataType: 'JSON',
                         beforeSend: function (){
+                            $('#loading').show();
                             $('#set_user').find('option:not(:first)').remove();
+                        },
+                        complete: () => {
+                            $('#loading').hide();
                         },
                         success: function (response){
                             $.each(response.users, function (key, value){

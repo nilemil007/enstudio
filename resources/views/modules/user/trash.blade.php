@@ -67,11 +67,6 @@
 
                                 <!-- Permanently Delete -->
                                 <a href="{{ route('user.permanently.delete', $user->id) }}" id="permanentlyDeleteUser" class="btn btn-sm btn-danger">Delete Permanently</a>
-
-{{--                                <form style="margin-left: 5px;" action="{{ route('user.permanently.delete', $user->id) }}" method="POST">--}}
-{{--                                    @csrf @method('DELETE')--}}
-{{--                                    <button onclick="return confirm('Are you sure you want to Permanently delete this user?');" type="submit" class="btn btn-sm btn-danger">Delete Permanently</button>--}}
-{{--                                </form>--}}
                             </td>
                         </tr>
                     @endforeach
@@ -105,6 +100,12 @@
                             $.ajax({
                                 url: $(this).attr('href'),
                                 type: 'DELETE',
+                                beforeSend: () => {
+                                    $('#loading').show();
+                                },
+                                complete: () => {
+                                    $('#loading').hide();
+                                },
                                 success: function (response){
                                     Swal.fire(
                                         'Deleted!',
@@ -134,6 +135,12 @@
                             $.ajax({
                                 url: $(this).attr('href'),
                                 type: 'DELETE',
+                                beforeSend: () => {
+                                    $('#loading').show();
+                                },
+                                complete: () => {
+                                    $('#loading').hide();
+                                },
                                 success: function (response){
                                     Swal.fire(
                                         'Deleted!',

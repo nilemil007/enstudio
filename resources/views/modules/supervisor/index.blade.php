@@ -66,11 +66,6 @@
             new DataTable('#supervisorTbl');
 
             $(document).ready(function(){
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
-                    }
-                });
 
                 // Single delete
                 $(document).on('click','#deleteSupervisor',function(e){
@@ -87,6 +82,12 @@
                             $.ajax({
                                 url: $(this).attr('href'),
                                 type: 'DELETE',
+                                beforeSend: () => {
+                                    $('#loading').show();
+                                },
+                                complete: () => {
+                                    $('#loading').hide();
+                                },
                                 success: function (response){
                                     Swal.fire(
                                         'Deleted!',
@@ -116,6 +117,12 @@
                             $.ajax({
                                 url: $(this).attr('href'),
                                 type: 'POST',
+                                beforeSend: () => {
+                                    $('#loading').show();
+                                },
+                                complete: () => {
+                                    $('#loading').hide();
+                                },
                                 success: function (response){
                                     Swal.fire(
                                         'Deleted!',

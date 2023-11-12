@@ -81,6 +81,12 @@
                             $.ajax({
                                 url: $(this).attr('href'),
                                 type: 'DELETE',
+                                beforeSend: () => {
+                                    $('#loading').show();
+                                },
+                                complete: () => {
+                                    $('#loading').hide();
+                                },
                                 success: function (response){
                                     Swal.fire(
                                         'Deleted!',
@@ -110,6 +116,12 @@
                             $.ajax({
                                 url: $(this).attr('href'),
                                 type: 'POST',
+                                beforeSend: () => {
+                                    $('#loading').show();
+                                },
+                                complete: () => {
+                                    $('#loading').hide();
+                                },
                                 success: function (response){
                                     Swal.fire(
                                         'Deleted!',

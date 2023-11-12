@@ -79,9 +79,6 @@
                 </table>
             </div>
         </div>
-{{--        <div class="card-footer">--}}
-{{--            {{ $retailers->links('pagination::bootstrap-5') }}--}}
-{{--        </div>--}}
     </div>
     @endif
 
@@ -100,7 +97,13 @@
                     $.ajax({
                         url: "{{ route('report.get.retailer') }}/" + houseId,
                         type: 'POST',
-                        success: function (response){
+                        beforeSend: () => {
+                            $('#loading').show();
+                        },
+                        complete: () => {
+                            $('#loading').hide();
+                        },
+                        success: (response) => {
                             $('#getRetailer').find('option:not(:first)').remove();
 
                             $.each(response.retCode, function (key, value){

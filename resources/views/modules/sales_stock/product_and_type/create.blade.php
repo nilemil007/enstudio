@@ -83,29 +83,7 @@
             {
                 alert('Checked');
             }
-
-                // Validation
-                // $('#productTypeForm').validate({
-                //     rules: {
-                //         product_type: {
-                //             required: true,
-                //         },
-                //         product: {
-                //             required: true,
-                //         },
-                //         lifting_price: {
-                //             required: true,
-                //         },
-                //         retailer_price: {
-                //             required: true,
-                //         },
-                //     },
-                //     messages: {
-                //         product_type: {
-                //             required: true,
-                //         },
-                //     },
-                // });
+            
             });
         </script>
     @endpush

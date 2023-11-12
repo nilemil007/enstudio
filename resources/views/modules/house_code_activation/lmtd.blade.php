@@ -42,39 +42,4 @@
         </div>
     </div>
 
-
-{{--    <div class="table-responsive mt-5">--}}
-{{--        <table class="table-bordered">--}}
-{{--            <thead>--}}
-{{--            <tr>--}}
-{{--                <th class="w-1">No.</th>--}}
-{{--                <th>DD House</th>--}}
-{{--                <th>Name</th>--}}
-{{--                <th>Retailer Code</th>--}}
-{{--                <th>Activation</th>--}}
-{{--                <th>Price</th>--}}
-{{--                <th>Date</th>--}}
-{{--            </tr>--}}
-{{--            </thead>--}}
-{{--            <tbody>--}}
-{{--            @foreach($results as $sl => $result)--}}
-{{--                <tr>--}}
-{{--                    <td>{{ ++$sl }}</td>--}}
-{{--                    <td>{{ $result->dd_house }}</td>--}}
-{{--                    <td>{{ $result->user->name }}</td>--}}
-{{--                    <td>{{ $result->retailer_code }}</td>--}}
-{{--                    <td>{{ $result->activation }}</td>--}}
-{{--                    <td>{{ $result->price }}</td>--}}
-{{--                    <td>{{ $result->activation_date->toFormattedDateString() }}</td>--}}
-{{--                </tr>--}}
-{{--            @endforeach--}}
-{{--            <tr style="font-weight: bold">--}}
-{{--                <td colspan="4">Grand Total</td>--}}
-{{--                <td>{{ $results->sum('activation') }}</td>--}}
-{{--                <td colspan="2"></td>--}}
-{{--            </tr>--}}
-{{--            </tbody>--}}
-{{--        </table>--}}
-{{--    </div>--}}
-
 </x-app-layout>

@@ -89,11 +89,15 @@
                         data: new FormData(this),
                         processData: false,
                         contentType: false,
-                        beforeSend: function (){
+                        beforeSend: () => {
+                            $('#loading').show();
                             $('#coreActivationErrMsg').addClass('d-none').find('li').remove();
                             $('.btn-submit').prop('disabled', true).text('Importing...').append('<img src="{{ url('public/assets/images/gif/DzUd.gif') }}" alt="" width="18px">');
                         },
-                        success: function (response){
+                        complete: () => {
+                            $('#loading').hide();
+                        },
+                        success: (response) => {
                             $('.btn-submit').prop('disabled', false).text('Import Activation');
                             Swal.fire(
                                 'Success!',
@@ -103,7 +107,7 @@
                                 location.reload();
                             });
                         },
-                        error: function (e){
+                        error: (e) => {
                             const err = JSON.parse(e.responseText);
 
                             $.each(err.errors,function (key,value){
