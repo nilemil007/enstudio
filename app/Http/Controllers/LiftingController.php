@@ -37,7 +37,7 @@ class LiftingController extends Controller
         $house = DB::table('dd_house_user')->where('user_id', Auth::id())->pluck('dd_house_id');
 
         return view('modules.sales_stock.lifting.create', [
-            'liftingHouse'      => Lifting::groupBy('dd_house_id')->whereDate('lifting_date', now())->whereIn('dd_house_id', $house)->get(),
+//            'liftingHouse'      => Lifting::groupBy('dd_house_id')->whereDate('lifting_date', now())->whereIn('dd_house_id', $house)->get(),
             'houses'            => DdHouse::all(),
             'productAndType'    => ProductAndType::select('product_type')->groupBy('product_type')->orderBy('product_type','ASC')->get(),
         ]);

@@ -16,6 +16,7 @@ use Illuminate\Support\Str;
  * @method static groupBy(string $string)
  * @method static select(string $string)
  * @method static firstWhere(string $string, $dd_house_id)
+ * @method static whereIn()
  */
 class Lifting extends Model
 {

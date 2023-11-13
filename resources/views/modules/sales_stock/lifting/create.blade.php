@@ -5,12 +5,13 @@
 
     <div class="row">
         <div class="col-md-6">
+            <form id="cmForm" action="{{ route('lifting.store') }}" method="POST">
+                @csrf
             <div class="card bg-secondary bg-gradient">
+                <div class="card-header">
+                    <h6 class="card-title m-0">Create New Lifting</h6>
+                </div>
                 <div class="card-body">
-                    <h6 class="card-title">Create New Lifting</h6>
-                    <form id="cmForm" action="{{ route('lifting.store') }}" method="POST">
-                    @csrf
-
                         <!-- Lifting Date -->
                         <div class="row mb-3">
                             <label for="lifting_date" class="col-sm-3 col-form-label">Lifting Date</label>
@@ -81,12 +82,12 @@
                         </div>
 
                         <!-- Price -->
-                        <input name="price" id="price" type="hidden">
-                        <input name="lifting_price" id="liftingPrice" type="hidden">
-                        <input name="product_lifting_price" id="productLiftingPrice" type="hidden">
+{{--                        <input name="price" id="price" type="hidden">--}}
+{{--                        <input name="lifting_price" id="liftingPrice" type="hidden">--}}
+{{--                        <input name="product_lifting_price" id="productLiftingPrice" type="hidden">--}}
 
                         <!-- Itop Up -->
-                        <input name="itopup" id="itopup" type="hidden">
+{{--                        <input name="itopup" id="itopup" type="hidden">--}}
 
                         <!-- Bank Deposit -->
                         <div class="row mb-3 d-none" id="liftingTotalAmount">
@@ -99,59 +100,63 @@
                         </div>
 
                         <!-- Cash/Credit -->
-                        <div class="row mb-3">
-                            <label for="remarks" class="col-sm-3 col-form-label">Cash/Credit</label>
-                            <div class="col-sm-9">
-                                <select name="remarks" class="form-select" id="remarks">
-                                    <option>- Select Mode -</option>
-                                    <option value="Cash">Cash</option>
-                                    <option value="Credit" >Credit</option>
-                                </select>
-                                @error('remarks') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                        </div>
+{{--                        <div class="row mb-3">--}}
+{{--                            <label for="remarks" class="col-sm-3 col-form-label">Cash/Credit</label>--}}
+{{--                            <div class="col-sm-9">--}}
+{{--                                <select name="remarks" class="form-select" id="remarks">--}}
+{{--                                    <option value="">- Select Mode -</option>--}}
+{{--                                    <option value="Cash">Cash</option>--}}
+{{--                                    <option value="Credit" >Credit</option>--}}
+{{--                                </select>--}}
+{{--                                @error('remarks') <span class="text-danger">{{ $message }}</span> @enderror--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
 
-                        <button type="submit" class="btn btn-sm btn-primary me-2 btn-submit">Create New Lifting</button>
-                        <a href="{{ route('lifting.index') }}" class="btn btn-sm btn-info me-2 text-white">Back</a>
-                    </form>
+                </div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <button type="submit" class="btn btn-sm btn-primary me-2 btn-submit">Create New Lifting</button>
+                    <a href="{{ route('lifting.index') }}" class="btn btn-sm btn-info me-2 text-white">Back</a>
                 </div>
             </div>
+            </form>
         </div>
 
+{{--        @if(count($liftingHouse) > 0)--}}
         <div class="col-md-6">
             <div class="card">
                 <div class="card-body">
                     <h6 class="card-title">Lifting Detail's</h6>
                     <div class="row">
-                        @foreach($liftingHouse as $house)
-                        <div class="col-md-6 p-0">
-                            <div class="card m-2 liftingCard">
-                                <span id="liftingCopyIcon" class="position-absolute bg-primary text-white p-1 rounded-2" style="right: 0;">
-                                    <i class="link-icon" data-feather="copy"></i>
-                                </span>
-                                <div class="card-body">
-                                    <p>{{ $house->ddHouse->name }}</p>
-                                    <p>{{ $house->ddHouse->code }}</p>
-                                    <p>{{ date('d/m/Y', strtotime($house->lifting_date)) }}</p>
-                                    <p>Lifting Itop: <span class="text-success" style="font-weight: bold">{{ optional(\App\Models\Lifting::getTodayLiftingData($house->dd_house_id, 'itopup'))->itopup ?? 0 }}</span> ({{ optional(\App\Models\Lifting::getTodayLiftingData($house->dd_house_id, 'itopup'))->remarks }})</p>
-                                    <p>10tk SC: <span class="text-danger" style="font-weight: bold">{{ optional(\App\Models\Lifting::getTodayLiftingData($house->dd_house_id, 'sc_10'))->qty ?? 0 }}</span></p>
-                                    <p>14tk Min: <span class="text-danger" style="font-weight: bold">{{ optional(\App\Models\Lifting::getTodayLiftingData($house->dd_house_id, 'scmb_14'))->qty ?? 0}}</span></p>
-                                    <p>14tk Data: <span class="text-danger" style="font-weight: bold">{{ optional(\App\Models\Lifting::getTodayLiftingData($house->dd_house_id, 'scd_14'))->qty ?? 0}}</span></p>
-                                    <p>19tk Min: <span class="text-danger" style="font-weight: bold">{{ optional(\App\Models\Lifting::getTodayLiftingData($house->dd_house_id, 'scv_19'))->qty ?? 0}}</span></p>
-                                    <p>19tk Data: <span class="text-danger" style="font-weight: bold">{{ optional(\App\Models\Lifting::getTodayLiftingData($house->dd_house_id, 'scd_19'))->qty ?? 0}}</span></p>
-                                    <p>20tk SC: <span class="text-danger" style="font-weight: bold">{{ optional(\App\Models\Lifting::getTodayLiftingData($house->dd_house_id, 'sc_20'))->qty ?? 0}}</span></p>
-                                    <p>29tk SC: <span class="text-danger" style="font-weight: bold">{{ optional(\App\Models\Lifting::getTodayLiftingData($house->dd_house_id, 'scd_29'))->qty ?? 0}}</span></p>
-                                    <p>RBSP SWAP Sim: <span class="text-danger" style="font-weight: bold">{{ optional(\App\Models\Lifting::getTodayLiftingData($house->dd_house_id, 'sim_swap'))->qty ?? 0 }} </span></p>
-                                    <p>Prepaid Sim: <span class="text-danger" style="font-weight: bold">{{ optional(\App\Models\Lifting::getTodayLiftingData($house->dd_house_id, 'mmst'))->qty ?? 0 }}</span> ({{ optional(\App\Models\Lifting::getTodayLiftingData($house->dd_house_id, 'mmst'))->remarks }})</p>
-                                    <p>Itop SWAP: <span class="text-danger" style="font-weight: bold">{{ optional(\App\Models\Lifting::getTodayLiftingData($house->dd_house_id, 'sim_swap_ev'))->qty ?? 0 }}</span> ({{ optional(\App\Models\Lifting::getTodayLiftingData($house->dd_house_id, 'sim_swap_ev'))->remarks }})</p>
-                                </div>
-                            </div>
-                        </div>
-                        @endforeach
+{{--                        @foreach($liftingHouse as $house)--}}
+{{--                        <div class="col-md-6 p-0">--}}
+{{--                            <div class="card m-2 liftingCard">--}}
+{{--                                <span id="liftingCopyIcon" class="position-absolute bg-primary text-white p-1 rounded-2" style="right: 0;">--}}
+{{--                                    <i class="link-icon" data-feather="copy"></i>--}}
+{{--                                </span>--}}
+{{--                                <div class="card-body">--}}
+{{--                                    <p>{{ $house->ddHouse->name }}</p>--}}
+{{--                                    <p>{{ $house->ddHouse->code }}</p>--}}
+{{--                                    <p>{{ date('d/m/Y', strtotime($house->lifting_date)) }}</p>--}}
+{{--                                    <p>Lifting Itop: <span class="text-success" style="font-weight: bold">{{ optional(\App\Models\Lifting::getTodayLiftingData($house->dd_house_id, 'itopup'))->itopup ?? 0 }}</span> ({{ optional(\App\Models\Lifting::getTodayLiftingData($house->dd_house_id, 'itopup'))->remarks }})</p>--}}
+{{--                                    <p>10tk SC: <span class="text-danger" style="font-weight: bold">{{ optional(\App\Models\Lifting::getTodayLiftingData($house->dd_house_id, 'sc_10'))->qty ?? 0 }}</span></p>--}}
+{{--                                    <p>14tk Min: <span class="text-danger" style="font-weight: bold">{{ optional(\App\Models\Lifting::getTodayLiftingData($house->dd_house_id, 'scmb_14'))->qty ?? 0}}</span></p>--}}
+{{--                                    <p>14tk Data: <span class="text-danger" style="font-weight: bold">{{ optional(\App\Models\Lifting::getTodayLiftingData($house->dd_house_id, 'scd_14'))->qty ?? 0}}</span></p>--}}
+{{--                                    <p>19tk Min: <span class="text-danger" style="font-weight: bold">{{ optional(\App\Models\Lifting::getTodayLiftingData($house->dd_house_id, 'scv_19'))->qty ?? 0}}</span></p>--}}
+{{--                                    <p>19tk Data: <span class="text-danger" style="font-weight: bold">{{ optional(\App\Models\Lifting::getTodayLiftingData($house->dd_house_id, 'scd_19'))->qty ?? 0}}</span></p>--}}
+{{--                                    <p>20tk SC: <span class="text-danger" style="font-weight: bold">{{ optional(\App\Models\Lifting::getTodayLiftingData($house->dd_house_id, 'sc_20'))->qty ?? 0}}</span></p>--}}
+{{--                                    <p>29tk SC: <span class="text-danger" style="font-weight: bold">{{ optional(\App\Models\Lifting::getTodayLiftingData($house->dd_house_id, 'scd_29'))->qty ?? 0}}</span></p>--}}
+{{--                                    <p>RBSP SWAP Sim: <span class="text-danger" style="font-weight: bold">{{ optional(\App\Models\Lifting::getTodayLiftingData($house->dd_house_id, 'sim_swap'))->qty ?? 0 }} </span></p>--}}
+{{--                                    <p>Prepaid Sim: <span class="text-danger" style="font-weight: bold">{{ optional(\App\Models\Lifting::getTodayLiftingData($house->dd_house_id, 'mmst'))->qty ?? 0 }}</span> ({{ optional(\App\Models\Lifting::getTodayLiftingData($house->dd_house_id, 'mmst'))->remarks }})</p>--}}
+{{--                                    <p>Itop SWAP: <span class="text-danger" style="font-weight: bold">{{ optional(\App\Models\Lifting::getTodayLiftingData($house->dd_house_id, 'sim_swap_ev'))->qty ?? 0 }}</span> ({{ optional(\App\Models\Lifting::getTodayLiftingData($house->dd_house_id, 'sim_swap_ev'))->remarks }})</p>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                        @endforeach--}}
                     </div>
                 </div>
             </div>
         </div>
+{{--        @endif--}}
     </div>
 
     @push('scripts')

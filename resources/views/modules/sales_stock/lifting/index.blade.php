@@ -67,7 +67,7 @@
                                                             <p>
                                                                 {{ $data->itopup }}
                                                                 <span class="position-absolute liftingEditIcon" style="right: 0; top: 0;">
-                                                                    <a href="#" class="nav-link">
+                                                                    <a href="{{ route('lifting.edit', $data->id) }}" class="nav-link">
                                                                         <i class="fa-solid fa-pen-to-square"></i>
                                                                     </a>
                                                                 </span>
