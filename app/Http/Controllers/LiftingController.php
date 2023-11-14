@@ -37,7 +37,6 @@ class LiftingController extends Controller
         $house = DB::table('dd_house_user')->where('user_id', Auth::id())->pluck('dd_house_id');
 
         return view('modules.sales_stock.lifting.create', [
-//            'liftingHouse'      => Lifting::groupBy('dd_house_id')->whereDate('lifting_date', now())->whereIn('dd_house_id', $house)->get(),
             'houses'            => DdHouse::all(),
             'productAndType'    => ProductAndType::select('product_type')->groupBy('product_type')->orderBy('product_type','ASC')->get(),
         ]);
@@ -183,6 +182,15 @@ class LiftingController extends Controller
     public function calculation(): JsonResponse
     {
         $productData = ProductAndType::firstWhere('product', \request('product'));
-//         = Lifting::getLiftingCalculation( , \request('mmstQty'));
+        $liftingPrice = $productData->lifting_price;
+        $price = $productData->price;
+        $amount = \request('qty') * $price;
+        $liftingAmount = \request('qty') * $liftingPrice;
+
+        return Response::json([
+            'liftingPrice' => $liftingPrice,
+            'amount' => $amount,
+            'liftingAmount' => $liftingAmount,
+        ]);
     }
 }

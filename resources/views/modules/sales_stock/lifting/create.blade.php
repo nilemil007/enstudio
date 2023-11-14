@@ -69,8 +69,7 @@
                                                     <input name="mmst" id="mmst" type="number" class="form-control" value="{{ old('mmst') }}" placeholder="Enter Quantity">
                                                     <input type="hidden" name="mmst_lifting_price" id="mmst_lifting_price">
                                                     <input type="hidden" name="mmst_amount" id="mmst_amount">
-                                                    @error('mmst')
-                                                    <span class="text-danger">{{ $message }}</span>@else<small class="text-light" id="showPrice" style="font-weight: bold"></small>@enderror
+                                                    @error('mmst')<span class="text-danger">{{ $message }}</span>@else<small class="text-light" id="showPrice" style="font-weight: bold"></small>@enderror
                                                 </div>
                                             </div>
 
@@ -87,11 +86,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="card-footer text-light">
-                                            <p>Lifting Price: 241</p>
-                                            <p>Amount: 241000</p>
-                                            <p>Lifting Amount: 241000</p>
-                                        </div>
                                     </div>
                                 </div>
 
@@ -107,8 +101,7 @@
                                                     <input name="mmsts" id="mmsts" type="number" class="form-control" value="{{ old('mmsts') }}" placeholder="Enter Quantity">
                                                     <input type="hidden" name="mmsts_lifting_price" id="mmsts_lifting_price">
                                                     <input type="hidden" name="mmsts_amount" id="mmsts_amount">
-                                                    @error('mmsts')
-                                                    <span class="text-danger">{{ $message }}</span>@else<small class="text-light" id="showPrice" style="font-weight: bold"></small>@enderror
+                                                    @error('mmsts')<span class="text-danger">{{ $message }}</span>@enderror
                                                 </div>
                                             </div>
 
@@ -196,7 +189,7 @@
                             </div>
                         </div>
                         <div class="card-footer">
-                            <h4 id="totalSimAmount" class="text-white">Total Sim Amount: 1038961</h4>
+                            <h4 id="totalSimAmount" class="text-white"></h4>
                             <input type="hidden" name="total_sim_amount" id="total_sim_amount">
                         </div>
                     </div>
@@ -581,24 +574,139 @@
         <script>
             $(document).ready(function() {
 
-                var productLiftingPrice = '';
-                var price = '';
-
                 // MMST
                 $('#mmst').blur(function (){
-                    const mmstQty = $(this).val();
+                    const qty = $(this).val();
+
                     $.ajax({
                         url: "{{ route('lifting.calculation') }}",
                         type: "GET",
-                        data: {mmstQty:mmstQty,product:'mmst'},
+                        data: {qty:qty,product:'mmst'},
                         beforeSend: () => {
                             $('#loading').show();
                         },
                         complete: () => {
                             $('#loading').hide();
                         },
-                        success: () => {
+                        success: (response) => {
+                            if(qty.length < 1)
+                            {
+                                $('#mmst').parent().parent().parent().parent().find('.card-footer').remove()
+                                $('#mmst_lifting_price').removeAttr('value');
+                                $('#mmst_amount').removeAttr('value');
+                            }else{
+                                $('#mmst').parent().parent().parent().parent().find('.card-footer').remove()
+                                $('#mmst').parent().parent().parent().parent().append(`
+                                <div class="card-footer text-light">
+                                    <p id="mmst_lifting_price">Lifting Price: `+response.liftingPrice+`</p>
+                                    <p id="mmst_amount">Amount: `+response.liftingPrice+` x `+qty+` = `+response.amount+`</p>
+                                </div>
+                            `);
+                                $('#mmst_lifting_price').val(response.liftingPrice);
+                                $('#mmst_amount').val(response.amount);
+                            }
+                        },
+                    });
+                });
 
+                // MMSTS
+                $('#mmsts').blur(function (){
+                    const qty = $(this).val();
+                    $.ajax({
+                        url: "{{ route('lifting.calculation') }}",
+                        type: "GET",
+                        data: {qty:qty,product:'mmsts'},
+                        beforeSend: () => {
+                            $('#loading').show();
+                        },
+                        complete: () => {
+                            $('#loading').hide();
+                        },
+                        success: (response) => {
+                            if(qty.length < 1)
+                            {
+                                $('#mmsts').parent().parent().parent().parent().find('.card-footer').remove()
+                                $('#mmsts_lifting_price').removeAttr('value');
+                                $('#mmsts_amount').removeAttr('value');
+                            }else{
+                                $('input[name=mmsts]').parent().parent().parent().parent().find('.card-footer').remove()
+                                $('#mmsts').parent().parent().parent().parent().append(`
+                                <div class="card-footer text-light">
+                                    <p id="mmsts_lifting_price">Lifting Price: `+response.liftingPrice+`</p>
+                                    <p id="mmsts_amount">Amount: `+response.liftingPrice+` x `+qty+` = `+response.amount+`</p>
+                                </div>
+                            `);
+                                $('#mmsts_lifting_price').val(response.liftingPrice);
+                                $('#mmsts_amount').val(response.amount);
+                            }
+                        },
+                    });
+                });
+
+                // SIM SWAP
+                $('#sim_swap').blur(function (){
+                    const qty = $(this).val();
+                    $.ajax({
+                        url: "{{ route('lifting.calculation') }}",
+                        type: "GET",
+                        data: {qty:qty,product:'sim_swap'},
+                        beforeSend: () => {
+                            $('#loading').show();
+                        },
+                        complete: () => {
+                            $('#loading').hide();
+                        },
+                        success: (response) => {
+                            if(qty.length < 1)
+                            {
+                                $('#sim_swap').parent().parent().parent().parent().find('.card-footer').remove()
+                                $('#sim_swap_lifting_price').removeAttr('value');
+                                $('#sim_swap_amount').removeAttr('value');
+                            }else{
+                                $('input[name=sim_swap]').parent().parent().parent().parent().find('.card-footer').remove()
+                                $('#sim_swap').parent().parent().parent().parent().append(`
+                                <div class="card-footer text-light">
+                                    <p id="sim_swap_lifting_price">Lifting Price: `+response.liftingPrice+`</p>
+                                    <p id="sim_swap_amount">Amount: `+response.liftingPrice+` x `+qty+` = `+response.amount+`</p>
+                                </div>
+                            `);
+                                $('#sim_swap_lifting_price').val(response.liftingPrice);
+                                $('#sim_swap_amount').val(response.amount);
+                            }
+                        },
+                    });
+                });
+
+                // SIM SWAP EV
+                $('#sim_swap_ev').blur(function (){
+                    const qty = $(this).val();
+                    $.ajax({
+                        url: "{{ route('lifting.calculation') }}",
+                        type: "GET",
+                        data: {qty:qty,product:'sim_swap_ev'},
+                        beforeSend: () => {
+                            $('#loading').show();
+                        },
+                        complete: () => {
+                            $('#loading').hide();
+                        },
+                        success: (response) => {
+                            if(qty.length < 1)
+                            {
+                                $('#sim_swap_ev').parent().parent().parent().parent().find('.card-footer').remove()
+                                $('#sim_swap_ev_lifting_price').removeAttr('value');
+                                $('#sim_swap_ev_amount').removeAttr('value');
+                            }else{
+                                $('input[name=sim_swap_ev]').parent().parent().parent().parent().find('.card-footer').remove()
+                                $('#sim_swap_ev').parent().parent().parent().parent().append(`
+                                <div class="card-footer text-light">
+                                    <p id="sim_swap_ev_lifting_price">Lifting Price: `+response.liftingPrice+`</p>
+                                    <p id="sim_swap_ev_amount">Amount: `+response.liftingPrice+` x `+qty+` = `+response.amount+`</p>
+                                </div>
+                            `);
+                                $('#sim_swap_ev_lifting_price').val(response.liftingPrice);
+                                $('#sim_swap_ev_amount').val(response.amount);
+                            }
                         },
                     });
                 });
