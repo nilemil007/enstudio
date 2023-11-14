@@ -20,7 +20,7 @@ class LiftingController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
         $house = DB::table('dd_house_user')->where('user_id', Auth::id())->pluck('dd_house_id');
 
@@ -175,5 +175,14 @@ class LiftingController extends Controller
         $itopAmount = $remainingAmount / 0.9625;
 
         return Response::json(['itopup'  => round($itopAmount)]);
+    }
+
+    /**
+     * Lifting Calculation
+     */
+    public function calculation(): JsonResponse
+    {
+        $productData = ProductAndType::firstWhere('product', \request('product'));
+//         = Lifting::getLiftingCalculation( , \request('mmstQty'));
     }
 }

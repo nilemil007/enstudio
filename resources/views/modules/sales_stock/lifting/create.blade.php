@@ -15,7 +15,7 @@
                     <!-- DD House and Lifting Date -->
                     <div class="card mb-3 bg-secondary bg-gradient">
                         <div class="card-header">
-                            <div class="card-title m-0">DD House & Date</div>
+                            <h3 class="m-0 text-white">DD House & Date</h3>
                         </div>
                         <div class="card-body">
                             <!-- Lifting Date -->
@@ -583,6 +583,25 @@
 
                 var productLiftingPrice = '';
                 var price = '';
+
+                // MMST
+                $('#mmst').blur(function (){
+                    const mmstQty = $(this).val();
+                    $.ajax({
+                        url: "{{ route('lifting.calculation') }}",
+                        type: "GET",
+                        data: {mmstQty:mmstQty,product:'mmst'},
+                        beforeSend: () => {
+                            $('#loading').show();
+                        },
+                        complete: () => {
+                            $('#loading').hide();
+                        },
+                        success: () => {
+
+                        },
+                    });
+                });
 
             });
         </script>
