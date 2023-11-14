@@ -71,7 +71,9 @@ return new class extends Migration
             $table->integer('router_lifting_price')->nullable();
             $table->integer('router_amount')->nullable();
             $table->integer('router_remarks')->nullable();
+            $table->integer('total_device_amount')->nullable();
             $table->integer('itopup')->nullable();
+            $table->integer('itopup_remarks')->nullable();
             $table->integer('bank_deposit')->nullable();
 
 //            $table->string('product_type');

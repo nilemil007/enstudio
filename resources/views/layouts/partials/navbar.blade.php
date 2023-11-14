@@ -1,4 +1,4 @@
-<nav class="navbar">
+<nav class="navbar bg-light">
     <a href="#" class="sidebar-toggler">
         <i data-feather="menu"></i>
     </a>

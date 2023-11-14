@@ -93,7 +93,7 @@
         @include('layouts.partials.navbar')
 
         <!-- partial:_content -->
-        <div class="page-content">
+        <div class="page-content bg-light">
 
             <!-- Sessions notifications -->
             @switch(session())

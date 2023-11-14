@@ -1,5 +1,5 @@
 <nav class="sidebar">
-    <div class="sidebar-header">
+    <div class="sidebar-header bg-light">
         <a href="{{ route('dashboard') }}" class="sidebar-brand">
             EN<span>Studio</span>
         </a>
@@ -9,7 +9,7 @@
             <span></span>
         </div>
     </div>
-    <div class="sidebar-body">
+    <div class="sidebar-body bg-light">
         <ul class="nav">
             <li class="nav-item nav-category">Main</li>
             <li class="nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
