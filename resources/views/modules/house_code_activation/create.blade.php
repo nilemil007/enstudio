@@ -133,7 +133,7 @@
                         beforeSend: () => {
                             $('#loading').show();
                             $('#hcaErrMsg').addClass('d-none').find('li').remove();
-                            $('.btn-submit').prop('disabled', true).text('Creating...').append('<img src="{{ url('public/assets/images/gif/DzUd.gif') }}" alt="" width="18px">');
+                            $('.btn-submit').prop('disabled', true).text('Creating...');
                         },
                         success: (response) => {
                             $('.btn-submit').prop('disabled', false).text('Create');
