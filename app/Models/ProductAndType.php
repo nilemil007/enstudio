@@ -34,4 +34,9 @@ class ProductAndType extends Model
             set: fn($product) => Str::lower($product),
         );
     }
+
+    public static function getProductData($product)
+    {
+        return ProductAndType::firstWhere('product', $product);
+    }
 }

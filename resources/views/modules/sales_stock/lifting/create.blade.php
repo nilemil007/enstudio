@@ -498,9 +498,9 @@
                                             <label for="scd_19" class="col-sm-3 col-form-label text-light">Quantity</label>
                                             <div class="col-sm-9">
                                                 <input x-model.number="productSc.scd19.qty" name="scd_19" id="scd_19" type="number" class="form-control" value="{{ old('scd_19') }}" placeholder="Enter Quantity">
-                                                <input :value="productSc.scd19.liftingPrice" type="hidden" name="scd_19_lifting_price" id="scd_19_lifting_price">
-                                                <input :value="productSc.scd19.price * productSc.scd19.qty" type="hidden" name="scd_19_amount" id="scd_19_amount">
-                                                <input :value="productSc.scd19.liftingPrice * productSc.scd19.qty" type="hidden" name="scd_19_lifting_amount" id="scd_19_lifting_amount">
+                                                <input :value="productSc.scd19.liftingPrice" type="hidden" name="scd_19_lifting_price">
+                                                <input :value="productSc.scd19.price * productSc.scd19.qty" type="hidden" name="scd_19_amount">
+                                                <input :value="productSc.scd19.liftingPrice * productSc.scd19.qty" type="hidden" name="scd_19_lifting_amount">
                                                 @error('scd_19')<span class="text-danger">{{ $message }}</span>@enderror
                                             </div>
                                         </div>
@@ -536,9 +536,9 @@
                                             <label for="sc_20" class="col-sm-3 col-form-label text-light">Quantity</label>
                                             <div class="col-sm-9">
                                                 <input x-model.number="productSc.sc20.qty" name="sc_20" id="sc_20" type="number" class="form-control" value="{{ old('sc_20') }}" placeholder="Enter Quantity">
-                                                <input :value="productSc.sc20.liftingPrice" type="hidden" name="sc_20_lifting_price" id="sc_20_lifting_price">
-                                                <input :value="productSc.sc20.price * productSc.sc20.qty" type="hidden" name="sc_20_amount" id="sc_20_amount">
-                                                <input :value="productSc.sc20.liftingPrice * productSc.sc20.qty" type="hidden" name="sc_20_lifting_amount" id="sc_20_lifting_amount">
+                                                <input :value="productSc.sc20.liftingPrice" type="hidden" name="sc_20_lifting_price">
+                                                <input :value="productSc.sc20.price * productSc.sc20.qty" type="hidden" name="sc_20_amount">
+                                                <input :value="productSc.sc20.liftingPrice * productSc.sc20.qty" type="hidden" name="sc_20_lifting_amount">
                                                 @error('sc_20')<span class="text-danger">{{ $message }}</span>@enderror
                                             </div>
                                         </div>
@@ -574,9 +574,9 @@
                                             <label for="scd_29" class="col-sm-3 col-form-label text-light">Quantity</label>
                                             <div class="col-sm-9">
                                                 <input x-model.number="productSc.scd29.qty" name="scd_29" id="scd_29" type="number" class="form-control" value="{{ old('scd_29') }}" placeholder="Enter Quantity">
-                                                <input :value="productSc.scd29.liftingPrice" type="hidden" name="scd_29_lifting_price" id="scd_29_lifting_price">
-                                                <input :value="productSc.scd29.price * productSc.scd29.qty" type="hidden" name="scd_29_amount" id="scd_29_amount">
-                                                <input :value="productSc.scd29.liftingPrice * productSc.scd29.qty" type="hidden" name="scd_29_lifting_amount" id="scd_29_lifting_amount">
+                                                <input :value="productSc.scd29.liftingPrice" type="hidden" name="scd_29_lifting_price">
+                                                <input :value="productSc.scd29.price * productSc.scd29.qty" type="hidden" name="scd_29_amount">
+                                                <input :value="productSc.scd29.liftingPrice * productSc.scd29.qty" type="hidden" name="scd_29_lifting_amount">
                                                 @error('scd_29')<span class="text-danger">{{ $message }}</span>@enderror
                                             </div>
                                         </div>
@@ -607,7 +607,8 @@
                     <div x-transition x-cloak x-show="totalScAmount.amount" class="card-footer">
                         <h4 x-text="'Total SC Amount: ' + Math.round(totalScAmount.amount)" class="text-white"></h4>
                         <h4 x-text="'Total SC Lifting Amount: ' + Math.round(totalScAmount.liftingAmount)" class="text-white"></h4>
-                        <input :value="Math.round(totalScAmount.amount)" type="hidden" name="total_sc_amount" placeholder="total_sc_amount">
+                        <input :value="Math.round(totalScAmount.amount)" type="hidden" name="total_sc_amount">
+                        <input :value="Math.round(totalScAmount.liftingAmount)" type="hidden" name="total_sc_lifting_amount">
                     </div>
                 </div>
 
@@ -628,10 +629,10 @@
                                             <label for="router" class="col-sm-3 col-form-label text-light">Quantity</label>
                                             <div class="col-sm-9">
                                                 <input x-model.number="device.router.qty" name="router" id="router" type="number" class="form-control" value="{{ old('router') }}" placeholder="Enter Quantity">
-                                                <input :value="device.router.price" type="hidden" name="router_price" id="router_price">
-                                                <input :value="device.router.liftingPrice" type="hidden" name="router_retailer_price" id="router_retailer_price">
-                                                <input :value="device.router.price * device.router.qty" type="hidden" name="router_amount" id="router_amount">
-                                                <input :value="device.router.liftingPrice * device.router.qty" type="hidden" name="router_lifting_amount" id="router_lifting_amount">
+                                                <input :value="device.router.price" type="hidden" name="router_price">
+                                                <input :value="device.router.liftingPrice" type="hidden" name="router_lifting_price">
+                                                <input :value="device.router.price * device.router.qty" type="hidden" name="router_amount">
+                                                <input :value="device.router.liftingPrice * device.router.qty" type="hidden" name="router_lifting_amount">
                                                 @error('router')<span class="text-danger">{{ $message }}</span>@enderror
                                             </div>
                                         </div>
@@ -678,7 +679,7 @@
                             <label for="bank_deposit" class="col-sm-3 col-form-label text-light">Bank Deposit</label>
                             <div class="col-sm-9">
                                 <input x-model.number="bankDeposit" name="bank_deposit" id="bank_deposit" type="number" class="form-control" value="{{ old('bank_deposit') }}" placeholder="Enter Deposit Amount">
-                                <input :value="parseFloat(itopAmount).toFixed(2)" type="hidden" name="itopup" id="itopup">
+                                <input :value="parseFloat(itopAmount).toFixed(2)" type="hidden" name="itopup">
                                 @error('bank_deposit')<span class="text-danger">{{ $message }}</span>@enderror
                             </div>
                         </div>
@@ -712,7 +713,6 @@
 
     @push('scripts')
         <script>
-
             document.addEventListener('alpine:init', () => {
                 Alpine.data('lifting', () => ({
                     options: {
@@ -742,65 +742,65 @@
 
                     productSim: {
                         mmst: {
-                            liftingPrice: 241,
+                            liftingPrice: {{ \App\Models\ProductAndType::getProductData('mmst')->lifting_price }},
                             qty: '',
                         },
                         mmsts: {
-                            liftingPrice: 241,
+                            liftingPrice: {{ \App\Models\ProductAndType::getProductData('mmsts')->lifting_price }},
                             qty: '',
                         },
                         simSwap: {
-                            liftingPrice: 223,
+                            liftingPrice: {{ \App\Models\ProductAndType::getProductData('sim_swap')->lifting_price }},
                             qty: '',
                         },
                         simSwapEv: {
-                            liftingPrice: 100,
+                            liftingPrice: {{ \App\Models\ProductAndType::getProductData('sim_swap_ev')->lifting_price }},
                             qty: '',
                         },
                     },
 
                     productSc: {
                         sc10: {
-                            price: 10,
-                            liftingPrice: 9.65,
+                            price: {{ \App\Models\ProductAndType::getProductData('sc_10')->price }},
+                            liftingPrice: {{ \App\Models\ProductAndType::getProductData('sc_10')->lifting_price }},
                             qty: '',
                         },
                         sc14: {
-                            price: 14,
-                            liftingPrice: 13.5576,
+                            price: {{ \App\Models\ProductAndType::getProductData('sc_14')->price }},
+                            liftingPrice: {{ \App\Models\ProductAndType::getProductData('sc_14')->lifting_price }},
                             qty: '',
                         },
                         scd14: {
-                            price: 14,
-                            liftingPrice: 13.5576,
+                            price: {{ \App\Models\ProductAndType::getProductData('scd_14')->price }},
+                            liftingPrice: {{ \App\Models\ProductAndType::getProductData('scd_14')->lifting_price }},
                             qty: '',
                         },
                         sc19: {
-                            price: 19,
-                            liftingPrice: 18.31,
+                            price: {{ \App\Models\ProductAndType::getProductData('sc_19')->price }},
+                            liftingPrice: {{ \App\Models\ProductAndType::getProductData('sc_19')->lifting_price }},
                             qty: '',
                         },
                         scd19: {
-                            price: 19,
-                            liftingPrice: 18.31,
+                            price: {{ \App\Models\ProductAndType::getProductData('scd_19')->price }},
+                            liftingPrice: {{ \App\Models\ProductAndType::getProductData('scd_19')->lifting_price }},
                             qty: '',
                         },
                         sc20: {
-                            price: 20,
-                            liftingPrice: 19.30,
+                            price: {{ \App\Models\ProductAndType::getProductData('sc_20')->price }},
+                            liftingPrice: {{ \App\Models\ProductAndType::getProductData('sc_20')->lifting_price }},
                             qty: '',
                         },
                         scd29: {
-                            price: 29,
-                            liftingPrice: 27.91,
+                            price: {{ \App\Models\ProductAndType::getProductData('scd_29')->price }},
+                            liftingPrice: {{ \App\Models\ProductAndType::getProductData('scd_29')->lifting_price }},
                             qty: '',
                         },
                     },
 
                     device: {
                         router: {
-                            price: '3400',
-                            liftingPrice: '3357.47',
+                            price: {{ \App\Models\ProductAndType::getProductData('router')->price }},
+                            liftingPrice: {{ \App\Models\ProductAndType::getProductData('router')->lifting_price }},
                             qty: '',
                         },
                     },

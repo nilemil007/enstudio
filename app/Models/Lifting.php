@@ -56,19 +56,4 @@ class Lifting extends Model
             set: fn ($product) => Str::lower($product),
         );
     }
-
-//    public static function getTodayLiftingData($house, $product)
-//    {
-//        return Lifting::where(['dd_house_id' => $house, 'product' => $product])->whereDate('lifting_date', now())->first();
-//    }
-
-//    public static function getLiftingData($house, $date, $productType)
-//    {
-//        return Lifting::where(['dd_house_id' => $house, 'product_type' => $productType])->whereDate('lifting_date', $date)->get();
-//    }
-
-//    public static function getDdHouse($date)
-//    {
-//        return Lifting::whereDate('lifting_date', $date)->groupBy('dd_house_id')->get();
-//    }
 }

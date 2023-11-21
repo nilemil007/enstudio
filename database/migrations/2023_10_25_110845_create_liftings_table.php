@@ -67,11 +67,15 @@ return new class extends Migration
             $table->integer('scd_29_lifting_amount')->nullable();
             $table->integer('scd_29_remarks')->nullable();
             $table->integer('total_sc_amount')->nullable();
+            $table->integer('total_sc_lifting_amount')->nullable();
             $table->integer('router')->nullable();
+            $table->integer('router_price')->nullable();
             $table->integer('router_lifting_price')->nullable();
             $table->integer('router_amount')->nullable();
+            $table->integer('router_lifting_amount')->nullable();
             $table->integer('router_remarks')->nullable();
             $table->integer('total_device_amount')->nullable();
+            $table->integer('total_device_lifting_amount')->nullable();
             $table->integer('itopup')->nullable();
             $table->integer('itopup_remarks')->nullable();
             $table->integer('bank_deposit')->nullable();
