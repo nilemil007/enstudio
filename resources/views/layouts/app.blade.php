@@ -38,8 +38,12 @@
     <!-- End layout styles -->
 
     <link rel="shortcut icon" href="{{ url('public/assets/images/favicon.png') }}" />
+    <!-- Alpine JS -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.2/dist/cdn.min.js"></script>
 
     <style>
+        [x-cloak] { display: none !important; }
+        
         #loading {
             position: fixed;
             left: 0;
@@ -47,7 +51,7 @@
             width: 100%;
             height: 100%;
             z-index: 99999;
-            background: url(https://media.tenor.com/wpSo-8CrXqUAAAAi/loading-loading-forever.gif) 50% 50% no-repeat rgb(15 10 10 /59%);
+            background: url(https://media.tenor.com/wpSo-8CrXqUAAAAi/loading-loading-forever.gif) 50% 50% no-repeat rgb(15 10 10 / 59%);
             /* https://media.tenor.com/wpSo-8CrXqUAAAAi/loading-loading-forever.gif */
             /* https://media.tenor.com/2hNqKj3ArX8AAAAi/loading.gif */
         }
@@ -75,9 +79,6 @@
         .liftingCard:hover #liftingCopyIcon{
             display: block;
         }
-        /*input.valid, textarea.valid{*/
-        /*    border: 1px solid limegreen;*/
-        /*}*/
     </style>
 </head>
 <body>

@@ -1,25 +1,26 @@
 <?php
 
-use App\Http\Controllers\BpController;
-use App\Http\Controllers\BtsController;
-use App\Http\Controllers\CmController;
-use App\Http\Controllers\CoreActivationController;
-use App\Http\Controllers\DdHouseController;
-use App\Http\Controllers\HouseCodeActivationController;
-use App\Http\Controllers\ItopReplaceController;
-use App\Http\Controllers\KpiTargetController;
-use App\Http\Controllers\LiftingController;
-use App\Http\Controllers\ProductAndTypeController;
-use App\Http\Controllers\ReportController;
-use App\Http\Controllers\RetailerController;
-use App\Http\Controllers\RouteController;
-use App\Http\Controllers\RsoController;
-use App\Http\Controllers\ScratchCardSerialController;
-use App\Http\Controllers\SettingController;
-use App\Http\Controllers\SupervisorController;
-use App\Http\Controllers\TradeCampaignRetailerCodeController;
-use App\Http\Controllers\UserController;
+use App\Livewire\Counter;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BpController;
+use App\Http\Controllers\CmController;
+use App\Http\Controllers\BtsController;
+use App\Http\Controllers\RsoController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\RouteController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\DdHouseController;
+use App\Http\Controllers\LiftingController;
+use App\Http\Controllers\SettingController;
+use App\Http\Controllers\RetailerController;
+use App\Http\Controllers\KpiTargetController;
+use App\Http\Controllers\SupervisorController;
+use App\Http\Controllers\ItopReplaceController;
+use App\Http\Controllers\CoreActivationController;
+use App\Http\Controllers\ProductAndTypeController;
+use App\Http\Controllers\ScratchCardSerialController;
+use App\Http\Controllers\HouseCodeActivationController;
+use App\Http\Controllers\TradeCampaignRetailerCodeController;
 
 
 Route::get('/', function () {

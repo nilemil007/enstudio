@@ -48,6 +48,8 @@ class LiftingController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        dd($request->all());
+
         $lifting = $this->validate($request,[
             'dd_house_id'           => ['required'],
             'product_type'          => ['required'],
