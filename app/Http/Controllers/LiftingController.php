@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LiftingStoreRequest;
 use App\Models\DdHouse;
 use App\Models\Lifting;
 use App\Models\ProductAndType;
@@ -44,32 +45,10 @@ class LiftingController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(LiftingStoreRequest $request): RedirectResponse
     {
-        dd($request->all());
-
-        $lifting = $this->validate($request,[
-            'dd_house_id'           => ['required'],
-            'product_type'          => ['required'],
-            'product'               => ['nullable'],
-            'qty'                   => ['nullable'],
-            'price'                 => ['nullable'],
-            'lifting_price'         => ['nullable'],
-            'product_lifting_price' => ['nullable'],
-            'itopup'                => ['nullable'],
-            'bank_deposit'          => ['nullable'],
-            'lifting_date'          => ['required'],
-            'remarks'               => ['required'],
-        ]);
-
-        if ($lifting['product_type'] == 'itopup')
-        {
-            $lifting['product'] = 'itopup';
-        }
-
-        Lifting::create($lifting);
+        Lifting::create($request->validated());
 
         return to_route('lifting.create')->with('success','Lifting created successfully.');
     }
