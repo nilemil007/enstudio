@@ -31,7 +31,7 @@ class ProductAndType extends Model
     {
         return Attribute::make(
             get: fn($product) => Str::upper($product),
-            set: fn($product) => Str::lower($product),
+            set: fn($product) => implode('_', explode(' ', Str::lower($product))),
         );
     }
 
