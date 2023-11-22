@@ -3,7 +3,7 @@
     <!-- Title -->
     <x-slot:title>Liftings</x-slot:title>
 
-    <div class="card bg-secondary bg-gradient text-white">
+    <div x-data="liftingIndex" class="card">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <div class="d-flex align-items-center">
@@ -17,75 +17,73 @@
                 </span>
             </div>
             <div class="table-responsive">
-                <table class="table table-sm table-bordered table-vcenter text-nowrap mt-3 mb-3 align-middle">
-                    <thead class="text-center">
+                <table class="table table-sm table-bordered table-vcenter text-nowrap mt-3 mb-3 align-middle text-center">
+                    <thead>
                         <tr>
-                            <th class="text-white">dd house</th>
-                            <th class="text-white">products</th>
-                            <th class="text-white">lifting date</th>
-                            {{--
-
-                            <th class="text-dark">action</th> --}}
+                            <th>sl</th>
+                            <th>dd house</th>
+                            <th>products</th>
                         </tr>
                     </thead>
                     <tbody>
 
                         @forelse ( $liftings as $sl => $lifting )
-                            @foreach (\App\Models\Lifting::getDdHouse($lifting->lifting_date) as $house)
-                                <tr>
-                                    <td class="text-center">{{ $house->ddHouse->code }}</td>
-                                    <td>
-                                        <table class="table table-sm table-bordered table-hover table-vcenter text-nowrap align-middle">
-                                            <thead class="text-center">
-                                                <tr>
-                                                    <th class="text-light">Sim</th>
-                                                    <th class="text-light">Scratch Card</th>
-                                                    <th class="text-light">Device</th>
-                                                    <th class="text-light">I'top-up</th>
-                                                    <th class="text-light">Bank Deposit</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>
-                                                        @foreach (\App\Models\Lifting::getLiftingData($house->dd_house_id, $lifting->lifting_date, 'sim') as $data)
-                                                            <p>{{ Str::upper(implode(' ', explode('_', $data->product))) . ': ' . $data->qty }}</p>
-                                                        @endforeach
-                                                    </td>
-                                                    <td>
-                                                        @foreach (\App\Models\Lifting::getLiftingData($house->dd_house_id, $lifting->lifting_date, 'scratch_card') as $data)
-                                                            <p>{{ Str::upper(implode(' ', explode('_', $data->product))) . ': ' . $data->qty }}</p>
-                                                        @endforeach
-                                                    </td>
-                                                    <td>
-                                                        @foreach (\App\Models\Lifting::getLiftingData($house->dd_house_id, $lifting->lifting_date, 'device') as $data)
-                                                            <p>{{ Str::upper(implode(' ', explode('_', $data->product))) . ': ' . $data->qty }}</p>
-                                                        @endforeach
-                                                    </td>
-                                                    <td class="text-center liftingItem position-relative">
-                                                        @foreach (\App\Models\Lifting::getLiftingData($house->dd_house_id, $lifting->lifting_date, 'itopup') as $data)
-                                                            <p>
-                                                                {{ $data->itopup }}
-                                                                <span class="position-absolute liftingEditIcon" style="right: 0; top: 0;">
-                                                                    <a href="{{ route('lifting.edit', $data->id) }}" class="nav-link">
-                                                                        <i class="fa-solid fa-pen-to-square"></i>
-                                                                    </a>
-                                                                </span>
-                                                            </p>
-                                                        @endforeach
-                                                    </td>
-                                                    <td class="text-center">
-                                                        @foreach (\App\Models\Lifting::getLiftingData($house->dd_house_id, $lifting->lifting_date, 'itopup') as $data)
-                                                            <p>{{ $data->bank_deposit }}</p>
-                                                        @endforeach
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                    <td class="text-center">{{ $lifting->lifting_date->toFormattedDateString() }}</td>
-                                </tr>
-                            @endforeach
+                        <tr>
+                            <td><span class="text-muted">{{ ++$sl }}</span></td>
+                            <td>{{ $lifting->ddHouse->code }}</td>
+                            <td>
+                                <table class="table table-sm table-bordered table-vcenter text-nowrap mt-3 mb-3 align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th>sim</th>
+                                            <th>scratch card</th>
+                                            <th>device</th>
+                                            <th>i'top-up</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <td>
+                                            <div>
+                                                <p x-ref="mmstValue" class="d-inline-block"
+                                                   data-bs-toggle="tooltip"
+                                                   data-bs-placement="top"
+                                                   data-bs-custom-class="custom-tooltip"
+                                                   data-bs-title="{{ 'Lifting Price: '. $lifting->mmst_lifting_price . ' Amount: ' . $lifting->mmst_amount . ' Remarks: ' . $lifting->mmst_remarks }}">
+                                                    MMST: {{ $lifting->mmst }}
+                                                </p>
+                                            </div>
+                                            <div>
+                                                <p class="d-inline-block"
+                                                   data-bs-toggle="tooltip"
+                                                   data-bs-placement="top"
+                                                   data-bs-custom-class="custom-tooltip"
+                                                   data-bs-title="{{ 'Lifting Price: '. $lifting->mmsts_lifting_price . ' Amount: ' . $lifting->mmsts_amount . ' Remarks: ' . $lifting->mmsts_remarks }}">
+                                                    MMSTS: {{ $lifting->mmsts }}
+                                                </p>
+                                            </div>
+                                            <div>
+                                                <p class="d-inline-block"
+                                                   data-bs-toggle="tooltip"
+                                                   data-bs-placement="top"
+                                                   data-bs-custom-class="custom-tooltip"
+                                                   data-bs-title="{{ 'Lifting Price: '. $lifting->sim_swap_lifting_price . ' Amount: ' . $lifting->sim_swap_amount . ' Remarks: ' . $lifting->sim_swap_remarks }}">
+                                                    SIM SWAP: {{ $lifting->sim_swap }}
+                                                </p>
+                                            </div>
+                                            <div>
+                                                <p class="d-inline-block"
+                                                   data-bs-toggle="tooltip"
+                                                   data-bs-placement="top"
+                                                   data-bs-custom-class="custom-tooltip"
+                                                   data-bs-title="{{ 'Lifting Price: '. $lifting->sim_swap_ev_lifting_price . ' Amount: ' . $lifting->sim_swap_ev_amount . ' Remarks: ' . $lifting->sim_swap_ev_remarks }}">
+                                                    SIM SWAP EV: {{ $lifting->sim_swap_ev }}
+                                                </p>
+                                            </div>
+                                        </td>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
                         {{-- <tr>
                             <td>
 
@@ -119,6 +117,13 @@
 
     @push('scripts')
         <script>
+            document.addEventListener('alpine:init', () => {
+                Alpine.data('liftingIndex', () => ({
+                    init(){
+                        console.log(this.$refs.mmstValue)
+                    }
+                }));
+            });
 
             $(document).ready(function(){
 

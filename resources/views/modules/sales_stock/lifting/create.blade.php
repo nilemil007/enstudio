@@ -5,7 +5,7 @@
 
     <div class="row">
         <div class="col-md-12">
-            <form x-data="lifting" id="cmForm" action="{{ route('lifting.store') }}" method="POST">
+            <form x-data="liftingCreate" id="cmForm" action="{{ route('lifting.store') }}" method="POST">
                 @csrf
 
                 <!-- DD House and Lifting Date -->
@@ -386,7 +386,7 @@
                                                 <input x-model.number="productSc.sc14.qty" name="sc_14" id="sc_14" type="number" class="form-control" value="{{ old('sc_14') }}" placeholder="Enter Quantity">
                                                 <input :value="productSc.sc14.liftingPrice" type="hidden" name="sc_14_lifting_price" id="sc_14_lifting_price">
                                                 <input :value="productSc.sc14.price * productSc.sc14.qty" type="hidden" name="sc_14_amount" id="sc_14_amount">
-                                                <input :value="productSc.sc14.liftingPrice * productSc.sc14.qty" type="hidden" name="sc_14_lifting_amount" id="sc_14_lifting_amount">
+                                                <input :value="parseFloat(productSc.sc14.liftingPrice * productSc.sc14.qty).toFixed(2)" type="hidden" name="sc_14_lifting_amount" id="sc_14_lifting_amount">
                                                 @error('sc_14')<span class="text-danger">{{ $message }}</span>@enderror
                                             </div>
                                         </div>
@@ -407,7 +407,7 @@
                                     <div x-transition x-cloak x-show="productSc.sc14.qty" class="card-footer text-light">
                                         <p x-text="'Lifting Price: ' + productSc.sc14.liftingPrice"></p>
                                         <p x-text="'Amount: ' + productSc.sc14.price * productSc.sc14.qty"></p>
-                                        <p x-text="'Lifting Amount: ' + Math.round(productSc.sc14.liftingPrice * productSc.sc14.qty)"></p>
+                                        <p x-text="'Lifting Amount: ' + parseFloat(productSc.sc14.liftingPrice * productSc.sc14.qty).toFixed(2)"></p>
                                     </div>
                                 </div>
                             </div>
@@ -424,7 +424,7 @@
                                                 <input x-model.number="productSc.scd14.qty" name="scd_14" id="scd_14" type="number" class="form-control" value="{{ old('scd_14') }}" placeholder="Enter Quantity">
                                                 <input :value="productSc.scd14.liftingPrice" type="hidden" name="scd_14_lifting_price" id="scd_14_lifting_price">
                                                 <input :value="productSc.scd14.price * productSc.scd14.qty" type="hidden" name="scd_14_amount" id="scd_14_amount">
-                                                <input :value="productSc.scd14.liftingPrice * productSc.scd14.qty" type="hidden" name="scd_14_lifting_amount" id="scd_14_lifting_amount">
+                                                <input :value="parseFloat(productSc.scd14.liftingPrice * productSc.scd14.qty).toFixed(2)" type="hidden" name="scd_14_lifting_amount" id="scd_14_lifting_amount">
                                                 @error('scd_14')<span class="text-danger">{{ $message }}</span>@enderror
                                             </div>
                                         </div>
@@ -445,7 +445,7 @@
                                     <div x-transition x-cloak x-show="productSc.scd14.qty" class="card-footer text-light">
                                         <p x-text="'Lifting Price: ' + productSc.scd14.liftingPrice"></p>
                                         <p x-text="'Amount: ' + productSc.scd14.price * productSc.scd14.qty"></p>
-                                        <p x-text="'Lifting Amount: ' + Math.round(productSc.scd14.liftingPrice * productSc.scd14.qty)"></p>
+                                        <p x-text="'Lifting Amount: ' + parseFloat(productSc.scd14.liftingPrice * productSc.scd14.qty).toFixed(2)"></p>
                                     </div>
                                 </div>
                             </div>
@@ -460,9 +460,9 @@
                                             <label for="sc_19" class="col-sm-3 col-form-label text-light">Quantity</label>
                                             <div class="col-sm-9">
                                                 <input x-model.number="productSc.sc19.qty" name="sc_19" id="sc_19" type="number" class="form-control" value="{{ old('sc_19') }}" placeholder="Enter Quantity">
-                                                <input :value="productSc.sc19.liftingPrice" type="hidden" name="sc_19_lifting_price" id="sc_19_lifting_price">
-                                                <input :value="productSc.sc19.price * productSc.sc19.qty" type="hidden" name="sc_19_amount" id="sc_19_amount">
-                                                <input :value="productSc.sc19.liftingPrice * productSc.sc19.qty" type="hidden" name="sc_19_lifting_amount" id="sc_19_lifting_amount">
+                                                <input :value="productSc.sc19.liftingPrice" type="text" name="sc_19_lifting_price" id="sc_19_lifting_price">
+                                                <input :value="productSc.sc19.price * productSc.sc19.qty" type="text" name="sc_19_amount" id="sc_19_amount">
+                                                <input :value="parseFloat(productSc.sc19.liftingPrice * productSc.sc19.qty).toFixed(2)" type="text" name="sc_19_lifting_amount" id="sc_19_lifting_amount">
                                                 @error('sc_19')<span class="text-danger">{{ $message }}</span>@enderror
                                             </div>
                                         </div>
@@ -483,7 +483,7 @@
                                     <div x-transition x-cloak x-show="productSc.sc19.qty" class="card-footer text-light">
                                         <p x-text="'Lifting Price: ' + productSc.sc19.liftingPrice"></p>
                                         <p x-text="'Amount: ' + productSc.sc19.price * productSc.sc19.qty"></p>
-                                        <p x-text="'Lifting Amount: ' + Math.round(productSc.sc19.liftingPrice * productSc.sc19.qty)"></p>
+                                        <p x-text="'Lifting Amount: ' + parseFloat(productSc.sc19.liftingPrice * productSc.sc19.qty).toFixed(2)"></p>
                                     </div>
                                 </div>
                             </div>
@@ -500,7 +500,7 @@
                                                 <input x-model.number="productSc.scd19.qty" name="scd_19" id="scd_19" type="number" class="form-control" value="{{ old('scd_19') }}" placeholder="Enter Quantity">
                                                 <input :value="productSc.scd19.liftingPrice" type="hidden" name="scd_19_lifting_price">
                                                 <input :value="productSc.scd19.price * productSc.scd19.qty" type="hidden" name="scd_19_amount">
-                                                <input :value="productSc.scd19.liftingPrice * productSc.scd19.qty" type="hidden" name="scd_19_lifting_amount">
+                                                <input :value="parseFloat(productSc.scd19.liftingPrice * productSc.scd19.qty).toFixed(2)" type="hidden" name="scd_19_lifting_amount">
                                                 @error('scd_19')<span class="text-danger">{{ $message }}</span>@enderror
                                             </div>
                                         </div>
@@ -521,7 +521,7 @@
                                     <div x-transition x-cloak x-show="productSc.scd19.qty" class="card-footer text-light">
                                         <p x-text="'Lifting Price: ' + productSc.scd19.liftingPrice"></p>
                                         <p x-text="'Amount: ' + productSc.scd19.price * productSc.scd19.qty"></p>
-                                        <p x-text="'Lifting Amount: ' + Math.round(productSc.scd19.liftingPrice * productSc.scd19.qty)"></p>
+                                        <p x-text="'Lifting Amount: ' + parseFloat(productSc.scd19.liftingPrice * productSc.scd19.qty).toFixed(2)"></p>
                                     </div>
                                 </div>
                             </div>
@@ -538,7 +538,7 @@
                                                 <input x-model.number="productSc.sc20.qty" name="sc_20" id="sc_20" type="number" class="form-control" value="{{ old('sc_20') }}" placeholder="Enter Quantity">
                                                 <input :value="productSc.sc20.liftingPrice" type="hidden" name="sc_20_lifting_price">
                                                 <input :value="productSc.sc20.price * productSc.sc20.qty" type="hidden" name="sc_20_amount">
-                                                <input :value="productSc.sc20.liftingPrice * productSc.sc20.qty" type="hidden" name="sc_20_lifting_amount">
+                                                <input :value="parseFloat(productSc.sc20.liftingPrice * productSc.sc20.qty).toFixed(2)" type="hidden" name="sc_20_lifting_amount">
                                                 @error('sc_20')<span class="text-danger">{{ $message }}</span>@enderror
                                             </div>
                                         </div>
@@ -559,7 +559,7 @@
                                     <div x-transition x-cloak x-show="productSc.sc20.qty" class="card-footer text-light">
                                         <p x-text="'Lifting Price: ' + productSc.sc20.liftingPrice"></p>
                                         <p x-text="'Amount: ' + productSc.sc20.price * productSc.sc20.qty"></p>
-                                        <p x-text="'Lifting Amount: ' + Math.round(productSc.sc20.liftingPrice * productSc.sc20.qty)"></p>
+                                        <p x-text="'Lifting Amount: ' + parseFloat(productSc.sc20.liftingPrice * productSc.sc20.qty).toFixed(2)"></p>
                                     </div>
                                 </div>
                             </div>
@@ -576,7 +576,7 @@
                                                 <input x-model.number="productSc.scd29.qty" name="scd_29" id="scd_29" type="number" class="form-control" value="{{ old('scd_29') }}" placeholder="Enter Quantity">
                                                 <input :value="productSc.scd29.liftingPrice" type="hidden" name="scd_29_lifting_price">
                                                 <input :value="productSc.scd29.price * productSc.scd29.qty" type="hidden" name="scd_29_amount">
-                                                <input :value="productSc.scd29.liftingPrice * productSc.scd29.qty" type="hidden" name="scd_29_lifting_amount">
+                                                <input :value="parseFloat(productSc.scd29.liftingPrice * productSc.scd29.qty).toFixed(2)" type="hidden" name="scd_29_lifting_amount">
                                                 @error('scd_29')<span class="text-danger">{{ $message }}</span>@enderror
                                             </div>
                                         </div>
@@ -597,7 +597,7 @@
                                     <div x-transition x-cloak x-show="productSc.scd29.qty" class="card-footer text-light">
                                         <p x-text="'Lifting Price: ' + productSc.scd29.liftingPrice"></p>
                                         <p x-text="'Amount: ' + productSc.scd29.price * productSc.scd29.qty"></p>
-                                        <p x-text="'Lifting Amount: ' + Math.round(productSc.scd29.liftingPrice * productSc.scd29.qty)"></p>
+                                        <p x-text="'Lifting Amount: ' + parseFloat(productSc.scd29.liftingPrice * productSc.scd29.qty).toFixed(2)"></p>
                                     </div>
                                 </div>
                             </div>
@@ -632,7 +632,7 @@
                                                 <input :value="device.router.price" type="hidden" name="router_price">
                                                 <input :value="device.router.liftingPrice" type="hidden" name="router_lifting_price">
                                                 <input :value="device.router.price * device.router.qty" type="hidden" name="router_amount">
-                                                <input :value="device.router.liftingPrice * device.router.qty" type="hidden" name="router_lifting_amount">
+                                                <input :value="parseFloat(device.router.liftingPrice * device.router.qty).toFixed(2)" type="hidden" name="router_lifting_amount">
                                                 @error('router')<span class="text-danger">{{ $message }}</span>@enderror
                                             </div>
                                         </div>
@@ -714,7 +714,7 @@
     @push('scripts')
         <script>
             document.addEventListener('alpine:init', () => {
-                Alpine.data('lifting', () => ({
+                Alpine.data('liftingCreate', () => ({
                     options: {
                         sim: {
                             all: false,

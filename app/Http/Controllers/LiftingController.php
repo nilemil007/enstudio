@@ -23,10 +23,10 @@ class LiftingController extends Controller
      */
     public function index(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $house = DB::table('dd_house_user')->where('user_id', Auth::id())->pluck('dd_house_id');
+        // $house = DB::table('dd_house_user')->where('user_id', Auth::id())->pluck('dd_house_id');
 
         return view('modules.sales_stock.lifting.index', [
-            'liftings' => Lifting::groupBy('lifting_date')->latest()->paginate(2),
+            'liftings' => Lifting::latest()->paginate(5),
         ]);
     }
 
