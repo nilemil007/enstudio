@@ -8,9 +8,12 @@
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <div class="d-flex align-items-center">
                     <h4 class="card-title mb-0">lifting(s)</h4>
-                    {{-- @if(count($trashed) > 0)
-                       <a href="{{ route('cm.trash') }}" class="text-danger" style="font-weight: bold;"><span style="margin: 0px 10px 0px 10px">|</span> Trash ({{ $trashed->count() }})</a>
-                    @endif --}}
+                     @if(count($trashed) > 0)
+                       <a href="{{ route('lifting.trash') }}" style="font-weight: bold;">
+                           <span style="margin: 0px 10px 0px 10px">|</span>
+                           <span class="text-danger">Trash ({{ $trashed->count() }})</span>
+                       </a>
+                    @endif
                 </div>
                 <span>
                     <a href="{{ route('lifting.create') }}" class="btn btn-sm btn-primary bg-gradient">Add New</a>
@@ -29,7 +32,11 @@
                         @forelse ( $liftings as $sl => $lifting )
                         <tr>
                             <td><span class="text-muted">{{ ++$sl }}</span></td>
-                            <td>{{ $lifting->ddHouse->code }}</td>
+                            <td>
+                                {{ $lifting->ddHouse->code }}
+                                <p class="text-muted"><em>{{ 'Lifting At: ' . $lifting->lifting_date->toFormattedDateString() }}</em></p>
+                                <p class="text-muted"><em>{{ 'Last updated: ' . $lifting->updated_at->toDayDateTimeString() }}</em></p>
+                            </td>
                             <td>
                                 <table class="table table-sm table-bordered table-vcenter text-nowrap mt-3 mb-3 align-middle">
                                     <thead>
@@ -80,10 +87,12 @@
                                                 </p>
                                             </div>
 
-                                            <a x-cloak x-show="actionBtn" href="{{ route('lifting.edit', $lifting->id) }}" class="nav-link position-absolute top-0 end-0 text-primary">
+                                            <!-- Edit -->
+                                            <a x-transition:enter.duration.200ms x-transition:leave.duration.400ms x-cloak x-show="actionBtn" href="{{ route('lifting.edit', $lifting->id) }}" class="nav-link position-absolute top-0 end-0 text-primary">
                                                 <i class="fa-regular fa-pen-to-square"></i>
                                             </a>
-                                            <a x-cloak x-show="actionBtn" href="{{ route('lifting.destroy', $lifting->id) }}" class="nav-link position-absolute bottom-0 end-0 text-danger">
+                                            <!-- Move to trash -->
+                                            <a x-transition:enter.duration.400ms x-transition:leave.duration.200ms x-cloak x-show="actionBtn" href="{{ route('lifting.destroy', $lifting->id) }}" class="deleteLiftingData nav-link position-absolute bottom-0 end-0 text-danger">
                                                 <i class="fa-solid fa-trash"></i>
                                             </a>
                                         </td>
@@ -153,10 +162,12 @@
                                                 </p>
                                             </div>
 
-                                            <a x-cloak x-show="actionBtn" href="{{ route('lifting.edit', $lifting->id) }}" class="nav-link position-absolute top-0 end-0 text-primary">
+                                            <!-- Edit -->
+                                            <a x-transition:enter.duration.200ms x-transition:leave.duration.400ms x-cloak x-show="actionBtn" href="{{ route('lifting.edit', $lifting->id) }}" class="nav-link position-absolute top-0 end-0 text-primary">
                                                 <i class="fa-regular fa-pen-to-square"></i>
                                             </a>
-                                            <a x-cloak x-show="actionBtn" href="{{ route('lifting.destroy', $lifting->id) }}" class="nav-link position-absolute bottom-0 end-0 text-danger">
+                                            <!-- Move to trash -->
+                                            <a x-transition:enter.duration.400ms x-transition:leave.duration.200ms x-cloak x-show="actionBtn" href="{{ route('lifting.destroy', $lifting->id) }}" class="deleteLiftingData nav-link position-absolute bottom-0 end-0 text-danger">
                                                 <i class="fa-solid fa-trash"></i>
                                             </a>
                                         </td>
@@ -172,10 +183,12 @@
                                                 </p>
                                             </div>
 
-                                            <a x-cloak x-show="actionBtn" href="{{ route('lifting.edit', $lifting->id) }}" class="nav-link position-absolute top-0 end-0 text-primary">
+                                            <!-- Edit -->
+                                            <a x-transition:enter.duration.200ms x-transition:leave.duration.400ms x-cloak x-show="actionBtn" href="{{ route('lifting.edit', $lifting->id) }}" class="nav-link position-absolute top-0 end-0 text-primary">
                                                 <i class="fa-regular fa-pen-to-square"></i>
                                             </a>
-                                            <a x-cloak x-show="actionBtn" href="{{ route('lifting.destroy', $lifting->id) }}" class="nav-link position-absolute bottom-0 end-0 text-danger">
+                                            <!-- Move to trash -->
+                                            <a x-transition:enter.duration.400ms x-transition:leave.duration.200ms x-cloak x-show="actionBtn" href="{{ route('lifting.destroy', $lifting->id) }}" class="deleteLiftingData nav-link position-absolute bottom-0 end-0 text-danger">
                                                 <i class="fa-solid fa-trash"></i>
                                             </a>
                                         </td>
@@ -200,10 +213,12 @@
                                                 </p>
                                             </div>
 
-                                            <a x-cloak x-show="actionBtn" href="{{ route('lifting.edit', $lifting->id) }}" class="nav-link position-absolute top-0 end-0 text-primary">
+                                            <!-- Edit -->
+                                            <a x-transition:enter.duration.200ms x-transition:leave.duration.400ms x-cloak x-show="actionBtn" href="{{ route('lifting.edit', $lifting->id) }}" class="nav-link position-absolute top-0 end-0 text-primary">
                                                 <i class="fa-regular fa-pen-to-square"></i>
                                             </a>
-                                            <a x-cloak x-show="actionBtn" href="{{ route('lifting.destroy', $lifting->id) }}" class="nav-link position-absolute bottom-0 end-0 text-danger">
+                                            <!-- Move to trash -->
+                                            <a x-transition:enter.duration.400ms x-transition:leave.duration.200ms x-cloak x-show="actionBtn" href="{{ route('lifting.destroy', $lifting->id) }}" class="deleteLiftingData nav-link position-absolute bottom-0 end-0 text-danger">
                                                 <i class="fa-solid fa-trash"></i>
                                             </a>
                                         </td>
@@ -230,12 +245,12 @@
             $(document).ready(function(){
 
                 // Single delete
-                $(document).on('click','#deleteCm',function(e){
+                $(document).on('click','.deleteLiftingData',function(e){
                     e.preventDefault();
 
                     Swal.fire({
                         title: 'Are you sure?',
-                        text: "Delete This CM?",
+                        text: "Delete This Record?",
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonText: 'Yes, delete it!'

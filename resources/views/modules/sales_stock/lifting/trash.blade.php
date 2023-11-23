@@ -1,92 +1,250 @@
 <x-app-layout>
 
     <!-- Title -->
-    <x-slot:title>Trash CM</x-slot:title>
+    <x-slot:title>Trash Liftings</x-slot:title>
 
     <div class="card">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <div class="d-flex align-items-center">
-                    <h4 class="card-title mb-0">Trash CM</h4>
-                    <a href="{{ route('cm.permanently.delete.all') }}" id="permanentlyDeleteAllCm" class="text-secondary" style="font-weight: bold;">
-                        <span style="margin: 0px 10px 0px 10px">|</span> Empty Trash Now ({{ $trashed->count() }})
-                    </a>
+                    <h4 class="card-title mb-0">Trash lifting(s)</h4>
                 </div>
                 <span>
-                    <a href="{{ route('cm.index') }}" class="btn btn-sm btn-primary">ALL CM</a>
+                    <a href="{{ route('lifting.index') }}" class="btn btn-sm btn-primary bg-gradient">Back</a>
                 </span>
             </div>
             <div class="table-responsive">
-                <table id="cmTbl" class="table table-sm table-bordered table-hover card-table table-vcenter text-nowrap mt-3 mb-3 text-center">
+                <table class="table table-sm table-bordered table-vcenter text-nowrap mt-3 mb-3 align-middle text-center">
                     <thead>
-                        <tr>
-                            <th class="w-1">No.</th>
-                            <th>dd house</th>
-                            <th>cm name</th>
-                            <th>pool number</th>
-                            <th>joining date</th>
-                            <th>documents</th>
-                            <th>status</th>
-                            <th>action</th>
-                        </tr>
+                    <tr>
+                        <th>sl</th>
+                        <th>dd house</th>
+                        <th>products</th>
+                    </tr>
                     </thead>
                     <tbody>
-                    @foreach( $trashed as $sl => $cm )
+                    @forelse ( $trashed as $sl => $lifting )
                         <tr>
                             <td><span class="text-muted">{{ ++$sl }}</span></td>
-                            <td>{{ $cm->ddHouse->code }}</td>
-                            <td>{{ $cm->name }}</td>
-                            <td>{{ $cm->pool_number }}</td>
-                            <td>{{ empty($cm->joining_date) ? null : $cm->joining_date->toFormattedDateString() }}</td>
                             <td>
-                                @if($cm->documents)
-                                    <span style="font-weight: bold" class="text-success">Submitted</span>
-                                @else
-                                    <span style="font-weight: bold" class="text-danger">Not Submitted</span>
-                                @endif
+                                {{ $lifting->ddHouse->code }}
+                                <p class="text-muted"><em>{{ 'Lifting At: ' . $lifting->lifting_date->toFormattedDateString() }}</em></p>
+                                <p class="text-muted"><em>{{ 'Last updated: ' . $lifting->updated_at->toDayDateTimeString() }}</em></p>
                             </td>
                             <td>
-                                @switch( $cm->status )
-                                    @case(1)
-                                    <p style="font-weight: bold" class="text-success">Active</p>
-                                    @break
+                                <table class="table table-sm table-bordered table-vcenter text-nowrap mt-3 mb-3 align-middle">
+                                    <thead>
+                                    <tr>
+                                        <th>sim</th>
+                                        <th>scratch card</th>
+                                        <th>device</th>
+                                        <th>i'top-up</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <!-- SIM -->
+                                    <td x-data="{actionBtn: false}" @mouseover="actionBtn = true" @mouseleave="actionBtn = false" class="position-relative">
+                                        <div x-data="{mmstVal: '{{ $lifting->mmst }}' }" x-cloak x-show="mmstVal">
+                                            <p class="d-inline-block"
+                                               data-bs-toggle="tooltip"
+                                               data-bs-placement="top"
+                                               data-bs-custom-class="custom-tooltip"
+                                               data-bs-title="{{ 'Lifting Price: '. $lifting->mmst_lifting_price . ', Amount: ' . $lifting->mmst_amount . ', Remarks: ' . $lifting->mmst_remarks }}">
+                                                MMST: {{ $lifting->mmst }}
+                                            </p>
+                                        </div>
+                                        <div x-data="{mmstsVal: '{{ $lifting->mmsts }}' }" x-cloak x-show="mmstsVal">
+                                            <p class="d-inline-block"
+                                               data-bs-toggle="tooltip"
+                                               data-bs-placement="top"
+                                               data-bs-custom-class="custom-tooltip"
+                                               data-bs-title="{{ 'Lifting Price: '. $lifting->mmsts_lifting_price . ', Amount: ' . $lifting->mmsts_amount . ', Remarks: ' . $lifting->mmsts_remarks }}">
+                                                MMSTS: {{ $lifting->mmsts }}
+                                            </p>
+                                        </div>
+                                        <div x-data="{simSwapVal: '{{ $lifting->sim_swap }}' }" x-cloak x-show="simSwapVal">
+                                            <p class="d-inline-block"
+                                               data-bs-toggle="tooltip"
+                                               data-bs-placement="top"
+                                               data-bs-custom-class="custom-tooltip"
+                                               data-bs-title="{{ 'Lifting Price: '. $lifting->sim_swap_lifting_price . ', Amount: ' . $lifting->sim_swap_amount . ', Remarks: ' . $lifting->sim_swap_remarks }}">
+                                                SIM SWAP: {{ $lifting->sim_swap }}
+                                            </p>
+                                        </div>
+                                        <div x-data="{simSwapEvVal: '{{ $lifting->sim_swap_ev }}' }" x-cloak x-show="simSwapEvVal">
+                                            <p class="d-inline-block"
+                                               data-bs-toggle="tooltip"
+                                               data-bs-placement="top"
+                                               data-bs-custom-class="custom-tooltip"
+                                               data-bs-title="{{ 'Lifting Price: '. $lifting->sim_swap_ev_lifting_price . ', Amount: ' . $lifting->sim_swap_ev_amount . ', Remarks: ' . $lifting->sim_swap_ev_remarks }}">
+                                                SIM SWAP EV: {{ $lifting->sim_swap_ev }}
+                                            </p>
+                                        </div>
 
-                                    @case(0)
-                                    <p style="font-weight: bold" class="text-danger">Inactive</p>
-                                    @break
-                                @endswitch
-                            </td>
-                            <td>
-                                <!-- Restore -->
-                                <a href="{{ route('cm.restore', $cm->id) }}" class="btn btn-sm btn-primary">Restore</a>
+                                        <!-- Restore -->
+                                        <a x-transition:enter.duration.200ms x-transition:leave.duration.400ms x-cloak x-show="actionBtn" href="{{ route('lifting.restore', $lifting->id) }}" class="nav-link position-absolute top-0 end-0 text-primary">
+                                            <i class="fa-solid fa-backward"></i>
+                                        </a>
+                                        <!-- Permanently Delete -->
+                                        <a x-transition:enter.duration.400ms x-transition:leave.duration.200ms x-cloak x-show="actionBtn" href="{{ route('lifting.permanently.delete', $lifting->id) }}" class="permanentlyDelete nav-link position-absolute bottom-0 end-0 text-danger">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </a>
+                                    </td>
+                                    <!-- SC -->
+                                    <td x-data="{actionBtn: false}" @mouseover="actionBtn = true" @mouseleave="actionBtn = false" class="position-relative">
+                                        <div x-data="{sc10Val: '{{ $lifting->sc_10 }}' }" x-cloak x-show="sc10Val">
+                                            <p class="d-inline-block"
+                                               data-bs-toggle="tooltip"
+                                               data-bs-placement="top"
+                                               data-bs-custom-class="custom-tooltip"
+                                               data-bs-title="{{ 'Lifting Price: '. $lifting->sc_10_lifting_price . ', Amount: ' . $lifting->sc_10_amount . ', Lifting Amount: ' . $lifting->sc_10_lifting_amount . ', Remarks: ' . $lifting->sc_10_remarks }}">
+                                                SC-10: {{ $lifting->sc_10 }}
+                                            </p>
+                                        </div>
+                                        <div x-data="{sc14Val: '{{ $lifting->sc_14 }}' }" x-cloak x-show="sc14Val">
+                                            <p class="d-inline-block"
+                                               data-bs-toggle="tooltip"
+                                               data-bs-placement="top"
+                                               data-bs-custom-class="custom-tooltip"
+                                               data-bs-title="{{ 'Lifting Price: '. $lifting->sc_14_lifting_price . ', Amount: ' . $lifting->sc_14_amount . ', Lifting Amount: ' . $lifting->sc_14_lifting_amount . ', Remarks: ' . $lifting->sc_14_remarks }}">
+                                                SC-14: {{ $lifting->sc_14 }}
+                                            </p>
+                                        </div>
+                                        <div x-data="{scd14Val: '{{ $lifting->scd_14 }}' }" x-cloak x-show="scd14Val">
+                                            <p class="d-inline-block"
+                                               data-bs-toggle="tooltip"
+                                               data-bs-placement="top"
+                                               data-bs-custom-class="custom-tooltip"
+                                               data-bs-title="{{ 'Lifting Price: '. $lifting->scd_14_lifting_price . ', Amount: ' . $lifting->scd_14_amount . ', Lifting Amount: ' . $lifting->scd_14_lifting_amount . ', Remarks: ' . $lifting->scd_14_remarks }}">
+                                                SCD-14: {{ $lifting->scd_14 }}
+                                            </p>
+                                        </div>
+                                        <div x-data="{sc19Val: '{{ $lifting->sc_19 }}' }" x-cloak x-show="sc19Val">
+                                            <p class="d-inline-block"
+                                               data-bs-toggle="tooltip"
+                                               data-bs-placement="top"
+                                               data-bs-custom-class="custom-tooltip"
+                                               data-bs-title="{{ 'Lifting Price: '. $lifting->sc_19_lifting_price . ', Amount: ' . $lifting->sc_19_amount . ', Lifting Amount: ' . $lifting->sc_19_lifting_amount . ', Remarks: ' . $lifting->sc_19_remarks }}">
+                                                SC-19: {{ $lifting->sc_19 }}
+                                            </p>
+                                        </div>
+                                        <div x-data="{scd19Val: '{{ $lifting->scd_19 }}' }" x-cloak x-show="scd19Val">
+                                            <p class="d-inline-block"
+                                               data-bs-toggle="tooltip"
+                                               data-bs-placement="top"
+                                               data-bs-custom-class="custom-tooltip"
+                                               data-bs-title="{{ 'Lifting Price: '. $lifting->scd_19_lifting_price . ', Amount: ' . $lifting->scd_19_amount . ', Lifting Amount: ' . $lifting->scd_19_lifting_amount . ', Remarks: ' . $lifting->scd_19_remarks }}">
+                                                SCD-19: {{ $lifting->scd_19 }}
+                                            </p>
+                                        </div>
+                                        <div x-data="{sc20Val: '{{ $lifting->sc_20 }}' }" x-cloak x-show="sc20Val">
+                                            <p class="d-inline-block"
+                                               data-bs-toggle="tooltip"
+                                               data-bs-placement="top"
+                                               data-bs-custom-class="custom-tooltip"
+                                               data-bs-title="{{ 'Lifting Price: '. $lifting->sc_20_lifting_price . ', Amount: ' . $lifting->sc_20_amount . ', Lifting Amount: ' . $lifting->sc_20_lifting_amount . ', Remarks: ' . $lifting->sc_20_remarks }}">
+                                                SC-20: {{ $lifting->sc_20 }}
+                                            </p>
+                                        </div>
+                                        <div x-data="{scd29Val: '{{ $lifting->scd_29 }}' }" x-cloak x-show="scd29Val">
+                                            <p class="d-inline-block"
+                                               data-bs-toggle="tooltip"
+                                               data-bs-placement="top"
+                                               data-bs-custom-class="custom-tooltip"
+                                               data-bs-title="{{ 'Lifting Price: '. $lifting->scd_29_lifting_price . ', Amount: ' . $lifting->scd_29_amount . ', Lifting Amount: ' . $lifting->scd_29_lifting_amount . ', Remarks: ' . $lifting->scd_29_remarks }}">
+                                                SCD-29: {{ $lifting->scd_29 }}
+                                            </p>
+                                        </div>
 
-                                <!-- Permanently Delete -->
-                                <a href="{{ route('cm.permanently.delete', $cm->id) }}" id="permanentlyDeleteCm" class="btn btn-sm btn-danger">Delete Permanently</a>
+                                        <!-- Restore -->
+                                        <a x-transition:enter.duration.200ms x-transition:leave.duration.400ms x-cloak x-show="actionBtn" href="{{ route('lifting.restore', $lifting->id) }}" class="nav-link position-absolute top-0 end-0 text-primary">
+                                            <i class="fa-solid fa-backward"></i>
+                                        </a>
+                                        <!-- Permanently Delete -->
+                                        <a x-transition:enter.duration.400ms x-transition:leave.duration.200ms x-cloak x-show="actionBtn" href="{{ route('lifting.permanently.delete', $lifting->id) }}" class="permanentlyDelete nav-link position-absolute bottom-0 end-0 text-danger">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </a>
+                                    </td>
+                                    <!-- Device -->
+                                    <td x-data="{actionBtn: false}" @mouseover="actionBtn = true" @mouseleave="actionBtn = false" class="position-relative">
+                                        <div x-data="{router: '{{ $lifting->router }}' }" x-cloak x-show="router">
+                                            <p class="d-inline-block"
+                                               data-bs-toggle="tooltip"
+                                               data-bs-placement="top"
+                                               data-bs-custom-class="custom-tooltip"
+                                               data-bs-title="{{ 'Price: ' . $lifting->router_price . ', Lifting Price: '. $lifting->router_lifting_price . ', Amount: ' . $lifting->router_amount . ', Router Lifting Amount: ' . $lifting->router_lifting_amount . ', Remarks: ' . $lifting->router_remarks }}">
+                                                Router: {{ $lifting->router }}
+                                            </p>
+                                        </div>
+
+                                        <!-- Restore -->
+                                        <a x-transition:enter.duration.200ms x-transition:leave.duration.400ms x-cloak x-show="actionBtn" href="{{ route('lifting.restore', $lifting->id) }}" class="nav-link position-absolute top-0 end-0 text-primary">
+                                            <i class="fa-solid fa-backward"></i>
+                                        </a>
+                                        <!-- Permanently Delete -->
+                                        <a x-transition:enter.duration.400ms x-transition:leave.duration.200ms x-cloak x-show="actionBtn" href="{{ route('lifting.permanently.delete', $lifting->id) }}" class="permanentlyDelete nav-link position-absolute bottom-0 end-0 text-danger">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </a>
+                                    </td>
+                                    <!-- I'top-up -->
+                                    <td x-data="{actionBtn: false}" @mouseover="actionBtn = true" @mouseleave="actionBtn = false" class="position-relative">
+                                        <div x-data="{ itopup: '{{ $lifting->itopup }}' }" x-cloak x-show="itopup">
+                                            <p class="d-inline-block"
+                                               data-bs-toggle="tooltip"
+                                               data-bs-placement="top"
+                                               data-bs-custom-class="custom-tooltip"
+                                               data-bs-title="{{ 'Remarks: ' . $lifting->itopup_remarks }}">
+                                                I'top-up: {{ $lifting->itopup }}
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <p class="d-inline-block"
+                                               data-bs-toggle="tooltip"
+                                               data-bs-placement="top"
+                                               data-bs-custom-class="custom-tooltip"
+                                               data-bs-title="{{ 'Remarks: ' . $lifting->itopup_remarks }}">
+                                                Bank Deposit: {{ $lifting->bank_deposit }}
+                                            </p>
+                                        </div>
+
+                                        <!-- Restore -->
+                                        <a x-transition:enter.duration.200ms x-transition:leave.duration.400ms x-cloak x-show="actionBtn" href="{{ route('lifting.restore', $lifting->id) }}" class="nav-link position-absolute top-0 end-0 text-primary">
+                                            <i class="fa-solid fa-backward"></i>
+                                        </a>
+                                        <!-- Permanently Delete -->
+                                        <a x-transition:enter.duration.400ms x-transition:leave.duration.200ms x-cloak x-show="actionBtn" href="{{ route('lifting.permanently.delete', $lifting->id) }}" class="permanentlyDelete nav-link position-absolute bottom-0 end-0 text-danger">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </a>
+                                    </td>
+                                    </tbody>
+                                </table>
                             </td>
                         </tr>
-                    @endforeach
+                    @empty
+                        <tr class="text-center">
+                            <td colspan="3">No data found.</td>
+                        </tr>
+                    @endforelse
                     </tbody>
                 </table>
             </div>
         </div>
-        <div class="card-footer">
+        <div class="card-footer text-white">
             {{ $trashed->links('pagination::bootstrap-5') }}
         </div>
     </div>
 
     @push('scripts')
         <script>
-            new DataTable('#cmTbl');
-
             $(document).ready(function(){
 
-                // Permanently delete
-                $(document).on('click','#permanentlyDeleteCm',function(e){
+                // Single delete
+                $(document).on('click','.permanentlyDelete',function(e){
                     e.preventDefault();
 
                     Swal.fire({
                         title: 'Are you sure?',
-                        text: "Delete This CM Permanently?",
+                        text: "Permanently Delete This Record?",
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonText: 'Yes, delete it!'
@@ -114,43 +272,7 @@
                         }
                     });
                 });
-
-                // Permanently Delete All
-                $(document).on('click','#permanentlyDeleteAllCm',function(e){
-                    e.preventDefault();
-
-                    Swal.fire({
-                        title: 'Are you sure?',
-                        text: "Permanently Delete All CM?",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonText: 'Yes, delete it !'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            $.ajax({
-                                url: $(this).attr('href'),
-                                type: 'DELETE',
-                                beforeSend: () => {
-                                    $('#loading').show();
-                                },
-                                complete: () => {
-                                    $('#loading').hide();
-                                },
-                                success: function (response){
-                                    Swal.fire(
-                                        'Deleted!',
-                                        response.success,
-                                        'success',
-                                    ).then((result) => {
-                                        location.reload();
-                                    });
-                                },
-                            });
-                        }
-                    });
-                });
             });
         </script>
     @endpush
-
 </x-app-layout>

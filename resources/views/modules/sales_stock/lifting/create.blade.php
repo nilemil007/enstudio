@@ -346,9 +346,9 @@
                                             <label for="sc_10" class="col-sm-3 col-form-label text-light">Quantity</label>
                                             <div class="col-sm-9">
                                                 <input x-model.number="productSc.sc10.qty" name="sc_10" id="sc_10" type="number" class="form-control" value="{{ old('sc_10') }}" placeholder="Enter Quantity">
-                                                <input :value="productSc.sc10.liftingPrice" type="text" name="sc_10_lifting_price">
-                                                <input :value="productSc.sc10.price * productSc.sc10.qty" type="text" name="sc_10_amount">
-                                                <input :value="productSc.sc10.liftingPrice * productSc.sc10.qty" type="text" name="sc_10_lifting_amount">
+                                                <input :value="productSc.sc10.liftingPrice" type="hidden" name="sc_10_lifting_price">
+                                                <input :value="productSc.sc10.price * productSc.sc10.qty" type="hidden" name="sc_10_amount">
+                                                <input :value="productSc.sc10.liftingPrice * productSc.sc10.qty" type="hidden" name="sc_10_lifting_amount">
                                                 @error('sc_10')<span class="text-danger">{{ $message }}</span>@enderror
                                             </div>
                                         </div>
@@ -460,9 +460,9 @@
                                             <label for="sc_19" class="col-sm-3 col-form-label text-light">Quantity</label>
                                             <div class="col-sm-9">
                                                 <input x-model.number="productSc.sc19.qty" name="sc_19" id="sc_19" type="number" class="form-control" value="{{ old('sc_19') }}" placeholder="Enter Quantity">
-                                                <input :value="productSc.sc19.liftingPrice" type="text" name="sc_19_lifting_price" id="sc_19_lifting_price">
-                                                <input :value="productSc.sc19.price * productSc.sc19.qty" type="text" name="sc_19_amount" id="sc_19_amount">
-                                                <input :value="parseFloat(productSc.sc19.liftingPrice * productSc.sc19.qty).toFixed(2)" type="text" name="sc_19_lifting_amount" id="sc_19_lifting_amount">
+                                                <input :value="productSc.sc19.liftingPrice" type="hidden" name="sc_19_lifting_price" id="sc_19_lifting_price">
+                                                <input :value="productSc.sc19.price * productSc.sc19.qty" type="hidden" name="sc_19_amount" id="sc_19_amount">
+                                                <input :value="parseFloat(productSc.sc19.liftingPrice * productSc.sc19.qty).toFixed(2)" type="hidden" name="sc_19_lifting_amount" id="sc_19_lifting_amount">
                                                 @error('sc_19')<span class="text-danger">{{ $message }}</span>@enderror
                                             </div>
                                         </div>

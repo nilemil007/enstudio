@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LiftingStoreRequest;
+use App\Http\Requests\LiftingUpdateRequest;
 use App\Models\DdHouse;
 use App\Models\Lifting;
 use App\Models\ProductAndType;
@@ -23,10 +24,9 @@ class LiftingController extends Controller
      */
     public function index(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        // $house = DB::table('dd_house_user')->where('user_id', Auth::id())->pluck('dd_house_id');
-
         return view('modules.sales_stock.lifting.index', [
             'liftings' => Lifting::latest()->paginate(5),
+            'trashed' => Lifting::onlyTrashed()->latest()->paginate(5),
         ]);
     }
 
@@ -64,49 +64,62 @@ class LiftingController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Lifting $lifting)
+    public function edit(Lifting $lifting): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        //
+        return view('modules.sales_stock.lifting.edit', [
+            'lifting' => $lifting,
+            'houses' => DdHouse::all(),
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Lifting $lifting)
+    public function update(LiftingUpdateRequest $request, Lifting $lifting): RedirectResponse
     {
-        //
+        $lifting->update($request->validated());
+
+        return to_route('lifting.index')->with('success','Lifting updated successfully.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Lifting $lifting)
+    public function destroy(Lifting $lifting): JsonResponse
     {
-        //
+        $lifting->delete();
+
+        return Response::json(['success' => 'Lifting data moved to trash.']);
     }
 
     /**
      * Move to trash.
      */
-    public function trash()
+    public function trash(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        //
+        $trashed = Lifting::onlyTrashed()->latest()->paginate(5);
+        return view('modules.sales_stock.lifting.trash', compact('trashed'));
     }
 
     /**
      * Restore.
      */
-    public function restore($id)
+    public function restore($id): RedirectResponse
     {
-        //
+        Lifting::withTrashed()->findOrFail($id)->restore();
+        return to_route('lifting.index')->with('success','Lifting restored successfully.');
     }
 
     /**
      * Permanently Delete.
      */
-    public function permanentlyDelete($id)
+    public function permanentlyDelete($id): JsonResponse
     {
-        //
+        // Find and permanently delete trashed user.
+        Lifting::onlyTrashed()->findOrFail($id)->forceDelete();
+
+        // Back to all users page.
+        return Response::json(['success' => 'This record has been permanently deleted.']);
     }
 
     /**

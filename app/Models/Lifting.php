@@ -17,6 +17,7 @@ use Illuminate\Support\Str;
  * @method static select(string $string)
  * @method static firstWhere(string $string, $dd_house_id)
  * @method static whereIn()
+ * @method static latest()
  */
 class Lifting extends Model
 {
@@ -89,6 +90,7 @@ class Lifting extends Model
         'itopup',
         'itopup_remarks',
         'bank_deposit',
+        'lifting_date',
     ];
 
     /**
