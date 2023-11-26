@@ -31,6 +31,7 @@ trait Searchable
             {
                 $relation = Str::beforeLast( $searchable, '.' );
                 $column = Str::afterLast( $searchable, '.' );
+
                 $builder->orWhereRelation($relation, $column, 'LIKE', "%$term%");
                 continue;
             }

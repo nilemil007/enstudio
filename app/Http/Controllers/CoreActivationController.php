@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Imports\CoreActivationImport;
-use App\Jobs\CoreActivationImportJob;
 use App\Models\Activation\CoreActivation;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;

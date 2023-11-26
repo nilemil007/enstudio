@@ -88,7 +88,7 @@ class LiftingStoreRequest extends FormRequest
             'itopup'                        => ['nullable'],
             'itopup_remarks'                => ['nullable'],
             'bank_deposit'                  => ['required'],
-            'lifting_date'                  => ['required'],
+            'lifting_date'                  => ['nullable'],
         ];
     }
 }

@@ -16,7 +16,7 @@
                 <div class="input-group">
                     <input name="search" type="search" class="form-control" value="{{ request()->get('search') }}" placeholder="Find something...">
                     <button class="btn btn-outline-primary" type="submit">Search</button>
-                    <a href="{{ route('hca.index') }}" class="btn btn-outline-secondary">Reset</a>
+                    <a href="{{ route('user.index') }}" class="btn btn-outline-secondary">Reset</a>
                 </div>
             </form>
         </div>

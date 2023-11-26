@@ -18,6 +18,7 @@ use Illuminate\Support\Str;
  * @method static firstWhere(string $string, $dd_house_id)
  * @method static whereIn()
  * @method static latest()
+ * @method static whereNotNull(string $string)
  */
 class Lifting extends Model
 {

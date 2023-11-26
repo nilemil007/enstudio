@@ -19,10 +19,10 @@
                             <label for="lifting_date" class="col-sm-3 col-form-label text-light">Lifting Date</label>
                             <div class="col-sm-9">
                                 <div class="input-group">
-                                    <input name="lifting_date" id="lifting_date" type="text" value="{{ now() }}" class="flatpickr form-control" placeholder="Select date">
+                                    <input name="lifting_date" id="lifting_date" type="text" class="flatpickr form-control" placeholder="Select date">
                                     <span class="input-group-text input-group-addon" data-toggle>
-                                    <i data-feather="calendar"></i>
-                                </span>
+                                        <i data-feather="calendar"></i>
+                                    </span>
                                 </div>
                                 @error('lifting_date') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>

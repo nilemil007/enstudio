@@ -79,7 +79,7 @@ return new class extends Migration
             $table->string('itopup')->nullable();
             $table->string('itopup_remarks')->nullable();
             $table->integer('bank_deposit');
-            $table->timestamp('lifting_date');
+            $table->timestamp('lifting_date')->useCurrent()->default(now());
             $table->timestamps();
             $table->softDeletes();
         });

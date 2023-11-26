@@ -745,19 +745,19 @@
                     productSim: {
                         mmst: {
                             liftingPrice: {{ $lifting->mmst_lifting_price ?? 0 }},
-                            qty: {{ $lifting->mmst }},
+                            qty: {{ $lifting->mmst ?? '' }},
                         },
                         mmsts: {
                             liftingPrice: {{ $lifting->mmsts_lifting_price ?? 0 }},
-                            qty: {{ $lifting->mmsts }},
+                            qty: {{ $lifting->mmsts ?? '' }},
                         },
                         simSwap: {
                             liftingPrice: {{ $lifting->sim_swap_lifting_price ?? 0 }},
-                            qty: {{ $lifting->sim_swap }},
+                            qty: {{ $lifting->sim_swap ?? '' }},
                         },
                         simSwapEv: {
                             liftingPrice: {{ $lifting->sim_swap_ev_lifting_price ?? 0 }},
-                            qty: {{ $lifting->sim_swap_ev }},
+                            qty: {{ $lifting->sim_swap_ev ?? '' }},
                         },
                     },
 
@@ -765,37 +765,37 @@
                         sc10: {
                             price: {{ \App\Models\ProductAndType::getProductData('sc_10')->price ?? 0 }},
                             liftingPrice: {{ \App\Models\ProductAndType::getProductData('sc_10')->lifting_price ?? 0 }},
-                            qty: {{ $lifting->sc_10 }},
+                            qty: {{ $lifting->sc_10 ?? '' }},
                         },
                         sc14: {
                             price: {{ \App\Models\ProductAndType::getProductData('sc_14')->price ?? 0 }},
                             liftingPrice: {{ \App\Models\ProductAndType::getProductData('sc_14')->lifting_price ?? 0 }},
-                            qty: {{ $lifting->sc_14 }},
+                            qty: {{ $lifting->sc_14 ?? '' }},
                         },
                         scd14: {
                             price: {{ \App\Models\ProductAndType::getProductData('scd_14')->price ?? 0 }},
                             liftingPrice: {{ \App\Models\ProductAndType::getProductData('scd_14')->lifting_price ?? 0 }},
-                            qty: {{ $lifting->scd_14 }},
+                            qty: {{ $lifting->scd_14 ?? '' }},
                         },
                         sc19: {
                             price: {{ \App\Models\ProductAndType::getProductData('sc_19')->price ?? 0 }},
                             liftingPrice: {{ \App\Models\ProductAndType::getProductData('sc_19')->lifting_price ?? 0 }},
-                            qty: {{ $lifting->sc_19 }},
+                            qty: {{ $lifting->sc_19 ?? '' }},
                         },
                         scd19: {
                             price: {{ \App\Models\ProductAndType::getProductData('scd_19')->price ?? 0 }},
                             liftingPrice: {{ \App\Models\ProductAndType::getProductData('scd_19')->lifting_price ?? 0 }},
-                            qty: {{ $lifting->scd_19 }},
+                            qty: {{ $lifting->scd_19 ?? '' }},
                         },
                         sc20: {
                             price: {{ \App\Models\ProductAndType::getProductData('sc_20')->price ?? 0 }},
                             liftingPrice: {{ \App\Models\ProductAndType::getProductData('sc_20')->lifting_price ?? 0 }},
-                            qty: {{ $lifting->sc_20 }},
+                            qty: {{ $lifting->sc_20 ?? '' }},
                         },
                         scd29: {
                             price: {{ \App\Models\ProductAndType::getProductData('scd_29')->price ?? 0 }},
                             liftingPrice: {{ \App\Models\ProductAndType::getProductData('scd_29')->lifting_price ?? 0 }},
-                            qty: {{ $lifting->scd_29 }},
+                            qty: {{ $lifting->scd_29 ?? '' }},
                         },
                     },
 
@@ -803,7 +803,7 @@
                         router: {
                             price: {{ \App\Models\ProductAndType::getProductData('router')->price ?? 0 }},
                             liftingPrice: {{ \App\Models\ProductAndType::getProductData('router')->lifting_price ?? 0 }},
-                            qty: {{ $lifting->router }},
+                            qty: {{ $lifting->router ?? '' }},
                         },
                     },
 

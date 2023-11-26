@@ -3,54 +3,70 @@
     <!-- Title -->
     <x-slot:title>Liftings</x-slot:title>
 
-    <div class="card">
-        <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <div class="d-flex align-items-center">
-                    <h4 class="card-title mb-0">lifting(s)</h4>
-                     @if(count($trashed) > 0)
-                       <a href="{{ route('lifting.trash') }}" style="font-weight: bold;">
-                           <span style="margin: 0px 10px 0px 10px">|</span>
-                           <span class="text-danger">Trash ({{ $trashed->count() }})</span>
-                       </a>
-                    @endif
+    <div class="card bg-gradient bg-secondary">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+                <h4 class="card-title mb-0 text-white">lifting(s)</h4>
+                @if(count($trashed) > 0)
+                    <a href="{{ route('lifting.trash') }}" style="font-weight: bold;">
+                        <span style="margin: 0 10px 0 10px">|</span>
+                        <span class="text-danger">Trash ({{ $trashed->count() }})</span>
+                    </a>
+                @endif
+            </div>
+
+            <form>
+                <div class="input-group">
+                    <input name="lifting_date" id="lifting_date" value="{{ request()->get('lifting_date') }}" type="text" class="flatpickr form-control" placeholder="Select date">
+                    <select name="dd_house" class="form-select">
+                        <option value="">-- Select DD House --</option>
+                        @foreach($ddHouses as $house)
+                            <option @selected($house->code == request()->get('dd_house')) value="{{ $house->code }}">{{ $house->code.' - '.$house->name }}</option>
+                        @endforeach
+                    </select>
+                    <button class="btn btn-primary" type="submit">Search</button>
+                    <a href="{{ route('lifting.index') }}" class="btn btn-warning">Reset</a>
                 </div>
+            </form>
+        </div>
+        <div class="card-body">
+            <div class="d-flex justify-content-end align-items-center">
                 <span>
                     <a href="{{ route('lifting.create') }}" class="btn btn-sm btn-primary bg-gradient">Add New</a>
                 </span>
             </div>
             <div class="table-responsive">
-                <table class="table table-sm table-bordered table-vcenter text-nowrap mt-3 mb-3 align-middle text-center">
+                <table class="table table-sm table-bordered table-vcenter text-nowrap mt-3 mb-3 align-middle text-center text-white">
                     <thead>
                         <tr>
-                            <th>sl</th>
-                            <th>dd house</th>
-                            <th>products</th>
+                            <th class="text-white">sl</th>
+                            <th class="text-white">dd house</th>
+                            <th class="text-white">products</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse ( $liftings as $sl => $lifting )
                         <tr>
-                            <td><span class="text-muted">{{ ++$sl }}</span></td>
+                            <td>{{ ++$sl }}</td>
                             <td>
-                                {{ $lifting->ddHouse->code }}
-                                <p class="text-muted"><em>{{ 'Lifting At: ' . $lifting->lifting_date->toFormattedDateString() }}</em></p>
-                                <p class="text-muted"><em>{{ 'Last updated: ' . $lifting->updated_at->toDayDateTimeString() }}</em></p>
+                                {{ $lifting->ddHouse->code.' - '.$lifting->ddHouse->name }}
+                                <p class="text-light"><em>{{ 'Lifting At: ' . $lifting->lifting_date->toFormattedDateString() }}</em></p>
+                                <p class="text-light"><em>{{ 'Last update: ' . $lifting->updated_at->diffForHumans().' . '. $lifting->updated_at->toDayDateTimeString() }}</em></p>
                             </td>
                             <td>
-                                <table class="table table-sm table-bordered table-vcenter text-nowrap mt-3 mb-3 align-middle">
+                                <table class="table table-sm table-bordered table-vcenter text-nowrap mt-3 mb-3 align-middle text-white">
                                     <thead>
                                         <tr>
-                                            <th>sim</th>
-                                            <th>scratch card</th>
-                                            <th>device</th>
-                                            <th>i'top-up</th>
+                                            <th class="text-white">sim</th>
+                                            <th class="text-white">scratch card</th>
+                                            <th class="text-white">device</th>
+                                            <th class="text-white">i'top-up</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <!-- SIM -->
                                         <td x-data="{actionBtn: false}" @mouseover="actionBtn = true" @mouseleave="actionBtn = false" class="position-relative">
-                                            <div x-data="{mmstVal: '{{ $lifting->mmst }}' }" x-cloak x-show="mmstVal">
+                                            <div x-data="{mmstVal: {{ $lifting->mmst ?? 0 }} }" x-cloak x-show="mmstVal">
                                                 <p class="d-inline-block"
                                                    data-bs-toggle="tooltip"
                                                    data-bs-placement="top"
@@ -59,7 +75,7 @@
                                                     MMST: {{ $lifting->mmst }}
                                                 </p>
                                             </div>
-                                            <div x-data="{mmstsVal: '{{ $lifting->mmsts }}' }" x-cloak x-show="mmstsVal">
+                                            <div x-data="{mmstsVal: {{ $lifting->mmsts ?? 0 }} }" x-cloak x-show="mmstsVal">
                                                 <p class="d-inline-block"
                                                    data-bs-toggle="tooltip"
                                                    data-bs-placement="top"
@@ -68,7 +84,7 @@
                                                     MMSTS: {{ $lifting->mmsts }}
                                                 </p>
                                             </div>
-                                            <div x-data="{simSwapVal: '{{ $lifting->sim_swap }}' }" x-cloak x-show="simSwapVal">
+                                            <div x-data="{simSwapVal: {{ $lifting->sim_swap ?? 0 }} }" x-cloak x-show="simSwapVal">
                                                 <p class="d-inline-block"
                                                    data-bs-toggle="tooltip"
                                                    data-bs-placement="top"
@@ -77,7 +93,7 @@
                                                     SIM SWAP: {{ $lifting->sim_swap }}
                                                 </p>
                                             </div>
-                                            <div x-data="{simSwapEvVal: '{{ $lifting->sim_swap_ev }}' }" x-cloak x-show="simSwapEvVal">
+                                            <div x-data="{simSwapEvVal: {{ $lifting->sim_swap_ev ?? 0 }} }" x-cloak x-show="simSwapEvVal">
                                                 <p class="d-inline-block"
                                                    data-bs-toggle="tooltip"
                                                    data-bs-placement="top"
@@ -88,17 +104,17 @@
                                             </div>
 
                                             <!-- Edit -->
-                                            <a x-transition:enter.duration.200ms x-transition:leave.duration.400ms x-cloak x-show="actionBtn" href="{{ route('lifting.edit', $lifting->id) }}" class="nav-link position-absolute top-0 end-0 text-primary">
+                                            <a x-transition x-cloak x-show="actionBtn" href="{{ route('lifting.edit', $lifting->id) }}" class="nav-link position-absolute top-0 end-0 text-primary">
                                                 <i class="fa-regular fa-pen-to-square"></i>
                                             </a>
                                             <!-- Move to trash -->
-                                            <a x-transition:enter.duration.400ms x-transition:leave.duration.200ms x-cloak x-show="actionBtn" href="{{ route('lifting.destroy', $lifting->id) }}" class="deleteLiftingData nav-link position-absolute bottom-0 end-0 text-danger">
+                                            <a x-transition x-cloak x-show="actionBtn" href="{{ route('lifting.destroy', $lifting->id) }}" class="deleteLiftingData nav-link position-absolute bottom-0 end-0 text-danger">
                                                 <i class="fa-solid fa-trash"></i>
                                             </a>
                                         </td>
                                         <!-- SC -->
                                         <td x-data="{actionBtn: false}" @mouseover="actionBtn = true" @mouseleave="actionBtn = false" class="position-relative">
-                                            <div x-data="{sc10Val: '{{ $lifting->sc_10 }}' }" x-cloak x-show="sc10Val">
+                                            <div x-data="{sc10Val: {{ $lifting->sc_10 ?? 0 }} }" x-cloak x-show="sc10Val">
                                                 <p class="d-inline-block"
                                                    data-bs-toggle="tooltip"
                                                    data-bs-placement="top"
@@ -107,7 +123,7 @@
                                                     SC-10: {{ $lifting->sc_10 }}
                                                 </p>
                                             </div>
-                                            <div x-data="{sc14Val: '{{ $lifting->sc_14 }}' }" x-cloak x-show="sc14Val">
+                                            <div x-data="{sc14Val: {{ $lifting->sc_14 ?? 0 }} }" x-cloak x-show="sc14Val">
                                                 <p class="d-inline-block"
                                                    data-bs-toggle="tooltip"
                                                    data-bs-placement="top"
@@ -116,7 +132,7 @@
                                                     SC-14: {{ $lifting->sc_14 }}
                                                 </p>
                                             </div>
-                                            <div x-data="{scd14Val: '{{ $lifting->scd_14 }}' }" x-cloak x-show="scd14Val">
+                                            <div x-data="{scd14Val: {{ $lifting->scd_14 ?? 0 }} }" x-cloak x-show="scd14Val">
                                                 <p class="d-inline-block"
                                                    data-bs-toggle="tooltip"
                                                    data-bs-placement="top"
@@ -125,7 +141,7 @@
                                                     SCD-14: {{ $lifting->scd_14 }}
                                                 </p>
                                             </div>
-                                            <div x-data="{sc19Val: '{{ $lifting->sc_19 }}' }" x-cloak x-show="sc19Val">
+                                            <div x-data="{sc19Val: {{ $lifting->sc_19 ?? 0 }} }" x-cloak x-show="sc19Val">
                                                 <p class="d-inline-block"
                                                    data-bs-toggle="tooltip"
                                                    data-bs-placement="top"
@@ -134,7 +150,7 @@
                                                     SC-19: {{ $lifting->sc_19 }}
                                                 </p>
                                             </div>
-                                            <div x-data="{scd19Val: '{{ $lifting->scd_19 }}' }" x-cloak x-show="scd19Val">
+                                            <div x-data="{scd19Val: {{ $lifting->scd_19 ?? 0 }} }" x-cloak x-show="scd19Val">
                                                 <p class="d-inline-block"
                                                    data-bs-toggle="tooltip"
                                                    data-bs-placement="top"
@@ -143,7 +159,7 @@
                                                     SCD-19: {{ $lifting->scd_19 }}
                                                 </p>
                                             </div>
-                                            <div x-data="{sc20Val: '{{ $lifting->sc_20 }}' }" x-cloak x-show="sc20Val">
+                                            <div x-data="{sc20Val: {{ $lifting->sc_20 ?? 0 }} }" x-cloak x-show="sc20Val">
                                                 <p class="d-inline-block"
                                                    data-bs-toggle="tooltip"
                                                    data-bs-placement="top"
@@ -152,7 +168,7 @@
                                                     SC-20: {{ $lifting->sc_20 }}
                                                 </p>
                                             </div>
-                                            <div x-data="{scd29Val: '{{ $lifting->scd_29 }}' }" x-cloak x-show="scd29Val">
+                                            <div x-data="{scd29Val: {{ $lifting->scd_29 ?? 0 }} }" x-cloak x-show="scd29Val">
                                                 <p class="d-inline-block"
                                                    data-bs-toggle="tooltip"
                                                    data-bs-placement="top"
@@ -163,17 +179,17 @@
                                             </div>
 
                                             <!-- Edit -->
-                                            <a x-transition:enter.duration.200ms x-transition:leave.duration.400ms x-cloak x-show="actionBtn" href="{{ route('lifting.edit', $lifting->id) }}" class="nav-link position-absolute top-0 end-0 text-primary">
+                                            <a x-transition x-cloak x-show="actionBtn" href="{{ route('lifting.edit', $lifting->id) }}" class="nav-link position-absolute top-0 end-0 text-primary">
                                                 <i class="fa-regular fa-pen-to-square"></i>
                                             </a>
                                             <!-- Move to trash -->
-                                            <a x-transition:enter.duration.400ms x-transition:leave.duration.200ms x-cloak x-show="actionBtn" href="{{ route('lifting.destroy', $lifting->id) }}" class="deleteLiftingData nav-link position-absolute bottom-0 end-0 text-danger">
+                                            <a x-transition x-cloak x-show="actionBtn" href="{{ route('lifting.destroy', $lifting->id) }}" class="deleteLiftingData nav-link position-absolute bottom-0 end-0 text-danger">
                                                 <i class="fa-solid fa-trash"></i>
                                             </a>
                                         </td>
                                         <!-- Device -->
                                         <td x-data="{actionBtn: false}" @mouseover="actionBtn = true" @mouseleave="actionBtn = false" class="position-relative">
-                                            <div x-data="{router: '{{ $lifting->router }}' }" x-cloak x-show="router">
+                                            <div x-data="{router: {{ $lifting->router ?? 0 }} }" x-cloak x-show="router">
                                                 <p class="d-inline-block"
                                                    data-bs-toggle="tooltip"
                                                    data-bs-placement="top"
@@ -184,17 +200,17 @@
                                             </div>
 
                                             <!-- Edit -->
-                                            <a x-transition:enter.duration.200ms x-transition:leave.duration.400ms x-cloak x-show="actionBtn" href="{{ route('lifting.edit', $lifting->id) }}" class="nav-link position-absolute top-0 end-0 text-primary">
+                                            <a x-transition x-cloak x-show="actionBtn" href="{{ route('lifting.edit', $lifting->id) }}" class="nav-link position-absolute top-0 end-0 text-primary">
                                                 <i class="fa-regular fa-pen-to-square"></i>
                                             </a>
                                             <!-- Move to trash -->
-                                            <a x-transition:enter.duration.400ms x-transition:leave.duration.200ms x-cloak x-show="actionBtn" href="{{ route('lifting.destroy', $lifting->id) }}" class="deleteLiftingData nav-link position-absolute bottom-0 end-0 text-danger">
+                                            <a x-transition x-cloak x-show="actionBtn" href="{{ route('lifting.destroy', $lifting->id) }}" class="deleteLiftingData nav-link position-absolute bottom-0 end-0 text-danger">
                                                 <i class="fa-solid fa-trash"></i>
                                             </a>
                                         </td>
                                         <!-- I'top-up -->
                                         <td x-data="{actionBtn: false}" @mouseover="actionBtn = true" @mouseleave="actionBtn = false" class="position-relative">
-                                            <div x-data="{ itopup: '{{ $lifting->itopup }}' }" x-cloak x-show="itopup">
+                                            <div x-data="{ itopup: {{ $lifting->itopup ?? 0 }} }" x-cloak x-show="itopup">
                                                 <p class="d-inline-block"
                                                    data-bs-toggle="tooltip"
                                                    data-bs-placement="top"
@@ -214,11 +230,11 @@
                                             </div>
 
                                             <!-- Edit -->
-                                            <a x-transition:enter.duration.200ms x-transition:leave.duration.400ms x-cloak x-show="actionBtn" href="{{ route('lifting.edit', $lifting->id) }}" class="nav-link position-absolute top-0 end-0 text-primary">
+                                            <a x-transition x-cloak x-show="actionBtn" href="{{ route('lifting.edit', $lifting->id) }}" class="nav-link position-absolute top-0 end-0 text-primary">
                                                 <i class="fa-regular fa-pen-to-square"></i>
                                             </a>
                                             <!-- Move to trash -->
-                                            <a x-transition:enter.duration.400ms x-transition:leave.duration.200ms x-cloak x-show="actionBtn" href="{{ route('lifting.destroy', $lifting->id) }}" class="deleteLiftingData nav-link position-absolute bottom-0 end-0 text-danger">
+                                            <a x-transition x-cloak x-show="actionBtn" href="{{ route('lifting.destroy', $lifting->id) }}" class="deleteLiftingData nav-link position-absolute bottom-0 end-0 text-danger">
                                                 <i class="fa-solid fa-trash"></i>
                                             </a>
                                         </td>

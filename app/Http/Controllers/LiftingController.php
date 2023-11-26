@@ -22,11 +22,24 @@ class LiftingController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
+    public function index(Request $request): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
+        $ddHouseIds = Lifting::whereNotNull('dd_house_id')->pluck('dd_house_id');
+        $liftings = Lifting::latest()
+            ->when($request->dd_house, function ($query) use ($request){
+                return $query->whereRelation('ddHouse','code','LIKE',$request->dd_house);
+            })
+            ->when($request->lifting_date, function ($query) use ($request){
+                return $query->where('lifting_date','LIKE',$request->lifting_date);
+            })
+            ->paginate(5);
+
+        $liftings->appends(['dd_house' => $request->dd_house, 'lifting_date' => $request->lifting_date]);
+
         return view('modules.sales_stock.lifting.index', [
-            'liftings' => Lifting::latest()->paginate(5),
+            'liftings' => $liftings,
             'trashed' => Lifting::onlyTrashed()->latest()->paginate(5),
+            'ddHouses' => DdHouse::whereIn('id', $ddHouseIds)->get(),
         ]);
     }
 
