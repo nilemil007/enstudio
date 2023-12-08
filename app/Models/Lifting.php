@@ -103,6 +103,25 @@ class Lifting extends Model
         'lifting_date' => 'datetime',
     ];
 
+    /**
+     * Filter date and dd house.
+     *
+     * @param $query
+     * @param $date
+     * @param $ddCode
+     */
+    public function scopeFilter($query, $date, $ddCode)
+    {
+        $query->orWhere(function ($query) use ($date, $ddCode){
+            $query->when($ddCode, function ($query) use ($ddCode){
+                $query->whereRelation('ddHouse','code','LIKE',$ddCode);
+            });
+            $query->when($date, function ($query) use ($date){
+                $query->where('lifting_date','LIKE',$date);
+            });
+        });
+    }
+
     public function ddHouse(): BelongsTo
     {
         return $this->belongsTo(DdHouse::class);

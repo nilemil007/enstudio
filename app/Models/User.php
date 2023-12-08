@@ -21,7 +21,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @method static latest()
  * @method static create(mixed $user)
  * @method static truncate()
- * @method static firstWhere()
+ * @method static firstWhere(string $column, string $value)
  * @method static whereHas(string $string, \Closure $param)
  * @method static whereIn(string $string, $userId)
  * @method static whereNotIn(string $string, $userId)

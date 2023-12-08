@@ -98,6 +98,11 @@ class UserController extends Controller
                 File::delete( public_path('assets/images/users/'.basename( $user->image ) ) );
             }
 
+            if (!File::exists(public_path('assets/images/users/')))
+            {
+                mkdir(public_path('assets/images/users/'), 666, true);
+            }
+
             $name = 'user'.$request->image->hashname();
             Image::make($request->image)->resize(80,80)->save(public_path('assets/images/users/'.$name));
             $information['image'] = $name;

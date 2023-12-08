@@ -24,7 +24,6 @@ class CmImport implements ToModel, WithHeadingRow, WithChunkReading, WithValidat
      */
     public function model(array $row): Model|Cm|null
     {
-//        dd($row);
         return new Cm([
             'dd_house_id'       => DdHouse::firstWhere('code', $row['dd_code'])->id,
             'name'              => $row['name'],

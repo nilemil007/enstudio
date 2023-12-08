@@ -47,7 +47,7 @@ class Route extends Model
     /**
      * Transform dd code to id.
      *
-     * @return
+     * @return Attribute
      */
     protected function ddHouseId(): Attribute
     {

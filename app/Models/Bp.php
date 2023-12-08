@@ -14,6 +14,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static truncate()
  * @method static orderBy(string $string, string $string1)
  * @method static firstWhere(string $string, $id)
+ * @method static where(string $string, mixed $user)
+ * @method static find(int $int)
+ * @method static findOrFail(int $int)
  * @property mixed documents
  */
 class Bp extends Model

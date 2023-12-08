@@ -25,14 +25,7 @@ class LiftingController extends Controller
     public function index(Request $request): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
         $ddHouseIds = Lifting::whereNotNull('dd_house_id')->pluck('dd_house_id');
-        $liftings = Lifting::latest()
-            ->when($request->dd_house, function ($query) use ($request){
-                return $query->whereRelation('ddHouse','code','LIKE',$request->dd_house);
-            })
-            ->when($request->lifting_date, function ($query) use ($request){
-                return $query->where('lifting_date','LIKE',$request->lifting_date);
-            })
-            ->paginate(5);
+        $liftings = Lifting::latest()->filter($request->lifting_date, $request->dd_house)->paginate(5);
 
         $liftings->appends(['dd_house' => $request->dd_house, 'lifting_date' => $request->lifting_date]);
 

@@ -30,9 +30,15 @@ class HouseCodeActivationController extends Controller
      */
     public function index(Request $request): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $startDate = Carbon::now()->startOfMonth()->toDateString();
-        $endDate = Carbon::now()->endOfMonth()->toDateString();
-        $search = $request->input('search');
+        $startDate      = Carbon::now()->startOfMonth()->toDateString();
+        $endDate        = Carbon::now()->endOfMonth()->toDateString();
+        $search         = $request->input('search');
+        $user           = $request->input('user');
+        $retailerCode   = $request->input('retailer_code');
+        $activation     = $request->input('activation');
+        $price          = $request->input('price');
+        $flag           = $request->input('flag');
+        $remarks        = $request->input('remarks');
 
         switch ( Auth::user()->role )
         {
@@ -48,11 +54,17 @@ class HouseCodeActivationController extends Controller
             break;
 
             default;
-                $houseCodeAct = HouseCodeActivation::latest()->search($search)->whereBetween('activation_date', [$startDate, $endDate])->paginate(5);
-                $houseCodeAct->appends(['search' => $request->search]);
+                $tradeCampaignRetailerCode = TradeCampaignRetailerCode::whereIn('user_id', HouseCodeActivation::whereNotNull('user_id')->pluck('user_id'))->whereBetween('updated_at', [$startDate, $endDate])->get();
+                $retailers = Retailer::whereIn('code', HouseCodeActivation::whereNotNull('retailer_code')->pluck('retailer_code'))->get();
+                $houseCodeAct = HouseCodeActivation::latest()
+//                    ->search($search)
+                    ->filter(['user' => $user, 'retailer_code' => $retailerCode, 'activation' => $activation, 'price' => $price, 'flag' => $flag, 'remarks' => $remarks])
+                    ->whereBetween('activation_date', [$startDate, $endDate])
+                    ->paginate(5);
+                $houseCodeAct->appends(['search' => $search]);
         }
 
-        return view('modules.house_code_activation.index', compact('houseCodeAct'));
+        return view('modules.house_code_activation.index', compact('houseCodeAct','tradeCampaignRetailerCode','retailers'));
     }
 
     /**
