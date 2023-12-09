@@ -65,7 +65,7 @@ class BpController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Bp $bp)
+    public function show(Bp $bp): string
     {
         return 'bp show method';
     }

@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static find(int $int)
  * @method static findOrFail(int $int)
  * @property mixed documents
+ * @property mixed $supervisor_id
  */
 class Bp extends Model
 {

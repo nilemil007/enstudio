@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
- * @method static where(string $column, string $operator, mixed $mixed)
+ * @method static where(string $column, string $operator, mixed $mixed = null)
  * @method static latest()
  * @method static create(mixed $user)
  * @method static truncate()
