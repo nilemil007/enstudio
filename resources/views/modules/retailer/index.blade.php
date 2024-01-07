@@ -41,13 +41,14 @@
                     <thead>
                     <tr>
                         <th class="w-1">No.</th>
-                        <th>Image</th>
+{{--                        <th>Image</th>--}}
                         <th>DD House</th>
                         <th>Code</th>
                         <th>Itop Number</th>
                         <th>Name</th>
                         <th>Thana</th>
                         <th>Address</th>
+                        <th>Status</th>
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -55,11 +56,11 @@
                     @forelse( $retailers as $sl => $retailer )
                         <tr>
                             <td><span class="text-muted">{{ ++$sl }}</span></td>
-                            <td class="py-1">
-                                @if(!empty($retailer->user->image))
-                                    <img src="{{ asset($retailer->user->image) }}" alt="retailer image">
-                                @endif
-                            </td>
+{{--                            <td class="py-1">--}}
+{{--                                @if(!empty($retailer->user->image))--}}
+{{--                                    <img src="{{ asset($retailer->user->image) }}" alt="retailer image">--}}
+{{--                                @endif--}}
+{{--                            </td>--}}
                             <td class="d-flex align-items-center">
                                 {{ $retailer->ddHouse->code }}
                                 &nbsp;
@@ -73,6 +74,17 @@
                             <td>{{ $retailer->thana }}</td>
                             <td class="text-start">
                                 {{ \Illuminate\Support\Str::words( $retailer->address, 3 ) }}
+                            </td>
+                            <td>
+                                @switch( $retailer->status )
+                                    @case(1)
+                                        <p class="text-success" style="font-weight: bold">Active</p>
+                                        @break
+
+                                    @case(0)
+                                        <p class="text-danger" style="font-weight: bold">Inactive</p>
+                                        @break
+                                @endswitch
                             </td>
                             <td>
                                 <!-- Edit -->

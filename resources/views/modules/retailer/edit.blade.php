@@ -148,7 +148,7 @@
                 <div class="row mb-3">
                     <label for="enabled" class="col-sm-3 col-form-label">Enabled <span class="text-danger">*</span></label>
                     <div class="col-sm-9">
-                        <select name="enabled" class="form-select @error('enabled') is-invalid @enderror" id="enabled">
+                        <select name="enabled" class="form-select @error('enabled') is-invalid @enderror" id="enabled" disabled>
                             <option value="">-- Select Enabled --</option>
                             <option @selected($retailer->enabled == 'Y') value="Y">Yes</option>
                             <option @selected($retailer->enabled == 'N') value="N">No</option>
@@ -418,6 +418,19 @@
                     </div>
                 </div>
                 @endif
+
+                <!-- Status -->
+                <div class="row mb-3">
+                    <label for="status" class="col-sm-3 col-form-label">Status</label>
+                    <div class="col-sm-9">
+                        <select name="status" class="form-select @error('status') is-invalid @enderror" id="status">
+                            <option selected value="">--Select Status--</option>
+                            <option {{ $retailer->status == 1 ? 'selected' : '' }} value="1">Active</option>
+                            <option {{ $retailer->status == 0 ? 'selected' : '' }} value="0">Inactive</option>
+                        </select>
+                        @error('status') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                </div>
 
                 <button type="submit" class="btn btn-sm btn-primary me-2 btn-submit">Save Changes</button>
                 <a href="{{ route('retailer.index') }}" class="btn btn-sm btn-info me-2 text-white">Back</a>

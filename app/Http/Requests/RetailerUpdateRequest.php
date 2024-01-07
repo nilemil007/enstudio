@@ -32,7 +32,7 @@ class RetailerUpdateRequest extends FormRequest
             'code'              => ['required','unique:retailers,code,'.request()->segment(2)],
             'name'              => ['required'],
             'type'              => ['required'],
-            'enabled'           => ['required'],
+            'enabled'           => ['nullable'],
             'sim_seller'        => ['required'],
             'itop_number'       => ['required','unique:retailers,itop_number,'.request()->segment(2)],
             'service_point'     => ['nullable'],
@@ -53,6 +53,7 @@ class RetailerUpdateRequest extends FormRequest
             'password'          => ['nullable'],
             'nid'               => ['nullable', new Nid,'unique:retailers,nid,'.request()->segment(2)],
             'nid_upload'        => ['nullable','image'],
+            'status'            => ['required'],
         ];
     }
 }
