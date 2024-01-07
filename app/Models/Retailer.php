@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Activation\CoreActivation;
+use App\Traits\Searchable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -22,10 +23,11 @@ use Illuminate\Support\Str;
  * @method static groupBy(string $string)
  * @method static paginate(int $int)
  * @method static whereBetween(string $string, array $array)
+ * @method static search(mixed $search)
  */
 class Retailer extends Model
 {
-    use HasFactory;
+    use HasFactory, Searchable;
 
     protected $fillable = [
         'dd_house_id',
@@ -77,6 +79,35 @@ class Retailer extends Model
         'nid_upload',
         'status',
         'remarks',
+    ];
+
+    /**
+     * Searchable column's.
+     *
+     * @var array<int, string>
+     */
+    protected array $searchable = [
+        'ddHouse.code',
+//        'rso.itop_number',
+        'code',
+        'name',
+        'type',
+        'category',
+        'enabled',
+        'sim_seller',
+        'itop_number',
+        'service_point',
+        'owner_name',
+        'contact_no',
+        'own_shop',
+        'district',
+        'thana',
+        'address',
+        'blood_group',
+        'trade_license_no',
+        'others_operator',
+        'nid',
+        'status',
     ];
 
     //_______________________________________Accessor________________________________________________
@@ -213,6 +244,16 @@ class Retailer extends Model
     public function ddHouse(): BelongsTo
     {
         return $this->belongsTo( DdHouse::class );
+    }
+
+    /**
+     * Retailer belongs to a dd house.
+     *
+     * @return BelongsTo
+     */
+    public function rso(): BelongsTo
+    {
+        return $this->belongsTo( Rso::class );
     }
 
     /**

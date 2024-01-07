@@ -20,7 +20,6 @@
             </li>
 
             <li class="nav-item nav-category">reports</li>
-
             <!-- Daily Report -->
             <li class="nav-item {{ request()->routeIs('daily.report.*') ? 'active' : '' }}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#dailyReport" role="button" aria-expanded="false" aria-controls="dailyReport">
@@ -37,7 +36,6 @@
                     </ul>
                 </div>
             </li>
-
             <!-- Activation -->
             <li class="nav-item {{ request()->routeIs(['hca.*','report.*']) ? 'active' : '' }}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#activation" role="button" aria-expanded="false" aria-controls="activation">
@@ -66,6 +64,26 @@
                     </ul>
                 </div>
             </li>
+            <!-- Retailer -->
+            <li class="nav-item {{ request()->routeIs('retailer.*') ? 'active' : '' }}">
+                <a class="nav-link" data-bs-toggle="collapse" href="#retailer" role="button" aria-expanded="false" aria-controls="retailer">
+                    <i class="link-icon" data-feather="info"></i>
+                    <span class="link-title">Retailer</span>
+                    <i class="link-arrow" data-feather="chevron-down"></i>
+                </a>
+                <div class="collapse {{ request()->routeIs('retailer.*') ? 'show' : '' }}" id="retailer">
+                    <ul class="nav sub-menu">
+                        @if( auth()->user()->role == 'superadmin' )
+                        <li class="nav-item">
+                            <a href="{{ route('retailer.create') }}" class="nav-link {{ request()->routeIs('retailer.create') ? 'active' : '' }}">Add New</a>
+                        </li>
+                        @endif
+                        <li class="nav-item">
+                            <a href="{{ route('retailer.index') }}" class="nav-link {{ request()->routeIs('retailer.index') ? 'active' : '' }}">All Retailers</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
 
 
             @if( auth()->user()->role == 'superadmin' )
@@ -90,44 +108,40 @@
                 </div>
             </li>
 
-
             <li class="nav-item nav-category">sales & stock</li>
-                <!-- Define Product And Type -->
-                <li class="nav-item {{ request()->routeIs('productType.*') ? 'active' : '' }}">
-                    <a class="nav-link" data-bs-toggle="collapse" href="#productType" role="button" aria-expanded="false" aria-controls="productType">
-                        <i class="link-icon" data-feather="info"></i>
-                        <span class="link-title">Define</span>
-                        <i class="link-arrow" data-feather="chevron-down"></i>
-                    </a>
-                    <div class="collapse {{ request()->routeIs('productType.*') ? 'show' : '' }}" id="productType">
-                        <ul class="nav sub-menu">
-                            <li class="nav-item">
-                                <a href="{{ route('productType.index') }}" class="nav-link {{ request()->routeIs('productType.index') ? 'active' : '' }}">Product And Type</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-                <!-- Lifting -->
-                <li class="nav-item {{ request()->routeIs('lifting.*') ? 'active' : '' }}">
-                    <a class="nav-link" data-bs-toggle="collapse" href="#lifting" role="button" aria-expanded="false" aria-controls="lifting">
-                        <i class="link-icon" data-feather="info"></i>
-                        <span class="link-title">Lifting</span>
-                        <i class="link-arrow" data-feather="chevron-down"></i>
-                    </a>
-                    <div class="collapse {{ request()->routeIs('lifting.*') ? 'show' : '' }}" id="lifting">
-                        <ul class="nav sub-menu">
-                            <li class="nav-item">
-                                <a href="{{ route('lifting.create') }}" class="nav-link {{ request()->routeIs('lifting.create') ? 'active' : '' }}">Add New</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('lifting.index') }}" class="nav-link {{ request()->routeIs('lifting.index') ? 'active' : '' }}">ALL Lifting's</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-
-
-
+            <!-- Define Product And Type -->
+            <li class="nav-item {{ request()->routeIs('productType.*') ? 'active' : '' }}">
+                <a class="nav-link" data-bs-toggle="collapse" href="#productType" role="button" aria-expanded="false" aria-controls="productType">
+                    <i class="link-icon" data-feather="info"></i>
+                    <span class="link-title">Define</span>
+                    <i class="link-arrow" data-feather="chevron-down"></i>
+                </a>
+                <div class="collapse {{ request()->routeIs('productType.*') ? 'show' : '' }}" id="productType">
+                    <ul class="nav sub-menu">
+                        <li class="nav-item">
+                            <a href="{{ route('productType.index') }}" class="nav-link {{ request()->routeIs('productType.index') ? 'active' : '' }}">Product And Type</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <!-- Lifting -->
+            <li class="nav-item {{ request()->routeIs('lifting.*') ? 'active' : '' }}">
+                <a class="nav-link" data-bs-toggle="collapse" href="#lifting" role="button" aria-expanded="false" aria-controls="lifting">
+                    <i class="link-icon" data-feather="info"></i>
+                    <span class="link-title">Lifting</span>
+                    <i class="link-arrow" data-feather="chevron-down"></i>
+                </a>
+                <div class="collapse {{ request()->routeIs('lifting.*') ? 'show' : '' }}" id="lifting">
+                    <ul class="nav sub-menu">
+                        <li class="nav-item">
+                            <a href="{{ route('lifting.create') }}" class="nav-link {{ request()->routeIs('lifting.create') ? 'active' : '' }}">Add New</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('lifting.index') }}" class="nav-link {{ request()->routeIs('lifting.index') ? 'active' : '' }}">ALL Lifting's</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
 
             <li class="nav-item nav-category">import</li>
             <!-- Core Activation -->
@@ -145,7 +159,6 @@
                     </ul>
                 </div>
             </li>
-
             <!-- KPI Target -->
             <li class="nav-item {{ request()->routeIs('kpi-target.*') ? 'active' : '' }}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#kpiTarget" role="button" aria-expanded="false" aria-controls="kpiTarget">
@@ -166,7 +179,6 @@
             </li>
 
             <li class="nav-item nav-category">Define</li>
-
             <!-- DD House -->
             <li class="nav-item {{ request()->routeIs('dd-house.*') ? 'active' : '' }}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#ddHouse" role="button" aria-expanded="false" aria-controls="ddHouse">
@@ -349,7 +361,6 @@
             </li>
 
             <li class="nav-item nav-category">New Registration</li>
-
             <!-- New Registration -->
             <li class="nav-item {{ request()->routeIs('user.*') ? 'active' : '' }}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#users" role="button" aria-expanded="false" aria-controls="users">

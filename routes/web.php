@@ -149,6 +149,8 @@ Route::middleware(['auth'])->group(function (){
         Route::post('/import','import')->name('import');
         // Download sample file
         Route::get('/sample-file-download','sampleFileDownload')->name('sample.file.download');
+        // Export
+        Route::get('/export','export')->name('export');
     });
 
     // BTS Additional Routes

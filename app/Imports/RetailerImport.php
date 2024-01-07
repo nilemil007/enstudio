@@ -39,7 +39,7 @@ class RetailerImport implements ToModel, WithHeadingRow, WithValidation, WithChu
             'sim_seller'        => $row['sim_seller'],
             'itop_number'       => $row['i_top_up_number'],
             'service_point'     => $row['service_point'],
-            'service_point'     => $row['category'],
+            'category'     => $row['category'],
             'owner_name'        => $row['owner_name'],
             'own_shop'          => $row['own_shop'],
             'contact_no'        => $row['contact_no'],

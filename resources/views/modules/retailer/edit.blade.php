@@ -12,6 +12,7 @@
                 @csrf
                 @method('PATCH')
 
+                @if( auth()->user()->role == 'superadmin' )
                 <!-- Distribution House -->
                 <div class="row mb-3">
                     <label for="dd_house" class="col-sm-3 col-form-label">Distribution House <span class="text-danger">*</span></label>
@@ -108,13 +109,15 @@
                     </div>
                 </div>
 
+                @endif
+
                 <!-- Retailer Code -->
                 <div class="row mb-3">
                     <label for="code" class="col-sm-3 col-form-label">Retailer Code <span class="text-danger">*</span></label>
                     <div class="col-sm-9">
                         <input name="code" id="code" type="text"
                                class="form-control @error('code') is-invalid @enderror" value="{{ old('code', $retailer->code) }}"
-                               placeholder="Enter Retailer Code">
+                               placeholder="Enter Retailer Code" readonly>
                         @error('code') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                 </div>
@@ -136,7 +139,7 @@
                     <div class="col-sm-9">
                         <input name="type" id="type" type="text"
                                class="form-control @error('type') is-invalid @enderror" value="{{ old('type', $retailer->type) }}"
-                               placeholder="Enter Retailer Type">
+                               placeholder="Enter Retailer Type" readonly>
                         @error('type') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                 </div>
@@ -173,7 +176,7 @@
                     <div class="col-sm-9">
                         <input name="itop_number" id="itop_number" type="number"
                                class="form-control @error('itop_number') is-invalid @enderror" value="{{ old('itop_number', $retailer->itop_number) }}"
-                               placeholder="Enter Itop Number">
+                               placeholder="Enter Itop Number" readonly>
                         @error('itop_number') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                 </div>
@@ -184,7 +187,7 @@
                     <div class="col-sm-9">
                         <input name="service_point" id="service_point" type="text"
                                class="form-control @error('service_point') is-invalid @enderror" value="{{ old('service_point', $retailer->service_point) }}"
-                               placeholder="Enter Service Point">
+                               placeholder="Enter Service Point" readonly>
                         @error('service_point') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                 </div>
@@ -212,17 +215,17 @@
                 </div>
 
                 <!-- Own Shop -->
-                <div class="row mb-3">
-                    <label for="own_shop" class="col-sm-3 col-form-label">Own Shop <span class="text-danger">*</span></label>
-                    <div class="col-sm-9">
-                        <select name="own_shop" class="form-select @error('own_shop') is-invalid @enderror" id="own_shop">
-                            <option value="">-- Select Own Shop --</option>
-                            <option @selected($retailer->own_shop == 'Y') value="Y">Yes</option>
-                            <option @selected($retailer->own_shop == 'N') value="N">No</option>
-                        </select>
-                        @error('own_shop') <span class="text-danger">{{ $message }}</span> @enderror
-                    </div>
-                </div>
+{{--                <div class="row mb-3">--}}
+{{--                    <label for="own_shop" class="col-sm-3 col-form-label">Own Shop <span class="text-danger">*</span></label>--}}
+{{--                    <div class="col-sm-9">--}}
+{{--                        <select name="own_shop" class="form-select @error('own_shop') is-invalid @enderror" id="own_shop">--}}
+{{--                            <option value="">-- Select Own Shop --</option>--}}
+{{--                            <option @selected($retailer->own_shop == 'Y') value="Y">Yes</option>--}}
+{{--                            <option @selected($retailer->own_shop == 'N') value="N">No</option>--}}
+{{--                        </select>--}}
+{{--                        @error('own_shop') <span class="text-danger">{{ $message }}</span> @enderror--}}
+{{--                    </div>--}}
+{{--                </div>--}}
 
                 <!-- District -->
                 <div class="row mb-3">
@@ -254,6 +257,7 @@
                     </div>
                 </div>
 
+                @if( auth()->user()->role == 'superadmin' )
                 <!-- Blood Group -->
                 <div class="row mb-3">
                     <label for="blood_group" class="col-sm-3 col-form-label">Blood Group <span class="text-danger">*</span></label>
@@ -391,6 +395,7 @@
                         </select>
                     </div>
                 </div>
+                @endif
 
                 <!-- NID -->
                 <div class="row mb-3">
@@ -403,6 +408,7 @@
                     </div>
                 </div>
 
+                @if( auth()->user()->role == 'superadmin' )
                 <!-- NID Upload -->
                 <div class="row mb-3">
                     <label for="nid_upload" class="col-sm-3 col-form-label">NID Upload</label>
@@ -411,6 +417,7 @@
                         @error('nid_upload') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                 </div>
+                @endif
 
                 <button type="submit" class="btn btn-sm btn-primary me-2 btn-submit">Save Changes</button>
                 <a href="{{ route('retailer.index') }}" class="btn btn-sm btn-info me-2 text-white">Back</a>
@@ -435,7 +442,7 @@
                         beforeSend: () => {
                             $('#loading').show();
                             $('#retailerUpdateErrMsg').addClass('d-none').find('li').remove();
-                            $('.btn-submit').prop('disabled', true).text('Saving...').append('<img src="{{ url('public/assets/images/gif/DzUd.gif') }}" alt="" width="18px">');
+                            $('.btn-submit').prop('disabled', true).text('Saving...');
                         },
                         complete: () => {
                             $('#loading').hide();

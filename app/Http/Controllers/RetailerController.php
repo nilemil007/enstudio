@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\RetailersExport;
 use App\Http\Requests\RetailerStoreRequest;
 use App\Http\Requests\RetailerUpdateRequest;
 use App\Imports\RetailerImport;
@@ -19,11 +20,12 @@ use Illuminate\Foundation\Application;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Validation\ValidationException;
 use Intervention\Image\Facades\Image;
 use Maatwebsite\Excel\Facades\Excel;
-use RealRashid\SweetAlert\Facades\Alert;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class RetailerController extends Controller
@@ -31,9 +33,18 @@ class RetailerController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
+    public function index(Request $request): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $retailers = Retailer::paginate(10);
+        $search = $request->input('search');
+        $ddHouseId = DB::table('dd_house_user')->where('user_id', Auth::id())->pluck('dd_house_id');
+
+        $retailers = match (Auth::user()->role) {
+            'rso' => Retailer::search($search)->latest()->where('rso_id', Rso::firstWhere('user_id', Auth::id())->id)->paginate(10),
+            default => Retailer::search($search)->latest()->whereIn('dd_house_id', $ddHouseId)->paginate(10),
+        };
+
+        $retailers->appends(['search' => $search]);
+
         return view('modules.retailer.index', compact('retailers'));
     }
 
@@ -145,5 +156,13 @@ class RetailerController extends Controller
     public function sampleFileDownload(): BinaryFileResponse
     {
         return Response::download(public_path('download/sample/Retailer_List_Report.xlsx'));
+    }
+
+    /**
+     * retailers export.
+     */
+    public function export(): BinaryFileResponse
+    {
+        return Excel::download(new RetailersExport(), 'Retailers.xlsx');
     }
 }

@@ -8,16 +8,34 @@
     @endif
 
     <div class="card">
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <h4 class="card-title">All Retailer</h4>
-            <span>
-                <a href="{{ route('retailer.create') }}" class="btn btn-sm btn-primary">Add New</a>
-                @if(count($retailers) > 1)
-                <a id="deleteAllRetailer" href="{{ route('retailer.delete.all') }}" class="btn btn-sm btn-danger">Delete All</a>
-                @endif
-            </span>
+        <div class="card-header row">
+            <div class="col-md-6">
+                <h4 class="card-title">All Retailer</h4>
+            </div>
+            <div class="col-md-6">
+                <form>
+                    <div class="input-group">
+                        <input name="search" type="search" class="form-control" value="{{ request()->get('search') }}" placeholder="Find something...">
+                        <button class="btn btn-outline-primary" type="submit">Search</button>
+                        <a href="{{ route('retailer.index') }}" class="btn btn-outline-secondary">Reset</a>
+                    </div>
+                </form>
+            </div>
         </div>
         <div class="card-body">
+
+            <span class="d-flex align-items-center justify-content-end">
+                    @if( auth()->user()->role == 'superadmin' || auth()->user()->role == 'zm' )
+                    <a href="{{ route('retailer.export') }}" class="btn btn-sm btn-success">Export</a>
+                    <a href="{{ route('retailer.create') }}" class="btn btn-sm btn-primary" style="margin-left: 5px">Add New</a>
+                @endif
+                @if( auth()->user()->role == 'superadmin' )
+                    @if(count($retailers) > 1)
+                        <a id="deleteAllRetailer" href="{{ route('retailer.delete.all') }}" class="btn btn-sm btn-danger" style="margin-left: 5px">Delete All</a>
+                    @endif
+                @endif
+            </span>
+
             <div class="table-responsive">
                 <table id="retailerTbl" class="table table-sm table-bordered table-hover card-table table-vcenter text-nowrap mt-3 mb-3 text-center">
                     <thead>
@@ -53,13 +71,17 @@
                             <td>{{ $retailer->itop_number }}</td>
                             <td>{{ $retailer->name }}</td>
                             <td>{{ $retailer->thana }}</td>
-                            <td>{{ $retailer->address }}</td>
+                            <td class="text-start">
+                                {{ \Illuminate\Support\Str::words( $retailer->address, 3 ) }}
+                            </td>
                             <td>
                                 <!-- Edit -->
                                 <a href="{{ route('retailer.edit', $retailer->id) }}" class="btn btn-sm btn-primary">Edit</a>
 
+                                @if( auth()->user()->role == 'superadmin' )
                                 <!-- Delete -->
                                 <a href="{{ route('retailer.destroy', $retailer->id) }}" id="deleteRetailer" class="btn btn-sm btn-danger">Delete</a>
+                                @endif
                             </td>
                         </tr>
                     @empty

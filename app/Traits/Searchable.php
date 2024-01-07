@@ -25,18 +25,18 @@ trait Searchable
             throw new Exception("Please define the searchable property.");
         }
 
-        foreach( $this->searchable as $searchable )
+        foreach( $this->searchable as $column )
         {
-            if ( str_contains($searchable, '.' ))
+            if ( str_contains($column, '.' ))
             {
-                $relation = Str::beforeLast( $searchable, '.' );
-                $column = Str::afterLast( $searchable, '.' );
+                $relation = Str::beforeLast( $column, '.' );
+                $column = Str::afterLast( $column, '.' );
 
                 $builder->orWhereRelation($relation, $column, 'LIKE', "%$term%");
                 continue;
             }
 
-            $builder->orWhere( $searchable, 'LIKE', "%$term%");
+            $builder->orWhere( $column, 'LIKE', "%$term%");
         }
 
         return $builder;

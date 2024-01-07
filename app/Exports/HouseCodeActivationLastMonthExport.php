@@ -10,7 +10,7 @@ use Maatwebsite\Excel\Concerns\FromView;
 class HouseCodeActivationLastMonthExport implements FromView
 {
     /**
-     * @return \Illuminate\Contracts\View\View
+     * @return View
      */
     public function view(): View
     {

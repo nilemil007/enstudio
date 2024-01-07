@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Exports\RetailersExport;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
@@ -114,6 +115,11 @@ class Rso extends Model
     public function coreActivation(): HasMany
     {
         return $this->hasMany(CoreActivation::class);
+    }
+
+    public function retailer(): HasMany
+    {
+        return $this->hasMany(Retailer::class);
     }
 
     public function kpiTarget(): HasOne
