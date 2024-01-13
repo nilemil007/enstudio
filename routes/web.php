@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Tools\Certificate\SscController;
+use App\Http\Controllers\ToolsController;
 use App\Livewire\Counter;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BpController;
@@ -245,6 +247,11 @@ Route::middleware(['auth'])->group(function (){
         Route::post('/shera-partner','sheraPartnerUpdate')->name('shera.partner.update');
     });
 
+    // Tools Additional Routes
+    Route::get('/certificate', function (){
+        return view('modules/tools/certificate/index');
+    })->name('certificate');
+
     // Lifting Additional Routes
     Route::controller(LiftingController::class )->prefix('/lifting')->name('lifting.')->group(function (){
         // Move To Trash
@@ -281,6 +288,7 @@ Route::middleware(['auth'])->group(function (){
         'kpi-target'    => KpiTargetController::class,
         'productType'   => ProductAndTypeController::class,
         'lifting'       => LiftingController::class,
+        'ssc'           => SscController::class
     ]);
 
 });

@@ -398,7 +398,25 @@
                         </li>
                     </ul>
                 </div>
-                </li>
+            </li>
+
+            <li class="nav-item nav-category">Tools</li>
+            <!-- Tools -->
+            <li class="nav-item {{ request()->routeIs('certificate.*') ? 'active' : '' }}">
+                <a class="nav-link" data-bs-toggle="collapse" href="#tools" role="button" aria-expanded="false" aria-controls="tools">
+                    <i class="link-icon" data-feather="tool"></i>
+                    <span class="link-title">Tools</span>
+                    <i class="link-arrow" data-feather="chevron-down"></i>
+                </a>
+                <div class="collapse {{ request()->routeIs('settings.*') ? 'show' : '' }}" id="tools">
+                    <ul class="nav sub-menu">
+                        <li class="nav-item">
+                            <a href="{{ route('certificate') }}" class="nav-link ">Certificate</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
             @endif
         </ul>
     </div>
