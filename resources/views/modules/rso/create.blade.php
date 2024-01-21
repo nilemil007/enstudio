@@ -6,13 +6,13 @@
     <div id="rsoErrMsg" class="alert alert-danger err-msg d-none"></div>
 
     <div class="row">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-body">
-                    <h6 class="card-title">Create New Rso</h6>
-                    <form id="rsoForm" action="{{ route('rso.store') }}" method="POST">
-                        @csrf
+        <div class="col-md-12">
+            <form id="rsoForm" action="{{ route('rso.store') }}" method="POST">
+                @csrf
 
+                <div class="card mb-3 border-success">
+                    <div class="card-header text-bg-success">Basic Information</div>
+                    <div class="card-body">
                         <!-- Distribution House -->
                         <div class="row mb-3">
                             <label for="dd_house_id" class="col-sm-3 col-form-label">Distribution House</label>
@@ -62,6 +62,24 @@
                             </div>
                         </div>
 
+                        <!-- Residential Rso -->
+                        <div class="row mb-3">
+                            <label for="residential_rso" class="col-sm-3 col-form-label">Residential Rso</label>
+                            <div class="col-sm-9">
+                                <select name="residential_rso" class="form-select @error('residential_rso') is-invalid @enderror" id="residential_rso">
+                                    <option value="">-- Select Residential Rso --</option>
+                                    <option value="yes">Yes</option>
+                                    <option value="no">No</option>
+                                </select>
+                                @error('residential_rso') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-3 border-success">
+                    <div class="card-header text-bg-success">Primary Information</div>
+                    <div class="card-body">
                         <!-- Rso Code -->
                         <div class="row mb-3">
                             <label for="rso_code" class="col-sm-3 col-form-label">Rso Code</label>
@@ -95,6 +113,58 @@
                             </div>
                         </div>
 
+                        <!-- RID -->
+                        <div class="row mb-3">
+                            <label for="rid" class="col-sm-3 col-form-label">RID</label>
+                            <div class="col-sm-9">
+                                <input name="rid" id="rid" type="text" class="form-control @error('rid') is-invalid @enderror"
+                                       value="{{ old('rid') }}" placeholder="Enter RID">
+                                @error('rid') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+
+                        <!-- SR-No -->
+                        <div class="row mb-3">
+                            <label for="sr_no" class="col-sm-3 col-form-label">SR-No</label>
+                            <div class="col-sm-9">
+                                <input name="sr_no" id="sr_no" type="text"
+                                       class="form-control @error('sr_no') is-invalid @enderror" value="{{ old('sr_no') }}"
+                                       placeholder="Enter SR-No">
+                                @error('sr_no') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+
+                        <!-- Salary -->
+                        <div class="row mb-3">
+                            <label for="salary" class="col-sm-3 col-form-label">Salary</label>
+                            <div class="col-sm-9">
+                                <input name="salary" id="salary" type="number"
+                                       class="form-control @error('salary') is-invalid @enderror" value="{{ old('salary') }}"
+                                       placeholder="Enter Salary">
+                                @error('salary') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+
+                        <!-- Joining Date -->
+                        <div class="row mb-3">
+                            <label for="joining_date" class="col-sm-3 col-form-label">Joining Date</label>
+                            <div class="col-sm-9">
+                                <div class="input-group">
+                                    <input name="joining_date" id="joining_date" type="text" class="flatpickr form-control @error('joining_date') is-invalid @enderror" placeholder="Select date">
+                                    <span class="input-group-text input-group-addon" data-toggle>
+                                <i data-feather="calendar"></i>
+                            </span>
+                                </div>
+                                @error('joining_date') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="card mb-3 border-success">
+                    <div class="card-header text-bg-success">Personal Information</div>
+                    <div class="card-body">
                         <!-- Personal Number -->
                         <div class="row mb-3">
                             <label for="personal_number" class="col-sm-3 col-form-label">Personal Number</label>
@@ -103,16 +173,6 @@
                                        class="form-control @error('personal_number') is-invalid @enderror" value="{{ old('personal_number') }}"
                                        placeholder="Enter Personal Number">
                                 @error('personal_number') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                        </div>
-
-                        <!-- RID -->
-                        <div class="row mb-3">
-                            <label for="rid" class="col-sm-3 col-form-label">RID</label>
-                            <div class="col-sm-9">
-                                <input name="rid" id="rid" type="text" class="form-control @error('rid') is-invalid @enderror"
-                                       value="{{ old('rid') }}" placeholder="Enter RID">
-                                @error('rid') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         </div>
 
@@ -195,83 +255,6 @@
                             </div>
                         </div>
 
-                        <!-- SR-No -->
-                        <div class="row mb-3">
-                            <label for="sr_no" class="col-sm-3 col-form-label">SR-No</label>
-                            <div class="col-sm-9">
-                                <input name="sr_no" id="sr_no" type="text"
-                                       class="form-control @error('sr_no') is-invalid @enderror" value="{{ old('sr_no') }}"
-                                       placeholder="Enter SR-No">
-                                @error('sr_no') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                        </div>
-
-                        <!-- Account Number -->
-                        <div class="row mb-3">
-                            <label for="account_number" class="col-sm-3 col-form-label">Account Number</label>
-                            <div class="col-sm-9">
-                                <input name="account_number" id="account_number" type="number"
-                                       class="form-control @error('account_number') is-invalid @enderror" value="{{ old('account_number') }}"
-                                       placeholder="Enter Account Number">
-                                @error('account_number') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                        </div>
-
-                        <!-- Bank Name -->
-                        <div class="row mb-3">
-                            <label for="bank_name" class="col-sm-3 col-form-label">Bank Name</label>
-                            <div class="col-sm-9">
-                                <input name="bank_name" id="bank_name" type="text"
-                                       class="form-control @error('bank_name') is-invalid @enderror" value="{{ old('bank_name') }}"
-                                       placeholder="Enter Bank Name">
-                                @error('bank_name') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                        </div>
-
-                        <!-- Brunch Name -->
-                        <div class="row mb-3">
-                            <label for="brunch_name" class="col-sm-3 col-form-label">Brunch Name</label>
-                            <div class="col-sm-9">
-                                <input name="brunch_name" id="brunch_name" type="text"
-                                       class="form-control @error('brunch_name') is-invalid @enderror" value="{{ old('brunch_name') }}"
-                                       placeholder="Enter Brunch Name">
-                                @error('brunch_name') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                        </div>
-
-                        <!-- Routing Number -->
-                        <div class="row mb-3">
-                            <label for="routing_number" class="col-sm-3 col-form-label">Routing Number</label>
-                            <div class="col-sm-9">
-                                <input name="routing_number" id="routing_number" type="number"
-                                       class="form-control @error('routing_number') is-invalid @enderror" value="{{ old('routing_number') }}"
-                                       placeholder="Enter Routing Number">
-                                @error('routing_number') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                        </div>
-
-                        <!-- Salary -->
-                        <div class="row mb-3">
-                            <label for="salary" class="col-sm-3 col-form-label">Salary</label>
-                            <div class="col-sm-9">
-                                <input name="salary" id="salary" type="number"
-                                       class="form-control @error('salary') is-invalid @enderror" value="{{ old('salary') }}"
-                                       placeholder="Enter Salary">
-                                @error('salary') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                        </div>
-
-                        <!-- Education -->
-                        <div class="row mb-3">
-                            <label for="education" class="col-sm-3 col-form-label">Education</label>
-                            <div class="col-sm-9">
-                                <input name="education" id="education" type="text"
-                                       class="form-control @error('education') is-invalid @enderror" value="{{ old('education') }}"
-                                       placeholder="e.g SSC/HSC/Dakhil">
-                                @error('education') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                        </div>
-
                         <!-- Marital Status -->
                         <div class="row mb-3">
                             <label for="marital_status" class="col-sm-3 col-form-label">Marital Status</label>
@@ -306,8 +289,8 @@
                                 <div class="input-group">
                                     <input name="dob" id="dob" type="text" class="flatpickr form-control @error('dob') is-invalid @enderror" placeholder="Select date">
                                     <span class="input-group-text input-group-addon" data-toggle>
-                                        <i data-feather="calendar"></i>
-                                    </span>
+                                <i data-feather="calendar"></i>
+                            </span>
                                 </div>
                                 @error('dob') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
@@ -323,42 +306,80 @@
                                 @error('nid') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         </div>
-
-                        <!-- Residential Rso -->
-                        <div class="row mb-3">
-                            <label for="residential_rso" class="col-sm-3 col-form-label">Residential Rso</label>
-                            <div class="col-sm-9">
-                                <select name="residential_rso" class="form-select @error('residential_rso') is-invalid @enderror" id="residential_rso">
-                                    <option value="">-- Select Residential Rso --</option>
-                                    <option value="yes">Yes</option>
-                                    <option value="no">No</option>
-                                </select>
-                                @error('residential_rso') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                        </div>
-
-                        <!-- Joining Date -->
-                        <div class="row mb-3">
-                            <label for="joining_date" class="col-sm-3 col-form-label">Joining Date</label>
-                            <div class="col-sm-9">
-                                <div class="input-group">
-                                    <input name="joining_date" id="joining_date" type="text" class="flatpickr form-control @error('joining_date') is-invalid @enderror" placeholder="Select date">
-                                    <span class="input-group-text input-group-addon" data-toggle>
-                                        <i data-feather="calendar"></i>
-                                    </span>
-                                </div>
-                                @error('joining_date') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                        </div>
-
-                        <button type="submit" class="btn btn-sm btn-primary me-2 btn-submit">Create New Rso</button>
-                        <a href="{{ route('rso.index') }}" class="btn btn-sm btn-info me-2 text-white">Back</a>
-                    </form>
+                    </div>
                 </div>
-            </div>
+
+                <div class="card mb-3 border-success">
+                    <div class="card-header text-bg-success">Account Information</div>
+                    <div class="card-body">
+                        <!-- Bank Name -->
+                        <div class="row mb-3">
+                            <label for="bank_name" class="col-sm-3 col-form-label">Bank Name</label>
+                            <div class="col-sm-9">
+                                <input name="bank_name" id="bank_name" type="text"
+                                       class="form-control @error('bank_name') is-invalid @enderror" value="{{ old('bank_name') }}"
+                                       placeholder="Enter Bank Name">
+                                @error('bank_name') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+
+                        <!-- Brunch Name -->
+                        <div class="row mb-3">
+                            <label for="brunch_name" class="col-sm-3 col-form-label">Brunch Name</label>
+                            <div class="col-sm-9">
+                                <input name="brunch_name" id="brunch_name" type="text"
+                                       class="form-control @error('brunch_name') is-invalid @enderror" value="{{ old('brunch_name') }}"
+                                       placeholder="Enter Brunch Name">
+                                @error('brunch_name') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+
+                        <!-- Routing Number -->
+                        <div class="row mb-3">
+                            <label for="routing_number" class="col-sm-3 col-form-label">Routing Number</label>
+                            <div class="col-sm-9">
+                                <input name="routing_number" id="routing_number" type="number"
+                                       class="form-control @error('routing_number') is-invalid @enderror" value="{{ old('routing_number') }}"
+                                       placeholder="Enter Routing Number">
+                                @error('routing_number') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+
+                        <!-- Account Number -->
+                        <div class="row mb-3">
+                            <label for="account_number" class="col-sm-3 col-form-label">Account Number</label>
+                            <div class="col-sm-9">
+                                <input name="account_number" id="account_number" type="number"
+                                       class="form-control @error('account_number') is-invalid @enderror" value="{{ old('account_number') }}"
+                                       placeholder="Enter Account Number">
+                                @error('account_number') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-3 border-success">
+                    <div class="card-header text-bg-success">Education Information</div>
+                    <div class="card-body">
+                        <!-- Education -->
+                        <div class="row mb-3">
+                            <label for="education" class="col-sm-3 col-form-label">Education</label>
+                            <div class="col-sm-9">
+                                <input name="education" id="education" type="text"
+                                       class="form-control @error('education') is-invalid @enderror" value="{{ old('education') }}"
+                                       placeholder="e.g SSC/HSC/Dakhil">
+                                @error('education') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-sm btn-success me-2 btn-submit">Create New Rso</button>
+                <a href="{{ route('rso.index') }}" class="btn btn-sm btn-info me-2 text-white">Back</a>
+            </form>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-12">
             <div class="card mb-3">
                 @if(session()->has('import_errors'))
                     @foreach(session()->get('import_errors') as $failure)

@@ -43,7 +43,7 @@
 
     <style>
         [x-cloak] { display: none !important; }
-        
+
         #loading {
             position: fixed;
             left: 0;
@@ -94,7 +94,7 @@
         @include('layouts.partials.navbar')
 
         <!-- partial:_content -->
-        <div class="page-content bg-light">
+        <div class="page-content">
 
             <!-- Sessions notifications -->
             @switch(session())

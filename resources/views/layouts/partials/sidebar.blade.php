@@ -1,5 +1,5 @@
 <nav class="sidebar">
-    <div class="sidebar-header bg-light">
+    <div class="sidebar-header">
         <a href="{{ route('dashboard') }}" class="sidebar-brand">
             EN<span>Studio</span>
         </a>
@@ -9,7 +9,7 @@
             <span></span>
         </div>
     </div>
-    <div class="sidebar-body bg-light">
+    <div class="sidebar-body">
         <ul class="nav">
             <li class="nav-item nav-category">Main</li>
             <li class="nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
@@ -60,26 +60,6 @@
                         <!-- Activation Summary -->
                         <li class="nav-item">
                             <a href="{{ route('report.activation.summary') }}" class="nav-link {{ request()->routeIs('report.activation.summary') ? 'active' : '' }}">Activation Summary</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-            <!-- Retailer -->
-            <li class="nav-item {{ request()->routeIs('retailer.*') ? 'active' : '' }}">
-                <a class="nav-link" data-bs-toggle="collapse" href="#retailer" role="button" aria-expanded="false" aria-controls="retailer">
-                    <i class="link-icon" data-feather="info"></i>
-                    <span class="link-title">Retailer</span>
-                    <i class="link-arrow" data-feather="chevron-down"></i>
-                </a>
-                <div class="collapse {{ request()->routeIs('retailer.*') ? 'show' : '' }}" id="retailer">
-                    <ul class="nav sub-menu">
-                        @if( auth()->user()->role == 'superadmin' )
-                        <li class="nav-item">
-                            <a href="{{ route('retailer.create') }}" class="nav-link {{ request()->routeIs('retailer.create') ? 'active' : '' }}">Add New</a>
-                        </li>
-                        @endif
-                        <li class="nav-item">
-                            <a href="{{ route('retailer.index') }}" class="nav-link {{ request()->routeIs('retailer.index') ? 'active' : '' }}">All Retailers</a>
                         </li>
                     </ul>
                 </div>
