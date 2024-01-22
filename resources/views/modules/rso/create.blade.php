@@ -361,6 +361,52 @@
                 <div class="card mb-3 border-success">
                     <div class="card-header text-bg-success">Education Information</div>
                     <div class="card-body">
+                        <!-- Serial Number -->
+                        <div class="row mb-3">
+                            <label for="serial_no" class="col-sm-3 col-form-label">Serial Number</label>
+                            <div class="col-sm-9">
+                                <input name="serial_no" id="serial_no" type="text"
+                                       class="form-control @error('serial_no') is-invalid @enderror" value="{{ old('serial_no') }}"
+                                       placeholder="e.g 0017394">
+                                @error('serial_no') <span class="text-danger">{{ $message }}</span> @enderror
+                                <small class="text-muted">Enter seven digit serial number here.</small>
+                            </div>
+                        </div>
+
+                        <!-- DB Number -->
+                        <div class="row mb-3">
+                            <label for="db_no" class="col-sm-3 col-form-label">DB Number</label>
+                            <div class="col-sm-9">
+                                <input name="db_no" id="db_no" type="text"
+                                       class="form-control @error('db_no') is-invalid @enderror" value="{{ old('db_no') }}"
+                                       placeholder="e.g 0017394">
+                                @error('db_no') <span class="text-danger">{{ $message }}</span> @enderror
+                                <small class="text-muted">Enter eight digit DBJSC/MBCD/DBCSC number here.</small>
+                            </div>
+                        </div>
+
+                        <!-- Registration Number -->
+                        <div class="row mb-3">
+                            <label for="registration_no" class="col-sm-3 col-form-label">Registration Number</label>
+                            <div class="col-sm-9">
+                                <input name="registration_no" id="registration_no" type="text"
+                                       class="form-control @error('registration_no') is-invalid @enderror" value="{{ old('registration_no') }}"
+                                       placeholder="e.g 0017394">
+                                @error('registration_no') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+
+                        <!-- Registration Number -->
+                        <div class="row mb-3">
+                            <label for="registration_no" class="col-sm-3 col-form-label">Education</label>
+                            <div class="col-sm-9">
+                                <input name="registration_no" id="registration_no" type="text"
+                                       class="form-control @error('registration_no') is-invalid @enderror" value="{{ old('registration_no') }}"
+                                       placeholder="e.g 0017394">
+                                @error('registration_no') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+
                         <!-- Education -->
                         <div class="row mb-3">
                             <label for="education" class="col-sm-3 col-form-label">Education</label>

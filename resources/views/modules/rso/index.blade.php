@@ -34,8 +34,8 @@
                     </thead>
                     <tbody>
                     @foreach( $rsos as $sl => $rso )
-                        <tr>
-                            <td><span class="text-muted">{{ ++$sl }}</span></td>
+                        <tr class="{{ $rso->status == 0 ? 'text-bg-warning' : '' }}">
+                            <td><span>{{ ++$sl }}</span></td>
                             <td>{{ $rso->ddHouse->code }}</td>
                             <td>{{ optional($rso->user)->name }}</td>
                             <td>{{ $rso->supervisor->user->name }}</td>
@@ -43,7 +43,7 @@
                             <td>{{ $rso->itop_number }}</td>
                             <td>{{ $rso->pool_number }}</td>
                             <td>{{ $rso->joining_date->toFormattedDateString() }}</td>
-                            <td>
+                            <td style="font-weight: bold">
                                 @switch( $rso->status )
                                     @case(1)
                                         <p class="text-success">Active</p>
