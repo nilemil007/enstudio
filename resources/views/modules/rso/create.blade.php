@@ -7,12 +7,12 @@
 
     <div class="row">
         <div class="col-md-12">
-            <form id="rsoForm" action="{{ route('rso.store') }}" method="POST">
+            <form id="rsoForm" action="{{ route('rso.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
                 <div class="card mb-3 border-success">
                     <div class="card-header text-bg-success">Basic Information</div>
-                    <div class="card-body">
+                    <div style="background-color: #a3ffb22e" class="card-body">
                         <!-- Distribution House -->
                         <div class="row mb-3">
                             <label for="dd_house_id" class="col-sm-3 col-form-label">Distribution House</label>
@@ -61,25 +61,12 @@
                                 @error('routes') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         </div>
-
-                        <!-- Residential Rso -->
-                        <div class="row mb-3">
-                            <label for="residential_rso" class="col-sm-3 col-form-label">Residential Rso</label>
-                            <div class="col-sm-9">
-                                <select name="residential_rso" class="form-select @error('residential_rso') is-invalid @enderror" id="residential_rso">
-                                    <option value="">-- Select Residential Rso --</option>
-                                    <option value="yes">Yes</option>
-                                    <option value="no">No</option>
-                                </select>
-                                @error('residential_rso') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                        </div>
                     </div>
                 </div>
 
                 <div class="card mb-3 border-success">
                     <div class="card-header text-bg-success">Primary Information</div>
-                    <div class="card-body">
+                    <div style="background-color: #a3ffb22e" class="card-body">
                         <!-- Rso Code -->
                         <div class="row mb-3">
                             <label for="rso_code" class="col-sm-3 col-form-label">Rso Code</label>
@@ -113,16 +100,6 @@
                             </div>
                         </div>
 
-                        <!-- RID -->
-                        <div class="row mb-3">
-                            <label for="rid" class="col-sm-3 col-form-label">RID</label>
-                            <div class="col-sm-9">
-                                <input name="rid" id="rid" type="text" class="form-control @error('rid') is-invalid @enderror"
-                                       value="{{ old('rid') }}" placeholder="Enter RID">
-                                @error('rid') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                        </div>
-
                         <!-- SR-No -->
                         <div class="row mb-3">
                             <label for="sr_no" class="col-sm-3 col-form-label">SR-No</label>
@@ -134,14 +111,16 @@
                             </div>
                         </div>
 
-                        <!-- Salary -->
+                        <!-- Residential Rso -->
                         <div class="row mb-3">
-                            <label for="salary" class="col-sm-3 col-form-label">Salary</label>
+                            <label for="residential_rso" class="col-sm-3 col-form-label">Residential Rso</label>
                             <div class="col-sm-9">
-                                <input name="salary" id="salary" type="number"
-                                       class="form-control @error('salary') is-invalid @enderror" value="{{ old('salary') }}"
-                                       placeholder="Enter Salary">
-                                @error('salary') <span class="text-danger">{{ $message }}</span> @enderror
+                                <select name="residential_rso" class="form-select @error('residential_rso') is-invalid @enderror" id="residential_rso">
+                                    <option value="">-- Select Residential Rso --</option>
+                                    <option value="yes">Yes</option>
+                                    <option value="no">No</option>
+                                </select>
+                                @error('residential_rso') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         </div>
 
@@ -158,21 +137,43 @@
                                 @error('joining_date') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         </div>
-
                     </div>
                 </div>
 
                 <div class="card mb-3 border-success">
-                    <div class="card-header text-bg-success">Personal Information</div>
-                    <div class="card-body">
-                        <!-- Personal Number -->
+                    <div class="card-header text-bg-success">Temporary Employment Contract</div>
+                    <div style="background-color: #a3ffb22e" class="card-body">
+                        <!-- Date -->
                         <div class="row mb-3">
-                            <label for="personal_number" class="col-sm-3 col-form-label">Personal Number</label>
+                            <label for="date" class="col-sm-3 col-form-label">Date</label>
                             <div class="col-sm-9">
-                                <input name="personal_number" id="personal_number" type="number"
-                                       class="form-control @error('personal_number') is-invalid @enderror" value="{{ old('personal_number') }}"
-                                       placeholder="Enter Personal Number">
-                                @error('personal_number') <span class="text-danger">{{ $message }}</span> @enderror
+                                <div class="input-group">
+                                    <input name="date" id="date" value="{{ now() }}" type="text" class="flatpickr form-control @error('date') is-invalid @enderror" placeholder="Select date">
+                                    <span class="input-group-text input-group-addon" data-toggle>
+                                <i data-feather="calendar"></i>
+                            </span>
+                                </div>
+                                @error('date') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+
+                        <!-- RID -->
+                        <div class="row mb-3">
+                            <label for="rid" class="col-sm-3 col-form-label">RID</label>
+                            <div class="col-sm-9">
+                                <input name="rid" id="rid" type="text" class="form-control @error('rid') is-invalid @enderror"
+                                       value="{{ old('rid') }}" placeholder="Enter RID">
+                                @error('rid') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+
+                        <!-- Rso Name -->
+                        <div class="row mb-3">
+                            <label for="name" class="col-sm-3 col-form-label">Rso Name</label>
+                            <div class="col-sm-9">
+                                <input name="name" id="name" type="text" class="form-control @error('name') is-invalid @enderror"
+                                       value="{{ old('name') }}" placeholder="Enter Father Name">
+                                @error('name') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         </div>
 
@@ -226,13 +227,104 @@
                             </div>
                         </div>
 
-                        <!-- Address -->
+                        <!-- Present Address -->
                         <div class="row mb-3">
-                            <label for="address" class="col-sm-3 col-form-label">Address</label>
+                            <label for="present_address" class="col-sm-3 col-form-label">Present Address</label>
                             <div class="col-sm-9">
-                                <input name="address" id="address" type="text" class="form-control @error('address') is-invalid @enderror"
-                                       value="{{ old('address') }}" placeholder="Enter Address">
-                                @error('address') <span class="text-danger">{{ $message }}</span> @enderror
+                                <input name="present_address" id="present_address" type="text" class="form-control @error('present_address') is-invalid @enderror"
+                                       value="{{ old('present_address') }}" placeholder="Enter Present Address">
+                                @error('present_address') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+
+                        <!-- Permanent Address -->
+                        <div class="row mb-3">
+                            <label for="permanent_address" class="col-sm-3 col-form-label">Permanent Address</label>
+                            <div class="col-sm-9">
+                                <input name="permanent_address" id="permanent_address" type="text" class="form-control @error('permanent_address') is-invalid @enderror"
+                                       value="{{ old('permanent_address') }}" placeholder="Enter Permanent Address">
+                                @error('permanent_address') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+
+                        <!-- Witness Name -->
+                        <div class="row mb-3">
+                            <label for="witness_name" class="col-sm-3 col-form-label">Witness Name</label>
+                            <div class="col-sm-9">
+                                <input name="witness_name" id="witness_name" type="text" class="form-control @error('witness_name') is-invalid @enderror"
+                                       value="{{ old('witness_name') }}" placeholder="Enter Witness Name">
+                                @error('witness_name') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+
+                        <!-- Witness Number -->
+                        <div class="row mb-3">
+                            <label for="witness_number" class="col-sm-3 col-form-label">Witness Number</label>
+                            <div class="col-sm-9">
+                                <input name="witness_number" id="witness_number" type="text" class="form-control @error('witness_number') is-invalid @enderror"
+                                       value="{{ old('witness_number') }}" placeholder="Enter Witness Number">
+                                @error('witness_number') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+
+                        <!-- Salary -->
+                        <div class="row mb-3">
+                            <label for="salary" class="col-sm-3 col-form-label">Salary</label>
+                            <div class="col-sm-9">
+                                <input name="salary" id="salary" type="number"
+                                       class="form-control @error('salary') is-invalid @enderror" value="{{ old('salary') }}"
+                                       placeholder="Enter Salary">
+                                @error('salary') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+
+                        <!-- Employee Signature -->
+                        <div class="row mb-3">
+                            <label for="employee_signature" class="col-sm-3 col-form-label">Employee Signature</label>
+                            <div class="col-sm-9">
+                                <input name="employee_signature" id="employee_signature" type="file" class="form-control @error('employee_signature') is-invalid @enderror" accept="image/png">
+                                @error('employee_signature') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-3 border-success">
+                    <div class="card-header text-bg-success">Personal Information</div>
+                    <div style="background-color: #a3ffb22e" class="card-body">
+                        <!-- Personal Number -->
+                        <div class="row mb-3">
+                            <label for="personal_number" class="col-sm-3 col-form-label">Personal Number</label>
+                            <div class="col-sm-9">
+                                <input name="personal_number" id="personal_number" type="number"
+                                       class="form-control @error('personal_number') is-invalid @enderror" value="{{ old('personal_number') }}"
+                                       placeholder="Enter Personal Number">
+                                @error('personal_number') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+
+                        <!-- D.O.B -->
+                        <div class="row mb-3">
+                            <label for="dob" class="col-sm-3 col-form-label">Date Of Birth</label>
+                            <div class="col-sm-9">
+                                <div class="input-group">
+                                    <input name="dob" id="dob" type="text" class="flatpickr form-control @error('dob') is-invalid @enderror" placeholder="Select date">
+                                    <span class="input-group-text input-group-addon" data-toggle>
+                                <i data-feather="calendar"></i>
+                            </span>
+                                </div>
+                                @error('dob') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+
+                        <!-- NID -->
+                        <div class="row mb-3">
+                            <label for="nid" class="col-sm-3 col-form-label">NID</label>
+                            <div class="col-sm-9">
+                                <input name="nid" id="nid" type="number"
+                                       class="form-control @error('nid') is-invalid @enderror" value="{{ old('nid') }}"
+                                       placeholder="Enter NID Number">
+                                @error('nid') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         </div>
 
@@ -268,6 +360,28 @@
                             </div>
                         </div>
 
+                        <!-- Nationality -->
+                        <div class="row mb-3">
+                            <label for="nationality" class="col-sm-3 col-form-label">Nationality</label>
+                            <div class="col-sm-9">
+                                <input name="nationality" id="nationality" type="text" class="form-control @error('nationality') is-invalid @enderror"
+                                       value="{{ old('nationality', 'Bangladeshi (By Birth)') }}"
+                                       placeholder="Enter Nationality">
+                                @error('nationality') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+
+                        <!-- Religion -->
+                        <div class="row mb-3">
+                            <label for="religion" class="col-sm-3 col-form-label">Religion</label>
+                            <div class="col-sm-9">
+                                <input name="religion" id="religion" type="text" class="form-control @error('religion') is-invalid @enderror"
+                                       value="{{ old('religion', 'Islam') }}"
+                                       placeholder="Enter Religion">
+                                @error('religion') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+
                         <!-- Gender -->
                         <div class="row mb-3">
                             <label for="gender" class="col-sm-3 col-form-label">Gender</label>
@@ -282,28 +396,234 @@
                             </div>
                         </div>
 
-                        <!-- D.O.B -->
+                        <!-- Place Of Birth -->
                         <div class="row mb-3">
-                            <label for="dob" class="col-sm-3 col-form-label">D.O.B</label>
+                            <label for="place_of_birth" class="col-sm-3 col-form-label">Place Of Birth</label>
+                            <div class="col-sm-9">
+                                <input name="place_of_birth" id="place_of_birth" type="text" class="form-control @error('place_of_birth') is-invalid @enderror"
+                                       value="{{ old('place_of_birth') }}"
+                                       placeholder="Enter Place Of Birth">
+                                @error('place_of_birth') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+
+                        <!-- RS0 Signature -->
+                        <div class="row mb-3">
+                            <label for="rso_sign" class="col-sm-3 col-form-label">RS0 Signature</label>
+                            <div class="col-sm-9">
+                                <input name="rso_sign" type="file" class="form-control" accept="image/png" required>
+                                @error('rso_sign') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div x-data="{education: ''}" class="card mb-3 border-success">
+                    <div class="card-header text-bg-success">Education Information</div>
+                    <div style="background-color: #a3ffb22e" class="card-body">
+                        <!-- Examination -->
+                        <div class="row mb-3">
+                            <label for="education" class="col-sm-3 col-form-label">Examination</label>
+                            <div class="col-sm-9">
+                                <select x-model="education" class="form-select" name="education" id="education">
+                                    <option value="" selected>-- Select Examination --</option>
+                                    <option value="junior school certificate.jsc">JSC</option>
+                                    <option value="secondary school certificate.ssc">SSC</option>
+                                    <option value="secondary school certificate.ssc.1999">SSC (1999)</option>
+                                    <option value="higher secondary certificate.hsc">HSC</option>
+                                    <option value="higher secondary certificate.hsc.technical">HSC (Technical)</option>
+                                    <option value="dakhil examination.dakhil">Dakhil</option>
+                                    <option value="secondary school certificate.ssc.bou">Bangladesh Open University (SSC)</option>
+                                </select>
+                                @error('education') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+
+                        <!-- Serial Number -->
+                        <div class="row mb-3" x-cloak x-show="education === 'junior school certificate.jsc' || education === 'higher secondary certificate.hsc' || education === 'dakhil examination.dakhil' || education === 'higher secondary certificate.hsc.technical' || education === 'secondary school certificate.ssc.1999' || education === 'secondary school certificate.ssc'">
+                            <label for="serial_number" class="col-sm-3 col-form-label">Serial Number</label>
+                            <div class="col-sm-9">
+                                <input name="serial_number" id="serial_number" type="number"
+                                       class="form-control" value="{{ old('serial_number') }}" placeholder="e.g 0017394">
+                                <small class="text-muted">Enter seven digit DBJSC number here.</small>
+                            </div>
+                        </div>
+
+                        <!-- DBJSC Number -->
+                        <div class="row mb-3" x-cloak x-show="education === 'junior school certificate.jsc'">
+                            <label for="dbjsc" class="col-sm-3 col-form-label">DBJSC Number</label>
+                            <div class="col-sm-9">
+                                <input name="dbjsc" id="dbjsc" type="number"
+                                       class="form-control" value="{{ old('dbjsc') }}"
+                                       placeholder="e.g 0017394">
+                                <small class="text-muted">Enter seven digit DBJSC number here.</small>
+                            </div>
+                        </div>
+
+                        <!-- DBCSC Number -->
+                        <div class="row mb-3" x-cloak x-show="education === 'secondary school certificate.ssc' || examination === 'secondary school certificate.ssc.1999'">
+                            <label for="dbcsc" class="col-sm-3 col-form-label">DBCSC Number</label>
+                            <div class="col-sm-9">
+                                <input name="dbcsc" id="dbcsc" type="number"
+                                       class="form-control" value="{{ old('dbcsc') }}"
+                                       placeholder="e.g 0017394">
+                                <small class="text-muted">Enter seven digit DBCSC number here.</small>
+                            </div>
+                        </div>
+
+                        <!-- DBCHC Number -->
+                        <div class="row mb-3" x-cloak x-show="education === 'higher secondary certificate.hsc'">
+                            <label for="dbchc" class="col-sm-3 col-form-label">DBCHC Number</label>
+                            <div class="col-sm-9">
+                                <input name="dbchc" id="dbchc" type="number" class="form-control" value="{{ old('dbchc') }}" placeholder="e.g 0017394">
+                                <small class="text-muted">Enter seven digit DBCHC number here.</small>
+                            </div>
+                        </div>
+
+                        <!-- MBCD Number -->
+                        <div class="row mb-3" x-cloak x-show="education === 'dakhil examination.dakhil'">
+                            <label for="mbcd" class="col-sm-3 col-form-label">MBCD Number</label>
+                            <div class="col-sm-9">
+                                <input name="mbcd" id="mbcd" type="number" class="form-control" value="{{ old('mbcd') }}" placeholder="e.g 0017394">
+                                <small class="text-muted">Enter seven digit MBCD number here.</small>
+                            </div>
+                        </div>
+
+                        <!-- Student ID Number -->
+                        <div class="row mb-3" x-cloak x-show="education === 'secondary school certificate.ssc' || examination === 'secondary school certificate.ssc.1999'">
+                            <label for="student_id" class="col-sm-3 col-form-label">Student ID Number</label>
+                            <div class="col-sm-9">
+                                <input name="student_id" id="student_id" type="number"
+                                       class="form-control" value="{{ old('student_id') }}"
+                                       placeholder="e.g 0017394">
+                                <small class="text-muted">Enter seven digit Student ID number here.</small>
+                            </div>
+                        </div>
+
+                        <!-- Registration Number -->
+                        <div class="row mb-3" x-cloak x-show="education === 'junior school certificate.jsc' || education === 'higher secondary certificate.hsc' || education === 'dakhil examination.dakhil' || education === 'higher secondary certificate.hsc.technical' || education === 'secondary school certificate.ssc.1999' || education === 'secondary school certificate.ssc'">
+                            <label for="registration_no" class="col-sm-3 col-form-label">Registration Number</label>
+                            <div class="col-sm-9">
+                                <input name="registration_no" id="registration_no" type="number"
+                                       class="form-control" value="{{ old('registration_no') }}"
+                                       placeholder="e.g 0017394">
+                                <small class="text-muted">Enter seven digit Registration number here.</small>
+                            </div>
+                        </div>
+
+                        <!-- Board -->
+                        <div class="row mb-3">
+                            <label for="board" class="col-sm-3 col-form-label">Board</label>
+                            <div class="col-sm-9">
+                                <input name="board" id="board" type="text" class="form-control" value="{{ old('board') }}" placeholder="e.g 0017394">
+                            </div>
+                        </div>
+
+                        <!-- Session -->
+                        <div class="row mb-3" x-cloak x-show="education === 'junior school certificate.jsc' || education === 'higher secondary certificate.hsc' || education === 'dakhil examination.dakhil' || education === 'higher secondary certificate.hsc.technical' || education === 'secondary school certificate.ssc.1999' || education === 'secondary school certificate.ssc'">
+                            <label for="session" class="col-sm-3 col-form-label">Session</label>
+                            <div class="col-sm-9">
+                                <input name="session" id="session" type="text" class="form-control" value="{{ old('session') }}" placeholder="e.g 0017394">
+                            </div>
+                        </div>
+
+                        <!-- Examination -->
+                        <div class="row mb-3" x-cloak x-show="education === 'junior school certificate.jsc' || education === 'higher secondary certificate.hsc' || education === 'dakhil examination.dakhil' || education === 'higher secondary certificate.hsc.technical' || education === 'secondary school certificate.ssc.1999' || education === 'secondary school certificate.ssc'">
+                            <label for="examination" class="col-sm-3 col-form-label">Examination</label>
+                            <div class="col-sm-9">
+                                <input name="examination" id="examination" type="number" class="form-control" value="{{ old('examination') }}" placeholder="e.g 0017394">
+                            </div>
+                        </div>
+
+                        <!-- Isntitute Name -->
+                        <div class="row mb-3" x-cloak x-show="education === 'junior school certificate.jsc' || education === 'higher secondary certificate.hsc' || education === 'dakhil examination.dakhil' || education === 'higher secondary certificate.hsc.technical' || education === 'secondary school certificate.ssc.1999' || education === 'secondary school certificate.ssc'">
+                            <label for="institute_name" class="col-sm-3 col-form-label">Isntitute Name</label>
+                            <div class="col-sm-9">
+                                <input name="institute_name" id="institute_name" type="text" class="form-control" value="{{ old('institute_name') }}" placeholder="e.g 0017394">
+                            </div>
+                        </div>
+
+                        <!-- Certificate Thana -->
+                        <div class="row mb-3" x-cloak x-show="education === 'junior school certificate.jsc' || education === 'higher secondary certificate.hsc' || education === 'dakhil examination.dakhil' || education === 'secondary school certificate.ssc.1999' || education === 'secondary school certificate.ssc'">
+                            <label for="certificate_thana" class="col-sm-3 col-form-label">Certificate Thana</label>
+                            <div class="col-sm-9">
+                                <input name="certificate_thana" id="certificate_thana" type="text" class="form-control" value="{{ old('certificate_thana') }}" placeholder="e.g 0017394">
+                            </div>
+                        </div>
+
+                        <!-- Roll No -->
+                        <div class="row mb-3" x-cloak x-show="education === 'junior school certificate.jsc' || education === 'higher secondary certificate.hsc' || education === 'dakhil examination.dakhil' || education === 'higher secondary certificate.hsc.technical' || education === 'secondary school certificate.ssc.1999' || education === 'secondary school certificate.ssc'">
+                            <label for="roll_no" class="col-sm-3 col-form-label">Roll No</label>
+                            <div class="col-sm-9">
+                                <input name="roll_no" id="roll_no" type="number" class="form-control" value="{{ old('roll_no') }}" placeholder="e.g 0017394">
+                            </div>
+                        </div>
+
+                        <!-- Subject -->
+                        <div class="row mb-3" x-cloak x-show="education === 'higher secondary certificate.hsc' || education === 'secondary school certificate.ssc.1999' || education === 'secondary school certificate.ssc'">
+                            <label for="subject" class="col-sm-3 col-form-label">Subject</label>
+                            <div class="col-sm-9">
+                                <input name="subject" id="subject" type="text" class="form-control" value="{{ old('subject') }}" placeholder="e.g 0017394">
+                            </div>
+                        </div>
+
+                        <!-- Division -->
+                        <div class="row mb-3" x-cloak x-show="education === 'secondary school certificate.ssc.1999'">
+                            <label for="division" class="col-sm-3 col-form-label">Division</label>
+                            <div class="col-sm-9">
+                                <input name="division" id="division" type="text" class="form-control" value="{{ old('division') }}" placeholder="e.g 0017394">
+                            </div>
+                        </div>
+
+                        <!-- GPA -->
+                        <div class="row mb-3" x-cloak x-show="education === 'junior school certificate.jsc' || education === 'higher secondary certificate.hsc' || education === 'dakhil examination.dakhil' || education === 'higher secondary certificate.hsc.technical' || education === 'secondary school certificate.ssc'">
+                            <label for="gpa" class="col-sm-3 col-form-label">G.P.A</label>
+                            <div class="col-sm-9">
+                                <input name="gpa" id="gpa" type="text" class="form-control" value="{{ old('gpa') }}" placeholder="e.g 0017394">
+                            </div>
+                        </div>
+
+                        <!-- DOB In Reg Card -->
+                        <div class="row mb-3" x-cloak x-show="education === 'junior school certificate.jsc' || education === 'dakhil examination.dakhil' || education === 'secondary school certificate.ssc.1999' || education === 'secondary school certificate.ssc'">
+                            <label for="dob_in_reg_card" class="col-sm-3 col-form-label">DOB In Reg Card</label>
+                            <div class="col-sm-9">
+                                <input name="dob_in_reg_card" id="dob_in_reg_card" type="text" class="form-control" value="{{ old('dob_in_reg_card') }}" placeholder="e.g 0017394">
+                            </div>
+                        </div>
+
+                        <!-- Month Of -->
+                        <div class="row mb-3" x-cloak x-show="education === 'higher secondary certificate.hsc.technical' || education === 'secondary school certificate.ssc.1999'">
+                            <label for="month_of" class="col-sm-3 col-form-label">Month Of</label>
+                            <div class="col-sm-9">
+                                <input name="month_of" id="month_of" type="text" class="form-control" value="{{ old('month_of') }}" placeholder="e.g 0017394">
+                            </div>
+                        </div>
+
+                        <!-- Issue Date -->
+                        <div class="row mb-3" x-cloak x-show="education === 'higher secondary certificate.hsc.technical'">
+                            <label for="issue_date" class="col-sm-3 col-form-label">Issue Date</label>
                             <div class="col-sm-9">
                                 <div class="input-group">
-                                    <input name="dob" id="dob" type="text" class="flatpickr form-control @error('dob') is-invalid @enderror" placeholder="Select date">
+                                    <input name="issue_date" id="issue_date" type="text" class="flatpickr form-control @error('issue_date') is-invalid @enderror" placeholder="Select date">
                                     <span class="input-group-text input-group-addon" data-toggle>
                                 <i data-feather="calendar"></i>
                             </span>
                                 </div>
-                                @error('dob') <span class="text-danger">{{ $message }}</span> @enderror
+                                @error('issue_date') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         </div>
 
-                        <!-- NID -->
-                        <div class="row mb-3">
-                            <label for="nid" class="col-sm-3 col-form-label">NID</label>
+                        <!-- Publish Date -->
+                        <div class="row mb-3" x-cloak x-show="education === 'junior school certificate.jsc' || education === 'higher secondary certificate.hsc' || education === 'dakhil examination.dakhil' || education === 'higher secondary certificate.hsc.technical' || education === 'secondary school certificate.ssc.1999' || education === 'secondary school certificate.ssc'">
+                            <label for="publish_date" class="col-sm-3 col-form-label">Publish Date</label>
                             <div class="col-sm-9">
-                                <input name="nid" id="nid" type="number"
-                                       class="form-control @error('nid') is-invalid @enderror" value="{{ old('nid') }}"
-                                       placeholder="Enter NID Number">
-                                @error('nid') <span class="text-danger">{{ $message }}</span> @enderror
+                                <div class="input-group">
+                                    <input name="publish_date" id="publish_date" type="text" class="flatpickr form-control @error('publish_date') is-invalid @enderror" placeholder="Select date">
+                                    <span class="input-group-text input-group-addon" data-toggle>
+                                <i data-feather="calendar"></i>
+                            </span>
+                                </div>
+                                @error('publish_date') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         </div>
                     </div>
@@ -311,7 +631,7 @@
 
                 <div class="card mb-3 border-success">
                     <div class="card-header text-bg-success">Account Information</div>
-                    <div class="card-body">
+                    <div style="background-color: #a3ffb22e" class="card-body">
                         <!-- Bank Name -->
                         <div class="row mb-3">
                             <label for="bank_name" class="col-sm-3 col-form-label">Bank Name</label>
@@ -359,64 +679,126 @@
                 </div>
 
                 <div class="card mb-3 border-success">
-                    <div class="card-header text-bg-success">Education Information</div>
-                    <div class="card-body">
-                        <!-- Serial Number -->
+                    <div class="card-header text-bg-success">Nominee Information</div>
+                    <div style="background-color: #a3ffb22e" class="card-body">
+                        <!-- Nominee Name -->
                         <div class="row mb-3">
-                            <label for="serial_no" class="col-sm-3 col-form-label">Serial Number</label>
+                            <label for="nominee_name" class="col-sm-3 col-form-label">Nominee Name (In Bangla)</label>
                             <div class="col-sm-9">
-                                <input name="serial_no" id="serial_no" type="text"
-                                       class="form-control @error('serial_no') is-invalid @enderror" value="{{ old('serial_no') }}"
-                                       placeholder="e.g 0017394">
-                                @error('serial_no') <span class="text-danger">{{ $message }}</span> @enderror
-                                <small class="text-muted">Enter seven digit serial number here.</small>
+                                <input name="nominee_name" id="nominee_name" type="text"
+                                       class="form-control @error('nominee_name') is-invalid @enderror" value="{{ old('nominee_name') }}"
+                                       placeholder="Nominee Name In Bangla">
+                                @error('nominee_name') <span class="text-danger">{{ $message }}</span> @enderror
+                                <small class="text-muted">বাংলায় নমিনির পুরো নাম লিখুন।</small>
                             </div>
                         </div>
 
-                        <!-- DB Number -->
+                        <!-- Relation -->
                         <div class="row mb-3">
-                            <label for="db_no" class="col-sm-3 col-form-label">DB Number</label>
+                            <label for="nominee_relation" class="col-sm-3 col-form-label">Relation (In Bangla)</label>
                             <div class="col-sm-9">
-                                <input name="db_no" id="db_no" type="text"
-                                       class="form-control @error('db_no') is-invalid @enderror" value="{{ old('db_no') }}"
-                                       placeholder="e.g 0017394">
-                                @error('db_no') <span class="text-danger">{{ $message }}</span> @enderror
-                                <small class="text-muted">Enter eight digit DBJSC/MBCD/DBCSC number here.</small>
+                                <input name="nominee_relation" id="nominee_relation" type="text"
+                                       class="form-control @error('nominee_relation') is-invalid @enderror" value="{{ old('nominee_relation') }}"
+                                       placeholder="Relation In Bangla">
+                                @error('nominee_relation') <span class="text-danger">{{ $message }}</span> @enderror
+                                <small class="text-muted">RS0র সাথে নমিনির সম্পর্ক।</small>
                             </div>
                         </div>
 
-                        <!-- Registration Number -->
+                        <!-- Contact Number -->
                         <div class="row mb-3">
-                            <label for="registration_no" class="col-sm-3 col-form-label">Registration Number</label>
+                            <label for="nominee_contact_no" class="col-sm-3 col-form-label">Contact Number (In Bangla)</label>
                             <div class="col-sm-9">
-                                <input name="registration_no" id="registration_no" type="text"
-                                       class="form-control @error('registration_no') is-invalid @enderror" value="{{ old('registration_no') }}"
-                                       placeholder="e.g 0017394">
-                                @error('registration_no') <span class="text-danger">{{ $message }}</span> @enderror
+                                <input name="nominee_contact_no" id="nominee_contact_no" type="text"
+                                       class="form-control @error('nominee_contact_no') is-invalid @enderror" value="{{ old('nominee_contact_no') }}"
+                                       placeholder="Contact Number In Bangla">
+                                @error('nominee_contact_no') <span class="text-danger">{{ $message }}</span> @enderror
+                                <small class="text-muted">নমিনির মোবাইল নাম্বার লিখুন।</small>
                             </div>
                         </div>
 
-                        <!-- Registration Number -->
+                        <!-- Nominee Address -->
                         <div class="row mb-3">
-                            <label for="registration_no" class="col-sm-3 col-form-label">Education</label>
+                            <label for="nominee_contact_no" class="col-sm-3 col-form-label">Nominee Address (In Bangla)</label>
                             <div class="col-sm-9">
-                                <input name="registration_no" id="registration_no" type="text"
-                                       class="form-control @error('registration_no') is-invalid @enderror" value="{{ old('registration_no') }}"
-                                       placeholder="e.g 0017394">
-                                @error('registration_no') <span class="text-danger">{{ $message }}</span> @enderror
+                                <input name="nominee_contact_no" id="nominee_contact_no" type="text"
+                                       class="form-control @error('nominee_contact_no') is-invalid @enderror" value="{{ old('nominee_contact_no') }}"
+                                       placeholder="Nominee Address In Bangla">
+                                @error('nominee_contact_no') <span class="text-danger">{{ $message }}</span> @enderror
+                                <small class="text-muted">বাংলায় নমিনির ঠিকানা লিখুন।</small>
                             </div>
                         </div>
 
-                        <!-- Education -->
+                        <!-- RS0 Name (In Bangla) -->
                         <div class="row mb-3">
-                            <label for="education" class="col-sm-3 col-form-label">Education</label>
+                            <label for="nominee_rso_name" class="col-sm-3 col-form-label">RS0 Name (In Bangla)</label>
                             <div class="col-sm-9">
-                                <input name="education" id="education" type="text"
-                                       class="form-control @error('education') is-invalid @enderror" value="{{ old('education') }}"
-                                       placeholder="e.g SSC/HSC/Dakhil">
-                                @error('education') <span class="text-danger">{{ $message }}</span> @enderror
+                                <input name="nominee_rso_name" id="nominee_rso_name" type="text"
+                                       class="form-control @error('nominee_rso_name') is-invalid @enderror" value="{{ old('nominee_rso_name') }}"
+                                       placeholder="RS0 Name In Bangla">
+                                @error('nominee_rso_name') <span class="text-danger">{{ $message }}</span> @enderror
+                                <small class="text-muted">বাংলায় আর এস ও এর নাম লিখুন।</small>
                             </div>
                         </div>
+
+                        <!-- Nominee D.O.B -->
+                        <div class="row mb-3">
+                            <label for="nominee_dob" class="col-sm-3 col-form-label">Nominee DOB</label>
+                            <div class="col-sm-9">
+                                <div class="input-group">
+                                    <input name="nominee_dob" id="nominee_dob" type="text" class="flatpickr form-control @error('nominee_dob') is-invalid @enderror" placeholder="Select date">
+                                    <span class="input-group-text input-group-addon" data-toggle>
+                                <i data-feather="calendar"></i>
+                            </span>
+                                </div>
+                                @error('nominee_dob') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+
+                        <!-- Nominee NID -->
+                        <div class="row mb-3">
+                            <label for="nominee_nid" class="col-sm-3 col-form-label">Nominee NID</label>
+                            <div class="col-sm-9">
+                                <input name="nominee_nid" id="nominee_nid" type="number"
+                                       class="form-control @error('nominee_nid') is-invalid @enderror" value="{{ old('nominee_nid') }}"
+                                       placeholder="Enter Nominee NID Number">
+                                @error('nominee_nid') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+
+                        <!-- Witness Name -->
+                        <div class="row mb-3">
+                            <label for="nominee_witness_name" class="col-sm-3 col-form-label">Witness Name (In Bangal)</label>
+                            <div class="col-sm-9">
+                                <input name="nominee_witness_name" id="nominee_witness_name" type="text"
+                                       class="form-control @error('nominee_witness_name') is-invalid @enderror" value="{{ old('nominee_witness_name') }}"
+                                       placeholder="Witness Name In Bangla">
+                                @error('nominee_witness_name') <span class="text-danger">{{ $message }}</span> @enderror
+                                <small class="text-muted">বাংলায় সাক্ষীর নাম লিখুন।</small>
+                            </div>
+                        </div>
+
+                        <!-- Witness Designation -->
+                        <div class="row mb-3">
+                            <label for="nominee_witness_designation" class="col-sm-3 col-form-label">Witness Designation (In Bangal)</label>
+                            <div class="col-sm-9">
+                                <input name="nominee_witness_designation" id="nominee_witness_designation" type="text"
+                                       class="form-control @error('nominee_witness_designation') is-invalid @enderror" value="{{ old('nominee_witness_designation') }}"
+                                       placeholder="Witness Designation In Bangla">
+                                @error('nominee_witness_designation') <span class="text-danger">{{ $message }}</span> @enderror
+                                <small class="text-muted">বাংলায় সাক্ষীর পদবী লিখুন।</small>
+                            </div>
+                        </div>
+
+                        <!-- Witness Signature -->
+                        <div class="row mb-3">
+                            <label for="nominee_witness_signature" class="col-sm-3 col-form-label">Witness Signature</label>
+                            <div class="col-sm-9">
+                                <input name="nominee_witness_signature" id="nominee_witness_signature" type="file" class="form-control @error('nominee_witness_signature') is-invalid @enderror" accept="image/png">
+                                @error('nominee_witness_signature') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 
