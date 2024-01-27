@@ -15,7 +15,7 @@
                         <div class="row mb-3">
                             <label for="dd_house_id" class="col-sm-3 col-form-label">Distribution House</label>
                             <div class="col-sm-9">
-                                <select name="dd_house_id" class="select-2 form-select @error('dd_house_id') is-invalid @enderror" id="dd_house_id">
+                                <select name="dd_house_id" class="select-2 form-select" id="dd_house_id">
                                     <option value="">-- Select Distribution House --</option>
                                     @if(count($houses) > 0)
                                         @foreach($houses as $house)
@@ -31,7 +31,7 @@
                         <div class="row mb-3">
                             <label for="set_user" class="col-sm-3 col-form-label">Assign User</label>
                             <div class="col-sm-9">
-                                <select name="user_id" class="select-2 form-select @error('user_id') is-invalid @enderror" id="set_user">
+                                <select name="user_id" class="select-2 form-select" id="set_user">
                                     <option value="">-- Select Supervisor --</option>
                                 </select>
                                 @error('user_id') <span class="text-danger">{{ $message }}</span> @enderror
@@ -43,7 +43,7 @@
                             <label for="pool_number" class="col-sm-3 col-form-label">Pool Number</label>
                             <div class="col-sm-9">
                                 <input name="pool_number" id="pool_number" type="number"
-                                       class="form-control @error('pool_number') is-invalid @enderror" value="{{ old('pool_number') }}"
+                                       class="form-control" value="{{ old('pool_number') }}"
                                        placeholder="Enter Pool Number">
                                 @error('pool_number') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
@@ -53,8 +53,7 @@
                         <div class="row mb-3">
                             <label for="father_name" class="col-sm-3 col-form-label">Father Name</label>
                             <div class="col-sm-9">
-                                <input name="father_name" id="father_name" type="text" class="form-control @error('father_name') is-invalid @enderror"
-                                       value="{{ old('father_name') }}" placeholder="Enter Father Name">
+                                <input name="father_name" id="father_name" type="text" class="form-control" value="{{ old('father_name') }}" placeholder="Enter Father Name">
                                 @error('father_name') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         </div>
@@ -63,8 +62,7 @@
                         <div class="row mb-3">
                             <label for="mother_name" class="col-sm-3 col-form-label">Mother Name</label>
                             <div class="col-sm-9">
-                                <input name="mother_name" id="mother_name" type="text" class="form-control @error('mother_name') is-invalid @enderror"
-                                       value="{{ old('mother_name') }}" placeholder="Enter Mother Name">
+                                <input name="mother_name" id="mother_name" type="text" class="form-control" value="{{ old('mother_name') }}" placeholder="Enter Mother Name">
                                 @error('mother_name') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         </div>
@@ -73,8 +71,7 @@
                         <div class="row mb-3">
                             <label for="division" class="col-sm-3 col-form-label">Division</label>
                             <div class="col-sm-9">
-                                <input name="division" id="division" type="text" class="form-control @error('division') is-invalid @enderror"
-                                       value="{{ old('division') }}" placeholder="Enter Division">
+                                <input name="division" id="division" type="text" class="form-control" value="{{ old('division') }}" placeholder="Enter Division">
                                 @error('division') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         </div>
@@ -83,8 +80,7 @@
                         <div class="row mb-3">
                             <label for="district" class="col-sm-3 col-form-label">District</label>
                             <div class="col-sm-9">
-                                <input name="district" id="district" type="text" class="form-control @error('district') is-invalid @enderror"
-                                       value="{{ old('district') }}" placeholder="Enter District">
+                                <input name="district" id="district" type="text" class="form-control" value="{{ old('district') }}" placeholder="Enter District">
                                 @error('district') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         </div>
@@ -93,8 +89,7 @@
                         <div class="row mb-3">
                             <label for="thana" class="col-sm-3 col-form-label">Thana</label>
                             <div class="col-sm-9">
-                                <input name="thana" id="thana" type="text" class="form-control @error('thana') is-invalid @enderror"
-                                       value="{{ old('thana') }}" placeholder="Enter Thana">
+                                <input name="thana" id="thana" type="text" class="form-control" value="{{ old('thana') }}" placeholder="Enter Thana">
                                 @error('thana') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         </div>
@@ -103,8 +98,7 @@
                         <div class="row mb-3">
                             <label for="address" class="col-sm-3 col-form-label">Address</label>
                             <div class="col-sm-9">
-                                <input name="address" id="address" type="text" class="form-control @error('address') is-invalid @enderror"
-                                       value="{{ old('address') }}" placeholder="Enter Address">
+                                <input name="address" id="address" type="text" class="form-control" value="{{ old('address') }}" placeholder="Enter Address">
                                 @error('address') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         </div>
@@ -113,9 +107,7 @@
                         <div class="row mb-3">
                             <label for="nid" class="col-sm-3 col-form-label">NID</label>
                             <div class="col-sm-9">
-                                <input name="nid" id="nid" type="number"
-                                       class="form-control @error('nid') is-invalid @enderror" value="{{ old('nid') }}"
-                                       placeholder="Enter NID Number">
+                                <input name="nid" id="nid" type="number" class="form-control" value="{{ old('nid') }}" placeholder="Enter NID Number">
                                 @error('nid') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         </div>
@@ -125,7 +117,7 @@
                             <label for="dob" class="col-sm-3 col-form-label">D.O.B</label>
                             <div class="col-sm-9">
                                 <div class="input-group">
-                                    <input name="dob" id="dob" type="text" class="flatpickr form-control @error('dob') is-invalid @enderror" placeholder="Select date">
+                                    <input name="dob" id="dob" type="text" class="flatpickr form-control" placeholder="Select date">
                                     <span class="input-group-text input-group-addon" data-toggle>
                                         <i data-feather="calendar"></i>
                                     </span>
@@ -139,7 +131,7 @@
                             <label for="joining_date" class="col-sm-3 col-form-label">Joining Date</label>
                             <div class="col-sm-9">
                                 <div class="input-group">
-                                    <input name="joining_date" id="joining_date" type="text" class="flatpickr form-control @error('joining_date') is-invalid @enderror" placeholder="Select date">
+                                    <input name="joining_date" id="joining_date" type="text" class="flatpickr form-control" placeholder="Select date">
                                     <span class="input-group-text input-group-addon" data-toggle>
                                         <i data-feather="calendar"></i>
                                     </span>

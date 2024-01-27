@@ -17,6 +17,7 @@ use App\Http\Requests\RsoUpdateRequest;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Response;
+use Intervention\Image\Facades\Image;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -50,7 +51,45 @@ class RsoController extends Controller
      */
     public function store(RsoStoreRequest $request): RedirectResponse
     {
-        $id     = Rso::create($request->validated())->id;
+//        dd($request->all());
+        $rso = $request->validated();
+
+        // Rso Signature
+        if ($request->hasFile('employee_signature')) {
+            $name = 'rso.sign'.$request->employee_signature->hashname();
+            Image::make($request->employee_signature)->resize(80,80)->save(public_path('assets/images/rso/documents/'.$name));
+            $rso['employee_signature'] = $name;
+        }
+
+        // Rso Image
+        if ($request->hasFile('rso_image')) {
+            $name = 'rso.img'.$request->rso_image->hashname();
+            Image::make($request->rso_image)->resize(300,380)->save(public_path('assets/images/rso/documents/'.$name));
+            $rso['rso_image'] = $name;
+        }
+
+        // Nominee Image
+        if ($request->hasFile('nominee_image')) {
+            $name = 'nominee.img'.$request->nominee_image->hashname();
+            Image::make($request->nominee_image)->resize(80,80)->save(public_path('assets/images/rso/documents/'.$name));
+            $rso['nominee_image'] = $name;
+        }
+
+        // Nominee Signature
+        if ($request->hasFile('nominee_signature')) {
+            $name = 'nominee.sign'.$request->nominee_signature->hashname();
+            Image::make($request->nominee_signature)->resize(80,80)->save(public_path('assets/images/rso/documents/'.$name));
+            $rso['nominee_signature'] = $name;
+        }
+
+        // Witness Signature
+        if ($request->hasFile('nominee_witness_signature')) {
+            $name = 'witness.sign'.$request->nominee_witness_signature->hashname();
+            Image::make($request->nominee_witness_signature)->resize(80,80)->save(public_path('assets/images/rso/documents/'.$name));
+            $rso['nominee_witness_signature'] = $name;
+        }
+
+        $id     = Rso::create($rso)->id;
         $newRso = Rso::findOrFail($id);
         $newRso->route()->attach($request->input('routes'));
 //        toastr('Rso created successfully.','success','Success');

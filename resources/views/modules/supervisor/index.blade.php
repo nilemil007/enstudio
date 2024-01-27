@@ -35,7 +35,7 @@
                             <td>{{ $supervisor->user->name }}</td>
                             <td>{{ $supervisor->pool_number }}</td>
                             <td>{{ $supervisor->joining_date->toFormattedDateString() }}</td>
-                            <td>
+                            <td style="font-weight: bold">
                                 @switch( $supervisor->status )
                                     @case(1)
                                         <p class="text-success">Active</p>
