@@ -408,51 +408,6 @@
                             </div>
                         </div>
 
-                        <!-- Serial Number -->
-                        <div class="row mb-3" x-cloak x-show="education === 'junior school certificate.jsc' || education === 'higher secondary certificate.hsc' || education === 'dakhil examination.dakhil' || education === 'higher secondary certificate.hsc.technical' || education === 'secondary school certificate.ssc.1999' || education === 'secondary school certificate.ssc'">
-                            <label for="serial_number" class="col-sm-3 col-form-label">Serial Number</label>
-                            <div class="col-sm-9">
-                                <input name="serial_number" id="serial_number" type="number" class="form-control" value="{{ old('serial_number') }}" placeholder="e.g 0017394">
-                                <small class="text-muted">Enter serial number here.</small>
-                            </div>
-                        </div>
-
-                        <!-- DBJSC Number -->
-                        <div class="row mb-3" x-cloak x-show="education === 'junior school certificate.jsc'">
-                            <label for="dbjsc" class="col-sm-3 col-form-label">DBJSC Number</label>
-                            <div class="col-sm-9">
-                                <input name="dbjsc" id="dbjsc" type="number" class="form-control" value="{{ old('dbjsc') }}" placeholder="e.g 0017394">
-                                <small class="text-muted">Enter seven digit DBJSC number here.</small>
-                            </div>
-                        </div>
-
-                        <!-- DBCSC Number -->
-                        <div class="row mb-3" x-cloak x-show="education === 'secondary school certificate.ssc' || examination === 'secondary school certificate.ssc.1999'">
-                            <label for="dbcsc" class="col-sm-3 col-form-label">DBCSC Number</label>
-                            <div class="col-sm-9">
-                                <input name="dbcsc" id="dbcsc" type="number" class="form-control" value="{{ old('dbcsc') }}" placeholder="e.g 0017394">
-                                <small class="text-muted">Enter seven digit DBCSC number here.</small>
-                            </div>
-                        </div>
-
-                        <!-- DBCHC Number -->
-                        <div class="row mb-3" x-cloak x-show="education === 'higher secondary certificate.hsc'">
-                            <label for="dbchc" class="col-sm-3 col-form-label">DBCHC Number</label>
-                            <div class="col-sm-9">
-                                <input name="dbchc" id="dbchc" type="number" class="form-control" value="{{ old('dbchc') }}" placeholder="e.g 0017394">
-                                <small class="text-muted">Enter seven digit DBCHC number here.</small>
-                            </div>
-                        </div>
-
-                        <!-- MBCD Number -->
-                        <div class="row mb-3" x-cloak x-show="education === 'dakhil examination.dakhil'">
-                            <label for="mbcd" class="col-sm-3 col-form-label">MBCD Number</label>
-                            <div class="col-sm-9">
-                                <input name="mbcd" id="mbcd" type="number" class="form-control" value="{{ old('mbcd') }}" placeholder="e.g 0017394">
-                                <small class="text-muted">Enter seven digit MBCD number here.</small>
-                            </div>
-                        </div>
-
                         <!-- Student ID Number -->
                         <div class="row mb-3" x-cloak x-show="education === 'secondary school certificate.ssc.bou'">
                             <label for="student_id" class="col-sm-3 col-form-label">Student ID Number</label>
@@ -885,32 +840,6 @@
                     },
                     messages: {
 
-                    },
-                    errorPlacement: function(error, element){
-                        error.addClass('invalid-feedback');
-
-                        if (element.parent('.input-group').length) {
-                            error.insertAfter(element.parent());
-                        }
-                        else if (element.prop('type') === 'radio' && element.parent('.radio-inline').length) {
-                            error.insertAfter(element.parent().parent());
-                        }
-                        else if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
-                            error.appendTo(element.parent().parent());
-                        }
-                        else {
-                            error.insertAfter(element);
-                        }
-                    },
-                    highlight: function(element, errorClass){
-                        if ($(element).prop('type') != 'checkbox' && $(element).prop('type') != 'radio') {
-                            $( element ).addClass( "is-invalid" );
-                        }
-                    },
-                    unhighlight: function(element, errorClass){
-                        if ($(element).prop('type') != 'checkbox' && $(element).prop('type') != 'radio') {
-                            $( element ).removeClass( "is-invalid" );
-                        }
                     },
                 });
 

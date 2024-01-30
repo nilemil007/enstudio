@@ -37,7 +37,7 @@
                         <tr class="{{ $rso->status == 0 ? 'text-bg-warning' : '' }}">
                             <td><span>{{ ++$sl }}</span></td>
                             <td>{{ $rso->ddHouse->code }}</td>
-                            <td>{{ optional($rso->user)->name }}</td>
+                            <td>{{ $rso->name }}</td>
                             <td>{{ $rso->supervisor->user->name }}</td>
                             <td>{{ $rso->rso_code }}</td>
                             <td>{{ $rso->itop_number }}</td>

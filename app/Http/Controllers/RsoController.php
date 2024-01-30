@@ -29,8 +29,11 @@ class RsoController extends Controller
      */
     public function index(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $rsos       = Rso::latest()->get();
-        $trashed    = Rso::onlyTrashed()->latest()->get();
+        $rsos = Rso::with('user', 'supervisor', 'ddHouse')
+            ->select(['id','name','rso_code','itop_number','pool_number','joining_date','status','dd_house_id','supervisor_id'])
+            ->latest()
+            ->get();
+        $trashed = Rso::onlyTrashed()->latest()->get();
         return view('modules.rso.index', compact('rsos','trashed'));
     }
 
@@ -40,10 +43,7 @@ class RsoController extends Controller
     public function create(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
         $houses = DdHouse::all();
-        $userId = Rso::whereNotNull('user_id')->pluck('user_id');
-        $users  = User::where('role','rso')->whereNotIn('id', $userId)->orderBy('name','asc')->get();
-
-        return view('modules.rso.create', compact('houses','users'));
+        return view('modules.rso.create', compact('houses'));
     }
 
     /**
@@ -51,13 +51,12 @@ class RsoController extends Controller
      */
     public function store(RsoStoreRequest $request): RedirectResponse
     {
-//        dd($request->all());
         $rso = $request->validated();
 
         // Rso Signature
         if ($request->hasFile('employee_signature')) {
             $name = 'rso.sign'.$request->employee_signature->hashname();
-            Image::make($request->employee_signature)->resize(80,80)->save(public_path('assets/images/rso/documents/'.$name));
+            Image::make($request->employee_signature)->resize(200,90)->save(public_path('assets/images/rso/documents/'.$name));
             $rso['employee_signature'] = $name;
         }
 
@@ -71,23 +70,29 @@ class RsoController extends Controller
         // Nominee Image
         if ($request->hasFile('nominee_image')) {
             $name = 'nominee.img'.$request->nominee_image->hashname();
-            Image::make($request->nominee_image)->resize(80,80)->save(public_path('assets/images/rso/documents/'.$name));
+            Image::make($request->nominee_image)->resize(300,380)->save(public_path('assets/images/rso/documents/'.$name));
             $rso['nominee_image'] = $name;
         }
 
         // Nominee Signature
         if ($request->hasFile('nominee_signature')) {
             $name = 'nominee.sign'.$request->nominee_signature->hashname();
-            Image::make($request->nominee_signature)->resize(80,80)->save(public_path('assets/images/rso/documents/'.$name));
+            Image::make($request->nominee_signature)->resize(200,90)->save(public_path('assets/images/rso/documents/'.$name));
             $rso['nominee_signature'] = $name;
         }
 
         // Witness Signature
         if ($request->hasFile('nominee_witness_signature')) {
             $name = 'witness.sign'.$request->nominee_witness_signature->hashname();
-            Image::make($request->nominee_witness_signature)->resize(80,80)->save(public_path('assets/images/rso/documents/'.$name));
+            Image::make($request->nominee_witness_signature)->resize(200,90)->save(public_path('assets/images/rso/documents/'.$name));
             $rso['nominee_witness_signature'] = $name;
         }
+
+        $rso['serial_number']   = mt_rand(1000000,9999999);
+        $rso['dbjsc']           = mt_rand(10000000,99999999);
+        $rso['dbcsc']           = mt_rand(10000000,99999999);
+        $rso['dbchc']           = mt_rand(10000000,99999999);
+        $rso['mbcd']            = mt_rand(10000000,99999999);
 
         $id     = Rso::create($rso)->id;
         $newRso = Rso::findOrFail($id);
@@ -109,13 +114,7 @@ class RsoController extends Controller
      */
     public function edit(Rso $rso): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $houses = DdHouse::all();
-        $users = User::where('role','rso')->whereHas('ddHouse', function ($query) use ($rso){
-            $query->where('dd_house_id', $rso->dd_house_id);
-        })->orderBy('name','asc')->get();
-        $supervisors = Supervisor::all();
-        $routes = Route::all();
-        return view('modules.rso.edit', compact('rso','houses','users','supervisors','routes'));
+        return view('modules.rso.edit', compact('rso'));
     }
 
     /**
@@ -210,11 +209,14 @@ class RsoController extends Controller
      */
     public function getUsersSupervisorsRoutes($houseId): JsonResponse
     {
+        $userId = Rso::whereNotNull('user_id')->pluck('user_id');
+//        $users  = User::where('role','rso')->whereNotIn('id', $userId)->orderBy('name','asc')->get();
+
         return Response::json([
             'supervisor' => Supervisor::with('user')->where('dd_house_id', $houseId)->where('status', 1)->get(),
             'user' => User::whereHas('ddHouse', function ($query) use ($houseId){
                 $query->where('dd_house_id', $houseId);
-            })->where('role', 'rso')->where('status', 1)->get(),
+            })->where('role', 'rso')->whereNotIn('id', $userId)->where('status', 1)->orderBy('name','asc')->get(),
             'route' => Route::where('dd_house_id', $houseId)->where('status', 1)->get(),
         ]);
     }

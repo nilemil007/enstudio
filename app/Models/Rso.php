@@ -158,7 +158,7 @@ class Rso extends Model
     }
 
     /**
-     * Get uc first.
+     * Get gender name in upper case first.
      * Set lower.
      *
      * @return Attribute

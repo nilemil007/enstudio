@@ -26,7 +26,7 @@ return new class extends Migration
             $table->enum('residential_rso', ['yes','no']);
 
             $table->date('date');
-            $table->string('rid')->unique();
+            $table->string('rid')->nullable()->unique();
             $table->string('name', 11);
             $table->string('father_name', 50);
             $table->string('mother_name', 50);
@@ -36,7 +36,7 @@ return new class extends Migration
             $table->longText('present_address');
             $table->longText('permanent_address');
             $table->string('witness_name');
-            $table->string('witness_number', 11)->unique();
+            $table->string('witness_number', 11);
             $table->string('salary')->default(7000);
             $table->string('employee_signature');
 
